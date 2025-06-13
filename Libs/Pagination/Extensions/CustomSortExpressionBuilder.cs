@@ -24,21 +24,18 @@ public class CustomSortExpressionBuilder<T>
 {
     private readonly InvariantStringDictionary< Expression<Func<T, object>>> _expressionMap = [];
 
-    //-----------------------------------//
+    //- - - - - - - - - - - //
 
     private CustomSortExpressionBuilder() { }
 
-    //- - - - - - - - - - - - - - - - - - //
-
     public static CustomSortExpressionBuilder<T> Create() => new();
-
-    //- - - - - - - - - - - - - - - - - - //
+    
+    //- - - - - - - - - - - //
 
     public static CustomSortExpressionBuilder<T> Create(string field, Expression<Func<T, object>> sortValueFunc) => 
         new CustomSortExpressionBuilder<T>()
             .AddCustomSort(field, sortValueFunc);
 
-    //-----------------------------------//
 
     public CustomSortExpressionBuilder<T> AddCustomSort(string field, Expression<Func<T, object>> sortValueFunc)
     {
@@ -47,7 +44,6 @@ public class CustomSortExpressionBuilder<T>
         return this;
     }
 
-    //-----------------------------------//
 
     public Expression<Func<T, object>> GetSorter(string field) => 
         _expressionMap.TryGetValue(field, out var value)

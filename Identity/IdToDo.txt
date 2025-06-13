@@ -43,8 +43,6 @@ Make sure teammanager uses the full team with members when updating team members
 
 Add INdexes to tables???
 
-Pagination trycatch
-
 
 
 

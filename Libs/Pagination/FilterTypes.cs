@@ -155,6 +155,5 @@ public class FilterTypes
 
     }
 
-    //-----------------------------//
 
 }//Cls

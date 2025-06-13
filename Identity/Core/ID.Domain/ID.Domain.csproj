@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>Id.Application.Tests</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>Id.Infrastructure.Tests</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>Id.Tests.Data</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>ID.Persistence.Ef.Tests</_Parameter1>
+        </AssemblyAttribute>        
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>ID.Domain.Tests</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Libs\ClArch.ValueObjects\ClArch.ValueObjects.csproj" />
+      <ProjectReference Include="..\..\..\Libs\MyResults\MyResults.csproj" />
+      <ProjectReference Include="..\..\..\Libs\Pagination\Pagination.csproj" />
+      <ProjectReference Include="..\ID.GlobalSettings\ID.GlobalSettings.csproj" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <PackageReference Include="MassTransit.Abstractions" />
+      <PackageReference Include="MediatR" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+      <PackageReference Include="Microsoft.Data.SqlClient" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" />
+      <PackageReference Include="Newtonsoft.Json" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <Folder Include="Entities\%40Common\ValueObjects\" />
+    </ItemGroup>
+
+</Project>

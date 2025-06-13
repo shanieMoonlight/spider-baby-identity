@@ -1,0 +1,30 @@
+{
+    "dotnet.server.useOmnisharp": false,
+    "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
+    "dotnet.projects.enableAutomaticRestore": true,
+    "dotnet.backgroundAnalysis.analyzerDiagnosticsScope": "openFiles",
+    "dotnet.backgroundAnalysis.compilerDiagnosticsScope": "openFiles",
+    "dotnet.server.suppressLspErrorToasts": false,
+    "dotnet.server.crashOnUnhandledException": false,
+    "omnisharp.enableMsBuildLoadProjectsOnDemand": false,
+    "omnisharp.enableAsyncCompletion": true,
+    "omnisharp.useGlobalMono": "never",
+    "omnisharp.enableRoslynAnalyzers": true,
+    "omnisharp.enableEditorConfigSupport": true,
+    "omnisharp.projectLoadTimeout": 120,
+    "omnisharp.maxProjectResults": 250,
+    "csharp.format.enable": true,
+    "csharp.semanticHighlighting.enabled": true,
+    "files.exclude": {
+        "**/bin": true,
+        "**/obj": true,
+        "**/.vs": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/bin": true,
+        "**/obj": true
+    },
+    "dotnet.formatting.organizeImportsOnFormat": true
+}

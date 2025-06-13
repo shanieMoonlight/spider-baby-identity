@@ -1,0 +1,1 @@
+﻿Implementation of service interfaces that can be implemented using only Application/Domain Interfaces and Models

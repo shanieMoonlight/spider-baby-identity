@@ -1,0 +1,1 @@
+﻿Definitions of services that can be implemented using only Application/Domain Interfaces and Models.

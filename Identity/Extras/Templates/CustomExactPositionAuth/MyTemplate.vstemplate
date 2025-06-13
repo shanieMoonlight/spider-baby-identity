@@ -1,0 +1,15 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+  <TemplateData>
+    <DefaultName>CustomAuth_Exact_PositionFiltering</DefaultName>
+    <Name>CustomAuth_Exact_PositionFilteringTemplate</Name>
+    <Description>A template for custom authorization filtering based on user Team positon.</Description>
+    <ProjectType>CSharp</ProjectType>
+    <SortOrder>10</SortOrder>
+    <Icon>__TemplateIcon.png</Icon>
+    <PreviewImage>__PreviewImage.png</PreviewImage>
+  </TemplateData>
+  <TemplateContent>
+    <References />
+    <ProjectItem SubType="" TargetFileName="$fileinputname$.cs" ReplaceParameters="true">CustomExactPositionAuth.cs</ProjectItem>
+  </TemplateContent>
+</VSTemplate>

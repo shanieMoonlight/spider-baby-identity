@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Paused</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            max-height: 250px;
+        }
+
+        .header #logo {
+            max-width: 50%;
+            display: inline;
+            display: __logoImageDisplay__;
+        }
+
+        .header #logo-text {
+            max-width: 50%;
+            display: none;
+            display: __logoTextDisplay_;
+            color: #70AE6E;
+            color: __colorPrimary__;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+            .content h1 {
+                color: #333333;
+            }
+
+            .content p {
+                color: #666666;
+                line-height: 1.6;
+            }
+
+        .footer {
+            text-align: center;
+            padding: 10px 0;
+            color: #999999;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 id="logo-text">__appName__</h1>
+            <img id="logo" src="__logo__" alt="Company Logo">
+        </div>
+        <div class="content">
+            <h1>Subscription Paused</h1>
+            <p>Dear __toName__,</p>
+            <br />
+            <p>
+                We wanted to inform you that your subscription to __appName__, <strong>__subscriptionPlanName__</strong>, has been paused.
+                If you have any questions or need further assistance, please do not hesitate to contact our support team.
+            </p>
+            <p>Thank you for being a valued customer.</p>
+            <br />
+            <p>Best regards,</p>
+            <p>The __appName__ Team</p>
+        </div>
+        <div class="footer">
+            <p>&copy; __currentYear__ __appName__. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

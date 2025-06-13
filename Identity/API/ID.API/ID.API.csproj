@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\AddOns\Msgs\ID.Msg.Twilio\ID.Msg.Twilio.csproj" />
+    <ProjectReference Include="..\..\Core\ID.Application\ID.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ID.Infrastructure\ID.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ID.Presentation\ID.Presentation.csproj" />
+  </ItemGroup>
+
+</Project>

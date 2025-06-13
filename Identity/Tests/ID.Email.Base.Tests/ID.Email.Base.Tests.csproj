@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="xunit" />
+        <PackageReference Include="xunit.runner.visualstudio" />
+        <PackageReference Include="FluentValidation" />
+        <PackageReference Include="Moq" />
+        <PackageReference Include="Shouldly" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="AppImps\" />
+        <Folder Include="EventListeners\EmailConfirmation\" />
+        <Folder Include="Utils\" />
+    </ItemGroup>    <ItemGroup>
+        <ProjectReference Include="..\..\AddOns\Emails\ID.Email.Base\ID.Email.Base.csproj" />
+        <ProjectReference Include="..\Id.Tests.Utility\ID.Tests.Utility.csproj" />
+        <ProjectReference Include="..\ID.Tests.Data\ID.Tests.Data.csproj" />
+    </ItemGroup>
+
+</Project>

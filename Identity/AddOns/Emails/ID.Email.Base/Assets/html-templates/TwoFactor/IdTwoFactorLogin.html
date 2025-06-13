@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Factor Login - __appName__</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            max-height: 250px;
+        }
+
+        .header #logo {
+            max-width: 50%;
+            display: inline;
+            display: __logoImageDisplay__;
+        }
+
+        .header #logo-text {
+            max-width: 50%;
+            display: none;
+            display: __logoTextDisplay_;
+            color: #70AE6E;
+            color: __colorPrimary__;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: __colorPrimary__;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 18px;
+            color: __colorPrimary__;
+            margin-bottom: 15px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: __colorPrimary__;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 2rem 0;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            font-family: inherit;
+        }
+
+        .cta-button:hover {
+            background-color: #004d99;
+        }
+
+        .verification-code {
+            font-weight: bold;
+            color: __colorPrimary__;
+        }
+    </style>
+</head>
+<body>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+            <td align="center">
+                <div class="header">
+                    <h1 id="logo-text">__appName__</h1>
+                    <img id="logo" src="__logo__" alt="Company Logo">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <h1>Welcome to Two-Factor Login - __appName__!</h1>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><strong>Hi __toName__,</strong></p>
+                <p>You're receiving this email because there has been a login attempt on your account and you have two-factor authentication enabled.</p>
+                <p style="margin-bottom: 20px;">
+                    Verification code: <span class="verification-code">__verificationCode__</span>
+                </p>
+                <p>If you didn't attempt a login just now, you should change your password immediately.</p>
+            </td>
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+        <tr>
+            <!--<td align="center">
+                <a href="__callBackUrl__" class="cta-button">Verify</a>
+            </td>-->
+        </tr>
+        <tr>
+            <td><br></td>
+        </tr>
+        <tr>
+            <td>
+                <p><strong>Thanks</strong></p>
+                <div style="color: #526875d1;">
+                    <strong>The Team at __appName__</strong>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Preheader Text -->
+    <div style="display:none;font-size:1px;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;mso-hide:all;font-family:sans-serif;">Click here to confirm your email address and reset your password.</div>
+</body>
+</html>

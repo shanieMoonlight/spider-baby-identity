@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="NewFolder\**" />
+      <EmbeddedResource Remove="NewFolder\**" />
+      <None Remove="NewFolder\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" />
+        <PackageReference Include="FluentAssertions" />
+        <PackageReference Include="Mono.Cecil" />
+        <PackageReference Include="FluentValidation" />
+        <PackageReference Include="Moq" />
+        <PackageReference Include="Shouldly" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="xunit" />
+        <PackageReference Include="xunit.runner.visualstudio" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Libs\ClArch.SimpleSpecification\ClArch.SimpleSpecification.csproj" />
+      <ProjectReference Include="..\..\Core\ID.Application\ID.Application.csproj" />
+      <ProjectReference Include="..\..\Core\ID.Domain\ID.Domain.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\ID.Infrastructure\ID.Infrastructure.csproj" />
+      <ProjectReference Include="..\ID.Tests.Data\ID.Tests.Data.csproj" />
+      <ProjectReference Include="..\Id.Tests.Utility\ID.Tests.Utility.csproj" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <Folder Include="Auth\Cookies\" />
+      <Folder Include="Jobs\Misc\" />
+    </ItemGroup>
+
+</Project>

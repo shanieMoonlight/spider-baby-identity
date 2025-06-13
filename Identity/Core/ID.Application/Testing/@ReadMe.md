@@ -1,0 +1,1 @@
+﻿Classes and Interfaces that will make unit testing easier

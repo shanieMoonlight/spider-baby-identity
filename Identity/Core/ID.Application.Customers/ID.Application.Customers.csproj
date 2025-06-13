@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+
+
+
+    <ItemGroup>
+        <PackageReference Include="FluentValidation" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+        <PackageReference Include="GoogleAuthenticator" />
+        <PackageReference Include="MassTransit" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\Libs\ControllerHelpers\ContollerHelpers\ControllerHelpers.csproj" />
+            <ProjectReference Include="..\..\..\Libs\MyResults\MyResults.csproj" />
+        <!--<ProjectReference Include="..\..\..\MyResults\MyResults.csproj" />-->
+        <ProjectReference Include="..\..\..\Libs\Pagination\Pagination.csproj" />
+        <ProjectReference Include="..\..\Core\ID.Application\ID.Application.csproj" />
+        <ProjectReference Include="..\..\Core\ID.Domain\ID.Domain.csproj" />
+        <ProjectReference Include="..\ID.GlobalSettings\ID.GlobalSettings.csproj" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>ID.Application.Customers.Tests</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>ID.Tests.Data</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <Folder Include="Utility\" />
+    </ItemGroup>
+
+
+
+</Project>

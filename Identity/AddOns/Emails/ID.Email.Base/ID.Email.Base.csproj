@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="IEmailDetails.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Libs\Logging\LoggingHelpers\LoggingHelpers\LoggingHelpers.csproj" />
+    <ProjectReference Include="..\..\..\..\Libs\MyResults\MyResults.csproj" />
+    <ProjectReference Include="..\..\..\Core\ID.Application\ID.Application.csproj" />
+    <ProjectReference Include="..\..\..\Core\ID.GlobalSettings\ID.GlobalSettings.csproj" />
+    <ProjectReference Include="..\..\..\Core\ID.IntegrationEvents\ID.IntegrationEvents.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="EventListeners\Subscriptions\SubscriptionsPausedConsumer.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\html-templates\EmailConfirmation\IdEmailConfirmationCustomer.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\html-templates\EmailConfirmation\IdEmailConfirmationEmployee.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\html-templates\ResetPassword\IdResetPassword.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\html-templates\Subs\IdSubPaused - Copy.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\html-templates\Subs\IdSubPaused.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\html-templates\TwoFactor\IdTwoFactorGoogleAuthSetup.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\html-templates\TwoFactor\IdTwoFactorLogin.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+
+
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>ID.Email.SMTP</_Parameter1>
+        </AssemblyAttribute>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>ID.Email.SG</_Parameter1>
+		</AssemblyAttribute>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>ID.Email.Base.Tests</_Parameter1>
+		</AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+
+</Project>

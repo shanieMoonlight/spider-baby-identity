@@ -1,0 +1,73 @@
+
+
+Organize IDMsgs better
+
+
+Document IDMessageing better
+
+ HANGFIRE: 
+ Documentation: You must clearly document the required call order for the consuming application: app.UseRouting() must be called before app.UseMyId() for ASP.NET Core 3.0+ applications to ensure the MapHangfireDashboard route is used.
+Hangfire Storage: You need to decide how the Hangfire storage is configured. In the example, I've added a hangfireConfiguration Action to AddMyId() to allow the consumer to provide the storage (e.g., SQL Server, Redis, etc.), as this is usually application-specific.
+
+
+
+
+
+ID Global error handling?????
+    // MediatR pipeline for handling business logic exceptions (which you already have)
+    services.AddMediatR(config => {
+        config.AddOpenBehavior(typeof(IdRequestExceptionHandler<,,>));
+        // Other behaviors...
+    });
+
+    // Global middleware for catching everything else
+    app.UseWhen(
+        context => context.Request.Path.StartsWithSegments("/identity"),
+        appBuilder => appBuilder.UseMiddleware<GlobalIdExceptionMiddleware>()
+    );
+
+
+internal class TakeSkipSpec<TEntity>():
+'TakeSkipSpec<TEntity>.Skip' hides inherited member 'ASimpleSpecification<TEntity>.Skip'. Use the new keyword if hiding was intended.
+
+
+ValidateEmailBaseOptions <-- configuration
+
+
+Test Domain Entity methods
+
+Make sure teammanager uses the full team with members when updating team members
+
+
+
+
+Add INdexes to tables???
+
+Pagination trycatch
+
+
+
+
+//This looks like a hack. Use  constants instead of magic numbers
+//Super Members see all Mntc Members, Mntc Members see only their Position and lower
+var teamPosition = request.IsSuperMinimum ? 10000 : request.PrincipalTeamPosition;
+
+        
+
+
+review Team -> mbr?.UpdatePosition
+
+Device Auth
+
+IIsFromMobileApp _fromAppService
+ - Maybe remove this and and send 2 factor anyway???
+
+ 
+Include appsettings.json in the demo project
+
+
+Make TeamManager a bit smaller. Maybe use factories to smaller services.
+
+
+
+MOre OathLogins

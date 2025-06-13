@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <IsPackable>false</IsPackable>
+        <!--<IsTestProject>true</IsTestProject>-->
+    </PropertyGroup>
+
+    <ItemGroup>
+      <!--<ProjectReference Include="..\..\AddOns\ID.OAuth.Google\ID.OAuth.Google.csproj" />
+      <ProjectReference Include="..\..\Core\ID.Application\ID.Application.csproj" />-->
+      <ProjectReference Include="..\..\..\Libs\TestingHelpers\TestingHelpers\TestingHelpers.csproj" />
+      <ProjectReference Include="..\..\AddOns\OAuth\ID.OAuth.Google\ID.OAuth.Google.csproj" />
+      <ProjectReference Include="..\..\Core\ID.Domain\ID.Domain.csproj" />
+      <ProjectReference Include="..\..\Core\ID.GlobalSettings\ID.GlobalSettings.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\ID.Infrastructure\ID.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <!--<ItemGroup>
+        <Using Include="Xunit" />
+    </ItemGroup>-->
+
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>ID.Application.Customers.Tests</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>ID.Application.Tests</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>ID.Domain.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Hosting" />
+      <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc" />
+      <PackageReference Include="Microsoft.Data.SqlClient" />
+      <PackageReference Include="Moq" />
+      <PackageReference Include="Shouldly" />
+    </ItemGroup>
+
+</Project>

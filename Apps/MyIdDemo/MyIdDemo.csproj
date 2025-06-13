@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StronglyTypedAppSettings" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="appsettings.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Identity\AddOns\Emails\ID.Email.SG\ID.Email.SG.csproj" />
+	  <ProjectReference Include="..\..\Identity\AddOns\Emails\ID.Email.SMTP\ID.Email.SMTP.csproj" />
+	  <ProjectReference Include="..\..\Identity\AddOns\ID.PhoneConfirmation\ID.PhoneConfirmation.csproj" />
+	  <ProjectReference Include="..\..\Identity\AddOns\OAuth\ID.OAuth.Google\ID.OAuth.Google.csproj" />
+	  <ProjectReference Include="..\..\Identity\API\ID.API\ID.API.csproj" />
+	  <ProjectReference Include="..\..\Identity\Core\ID.Application.Customers\ID.Application.Customers.csproj" />
+	  <ProjectReference Include="..\..\Identity\Extras\Demo\ID.Demo.TestControllers\ID.Demo.TestControllers.csproj" />
+	  <ProjectReference Include="..\..\Identity\Extras\ID.TeamRoles.UserToAdmin\ID.TeamRoles.UserToAdmin.csproj" />
+	  <ProjectReference Include="..\..\Libs\Logging\LogToFile\LogToFile\LogToFile.csproj" />
+	</ItemGroup>
+
+
+</Project>

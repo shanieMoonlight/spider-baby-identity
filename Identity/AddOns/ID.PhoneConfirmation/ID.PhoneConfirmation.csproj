@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup><!--<PackageReference Include="Microsoft.AspNetCore.Authorization" />-->
+  
+    <Folder Include="Utility\" />
+  </ItemGroup>
+
+
+
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>ID.PhoneConfirmation.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Libs\ControllerHelpers\ContollerHelpers\ControllerHelpers.csproj" />
+      <ProjectReference Include="..\..\Core\ID.Application\ID.Application.csproj" />
+    </ItemGroup>
+
+    
+    
+</Project>

@@ -1,0 +1,1 @@
+﻿Contains Dtos that are used outside of the Features Folder

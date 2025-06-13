@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Factor Setup - __appName__</title>
+    <style>
+        body {
+            font-family: Arial, Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            color: #516775;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            max-height: 250px;
+        }
+
+            .header #logo {
+                max-width: 50%;
+                display: inline;
+                display: __logoImageDisplay__;
+            }
+
+            .header #logo-text {
+                max-width: 50%;
+                display: none;
+                display: __logoTextDisplay_;
+                color: #70AE6E;
+                color: __colorPrimary__;
+            }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #0066cc;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .anchor-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #ecf0f1;
+            background-color: __colorPrimary__;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+            padding: 10px 20px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            text-rendering: optimizeLegibility;
+            text-shadow: 1px 1px 1px rgba(255,255,255,0.5);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+            .anchor-btn:hover {
+                background-color: darken(__colorPrimary__, 10%);
+            }
+
+        #qr-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                font-size: 18px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+                <td align="center">
+                    <div class="header">
+                        <h1 id="logo-text">__appName__</h1>
+                        <img id="logo" src="__logo__" alt="Company Logo">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <h2>Two-Factor Setup - __appName__!</h2>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p><strong>Hi __toName__,</strong></p>
+                    <p>You're receiving this email because 2-Factor Authentication with an Authenticator App (GoogleAuthenticator, Authy etc.) has been enabled on your account</p>
+                    <p style="margin-bottom: 25px;">Scan code to complete Authenticator App Setup</p>
+
+                    <div id="qr-container">
+                        <img src="__qrSrc__" alt="QR Code" style="width: 250px; height: auto;">
+                        <h5>Manual Code: <strong>__manualQrCode__</strong></h5>
+                    </div>
+
+                    <p style="margin-top:50px;">If you've already completed this step, you can ignore this email.</p>
+                </td>
+            </tr>
+            <tr>
+                <td><br></td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="__callBackUrl__" class="anchor-btn">Confirm Setup</a>
+                </td>
+            </tr>
+            <tr>
+                <td><br></td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="font-weight: bold; margin-top: 30px;">Thanks</p>
+                    <div style="color: #526875d1; font-style: italic;">
+                        <strong>The Team at __appName__</strong>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

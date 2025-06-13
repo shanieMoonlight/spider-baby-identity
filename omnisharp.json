@@ -1,0 +1,32 @@
+{
+  "MSBuild": {
+    "LoadProjectsOnDemand": false,
+    "EnablePackageAutoRestore": true,
+    "UseBundledOnly": true,
+    "SkipNonHostPlatforms": true,
+    "MSBuildOverride": {
+      "MSBuildExtensionsPath": "",
+      "TargetFramework": "",
+      "Configuration": "Debug"
+    }
+  },
+  "FormattingOptions": {
+    "EnableEditorConfigSupport": true,
+    "OrganizeImports": true
+  },
+  "RoslynExtensionsOptions": {
+    "EnableImportCompletion": true,
+    "EnableAnalyzersSupport": true
+  },
+  "Sdk": {
+    "IncludePrereleases": false
+  },
+  "FileOptions": {
+    "SystemExcludeSearchPatterns": [
+      "**/node_modules/**/*",
+      "**/bin/**/*",
+      "**/obj/**/*",
+      "**/.git/**/*"
+    ]
+  }
+}

@@ -12,21 +12,6 @@ Hangfire Storage: You need to decide how the Hangfire storage is configured. In 
 
 
 
-
-ID Global error handling?????
-    // MediatR pipeline for handling business logic exceptions (which you already have)
-    services.AddMediatR(config => {
-        config.AddOpenBehavior(typeof(IdRequestExceptionHandler<,,>));
-        // Other behaviors...
-    });
-
-    // Global middleware for catching everything else
-    app.UseWhen(
-        context => context.Request.Path.StartsWithSegments("/identity"),
-        appBuilder => appBuilder.UseMiddleware<GlobalIdExceptionMiddleware>()
-    );
-
-
 internal class TakeSkipSpec<TEntity>():
 'TakeSkipSpec<TEntity>.Skip' hides inherited member 'ASimpleSpecification<TEntity>.Skip'. Use the new keyword if hiding was intended.
 
@@ -44,13 +29,7 @@ Make sure teammanager uses the full team with members when updating team members
 Add INdexes to tables???
 
 
-
-
-//This looks like a hack. Use  constants instead of magic numbers
-//Super Members see all Mntc Members, Mntc Members see only their Position and lower
-var teamPosition = request.IsSuperMinimum ? 10000 : request.PrincipalTeamPosition;
-
-        
+       
 
 
 review Team -> mbr?.UpdatePosition

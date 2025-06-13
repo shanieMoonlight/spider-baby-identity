@@ -12,7 +12,9 @@ internal class GetMntcTeamQryHandler(IIdentityTeamManager<AppUser> _mgr) : IIdQu
 {
     public async Task<GenResult<TeamDto>> Handle(GetMntcTeamQry request, CancellationToken cancellationToken)
     {
-        var teamPosition = request.IsSuperMinimum ? 10000 : request.PrincipalTeamPosition;
+        var teamPosition = request.IsSuperMinimum
+            ? IdGlobalConstants.Teams.CATCH_ALL_MAX_POSITION
+            : request.PrincipalTeamPosition;
 
         var mdl = await _mgr.GetMntcTeamWithMembersAsync(teamPosition);
         if (mdl == null)

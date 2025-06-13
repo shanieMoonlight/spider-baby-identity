@@ -89,23 +89,23 @@ internal class TeamManagerService<TUser>(
 
     //- - - - - - - - - - - - - - - - - - //
 
-    public async Task<Team?> GetByIdWithMembersAsync(Guid? teamId, int maxPosition = IdGlobalConstants.Teams.DEFAULT_MAX_POSITION) =>
+    public async Task<Team?> GetByIdWithMembersAsync(Guid? teamId, int maxPosition = IdGlobalConstants.Teams.CATCH_ALL_MAX_POSITION) =>
         await _teamRepo.FirstOrDefaultAsync(new TeamByIdWithMembersSpec(teamId, maxPosition));
 
     //- - - - - - - - - - - - - - - - - - //
 
-    public async Task<Team?> GetSuperTeamWithMembersAsync(int maxPosition = IdGlobalConstants.Teams.DEFAULT_MAX_POSITION) =>
+    public async Task<Team?> GetSuperTeamWithMembersAsync(int maxPosition = IdGlobalConstants.Teams.CATCH_ALL_MAX_POSITION) =>
         await _teamRepo.FirstOrDefaultAsync(new SuperTeamWithMembersSpec(maxPosition));
 
-    public async Task<Team?> GetSuperTeamWithMemberAsync(Guid? userId, int maxPosition = IdGlobalConstants.Teams.DEFAULT_MAX_POSITION) =>
+    public async Task<Team?> GetSuperTeamWithMemberAsync(Guid? userId, int maxPosition = IdGlobalConstants.Teams.CATCH_ALL_MAX_POSITION) =>
         await _teamRepo.FirstOrDefaultAsync(new SuperTeamWithMemberSpec(userId, maxPosition));
 
     //- - - - - - - - - - - - - - - - - - //
 
-    public async Task<Team?> GetMntcTeamWithMembersAsync(int maxPosition = IdGlobalConstants.Teams.DEFAULT_MAX_POSITION) =>
+    public async Task<Team?> GetMntcTeamWithMembersAsync(int maxPosition = IdGlobalConstants.Teams.CATCH_ALL_MAX_POSITION) =>
         await _teamRepo.FirstOrDefaultAsync(new MntcTeamWithMembersSpec(maxPosition));
 
-    public async Task<Team?> GetMntcTeamWithMemberAsync(Guid? userId, int maxPosition = IdGlobalConstants.Teams.DEFAULT_MAX_POSITION) =>
+    public async Task<Team?> GetMntcTeamWithMemberAsync(Guid? userId, int maxPosition = IdGlobalConstants.Teams.CATCH_ALL_MAX_POSITION) =>
         await _teamRepo.FirstOrDefaultAsync(new MntcTeamWithMemberSpec(userId, maxPosition));
 
     //- - - - - - - - - - - - - - - - - - //
@@ -115,7 +115,7 @@ internal class TeamManagerService<TUser>(
 
     //- - - - - - - - - - - - - - - - - - //
 
-    public async Task<Team?> GetByIdWithEverythingAsync(Guid? teamId, int maxPosition = IdGlobalConstants.Teams.DEFAULT_MAX_POSITION) =>
+    public async Task<Team?> GetByIdWithEverythingAsync(Guid? teamId, int maxPosition = IdGlobalConstants.Teams.CATCH_ALL_MAX_POSITION) =>
         await _teamRepo.FirstOrDefaultAsync(new TeamByIdWithEverythingSpec(teamId, maxPosition));
 
     //-----------------------//
@@ -320,7 +320,7 @@ internal class TeamManagerService<TUser>(
 
     //-----------------------//
 
-    public async Task<IList<TUser>> GetAllMembers(Team team, int maxPosition = IdGlobalConstants.Teams.DEFAULT_MAX_POSITION)
+    public async Task<IList<TUser>> GetAllMembers(Team team, int maxPosition = IdGlobalConstants.Teams.CATCH_ALL_MAX_POSITION)
     {
         var dbTeam = await _teamRepo.FirstOrDefaultAsync(new TeamByIdWithMembersSpec(team.Id, maxPosition));
 

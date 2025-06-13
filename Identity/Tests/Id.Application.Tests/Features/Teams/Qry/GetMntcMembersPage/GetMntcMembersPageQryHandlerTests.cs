@@ -1,11 +1,12 @@
 using ID.Application.Features.Teams.Qry.GetMntcMembers;
+using ID.Application.Features.Teams.Qry.GetMntcMembersPage;
+using ID.Domain.Abstractions.Services.Members;
+using ID.Domain.Entities.AppUsers;
+using ID.GlobalSettings.Constants;
 using ID.Tests.Data.Factories;
 using Moq;
 using Pagination;
 using Shouldly;
-using ID.Application.Features.Teams.Qry.GetMntcMembersPage;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Abstractions.Services.Members;
 
 namespace ID.Application.Tests.Features.Teams.Qry.GetMntcMembersPage;
 
@@ -69,7 +70,7 @@ public class GetMntcMembersPageQryHandlerTests
 
         // Assert
         result.Succeeded.ShouldBeTrue();
-        _mbrServiceMock.Verify(mgr => mgr.GetMntcPageAsync(It.IsAny<PagedRequest>(), 10000));
+        _mbrServiceMock.Verify(mgr => mgr.GetMntcPageAsync(It.IsAny<PagedRequest>(), IdGlobalConstants.Teams.CATCH_ALL_MAX_POSITION));
     }
 
     //------------------------------------//

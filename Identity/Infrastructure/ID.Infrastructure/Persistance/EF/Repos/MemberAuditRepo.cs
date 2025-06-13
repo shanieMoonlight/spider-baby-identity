@@ -109,7 +109,7 @@ internal class MemberAuditRepo(IdDbContext Db) : IIdentityMemberAuditRepo<AppUse
     /// <param name="filterList">The list of filtering criteria.</param>
     /// <returns>A paginated list of customer team members.</returns>
     public Task<Page<AppUser>> GetCustomerPageAsync(int pageNumber, int pageSize, IEnumerable<SortRequest> sortList, IEnumerable<FilterRequest>? filterList) =>
-        GetTeamMembersPageAsync(TeamType.Customer, pageNumber, pageSize, sortList, filterList); //Position = 10000 is a hack to get all customers. Only Mntc or above will get here 
+        GetTeamMembersPageAsync(TeamType.Customer, pageNumber, pageSize, sortList, filterList); 
 
     //-----------------------//
 

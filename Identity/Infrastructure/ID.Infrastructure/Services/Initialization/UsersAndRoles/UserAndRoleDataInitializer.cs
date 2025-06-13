@@ -122,7 +122,7 @@ internal class UserAndRoleDataInitializer(
 
     private async Task<Team> SeedMntcTeamAsync()
     {
-        Team? adminTeam = await _teamMgr.GetMntcTeamWithMembersAsync(10000);
+        Team? adminTeam = await _teamMgr.GetMntcTeamWithMembersAsync(IdGlobalConstants.Teams.CATCH_ALL_MAX_POSITION);
         if (adminTeam != null)
             return adminTeam;
 

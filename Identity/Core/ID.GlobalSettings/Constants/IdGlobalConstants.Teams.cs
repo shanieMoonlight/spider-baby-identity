@@ -18,6 +18,6 @@ internal partial class IdGlobalConstants
         /// <summary>
         /// Represents the default maximum position. Use to get members with all positions.
         /// </summary>
-        internal const int DEFAULT_MAX_POSITION = 1000;
+        internal const int CATCH_ALL_MAX_POSITION = 10000;
     }
 }

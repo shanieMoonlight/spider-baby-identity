@@ -8,6 +8,7 @@ using ID.Domain.Entities.AppUsers;
 using ID.Domain.Abstractions.Services.Teams;
 using ID.Domain.Utility.Messages;
 using ID.Domain.Entities.AppUsers.ValueObjects;
+using ID.GlobalSettings.Constants;
 
 namespace ID.Application.Features.Account.Cmd.AddMntcMember;
 public class AddMntcMemberCmdHandler(IIdentityTeamManager<AppUser> _teamMgr, IAppPermissionService<AppUser> _appPermissions)
@@ -18,7 +19,9 @@ public class AddMntcMemberCmdHandler(IIdentityTeamManager<AppUser> _teamMgr, IAp
     {
 
         var dto = request.Dto;
-        var teamPosition = request.IsSuperMinimum ? 10000 : request.PrincipalTeamPosition;
+        var teamPosition = request.IsSuperMinimum 
+            ? IdGlobalConstants.Teams.CATCH_ALL_MAX_POSITION 
+            : request.PrincipalTeamPosition;
 
         //Super can add to Mntc
         if (!request.IsSuper)

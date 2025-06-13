@@ -5,8 +5,10 @@ using ID.Infrastructure.Auth.Cookies;
 using ID.Infrastructure.Auth.Cookies.Services;
 using ID.Infrastructure.Tests.Utility;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 
 namespace ID.Infrastructure.Tests.Auth.Cookies;
@@ -282,6 +284,7 @@ public class CookieSetupTests
         };
         
         services.AddSingleton(provider => Options.Create(customCookieOptions));
+        services.AddSingleton<IWebHostEnvironment>(new TestWebHostEnvironment());
         var authBuilder = services.AddAuthentication();
 
         // Act
@@ -534,6 +537,8 @@ public class CookieSetupTests
         };
         
         services.AddSingleton(provider => Options.Create(customCookieOptions));
+        services.AddSingleton<IWebHostEnvironment>(new TestWebHostEnvironment());
+
         var authBuilder = services.AddAuthentication();
 
         // Act
@@ -573,4 +578,19 @@ public class CookieSetupTests
         cookieOptions.CookieSlidingExpiration.ShouldBe(CookieDefaultValues.SLIDING_EXPIRATION);
         cookieOptions.CookieExpireTimeSpan.ShouldBe(CookieDefaultValues.EXPIRE_TIME_SPAN);
     }
-}
+
+    //=====================================//
+
+
+    // Test implementation of IWebHostEnvironment
+    public class TestWebHostEnvironment : IWebHostEnvironment
+    {
+        public string WebRootPath { get; set; } = "wwwroot";
+        public IFileProvider WebRootFileProvider { get; set; } = new NullFileProvider();
+        public string ApplicationName { get; set; } = "TestApp";
+        public IFileProvider ContentRootFileProvider { get; set; } = new NullFileProvider();
+        public string ContentRootPath { get; set; } = "content";
+        public string EnvironmentName { get; set; } = "Development";
+    }
+
+}//Cls

@@ -5,6 +5,7 @@ using ID.Application.Features.Teams.Qry.GetMntcMembers;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Abstractions.Services.Teams;
+using ID.GlobalSettings.Constants;
 
 namespace ID.Application.Tests.Features.Teams.Qry.GetMntcMembersPage;
 
@@ -36,7 +37,7 @@ public class GetMntcMembersQryHandlerTests
 
         // Assert
         result.Succeeded.ShouldBeTrue();
-        _mockTeamManager.Verify(mgr => mgr.GetMntcTeamWithMembersAsync(10000));
+        _mockTeamManager.Verify(mgr => mgr.GetMntcTeamWithMembersAsync(IdGlobalConstants.Teams.CATCH_ALL_MAX_POSITION));
     }
 
     //------------------------------------//

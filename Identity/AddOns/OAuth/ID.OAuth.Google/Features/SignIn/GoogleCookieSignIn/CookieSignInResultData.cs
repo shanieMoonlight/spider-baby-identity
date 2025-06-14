@@ -37,7 +37,7 @@ public class CookieSignInResultData()
     {
         return new CookieSignInResultData()
         {
-            Succeeded = false,
+            Succeeded = true,
             TwoFactorRequired = true,
             Message = message ?? "Signed In!"
 

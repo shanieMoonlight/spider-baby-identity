@@ -36,5 +36,8 @@
 		<ProjectReference Include="..\ID.Tests.Data\ID.Tests.Data.csproj" />
 		<ProjectReference Include="..\Id.Tests.Utility\ID.Tests.Utility.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Handler\" />
+	</ItemGroup>
 
 </Project>

@@ -1,10 +1,8 @@
 ﻿using FluentValidation;
-using ID.OAuth.Google.Auth.Abs;
-using ID.OAuth.Google.Auth.Imps;
+using ID.Domain.Entities.AppUsers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace ID.OAuth.Google.Setup;
 
@@ -99,7 +97,7 @@ public static class IdOAuthGoogleSetupExtensions
         services.AddControllers()
             .PartManager.ApplicationParts.Add(new AssemblyPart(typeof(IdGoogleOAuthAssemblyReference).Assembly));
 
-        services.RegisterServices();
+        services.RegisterServices<AppUser>();
 
 
         return services;
@@ -107,12 +105,6 @@ public static class IdOAuthGoogleSetupExtensions
 
     //------------------------------------//
 
-    private static IServiceCollection RegisterServices(this IServiceCollection services)
-    {
-        services.TryAddScoped<IGoogleTokenVerifier, GoogleTokenVerifier>();
-
-        return services;
-    }
 
 
 

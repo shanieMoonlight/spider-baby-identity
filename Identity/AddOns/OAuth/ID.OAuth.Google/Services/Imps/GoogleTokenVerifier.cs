@@ -1,13 +1,13 @@
 ﻿using Google.Apis.Auth;
 using ID.GlobalSettings.Errors;
-using ID.OAuth.Google.Auth.Abs;
 using ID.OAuth.Google.Data;
+using ID.OAuth.Google.Services.Abs;
 using ID.OAuth.Google.Setup;
 using LoggingHelpers;
 using Microsoft.Extensions.Logging;
 using MyResults;
 
-namespace ID.OAuth.Google.Auth.Imps;
+namespace ID.OAuth.Google.Services.Imps;
 internal class GoogleTokenVerifier(
     Microsoft.Extensions.Options.IOptions<IdOAuthGoogleOptions> optionsProvider,
     ILogger<GoogleTokenVerifier> _logger) 

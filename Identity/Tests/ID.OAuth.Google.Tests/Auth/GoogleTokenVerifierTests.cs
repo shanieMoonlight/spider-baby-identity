@@ -1,6 +1,6 @@
 using Id.Tests.Utility.Exceptions;
 using ID.GlobalSettings.Errors;
-using ID.OAuth.Google.Auth.Imps;
+using ID.OAuth.Google.Services.Imps;
 using ID.OAuth.Google.Setup;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

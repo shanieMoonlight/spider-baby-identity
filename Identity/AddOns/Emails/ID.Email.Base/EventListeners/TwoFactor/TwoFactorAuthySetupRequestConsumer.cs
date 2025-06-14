@@ -18,7 +18,6 @@ public class TwoFactorAuthySetupRequestConsumer(
     {
         try
         {
-            Console.Beep();
             logger.LogError("{message}", $"TwoFactorRequestEvent: {data.Email}: {data.ManualQrCode}: {data.Name}");
             Debug.WriteLine($"TwoFactorRequestEvent: {data.Email}");
 

@@ -46,7 +46,7 @@ public class LoginHandler(
         if (signInResult.Unauthorized)
             return GenResult<JwtPackage>.UnauthorizedResult(signInResult.Message);
 
-        if (signInResult.EmailConfirmedRequired)
+        if (signInResult.EmailConfirmationRequired)
             return GenResult<JwtPackage>.PreconditionRequiredResult(signInResult.Message);
 
         if (signInResult.TwoFactorRequired)

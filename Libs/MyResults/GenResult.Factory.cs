@@ -92,6 +92,23 @@ public partial class GenResult<T> : BasicResult
     //------------------------------------//
 
     /// <summary>
+    /// Generates a Result with PreconditionRequired status
+    /// </summary>
+    /// <param name="info">Any additional information</param>
+    /// <param name="value">Value containing Precondition data</param>
+    /// <returns>GenResult with PreconditionRequired status</returns>
+    public static GenResult<T> PreconditionRequiredResult(T value, string? info = null) =>
+        new(
+            succeeded: false,
+            value: value,
+            info: info ?? _unknownErrorMessage,
+            exception: null,
+            status: ResultStatus.PreconditionRequired
+        );
+
+    //------------------------------------//
+
+    /// <summary>
     /// Generates a GenResult with Succeeded set to false
     /// </summary>
     /// <param name="info">Why it failed</param>

@@ -1,6 +1,7 @@
 ﻿using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.OutboxMessages;
 using ID.Domain.Entities.Teams;
+using ID.Domain.Models;
 using StringHelpers;
 
 namespace ID.Domain.Utility.Messages;
@@ -208,7 +209,9 @@ public partial class IDMsgs
 
         public static class Authorization
         {
-            public static readonly string TWO_FACTOR_REQUIRED = $"Two-Factor auth required to complete login.";
+            //public static readonly string TWO_FACTOR_REQUIRED = $"Two-Factor auth required to complete login.";
+            public static string TWO_FACTOR_REQUIRED(TwoFactorProvider provider) => $"Two-Factor auth required to complete login.{NL}Provider: {provider}";
+
             public const string UNAUTHORIZED = "Incorrect username or password.";
             public static string UNAUTHORIZED_FOR_POSITION(int position) => $"You must have a position of {position} or higher to complete this ;[";
             public static string UNAUTHORIZED_FOR_POSITION(string position) => $"You must have a position of {position} or higher to complete this action.";

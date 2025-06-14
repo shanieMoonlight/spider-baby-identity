@@ -81,7 +81,7 @@ public class PreSignInServiceTests
         var result = await _preSignInService.Authenticate(loginDto, CancellationToken.None);
 
         // Assert
-        result.EmailConfirmedRequired.ShouldBeTrue();
+        result.EmailConfirmationRequired.ShouldBeTrue();
     }
 
     //---------------------------------------//

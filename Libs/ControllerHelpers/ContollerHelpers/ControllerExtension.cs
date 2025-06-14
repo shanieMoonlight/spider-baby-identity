@@ -165,7 +165,7 @@ public static class ControllerExtension
     /// <param name="logger">Logger being used in controller</param>
     /// <returns>The appropriate error result</returns>
     public static ObjectResult ProcessFailedResult<T>(this ControllerBase controller, GenResult<T> result) =>
-        controller.GenerateObjectResult(result);
+        controller.GenerateObjectResult<T>(result);
 
     //- - - - - - - - - - - - - - - - - -//
 
@@ -180,7 +180,41 @@ public static class ControllerExtension
     public static ObjectResult ProcessFailedResult<T>(this ControllerBase controller, GenResult<T> result, ILogger logger)
     {
         logger?.LogError("Result: {result}", result);
-        return controller.GenerateObjectResult(result);
+        return controller.GenerateObjectResult<T>(result);
+    }
+
+    //-----------------------------------//
+
+    public static ObjectResult GenerateObjectResult<T>(this ControllerBase controller, GenResult<T> result)
+    {
+        if (result.BadRequest)
+        {
+            if (result.BadRequestResponse is not null)
+                return controller.BadRequest(result.BadRequestResponse);
+            if (result.Value is not null)
+                return controller.BadRequest(result.Value);
+            else
+                return controller.BadRequest(MessageResponseDto.Generate(result.Info));
+        }
+
+        if (result.PreconditionRequired) //Email confirmation or 2Factor Required. Might contain extra data
+        {
+            return result.Value != null
+                ? controller.PreconditionRequired(result.Value)
+                : controller.PreconditionRequiredWithMessageDto(result.Info);
+        }
+
+        if (result.NotFound)
+            return controller.NotFound(MessageResponseDto.Generate(result.Info));
+
+        if (result.Unauthorized)
+            return controller.UnauthorizedWithMessageDto(result.Info);
+
+        if (result.Forbidden)
+            return controller.ForbiddenWithMessageDto(result.Info);
+
+        return controller.InternalServerError(MessageResponseDto.Generate(result.Info));
+
     }
 
     //-----------------------------------//

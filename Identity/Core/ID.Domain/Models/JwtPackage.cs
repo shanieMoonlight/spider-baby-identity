@@ -108,10 +108,4 @@ public class JwtPackage
 
     //------------------------//
 
-    //private static DateTime ConvertFromUnixTimestamp(long timestamp)
-    //{
-    //    DateTime origin = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-    //    return origin.AddSeconds(timestamp);
-    //}
-
 }//Cls

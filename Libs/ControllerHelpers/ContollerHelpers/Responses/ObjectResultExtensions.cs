@@ -55,6 +55,15 @@ public static class ObjectResultExtensions
     //- - - - - - - - - - - - - - - - - -//
 
     /// <summary>
+    /// Generates an Precondition Required Result including the data:  {message: value}
+    /// </summary>
+    /// <returns>Precondition Required Error Result (428)</returns>
+    public static ObjectResult PreconditionRequired(this ControllerBase controller, object value) =>
+        new PreconditionRequiredResponse(value);
+
+    //- - - - - - - - - - - - - - - - - -//
+
+    /// <summary>
     /// Generates an Internal Server Error Result including the value
     /// </summary>
     /// <returns>Internal Server Error Result (500)</returns>

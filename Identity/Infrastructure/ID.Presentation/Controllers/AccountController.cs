@@ -99,25 +99,8 @@ public class AccountController(ISender sender) : ControllerBase
     /// </returns>
     [HttpPost($"{IdRoutes.Account.Actions.CookieSignIn}")]
     [AllowAnonymous]
-    public async Task<ActionResult<MessageResponseDto>> CookieSignIn([FromBody] CookieSignInDto dto)
-    {
-        //For testing the real user should handle Views etc.
-        var result = await sender.Send(new SignInCmd(dto));
-
-        if (result.TwoFactorRequired)
-            return new PreconditionRequiredResponse(MessageResponseDto.Generate(result.Message));
-
-        if (result.EmailConfirmedRequired)
-            return new PreconditionRequiredResponse(MessageResponseDto.Generate(result.Message));
-
-        if (result.NotFound)
-            return Unauthorized(MessageResponseDto.Generate(result.Message));
-
-        if (result.Unauthorized)
-            return Unauthorized(MessageResponseDto.Generate(result.Message));
-
-        return Ok(MessageResponseDto.Generate(result.Message));
-    }
+    public async Task<ActionResult<CookieSignInResultData>> CookieSignIn([FromBody] CookieSignInDto dto) =>
+           this.ProcessResult(await sender.Send(new CookieSignInCmd(dto)));
 
     //------------------------//
 

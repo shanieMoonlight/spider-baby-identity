@@ -1,6 +1,7 @@
 ﻿using ID.Application.AppAbs.ApplicationServices.TwoFactor;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
+using ID.Domain.Models;
 using ID.Domain.Utility.Messages;
 using MyResults;
 
@@ -8,7 +9,7 @@ namespace ID.Application.AppAbs.SignIn;
 public class MyIdSignInResult
 {
     public bool Succeeded { get; private set; } = false;
-    public bool EmailConfirmedRequired { get; private set; } = false;
+    public bool EmailConfirmationRequired { get; private set; } = false;
     public bool TwoFactorRequired { get; private set; } = false;
     public bool NotFound { get; private set; } = false;
     public bool Unauthorized { get; private set; } = false;
@@ -78,7 +79,7 @@ public class MyIdSignInResult
         new()
         {
             Succeeded = false,
-            EmailConfirmedRequired = true,
+            EmailConfirmationRequired = true,
             Message = IDMsgs.Error.Email.EMAIL_NOT_CONFIRMED(email)
         };
 
@@ -96,7 +97,7 @@ public class MyIdSignInResult
             Team = team,
             TwoFactorRequired = true,
             MfaResultData = mfaResultData,
-            Message = IDMsgs.Error.Authorization.TWO_FACTOR_REQUIRED
+            Message = IDMsgs.Error.Authorization.TWO_FACTOR_REQUIRED(mfaResultData?.TwoFactorProvider ?? user.TwoFactorProvider)
         };
 
     //------------------------------------//
@@ -109,11 +110,11 @@ public class MyIdSignInResult
         if (NotFound)
             return GenResult<T>.NotFoundResult(Message);
 
-        if (EmailConfirmedRequired)
+        if (EmailConfirmationRequired)
             return GenResult<T>.PreconditionRequiredResult(Message);
 
         if (TwoFactorRequired)
-            return GenResult<T>.Failure(IDMsgs.Error.Authorization.TWO_FACTOR_REQUIRED);
+            return GenResult<T>.Failure(IDMsgs.Error.Authorization.TWO_FACTOR_REQUIRED(MfaResultData?.TwoFactorProvider ?? User?.TwoFactorProvider ?? TwoFactorProvider.Email));
 
         if (!Succeeded)
             return GenResult<T>.Failure(Message);

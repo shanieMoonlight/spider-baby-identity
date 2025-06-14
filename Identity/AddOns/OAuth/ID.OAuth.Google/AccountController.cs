@@ -1,8 +1,6 @@
 ﻿using ControllerHelpers;
-using ID.Application.Features.Common.Dtos.User;
 using ID.Domain.Models;
 using ID.GlobalSettings.Routes;
-using ID.OAuth.Google.Features.GoogleCookieSignUp;
 using ID.OAuth.Google.Features.GoogleSignIn;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

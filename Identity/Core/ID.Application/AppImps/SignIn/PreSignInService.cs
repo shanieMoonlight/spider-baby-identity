@@ -48,7 +48,9 @@ internal class PreSignInService<TUser>(
         return MyIdSignInResult.Success(user, user.Team!);
     }
 
+
     //-----------------------------//
+
 
     private async Task<MyIdSignInResult> SendTwoFactor(AppUser user, Team team)
     {
@@ -57,6 +59,7 @@ internal class PreSignInService<TUser>(
             ? MyIdSignInResult.Failure(tfResultMsg.Info)
             : MyIdSignInResult.TwoFactorRequiredResult(tfResultMsg.Value, user, team);
     }
+
 
     //-----------------------------//
 

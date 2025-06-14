@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ID.PhoneConfirmation.Controllers;
 
-//This controller should be merged with the main AccountController in Presentation Library
+//This controller will merge with the main AccountController in Presentation Library. 
 [ApiController]
 [Route($"{IdRoutes.Base}/[controller]")]
 [Authorize]

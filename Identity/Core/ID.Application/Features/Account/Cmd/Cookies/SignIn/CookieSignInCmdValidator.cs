@@ -4,9 +4,9 @@ using StringHelpers;
 using ID.Domain.Utility.Messages;
 
 namespace ID.Application.Features.Account.Cmd.Cookies.SignIn;
-public class SignInCmdValidator : AbstractValidator<SignInCmd>
+public class CookieSignInCmdValidator : AbstractValidator<CookieSignInCmd>
 {
-    public SignInCmdValidator()
+    public CookieSignInCmdValidator()
     {
         RuleFor(p => p.Dto)
             .NotEmpty()

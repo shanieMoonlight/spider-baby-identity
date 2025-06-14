@@ -1,4 +1,7 @@
+using Id.Application.Tests.Utility.Mocks;
+using ID.Application.AppAbs.ApplicationServices.User;
 using ID.Application.AppAbs.TokenVerificationServices;
+using ID.Application.Features.Account.Cmd.Mfa.TwoFactorCookieVerify;
 using ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerify;
 using ID.Application.JWT;
 using ID.Application.Tests.Utility;
@@ -19,12 +22,13 @@ public class Verify2FactorHandlerTests
 {
     private readonly Mock<IJwtPackageProvider> _mockPackageProvider;
     private readonly Mock<ITwoFactorVerificationService<AppUser>> _mock2FactorService;
+    private readonly Mock<IFindUserService<AppUser>> _mockFindUserService;
     private readonly Mock<IJwtRefreshTokenService<AppUser>> _mockRefreshProvider;
 
 
     private readonly Mock<IOptions<IdGlobalOptions>> _mockGlobalOptions_refreshEnabled;
     private readonly Mock<IOptions<IdGlobalOptions>> _mockGlobalOptions_refreshDisabled;
-    private readonly Verify2FactorHandler _handler_RefreshEnabled;
+    private Verify2FactorHandler _handler_RefreshEnabled;
     private readonly Verify2FactorHandler _handler_RefreshDisabled;
 
     private readonly IdGlobalOptions _globalOptions_RefreshEnabled = GlobalOptionsUtils.InitiallyValidOptions(
@@ -40,11 +44,13 @@ public class Verify2FactorHandlerTests
         _mockPackageProvider = new Mock<IJwtPackageProvider>();
         _mock2FactorService = new Mock<ITwoFactorVerificationService<AppUser>>();
         _mockRefreshProvider = new Mock<IJwtRefreshTokenService<AppUser>>();
+        _mockFindUserService = new Mock<IFindUserService<AppUser>>();
 
         _mockGlobalOptions_refreshEnabled = new Mock<IOptions<IdGlobalOptions>>();
         _mockGlobalOptions_refreshEnabled.Setup(x => x.Value).Returns(_globalOptions_RefreshEnabled);
         _handler_RefreshEnabled = new Verify2FactorHandler(
             _mockPackageProvider.Object,
+            _mockFindUserService.Object,
             _mock2FactorService.Object);
 
 
@@ -53,6 +59,7 @@ public class Verify2FactorHandlerTests
         _mockGlobalOptions_refreshDisabled.Setup(x => x.Value).Returns(_globalOptions_RefreshDisabled);
         _handler_RefreshDisabled = new Verify2FactorHandler(
             _mockPackageProvider.Object,
+            _mockFindUserService.Object,
             _mock2FactorService.Object);
 
     }
@@ -71,9 +78,10 @@ public class Verify2FactorHandlerTests
         var dto = new Verify2FactorDto { Token = token, DeviceId = deviceId };
         var command = new Verify2FactorCmd(dto)
         {
-            PrincipalUser = user,
-            PrincipalTeam = team
         };
+
+        _mockFindUserService.Setup(s => s.FindUserWithTeamDetailsAsync(It.IsAny<Guid?>()))
+            .ReturnsAsync(user);
 
         _mock2FactorService
             .Setup(s => s.VerifyTwoFactorTokenAsync(team, user, token))
@@ -105,10 +113,10 @@ public class Verify2FactorHandlerTests
         var dto = new Verify2FactorDto { Token = token, DeviceId = deviceId };
         var command = new Verify2FactorCmd(dto)
         {
-            PrincipalUser = user,
-            PrincipalTeam = team
         };
 
+        _mockFindUserService.Setup(s => s.FindUserWithTeamDetailsAsync(It.IsAny<Guid?>()))
+            .ReturnsAsync(user);
 
         _mock2FactorService
             .Setup(s => s.VerifyTwoFactorTokenAsync(team, user, token))
@@ -152,10 +160,10 @@ public class Verify2FactorHandlerTests
         var dto = new Verify2FactorDto { Token = token, DeviceId = deviceId };
         var command = new Verify2FactorCmd(dto)
         {
-            PrincipalUser = user,
-            PrincipalTeam = team
         };
 
+        _mockFindUserService.Setup(s => s.FindUserWithTeamDetailsAsync(It.IsAny<Guid?>()))
+            .ReturnsAsync(user);
 
         _mock2FactorService
             .Setup(s => s.VerifyTwoFactorTokenAsync(team, user, token))
@@ -195,12 +203,12 @@ public class Verify2FactorHandlerTests
         var deviceId = "device-123";
         var expectedException = new InvalidOperationException("Service failure");
 
-        var dto = new Verify2FactorDto { Token = token, DeviceId = deviceId };
+        var dto = new Verify2FactorDto { Token = token, DeviceId = deviceId, UserId = Guid.NewGuid() };
         var command = new Verify2FactorCmd(dto)
-        {
-            PrincipalUser = user,
-            PrincipalTeam = team
-        };
+        { };
+
+        _mockFindUserService.Setup(s => s.FindUserWithTeamDetailsAsync(It.IsAny<Guid?>()))
+            .ReturnsAsync(user);
 
         _mock2FactorService
             .Setup(s => s.VerifyTwoFactorTokenAsync(team, user, token))
@@ -227,8 +235,6 @@ public class Verify2FactorHandlerTests
         var dto = new Verify2FactorDto { Token = token, DeviceId = deviceId };
         var command = new Verify2FactorCmd(dto)
         {
-            PrincipalUser = null,
-            PrincipalTeam = team
         };
 
         // Act
@@ -253,8 +259,8 @@ public class Verify2FactorHandlerTests
         var dto = new Verify2FactorDto { Token = token, DeviceId = deviceId };
         var command = new Verify2FactorCmd(dto)
         {
-            PrincipalUser = AppUserDataFactory.Create(),
-            PrincipalTeam = null
+            //PrincipalUser = null,
+            //PrincipalTeam = team
         };
 
         // Act

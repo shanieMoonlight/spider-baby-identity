@@ -12,6 +12,7 @@ using ID.Application.Features.Account.Cmd.Login;
 using ID.Application.Features.Account.Cmd.LoginRefresh;
 using ID.Application.Features.Account.Cmd.Mfa.Reg.TwoFactorAuthAppComplete;
 using ID.Application.Features.Account.Cmd.Mfa.Reg.TwoFactorAuthAppEmailComplete;
+using ID.Application.Features.Account.Cmd.Mfa.TwoFactorCookieVerify;
 using ID.Application.Features.Account.Cmd.Mfa.TwoFactorDisable;
 using ID.Application.Features.Account.Cmd.Mfa.TwoFactorEnable;
 using ID.Application.Features.Account.Cmd.Mfa.TwoFactorResend;

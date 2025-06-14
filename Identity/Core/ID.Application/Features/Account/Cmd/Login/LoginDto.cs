@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ID.Application.Features.Account.Cmd.Login;
 
-[AtLeastOneProperty(nameof(Username), nameof(UserId), nameof(Email))]
+//[AtLeastOneProperty(nameof(Username), nameof(UserId), nameof(Email))]
 public class LoginDto
 {
     public Guid? UserId { get; set; }
@@ -15,7 +15,7 @@ public class LoginDto
     //public string? UserIdentifier { get; set; }
 
 
-    [Required]
+    //[Required]
     public string? Password { get; set; }
 
     public string? DeviceId { get; set; }

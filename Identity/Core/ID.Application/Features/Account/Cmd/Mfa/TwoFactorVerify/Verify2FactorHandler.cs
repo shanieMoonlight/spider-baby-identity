@@ -1,3 +1,4 @@
+using ID.Application.AppAbs.ApplicationServices.User;
 using ID.Application.AppAbs.TokenVerificationServices;
 using ID.Application.JWT;
 using ID.Application.Mediatr.CqrsAbs;
@@ -9,6 +10,7 @@ using MyResults;
 namespace ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerify;
 public class Verify2FactorHandler(
     IJwtPackageProvider _jwtPackageProvider,
+    IFindUserService<AppUser> _findUserService,
     ITwoFactorVerificationService<AppUser> _2FactorService)
     : IIdCommandHandler<Verify2FactorCmd, JwtPackage>
 {
@@ -16,14 +18,13 @@ public class Verify2FactorHandler(
     public async Task<GenResult<JwtPackage>> Handle(Verify2FactorCmd request, CancellationToken cancellationToken)
     {
         var dto = request.Dto;
-        var user = request.PrincipalUser;
-        var team = request.PrincipalTeam;
+
+        var userId = request.PrincipalUserId ?? dto.UserId; //Two factor failure may have returned a Jwt or Cookie. If not clien cust supply an ID
+        var user = await _findUserService.FindUserWithTeamDetailsAsync(userId: userId);
+        var team = user?.Team; 
 
 
-        if (user is null)
-            return GenResult<JwtPackage>.UnauthorizedResult(IDMsgs.Error.Authorization.INVALID_AUTH);
-
-        if (team is null)
+        if (user is null || team is null)
             return GenResult<JwtPackage>.UnauthorizedResult(IDMsgs.Error.Authorization.INVALID_AUTH);
 
 
@@ -33,10 +34,10 @@ public class Verify2FactorHandler(
 
         //Package all user info in JWT and send it back to client.
         JwtPackage jwtPackage = await _jwtPackageProvider.CreateJwtPackageAsync(
-            user: user, 
-            team: user.Team!, 
-            twoFactorVerified :true,
-            currentDeviceId: dto.DeviceId, 
+            user: user,
+            team: user.Team!,
+            twoFactorVerified: true,
+            currentDeviceId: dto.DeviceId,
             cancellationToken: cancellationToken);
 
         return GenResult<JwtPackage>.Success(jwtPackage);

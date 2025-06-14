@@ -60,6 +60,7 @@ Cookie
  Email Confirmed
  TwoFactor confirm
 
- remove MyIdSignInResult.ToGenResultFailure<JwtPackage>();
 
- remove Basicresult.BadRequestResponse
+ remove Basicresult.BadRequestResponse??????????????????
+
+ Add Id to TwoFactor email for flexibility

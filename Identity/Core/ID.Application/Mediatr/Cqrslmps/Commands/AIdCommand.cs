@@ -1,5 +1,4 @@
 ﻿using ID.Application.Mediatr.CqrsAbs;
-using ID.Application.Mediatr.Cqrslmps;
 
 namespace ID.Application.Mediatr.Cqrslmps.Commands;
 

@@ -4,12 +4,12 @@ using System.Text;
 namespace ID.Application.Mediatr.Behaviours.Validation;
 
 
-//========================================================================//
+//============================//
 
 public record ValidationErrorInfo(string Key, object Value);
 
 
-//========================================================================//
+//============================//
 
 public class ValidationFailureReponse
 {
@@ -38,5 +38,3 @@ public class ValidationFailureReponse
     }
 
 }//Cls
-
-//========================================================================//

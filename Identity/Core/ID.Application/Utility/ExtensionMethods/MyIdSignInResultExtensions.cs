@@ -7,12 +7,7 @@ public static class MyIdSignInResultExtensions
 
     public static GenResult<T> ToGenResult<T>(this MyIdSignInResult signInResult, T value)
     {
-        if (signInResult.NotFound)
-            return GenResult<T>.NotFoundResult(signInResult.Message);
-
-        if (signInResult.Unauthorized)
-            return GenResult<T>.UnauthorizedResult(signInResult.Message);
-
+        //just in case signInResult doesn't consider EmailConfirmationRequired or TwoFactorRequired as failure. (It means the user WAS found)
         if (signInResult.EmailConfirmationRequired)
             return GenResult<T>.PreconditionRequiredResult(value, signInResult.Message);
 
@@ -20,10 +15,32 @@ public static class MyIdSignInResultExtensions
             return GenResult<T>.PreconditionRequiredResult(value, signInResult.Message);
 
         if (!signInResult.Succeeded)
-            return GenResult<T>.Failure(signInResult.Message);
+            return signInResult.ToGenResultFailure<T>();
 
         return GenResult<T>.Success(value, signInResult.Message);
     }
+
+
+    //----------------------//
+
+    public static GenResult<T> ToGenResultFailure<T>(this MyIdSignInResult signInResult)
+    {
+        if (signInResult.EmailConfirmationRequired)
+            return GenResult<T>.PreconditionRequiredResult(signInResult.Message);
+
+        if (signInResult.TwoFactorRequired)
+            return GenResult<T>.PreconditionRequiredResult(signInResult.Message);
+
+        if (signInResult.NotFound)
+            return GenResult<T>.NotFoundResult(signInResult.Message);
+
+        if (signInResult.Unauthorized)
+            return GenResult<T>.UnauthorizedResult(signInResult.Message);
+
+        return GenResult<T>.Failure(signInResult.Message);
+
+    }
+
 
 
     //----------------------//

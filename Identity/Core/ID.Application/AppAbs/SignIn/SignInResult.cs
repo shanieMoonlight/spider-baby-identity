@@ -102,26 +102,4 @@ public class MyIdSignInResult
 
     //------------------------------------//
 
-    public GenResult<T> ToGenResultFailure<T>()
-    {
-        if (Unauthorized)
-            return GenResult<T>.UnauthorizedResult(Message);
-
-        if (NotFound)
-            return GenResult<T>.NotFoundResult(Message);
-
-        if (EmailConfirmationRequired)
-            return GenResult<T>.PreconditionRequiredResult(Message);
-
-        if (TwoFactorRequired)
-            return GenResult<T>.Failure(IDMsgs.Error.Authorization.TWO_FACTOR_REQUIRED(MfaResultData?.TwoFactorProvider ?? User?.TwoFactorProvider ?? TwoFactorProvider.Email));
-
-        if (!Succeeded)
-            return GenResult<T>.Failure(Message);
-
-        return GenResult<T>.Failure();
-    }
-
-    //------------------------------------//
-
 }//Cls

@@ -42,7 +42,7 @@ public class MyIdSignInResultExtensionsTests
     }
 
     [Fact]
-    public void ToGenResult_WhenEmailConfirmedRequired_ReturnsPreconditionRequiredGenResult()
+    public void ToGenResult_WhenEmailConfirmationRequired_ReturnsPreconditionRequiredGenResult()
     {
         // Arrange
         var email = "test@example.com";
@@ -56,7 +56,7 @@ public class MyIdSignInResultExtensionsTests
         Assert.True(result.PreconditionRequired);
         Assert.False(result.Succeeded);
         Assert.Equal(signInResult.Message, result.Info);
-        Assert.Null(result.Value);
+        Assert.Equal(testValue, result.Value); // The value is preserved for PreconditionRequired
     }
 
     [Fact]
@@ -77,7 +77,7 @@ public class MyIdSignInResultExtensionsTests
         Assert.True(result.PreconditionRequired);
         Assert.False(result.Succeeded);
         Assert.Equal(signInResult.Message, result.Info);
-        Assert.Null(result.Value);
+        Assert.Equal(testValue, result.Value); // The value is preserved for PreconditionRequired
     }
 
     [Fact]
@@ -118,6 +118,95 @@ public class MyIdSignInResultExtensionsTests
 
     #endregion
 
+    #region ToGenResultFailure Tests
+
+    [Fact]
+    public void ToGenResultFailure_WhenEmailConfirmationRequired_ReturnsPreconditionRequiredGenResult()
+    {
+        // Arrange
+        var email = "test@example.com";
+        var signInResult = MyIdSignInResult.EmailConfirmedRequiredResult(email);
+
+        // Act
+        var result = signInResult.ToGenResultFailure<string>();
+
+        // Assert
+        Assert.True(result.PreconditionRequired);
+        Assert.False(result.Succeeded);
+        Assert.Equal(signInResult.Message, result.Info);
+        Assert.Null(result.Value);
+    }
+
+    [Fact]
+    public void ToGenResultFailure_WhenTwoFactorRequired_ReturnsPreconditionRequiredGenResult()
+    {
+        // Arrange - Use data factories instead of direct instantiation
+        var user = AppUserDataFactory.CreateNoTeam();
+        var team = TeamDataFactory.AnyTeam;
+        var mfaData = MfaResultData.Create(TwoFactorProvider.Email);
+        
+        var signInResult = MyIdSignInResult.TwoFactorRequiredResult(mfaData, user, team);
+
+        // Act
+        var result = signInResult.ToGenResultFailure<string>();
+
+        // Assert
+        Assert.True(result.PreconditionRequired);
+        Assert.False(result.Succeeded);
+        Assert.Equal(signInResult.Message, result.Info);
+        Assert.Null(result.Value);
+    }
+
+    [Fact]
+    public void ToGenResultFailure_WhenNotFound_ReturnsNotFoundGenResult()
+    {
+        // Arrange
+        var signInResult = MyIdSignInResult.NotFoundResult();
+
+        // Act
+        var result = signInResult.ToGenResultFailure<string>();
+
+        // Assert
+        Assert.True(result.NotFound);
+        Assert.False(result.Succeeded);
+        Assert.Equal(signInResult.Message, result.Info);
+        Assert.Null(result.Value);
+    }
+
+    [Fact]
+    public void ToGenResultFailure_WhenUnauthorized_ReturnsUnauthorizedGenResult()
+    {
+        // Arrange
+        var signInResult = MyIdSignInResult.UnauthorizedResult();
+
+        // Act
+        var result = signInResult.ToGenResultFailure<string>();
+
+        // Assert
+        Assert.True(result.Unauthorized);
+        Assert.False(result.Succeeded);
+        Assert.Equal(signInResult.Message, result.Info);
+        Assert.Null(result.Value);
+    }
+
+    [Fact]
+    public void ToGenResultFailure_WhenGeneralFailure_ReturnsFailureGenResult()
+    {
+        // Arrange
+        var failureMessage = "General failure";
+        var signInResult = MyIdSignInResult.Failure(failureMessage);
+
+        // Act
+        var result = signInResult.ToGenResultFailure<string>();
+
+        // Assert
+        Assert.False(result.Succeeded);
+        Assert.Equal(signInResult.Message, result.Info);
+        Assert.Null(result.Value);
+    }
+
+    #endregion
+
     #region ToBasicResult Tests
 
     [Fact]
@@ -151,7 +240,7 @@ public class MyIdSignInResultExtensionsTests
     }
 
     [Fact]
-    public void ToBasicResult_WhenEmailConfirmedRequired_ReturnsPreconditionRequiredBasicResult()
+    public void ToBasicResult_WhenEmailConfirmationRequired_ReturnsPreconditionRequiredBasicResult()
     {
         // Arrange
         var email = "test@example.com";

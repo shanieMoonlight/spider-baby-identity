@@ -60,7 +60,11 @@ internal class MultiFactorRequiredMiddleware(RequestDelegate next)
     private static bool IsCallingMfaVerify(string requestPath, string ctrl) =>
         ctrl.Equals(IdRoutes.Account.Controller, StringComparison.CurrentCultureIgnoreCase)
         &&
-        requestPath.Contains(IdRoutes.Account.Actions.TwoFactorVerification, StringComparison.CurrentCultureIgnoreCase);
+        (
+            requestPath.Contains(IdRoutes.Account.Actions.TwoFactorVerification, StringComparison.CurrentCultureIgnoreCase)
+            || 
+            requestPath.Contains(IdRoutes.Account.Actions.TwoFactorVerificationCookie, StringComparison.CurrentCultureIgnoreCase)
+        );
 
     //- - - - - - - - - - - - - - - - - - //
 

@@ -12,11 +12,11 @@ using ID.Application.Features.Account.Cmd.Login;
 using ID.Application.Features.Account.Cmd.LoginRefresh;
 using ID.Application.Features.Account.Cmd.Mfa.Reg.TwoFactorAuthAppComplete;
 using ID.Application.Features.Account.Cmd.Mfa.Reg.TwoFactorAuthAppEmailComplete;
-using ID.Application.Features.Account.Cmd.Mfa.TwoFactorCookieVerify;
 using ID.Application.Features.Account.Cmd.Mfa.TwoFactorDisable;
 using ID.Application.Features.Account.Cmd.Mfa.TwoFactorEnable;
 using ID.Application.Features.Account.Cmd.Mfa.TwoFactorResend;
 using ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerify;
+using ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerifyCookie;
 using ID.Application.Features.Account.Cmd.PwdChange;
 using ID.Application.Features.Account.Cmd.PwdForgot;
 using ID.Application.Features.Account.Cmd.PwdReset;
@@ -178,6 +178,13 @@ public class AccountController(ISender sender) : ControllerBase
     [HttpPost($"{IdRoutes.Account.Actions.TwoFactorVerification}")]
     public async Task<ActionResult<JwtPackage>> TwoFactorVerification([FromBody] Verify2FactorDto dto) =>
         this.ProcessResult(await sender.Send(new Verify2FactorCmd(dto)));
+
+    //------------------------//
+
+    //[AllowAnonymous]
+    [HttpPost($"{IdRoutes.Account.Actions.TwoFactorVerificationCookie}")]
+    public async Task<ActionResult<JwtPackage>> TwoFactorVerificationCookie([FromBody] Verify2FactorCookieDto dto) =>
+        this.ProcessResult(await sender.Send(new Verify2FactorCookieCmd(dto)));
 
     //------------------------//
 

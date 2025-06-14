@@ -6,9 +6,10 @@ using ID.Domain.Entities.AppUsers;
 using ID.Domain.Utility.Messages;
 using MyResults;
 
-namespace ID.Application.Features.Account.Cmd.Mfa.TwoFactorCookieVerify;
+namespace ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerifyCookie;
 public class Verify2FactorCookieCmdHandler(
     ICookieSignInService<AppUser> _cookieSignInService,
+    IFindUserService<AppUser> _findUserService,
     ITwoFactorVerificationService<AppUser> _2FactorService)
     : IIdCommandHandler<Verify2FactorCookieCmd>
 {
@@ -16,8 +17,10 @@ public class Verify2FactorCookieCmdHandler(
     public async Task<BasicResult> Handle(Verify2FactorCookieCmd request, CancellationToken cancellationToken)
     {
         var dto = request.Dto;
-        var user = request.PrincipalUser;
-        var team = request.PrincipalTeam;
+      
+        var userId = request.PrincipalUserId ?? dto.UserId; //Two factor failure may have returned a Jwt or Cookie. If not clien cust supply an ID
+        var user = await _findUserService.FindUserWithTeamDetailsAsync(userId: userId);
+        var team = user?.Team;
 
 
         if (user is null || team is null)
@@ -36,7 +39,7 @@ public class Verify2FactorCookieCmdHandler(
            team!,
            false,
            dto.DeviceId);
-        return BasicResult.Success();
+        return BasicResult.Success("Signed In!");
     }
 
 

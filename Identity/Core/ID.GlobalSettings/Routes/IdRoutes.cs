@@ -28,6 +28,7 @@ public static class IdRoutes
         public static class Actions
         {
             public const string TwoFactorVerification = "TwoFactorVerification";
+            public const string TwoFactorVerificationCookie = "TwoFactorVerificationCookie";
             public const string TwoFactorResend = "TwoFactorResend";
             public const string Login = "Login";
             public const string CookieSignIn = "CookieSignIn";

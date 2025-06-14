@@ -51,7 +51,7 @@ public interface ICookieSignInService<TUser> where TUser : AppUser
     /// <param name="dto">The sign-in DTO.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The result of the sign-in attempt.</returns>
-    Task<MyIdSignInResult> PasswordSignInAsync(SignInDto dto, CancellationToken cancellationToken = default);
+    Task<MyIdSignInResult> PasswordSignInAsync(CookieSignInDto dto, CancellationToken cancellationToken = default);
 
     //- - - - - - - - - - - - - - - - - - // 
 

@@ -1,6 +1,4 @@
-﻿using ID.GlobalSettings.Utility;
-
-namespace ID.Application.Features.Mntc.Qry.EmailRoutes;
+﻿namespace ID.Application.Features.Mntc.Qry.EmailRoutes;
 public class EmailRoutesDto()
 {
     public string ConfirmEmail { get; set; } = string.Empty;

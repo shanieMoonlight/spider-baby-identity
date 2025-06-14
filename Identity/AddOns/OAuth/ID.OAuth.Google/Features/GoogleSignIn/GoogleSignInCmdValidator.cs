@@ -2,7 +2,7 @@
 using FluentValidation;
 using ID.Domain.Utility.Messages;
 
-namespace ID.OAuth.Google.GoogleSignUp;
+namespace ID.OAuth.Google.Features.GoogleSignIn;
 public class GoogleSignUpCmdValidator : AbstractValidator<GoogleSignInCmd>
 {
     public GoogleSignUpCmdValidator()

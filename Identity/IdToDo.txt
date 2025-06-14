@@ -48,3 +48,10 @@ Make TeamManager a bit smaller. Maybe use factories to smaller services.
 
 
 MOre OathLogins
+
+
+Add paramater to CloseAccount Action
+
+Cookie 2Factor
+
+CookeSIgnInService Decouple from CookieSignInDto,  IPreSignInService<AppUser> _preSignInService,

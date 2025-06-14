@@ -1,4 +1,4 @@
-﻿namespace ID.OAuth.Google.GoogleSignUp;
+﻿namespace ID.OAuth.Google.Features.GoogleSignIn;
 
 public sealed class GoogleSignInDto
 {

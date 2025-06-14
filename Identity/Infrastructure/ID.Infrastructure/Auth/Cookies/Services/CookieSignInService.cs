@@ -87,7 +87,7 @@ internal class CookieSignInService<TUser>(
         bool isPersistent,
         CancellationToken cancellationToken = default)
     {
-        var dto = new SignInDto
+        var dto = new CookieSignInDto
         {
             UserId = userId,
             Password = password,
@@ -112,7 +112,7 @@ internal class CookieSignInService<TUser>(
         bool isPersistent,
         CancellationToken cancellationToken = default)
     {
-        var dto = new SignInDto
+        var dto = new CookieSignInDto
         {
             Email = email,
             Password = password,
@@ -137,7 +137,7 @@ internal class CookieSignInService<TUser>(
         bool isPersistent,
         CancellationToken cancellationToken = default)
     {
-        var dto = new SignInDto
+        var dto = new CookieSignInDto
         {
             Username = username,
             Password = password,
@@ -154,7 +154,7 @@ internal class CookieSignInService<TUser>(
     /// <param name="dto">The sign-in DTO.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The result of the sign-in attempt.</returns>
-    public async Task<MyIdSignInResult> PasswordSignInAsync(SignInDto dto, CancellationToken cancellationToken = default)
+    public async Task<MyIdSignInResult> PasswordSignInAsync(CookieSignInDto dto, CancellationToken cancellationToken = default)
     {
         MyIdSignInResult signInResult = await _preSignInService.Authenticate(dto, cancellationToken);
 

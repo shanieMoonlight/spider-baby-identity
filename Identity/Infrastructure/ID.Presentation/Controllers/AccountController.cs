@@ -99,7 +99,7 @@ public class AccountController(ISender sender) : ControllerBase
     /// </returns>
     [HttpPost($"{IdRoutes.Account.Actions.CookieSignIn}")]
     [AllowAnonymous]
-    public async Task<ActionResult<MessageResponseDto>> CookieSignIn([FromBody] SignInDto dto)
+    public async Task<ActionResult<MessageResponseDto>> CookieSignIn([FromBody] CookieSignInDto dto)
     {
         //For testing the real user should handle Views etc.
         var result = await sender.Send(new SignInCmd(dto));

@@ -40,7 +40,7 @@ public class IdSystemController(ISender sender, ILogger<IdSystemController> logg
     /// </summary>
     [HttpGet]
     [SuperMinimumAuthenticator.ActionFilter]
-    public async Task<IActionResult> PublicSigningKey() =>
+    public async Task<ActionResult<PublicSigningKeyDto>> PublicSigningKey() =>
         this.ProcessResult(await sender.Send(new GetPublicSigningKeyCmd()));
 
     //------------------------//
@@ -50,7 +50,7 @@ public class IdSystemController(ISender sender, ILogger<IdSystemController> logg
     /// </summary>
     [HttpGet]
     [SuperMinimumAuthenticator.ActionFilter]
-    public async Task<IActionResult> EmailRoutes() =>
+    public async Task<ActionResult<EmailRoutesDto>> EmailRoutes() =>
         this.ProcessResult(await sender.Send(new GetEmailRoutesCmd()));
 
     //------------------------//
@@ -70,7 +70,7 @@ public class IdSystemController(ISender sender, ILogger<IdSystemController> logg
     /// </summary>
     [HttpGet]
     [SuperMinimumOrDevAuthenticator.ActionFilter]
-    public async Task<IActionResult> GlobalSettings() =>
+    public async Task<ActionResult<SettingsDto>> GlobalSettings() =>
         this.ProcessResult(await sender.Send(new GetSettingsCmd()));
 
 

@@ -15,7 +15,7 @@ using ID.OAuth.Google.Auth.Abs;
 using ID.OAuth.Google.Data;
 using MyResults;
 
-namespace ID.OAuth.Google.GoogleSignUp;
+namespace ID.OAuth.Google.Features.GoogleSignIn;
 public class GoogleSignInHandler(
     IFindUserService<AppUser> _findUserService,
     IJwtPackageProvider _jwtPackageProvider,

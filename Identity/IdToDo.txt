@@ -52,19 +52,12 @@ MOre OathLogins
 
 Add paramater to CloseAccount Action
 
-Cookie 2Factor
 
-CookeSIgnInService Decouple from CookieSignInDto,  IPreSignInService<AppUser> _preSignInService,
-CookieSignInService Testing
-Cookie
- Email Confirmed
- TwoFactor confirm
+CookieSignInService Testing (Integration)
 
 
  remove Basicresult.BadRequestResponse??????????????????
 
- Add Id to TwoFactor email for flexibility
 
- CookieSignInResultData move to dtos????????
 
  remove mfaResultData.ExtraInfo????

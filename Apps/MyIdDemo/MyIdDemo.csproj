@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="appsettings.sample.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Hangfire" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" />
@@ -19,6 +23,7 @@
   </ItemGroup>
 
 	<ItemGroup>
+		<AdditionalFiles Include="appsettings.sample.json" />
 		<AdditionalFiles Include="appsettings.json" />
 	</ItemGroup>
 

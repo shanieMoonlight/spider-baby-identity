@@ -1,7 +1,9 @@
 ﻿using ControllerHelpers;
 using ID.Domain.Models;
 using ID.GlobalSettings.Routes;
-using ID.OAuth.Google.Features.GoogleSignIn;
+using ID.OAuth.Google.Features.SignIn;
+using ID.OAuth.Google.Features.SignIn.GoogleCookieSignIn;
+using ID.OAuth.Google.Features.SignIn.GoogleSignIn;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,5 +22,12 @@ public class AccountController(ISender sender) : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<JwtPackage>> GoogleLogin(GoogleSignInDto dto) =>
         this.ProcessResult(await sender.Send(new GoogleSignInCmd(dto)));
+
+
+
+    [HttpPost("[action]")]
+    [AllowAnonymous]
+    public async Task<ActionResult<JwtPackage>> GoogleCookieSignin(GoogleCookieSignInDto dto) =>
+        this.ProcessResult(await sender.Send(new GoogleCookieSignInCmd(dto)));
 
 }//Cls

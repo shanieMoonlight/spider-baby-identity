@@ -6,7 +6,7 @@ using ID.Domain.Entities.AppUsers;
 using ID.Domain.Utility.Messages;
 using MyResults;
 
-namespace ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerifyCookie;
+namespace ID.Application.Features.Account.Cmd.Cookies.TwoFactorVerifyCookie;
 public class Verify2FactorCookieCmdHandler(
     ICookieSignInService<AppUser> _cookieSignInService,
     IFindUserService<AppUser> _findUserService,
@@ -27,10 +27,10 @@ public class Verify2FactorCookieCmdHandler(
             return BasicResult.UnauthorizedResult(IDMsgs.Error.Authorization.INVALID_AUTH);
 
 
-
         bool validVerification = await _2FactorService.VerifyTwoFactorTokenAsync(team, user, dto.Token);
         if (!validVerification)
             return BasicResult.BadRequestResult(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_TOKEN);
+
 
         //Attach cookie
         await _cookieSignInService.SignInAsync(
@@ -39,7 +39,9 @@ public class Verify2FactorCookieCmdHandler(
            team!,
            false,
            dto.DeviceId);
+
         return BasicResult.Success("Signed In!");
+
     }
 
 

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
-namespace ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerifyCookie;
+namespace ID.Application.Features.Account.Cmd.Cookies.TwoFactorVerifyCookie;
 
 public class Verify2FactorCookieDto
 {

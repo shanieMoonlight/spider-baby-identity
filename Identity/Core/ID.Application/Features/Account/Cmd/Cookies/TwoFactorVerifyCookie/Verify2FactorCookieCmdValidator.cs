@@ -3,7 +3,7 @@ using FluentValidation;
 using ID.Application.Mediatr.Validation;
 using ID.Domain.Utility.Messages;
 
-namespace ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerifyCookie;
+namespace ID.Application.Features.Account.Cmd.Cookies.TwoFactorVerifyCookie;
 
 /// <summary>
 /// User must already be logged in to verify 2 factor authentication.

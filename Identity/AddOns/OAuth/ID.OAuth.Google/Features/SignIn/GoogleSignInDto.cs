@@ -1,6 +1,6 @@
-﻿namespace ID.OAuth.Google.Features.GoogleSignIn;
+﻿namespace ID.OAuth.Google.Features.SignIn;
 
-public sealed class GoogleSignInDto
+public class GoogleSignInDto
 {
     public string IdToken { get; set; } = string.Empty;
 

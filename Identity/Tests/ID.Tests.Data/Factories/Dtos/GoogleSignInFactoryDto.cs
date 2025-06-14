@@ -1,4 +1,5 @@
-using ID.OAuth.Google.Features.GoogleSignIn;
+using ID.OAuth.Google.Features.GoogleCookieSignIn;
+using ID.OAuth.Google.Features.SignIn;
 using MassTransit;
 using TestingHelpers;
 

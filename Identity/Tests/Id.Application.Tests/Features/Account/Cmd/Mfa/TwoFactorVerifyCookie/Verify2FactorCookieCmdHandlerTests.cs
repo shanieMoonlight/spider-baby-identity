@@ -1,6 +1,7 @@
 using ID.Application.AppAbs.ApplicationServices.User;
 using ID.Application.AppAbs.SignIn;
 using ID.Application.AppAbs.TokenVerificationServices;
+using ID.Application.Features.Account.Cmd.Cookies.TwoFactorVerifyCookie;
 using ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerifyCookie;
 using ID.Application.Tests.Utility;
 using ID.Domain.Entities.AppUsers;

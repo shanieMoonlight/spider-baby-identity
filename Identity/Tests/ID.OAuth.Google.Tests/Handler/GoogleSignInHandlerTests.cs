@@ -12,7 +12,7 @@ using ID.Domain.Entities.Teams;
 using ID.Domain.Models;
 using ID.OAuth.Google.Auth.Abs;
 using ID.OAuth.Google.Data;
-using ID.OAuth.Google.Features.GoogleSignIn;
+using ID.OAuth.Google.Features.SignIn.GoogleCookieSignIn;
 using static MyResults.BasicResult;
 
 namespace ID.OAuth.Google.Tests.Handler;
@@ -25,7 +25,7 @@ public class GoogleSignInHandlerTests
     private readonly Mock<IFindUserService<AppUser>> _mockFindUserService;
     private readonly Mock<ITwoFactorVerificationService<AppUser>> _mockTwoFactorService;
     private readonly Mock<ITwoFactorMsgService> _mockTwoFactorMsgService;
-    private readonly GoogleSignInHandler _handler;
+    private readonly GoogleCookieSignInCmdHandler _handler;
 
     //------------------------------------//
 
@@ -38,7 +38,7 @@ public class GoogleSignInHandlerTests
         _mockTwoFactorService = new Mock<ITwoFactorVerificationService<AppUser>>();
         _mockTwoFactorMsgService = new Mock<ITwoFactorMsgService>();
 
-        _handler = new GoogleSignInHandler(
+        _handler = new GoogleCookieSignInCmdHandler(
             _mockFindUserService.Object,
             _mockPackageProvider.Object,
             _mockVerifier.Object,
@@ -54,7 +54,7 @@ public class GoogleSignInHandlerTests
     {
         // Arrange
         var dto = GoogleSignInDtoFactory.Create();
-        var command = new GoogleSignInCmd(dto);
+        var command = new GoogleCookieSignInCmd(dto);
         var verificationError = "Invalid token signature";
 
         _mockVerifier.Setup(x => x.VerifyTokenAsync(dto.IdToken, It.IsAny<CancellationToken>()))
@@ -80,7 +80,7 @@ public class GoogleSignInHandlerTests
     {
         // Arrange
         var dto = GoogleSignInDtoFactory.Create();
-        var command = new GoogleSignInCmd(dto);
+        var command = new GoogleCookieSignInCmd(dto);
         var googlePayload = CreateMockGooglePayload("existing@example.com");
         var existingUser = AppUserDataFactory.Create(email: googlePayload.Email);
         var jwtPackage = JwtPackageDataFactory.Create();
@@ -132,7 +132,7 @@ public class GoogleSignInHandlerTests
     {
         // Arrange
         var dto = GoogleSignInDtoFactory.Create();
-        var command = new GoogleSignInCmd(dto);
+        var command = new GoogleCookieSignInCmd(dto);
         var googlePayload = CreateMockGooglePayload(
             email: "newuser@example.com",
             givenName: "John",
@@ -201,7 +201,7 @@ public class GoogleSignInHandlerTests
     {
         // Arrange
         var dto = GoogleSignInDtoFactory.Create();
-        var command = new GoogleSignInCmd(dto);
+        var command = new GoogleCookieSignInCmd(dto);
         var googlePayload = CreateMockGooglePayload("newuser@example.com");
         var registrationError = "Email already exists in different context";
 
@@ -253,7 +253,7 @@ public class GoogleSignInHandlerTests
     {
         // Arrange
         var dto = GoogleSignInDtoFactory.Create();
-        var command = new GoogleSignInCmd(dto);
+        var command = new GoogleCookieSignInCmd(dto);
         var googlePayload = CreateMockGooglePayload("test@example.com");
         var existingUser = AppUserDataFactory.Create(email: googlePayload.Email);
         var jwtPackage = JwtPackageDataFactory.Create();
@@ -292,7 +292,7 @@ public class GoogleSignInHandlerTests
     {
         // Arrange
         var dto = GoogleSignInDtoFactory.Create();
-        var command = new GoogleSignInCmd(dto);
+        var command = new GoogleCookieSignInCmd(dto);
         var googlePayload = CreateMockGooglePayload("twofactor@example.com");
         var existingUser = AppUserDataFactory.Create(email: googlePayload.Email);
         var mfaResultData = new MfaResultData(TwoFactorProvider.Sms, "Sent to +1234567890");
@@ -355,7 +355,7 @@ public class GoogleSignInHandlerTests
     {
         // Arrange
         var dto = GoogleSignInDtoFactory.Create();
-        var command = new GoogleSignInCmd(dto);
+        var command = new GoogleCookieSignInCmd(dto);
         var googlePayload = CreateMockGooglePayload("twofactor@example.com");
         var teamId = Guid.NewGuid();
         var team = TeamDataFactory.Create(id: teamId, name: "Test Team");
@@ -411,7 +411,7 @@ public class GoogleSignInHandlerTests
     {
         // Arrange
         var dto = GoogleSignInDtoFactory.Create();
-        var command = new GoogleSignInCmd(dto);
+        var command = new GoogleCookieSignInCmd(dto);
         var googlePayload = CreateMockGooglePayload("test@example.com");
         var existingUser = AppUserDataFactory.Create(email: googlePayload.Email);
         var jwtPackage = JwtPackageDataFactory.Create();

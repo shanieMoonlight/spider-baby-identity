@@ -4,36 +4,37 @@ using ID.Application.AppAbs.ApplicationServices.User;
 using ID.Application.AppAbs.SignIn;
 using ID.Application.AppAbs.TokenVerificationServices;
 using ID.Application.Customers.Abstractions;
-using ID.Application.JWT;
+//using ID.Application.Features.Account.Cmd.Cookies.SignIn;
 using ID.Application.Mediatr.CqrsAbs;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.AppUsers.OAuth;
 using ID.Domain.Entities.AppUsers.ValueObjects;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Models;
+using ID.Domain.Utility.Messages;
 using ID.OAuth.Google.Auth.Abs;
 using ID.OAuth.Google.Data;
 using MyResults;
 
-namespace ID.OAuth.Google.Features.GoogleSignIn;
-public class GoogleSignInHandler(
+namespace ID.OAuth.Google.Features.SignIn.GoogleCookieSignIn;
+public class GoogleCookieSignInCmdHandler(
     IFindUserService<AppUser> _findUserService,
-    IJwtPackageProvider _jwtPackageProvider,
+    ICookieSignInService<AppUser> _cookieSignInService,
     IGoogleTokenVerifier _verifier,
     IIdCustomerRegistrationService _signupService,
     ITwoFactorVerificationService<AppUser> _2FactorService,
     ITwoFactorMsgService _twoFactorMsgService)
-    : IIdCommandHandler<GoogleSignInCmd, JwtPackage>
+    : IIdCommandHandler<GoogleCookieSignInCmd, CookieSignInResultData>
 {
 
-    public async Task<GenResult<JwtPackage>> Handle(GoogleSignInCmd request, CancellationToken cancellationToken)
+    public async Task<GenResult<CookieSignInResultData>> Handle(GoogleCookieSignInCmd request, CancellationToken cancellationToken)
     {
         var dto = request.Dto;
 
 
         var verifyResult = await _verifier.VerifyTokenAsync(dto.IdToken, cancellationToken);
         if (!verifyResult.Succeeded)
-            return verifyResult.Convert<JwtPackage>();
+            return verifyResult.Convert<CookieSignInResultData>();
 
 
         var payload = verifyResult.Value!; //Success is non-null
@@ -41,71 +42,85 @@ public class GoogleSignInHandler(
 
         var userResult = await FindOrCreateUserAsync(payload, dto, cancellationToken);
         if (!userResult.Succeeded)
-            return userResult.Convert<JwtPackage>();
+            return userResult.Convert<CookieSignInResultData>();
 
         AppUser user = userResult.Value!;  //Success is non-null
 
 
         var tfEnabled = await _2FactorService.IsTwoFactorEnabledAsync(user);
 
-        return tfEnabled
-            ? await SendTwoFactoAndReturnJwtPackageAsync(
-                user: user,
-                team: user.Team!,
-                currentDeviceId: dto.DeviceId,
-                cancellationToken: cancellationToken)
-            : await ReturnStandardJwtPackageAsync(
-                user: user,
-                team: user.Team!,
-                currentDeviceId: dto.DeviceId,
-                cancellationToken: cancellationToken);
+        if (tfEnabled)
+        {
+            var twoFactorResult = await SendTwoFactoAndAttachCookieAsync(
+                   user: user,
+                   team: user.Team!,
+                   dto.RememberMe,
+                   currentDeviceId: dto.DeviceId);
+
+            if (!twoFactorResult.Succeeded)
+                return twoFactorResult.Convert<CookieSignInResultData>();
+
+            var mfaResultData = twoFactorResult.Value!; //Success is non-null
+            var data = CookieSignInResultData.CreateWithTwoFactoRequired(
+                provider: mfaResultData.TwoFactorProvider,
+                message: IDMsgs.Error.Authorization.TWO_FACTOR_REQUIRED(mfaResultData.TwoFactorProvider));
+
+            return GenResult<CookieSignInResultData>.PreconditionRequiredResult(data); 
+        }
+        else
+        {
+            await AttachCookieAsync(
+                 user: user,
+                 team: user.Team!,
+                 dto.RememberMe,
+                 currentDeviceId: dto.DeviceId);
+        }
+
+        return GenResult<CookieSignInResultData>.Success(CookieSignInResultData.Success());
 
 
     }
 
     //-----------------------------//
 
-    private async Task<GenResult<JwtPackage>> ReturnStandardJwtPackageAsync(
+    private async Task AttachCookieAsync(
         AppUser user,
         Team team,
-        string? currentDeviceId = null,
-        CancellationToken cancellationToken = default)
+        bool rememberMe,
+        string? currentDeviceId = null)
     {
-        JwtPackage jwtPackage = await _jwtPackageProvider.CreateJwtPackageAsync(
-           user: user,
-           team: team,
-           twoFactorVerified: false,
-           currentDeviceId: currentDeviceId,
-           cancellationToken: cancellationToken);
+        await _cookieSignInService.SignInWithTwoFactorRequiredAsync(
+                isPersistent: rememberMe,
+                user: user!,
+                team: team!,
+                currentDeviceId: currentDeviceId);
 
-        return GenResult<JwtPackage>.Success(jwtPackage);
     }
 
 
     //- - - - - - - - - - - - - - -//
 
 
-    private async Task<GenResult<JwtPackage>> SendTwoFactoAndReturnJwtPackageAsync(
+    private async Task<GenResult<MfaResultData>> SendTwoFactoAndAttachCookieAsync(
         AppUser user,
         Team team,
-        string? currentDeviceId = null,
-        CancellationToken cancellationToken = default)
+        bool rememberMe,
+        string? currentDeviceId = null)
     {
         var tfResultMsg = await _twoFactorMsgService.SendOTPFor2FactorAuth(team, user);
         if (!tfResultMsg.Succeeded)
-            return GenResult<JwtPackage>.Failure(tfResultMsg.Info);
+            return GenResult<MfaResultData>.Failure(tfResultMsg.Info);
 
         MfaResultData mfaResultData = tfResultMsg.Value!; //Success is non-null
 
-        JwtPackage jwtPackage = await _jwtPackageProvider.CreateJwtPackageWithTwoFactorRequiredAsync(
-           user: user,
-           team: team,
-           provider: mfaResultData.TwoFactorProvider,
-           extraInfo: mfaResultData.ExtraInfo,
-           currentDeviceId: currentDeviceId,
-           cancellationToken: cancellationToken);
+        await _cookieSignInService.SignInAsync(
+                isPersistent: rememberMe,
+                user: user!,
+                team: team!,
+                false,
+                currentDeviceId: currentDeviceId);
 
-        return GenResult<JwtPackage>.Success(jwtPackage);
+        return GenResult<MfaResultData>.Success(mfaResultData);
     }
 
 
@@ -114,7 +129,7 @@ public class GoogleSignInHandler(
 
     private async Task<GenResult<AppUser>> FindOrCreateUserAsync(
         GoogleVerifiedPayload payload,
-        GoogleSignInDto dto,
+        GoogleCookieSignInDto dto,
         CancellationToken cancellationToken)
     {
         var user = await _findUserService.FindUserWithTeamDetailsAsync(email: payload.Email);

@@ -7,12 +7,12 @@ using ID.Domain.Abstractions.Services.Teams;
 
 namespace ID.Application.Features.Account.Cmd.Mfa.TwoFactorUpdateMethod;
 public class TwoFactorUpdateMethodCmdHandler(IIdentityTeamManager<AppUser> teamMgr)
-    : IIdCommandHandler<TwoFactorUpdateMethodCmd, AppUserDto>
+    : IIdCommandHandler<UpdateTwoFactorProviderCmd, AppUserDto>
 {
 
-    public async Task<GenResult<AppUserDto>> Handle(TwoFactorUpdateMethodCmd request, CancellationToken cancellationToken)
+    public async Task<GenResult<AppUserDto>> Handle(UpdateTwoFactorProviderCmd request, CancellationToken cancellationToken)
     {
-        var provider = request.Provider!.Value;
+        var provider = request.Dto.Provider;
 
         var user = request.PrincipalUser!; //AUserAwareCommand ensures that this is not null
         var team = request.PrincipalTeam!; //AUserAndTeamAwareCommand ensures that this is not null

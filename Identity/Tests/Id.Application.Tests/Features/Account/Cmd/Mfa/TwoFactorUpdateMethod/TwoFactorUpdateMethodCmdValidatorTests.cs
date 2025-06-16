@@ -1,10 +1,6 @@
-using Shouldly;
 using FluentValidation.TestHelper;
-using ID.Application.Features.Account.Cmd.Mfa.TwoFactorResend;
-using ID.Application.Features.Account.Cmd.ResendEmailConfirmationPrincipal;
-using ID.GlobalSettings.Utility;
 using ID.Application.Mediatr.Validation;
-using ID.Application.Features.Account.Cmd.Mfa.TwoFactorUpdateMethod;
+using ID.Application.Tests.Features.Utility;
 
 namespace ID.Application.Tests.Features.Account.Cmd.Mfa.TwoFactorUpdateMethod;
 
@@ -20,19 +16,54 @@ public class TwoFactorUpdateMethodCmdValidatorTests
     //------------------------------------//
 
     [Fact]
-    public void Should_Have_Error_When_PROVIDER_Is_Null()
+    public void Should_Have_Error_When_DTO_Is_Null()
     {
         // Arrange
-        var command = new TwoFactorUpdateMethodCmd(null);
+        var command = new UpdateTwoFactorProviderCmd(null);
 
         // Act
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(cmd => cmd.Provider);
+        result.ShouldHaveValidationErrorFor(cmd => cmd.Dto);
     }
 
     //------------------------------------//
+
+    [Fact]
+    public void Validate_ShouldReturnValidationFailure_WhenIdIsNull()
+    {
+        // Arrange
+        var dto = new UpdateTwoFactorProviderDto( (TwoFactorProvider)0);
+        var command = new UpdateTwoFactorProviderCmd(dto);
+
+        // Act
+        var result = _validator.TestValidate(command);
+
+        // Assert
+        result.IsValid.ShouldBeFalse();
+        result.ShouldHaveValidationErrorFor(x => x.Dto.Provider);
+    }
+
+    //------------------------------------//
+
+    [Fact]
+    public void Validate_ShouldReturnValidationSuccess_WhenProviderIsProvided()
+    {
+        // Arrange
+        var dto = new UpdateTwoFactorProviderDto(TwoFactorProvider.Email);
+        var command = new UpdateTwoFactorProviderCmd(dto);
+        command.SetAuthenticated_MNTC();
+
+        // Act
+        var result = _validator.TestValidate(command);
+
+        // Assert
+        result.IsValid.ShouldBeTrue();
+    }
+
+    //------------------------------------//
+
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -40,7 +71,7 @@ public class TwoFactorUpdateMethodCmdValidatorTests
 
         var validator = new TwoFactorUpdateMethodCmdValidator();
         // Act & Assert
-        validator.ShouldBeAssignableTo<IsAuthenticatedValidator<TwoFactorUpdateMethodCmd>>();
+        validator.ShouldBeAssignableTo<IsAuthenticatedValidator<UpdateTwoFactorProviderCmd>>();
     }
 
     //------------------------------------//

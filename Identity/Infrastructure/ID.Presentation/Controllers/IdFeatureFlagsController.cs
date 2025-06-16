@@ -24,13 +24,13 @@ public class IdFeatureFlagsController(ISender sender) : Controller
     //------------------------//
 
     [HttpPost]
-    public async Task<ActionResult<FeatureFlagDto>> Add(FeatureFlagDto dto) =>
+    public async Task<ActionResult<FeatureFlagDto>> Add([FromBody] FeatureFlagDto dto) =>
         this.ProcessResult(await sender.Send(new CreateFeatureFlagCmd(dto)));
 
     //------------------------//
 
     [HttpPatch]
-    public async Task<ActionResult<FeatureFlagDto>> Edit(FeatureFlagDto dto) =>
+    public async Task<ActionResult<FeatureFlagDto>> Edit([FromBody] FeatureFlagDto dto) =>
         this.ProcessResult(await sender.Send(new UpdateFeatureFlagCmd(dto)));
 
     //------------------------//
@@ -84,7 +84,7 @@ public class IdFeatureFlagsController(ISender sender) : Controller
     /// <returns>Paginated list of FeatureFlags</returns>
     [HttpPost]
     [AllowAnonymous]
-    public async Task<ActionResult<PagedResponse<FeatureFlagDto>>> Page(PagedRequest? request) =>
+    public async Task<ActionResult<PagedResponse<FeatureFlagDto>>> Page([FromBody] PagedRequest? request) =>
         this.ProcessResult(await sender.Send(new GetFeatureFlagsPageQry(request)));
 
 

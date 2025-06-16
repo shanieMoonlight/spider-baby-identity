@@ -1,12 +1,3 @@
-using ID.Tests.Data.Factories;
-using Moq;
-using MyResults;
-using Shouldly;
-using ID.Application.Features.Account.Cmd.Mfa.TwoFactorUpdateMethod;
-using ID.Domain.Models;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Abstractions.Services.Teams;
-
 namespace ID.Application.Tests.Features.Account.Cmd.Mfa.TwoFactorUpdateMethod;
 
 public class TwoFactorUpdateMethodCmdHandlerTests
@@ -20,7 +11,9 @@ public class TwoFactorUpdateMethodCmdHandlerTests
         _handler = new TwoFactorUpdateMethodCmdHandler(_teamManagerMock.Object);
     }
 
+
     //------------------------------------//
+
 
     [Fact]
     public async Task Handle_Should_Update_TwoFactorProvider_And_Return_Success()
@@ -30,7 +23,8 @@ public class TwoFactorUpdateMethodCmdHandlerTests
         var user = AppUserDataFactory.Create(teamId);
         var team = TeamDataFactory.Create(id: teamId, members: [user]);
         var provider = TwoFactorProvider.Email;
-        var request = new TwoFactorUpdateMethodCmd(provider)
+        var dto = new UpdateTwoFactorProviderDto(provider);
+       var request = new UpdateTwoFactorProviderCmd(dto)
         {
             PrincipalUser = user,
             PrincipalTeam = team
@@ -59,7 +53,8 @@ public class TwoFactorUpdateMethodCmdHandlerTests
         var user = AppUserDataFactory.Create(Guid.NewGuid());
         var team = TeamDataFactory.Create();
         var provider = TwoFactorProvider.Email;
-        var request = new TwoFactorUpdateMethodCmd(provider)
+        var dto = new UpdateTwoFactorProviderDto(provider);
+        var request = new UpdateTwoFactorProviderCmd(dto)
         {
             PrincipalUser = user,
             PrincipalTeam = team

@@ -10,7 +10,7 @@ public class UpdatePositionCmdValidator : IsMntcMinimumLeaderValidator<UpdatePos
 
         RuleFor(p => p.Dto)
             .NotEmpty()
-                    .WithMessage(IDMsgs.Error.IsRequired("{PropertyName}"));
+                    .WithMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
 
 
         When(p => p.Dto != null, () =>

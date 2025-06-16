@@ -23,7 +23,7 @@ public class IdSystemController(ISender sender, ILogger<IdSystemController> logg
 
     [HttpPost]
     [InitializedAuthenticator.ActionFilter]
-    public async Task<ActionResult<MessageResponseDto>> Initialize(InitializeDto dto) =>
+    public async Task<ActionResult<MessageResponseDto>> Initialize([FromBody] InitializeDto dto) =>
         this.ProcessResult(await sender.Send(new InitializeCmd(dto)), logger); //Pass logger for extra loggin in Inititalization
 
     //------------------------//

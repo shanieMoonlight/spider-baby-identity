@@ -19,9 +19,9 @@ internal class TakeSkipSpec<TEntity>():
 ValidateEmailBaseOptions <-- configuration
 
 
+
 Test Domain Entity methods
 
-Make sure teammanager uses the full team with members when updating team members
 
 
 
@@ -37,13 +37,12 @@ Include appsettings.json in the demo project
 
 
 Make TeamManager a bit smaller. Maybe use factories to smaller services.
+Make sure teammanager uses the full team with members when updating team members
 
 
 
 MOre OathLogins
 
-
-Add paramater to CloseAccount Action
 
 
 CookieSignInService Testing (Integration)
@@ -55,6 +54,5 @@ CookieSignInService Testing (Integration)
 
  remove mfaResultData.ExtraInfo????
 
- HttpPatch should not have query params . use frombody instead
 
  move to [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]

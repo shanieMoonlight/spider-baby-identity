@@ -8,5 +8,6 @@ global using Shouldly;
 global using ID.Application.Features.MemberMgmt.Cmd.UpdatePosition;
 global using ID.Application.AppAbs.Permissions;
 global using ID.Domain.Entities.Teams;
-global using ID.Domain.Entities.AppUsers;
 global using ID.Domain.Abstractions.Services.Teams;
+global using ID.Application.Features.Account.Cmd.Mfa.TwoFactorUpdateMethod;
+global using ID.Domain.Models;

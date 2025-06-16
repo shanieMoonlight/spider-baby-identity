@@ -45,7 +45,7 @@ public class UserManagementController(ISender sender) : ControllerBase
     /// <returns>The Updated User</returns>
     [HttpPatch]
     [MntcLeaderMinimumAuthenticator.ActionFilter]
-    public async Task<ActionResult<AppUserDto>> UpdatePosition(UpdatePositionDto dto) =>
+    public async Task<ActionResult<AppUserDto>> UpdatePosition([FromBody] UpdatePositionDto dto) =>
         this.ProcessResult(await sender.Send(new UpdatePositionCmd(dto)));
 
     //------------------------//
@@ -61,15 +61,15 @@ public class UserManagementController(ISender sender) : ControllerBase
 
     //------------------------//
 
-    /// <summary>
-    /// Set a new TeamLeader
-    /// </summary>
-    /// <param name="newLeaderId">New Leader Identifier</param>
-    /// <returns>The new Leader</returns>
-    [HttpPatch("{newLeaderId}")]
-    [LeaderAuthenticator.ActionFilter]
-    public async Task<ActionResult<TeamDto>> UpdateMyTeamLeader(Guid newLeaderId) =>
-        this.ProcessResult(await sender.Send(new UpdateMyTeamLeaderCmd(newLeaderId)));
+    ///// <summary>
+    ///// Set a new TeamLeader
+    ///// </summary>
+    ///// <param name="newLeaderId">New Leader Identifier</param>
+    ///// <returns>The new Leader</returns>
+    //[HttpPatch("{newLeaderId}")]
+    //[LeaderAuthenticator.ActionFilter]
+    //public async Task<ActionResult<TeamDto>> UpdateMyTeamLeader(Guid newLeaderId) =>
+    //    this.ProcessResult(await sender.Send(new UpdateMyTeamLeaderCmd(newLeaderId)));
 
     //------------------------//
 
@@ -85,10 +85,10 @@ public class UserManagementController(ISender sender) : ControllerBase
     /// </summary>
     /// <param name="provider">New TwoFactorProvider</param>
     /// <returns>The Updated User</returns>
-    [HttpPatch("{provider}")]
+    [HttpPatch]
     [Authorize]
-    public async Task<ActionResult<AppUserDto>> UpdateTwoFactorProvider(TwoFactorProvider provider) =>
-        this.ProcessResult(await sender.Send(new TwoFactorUpdateMethodCmd(provider)));
+    public async Task<ActionResult<AppUserDto>> UpdateTwoFactorProvider([FromBody] UpdateTwoFactorProviderDto dto) =>
+        this.ProcessResult(await sender.Send(new UpdateTwoFactorProviderCmd(dto)));
 
     //------------------------//
 
@@ -163,11 +163,6 @@ public class UserManagementController(ISender sender) : ControllerBase
         this.ProcessResult(await sender.Send(new GetMntcMembersPageQry(request)));
 
     //------------------------//
-
-    //[HttpPost]
-    //[SuperMinimumFilter]
-    //public ActionResult<PagedResponse<AppUserDto>> GetSuperTeamMembersPage([FromBody] PagedRequest request) =>
-    //    this.ProcessResult(GenResult<PagedResponse<AppUserDto>>.UnauthorizedResult("No Man!!!"));
 
     [HttpPost]
     [SuperMinimumAuthenticator.ActionFilter]

@@ -1,12 +1,11 @@
+using ID.Application.Customers.Features.Account.Cmd.CloseAccount;
 using ID.Domain.Abstractions.Services.Teams;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
-using ID.GlobalSettings.Utility;
 using ID.Tests.Data.Factories;
 using Moq;
 using MyResults;
 using Shouldly;
-using ID.Application.Customers.Features.Account.Cmd.CloseAccount;
 
 namespace ID.Application.Customers.Tests.Features.Account.Cmd.CloseAccount;
 
@@ -26,12 +25,35 @@ public class CloseAccountCmdHandlerTests
     //------------------------------------//
 
     [Fact]
+    public async Task Handle_ShouldReturnBadrequest_WhenTeamIdsDOntMatch()
+    {
+        // Arrange
+        var team = TeamDataFactory.Create(
+           teamType: TeamType.Customer);
+        var request = new CloseMyAccountCmd(team.Id)
+        {
+            PrincipalTeam = team,
+            IsCustomer = false,
+            TeamId = Guid.NewGuid(), // Ensure TeamId matches PrincipalTeam.Id
+        };
+
+        // Act
+        var result = await _handler.Handle(request, CancellationToken.None);
+
+        // Assert
+        result.Succeeded.ShouldBeFalse();
+        result.BadRequest.ShouldBeTrue();
+    }
+
+    //------------------------------------//
+
+    [Fact]
     public async Task Handle_ShouldReturnFailure_WhenUserIsNotACustomer()
     {
         // Arrange
         var team = TeamDataFactory.Create(
            teamType: TeamType.Customer);
-        var request = new CloseMyAccountCmd()
+        var request = new CloseMyAccountCmd(team.Id)
         {
             PrincipalTeam = team,
             IsCustomer = false,
@@ -53,7 +75,7 @@ public class CloseAccountCmdHandlerTests
         // Arrange
         var team = TeamDataFactory.Create(
            teamType: TeamType.Customer);
-        var request = new CloseMyAccountCmd()
+        var request = new CloseMyAccountCmd(team.Id)
         {
             PrincipalTeam = team,
             IsCustomer = true,
@@ -74,11 +96,12 @@ public class CloseAccountCmdHandlerTests
     public async Task Handle_ShouldReturnSuccess_TeamIsDeletedSuccessfully()
     {
         // Arrange
-        var request = new CloseMyAccountCmd()
+        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var request = new CloseMyAccountCmd(team.Id)
         {
             IsAuthenticated = true,
             Principal = new System.Security.Claims.ClaimsPrincipal(),
-            PrincipalTeam = TeamDataFactory.Create(teamType: TeamType.Customer),
+            PrincipalTeam = team,
             IsCustomer = true,
             IsLeader = true,
         };
@@ -101,11 +124,12 @@ public class CloseAccountCmdHandlerTests
         // Arrange
         var teamMgrMock = new Mock<IIdentityTeamManager<AppUser>>();
         var handler = new CloseMyAccountCmdHandler(teamMgrMock.Object);
-        var request = new CloseMyAccountCmd()
+        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var request = new CloseMyAccountCmd(team.Id)
         {
 
             Principal = new System.Security.Claims.ClaimsPrincipal(),
-            PrincipalTeam = TeamDataFactory.Create(teamType: TeamType.Customer),
+            PrincipalTeam = team,
             IsCustomer = true,
             IsLeader = true,
         };

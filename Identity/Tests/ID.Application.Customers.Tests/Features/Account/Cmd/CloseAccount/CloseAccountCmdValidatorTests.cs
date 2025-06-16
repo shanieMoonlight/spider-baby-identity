@@ -1,4 +1,6 @@
-﻿using ID.Application.Customers.Features.Account.Cmd.CloseAccount;
+﻿using FluentValidation.TestHelper;
+using ID.Application.Customers.Features.Account.Cmd.CloseAccount;
+using ID.Application.Customers.Features.Account.Cmd.RegCustomerNoPwd;
 using ID.Application.Customers.Mediatr.Validation;
 using Shouldly;
 
@@ -21,6 +23,26 @@ public class CloseAccountCmdValidatorTests
     //------------------------------------//
 
     [Fact]
+    public void Should_have_error_when_TEAMID_is_empty()
+    {
+        //Arrange
+        CloseMyAccountCmd cmd = new(default);
+
+
+        //Act
+        var result = _validator.TestValidate(cmd);
+
+
+        //Assert
+        result.ShouldHaveValidationErrorFor(cmd => cmd.TeamId);
+
+    }
+
+
+    //------------------------------------//
+
+
+    [Fact]
     public void Implements_ACustomerOnlyValidator()
     {
         // Arrange
@@ -29,7 +51,5 @@ public class CloseAccountCmdValidatorTests
         // Act & Assert
         validator.ShouldBeAssignableTo<ACustomerLeaderValidator<CloseMyAccountCmd>>();
     }
-
-    //------------------------------------//
 
 }//Cls

@@ -23,10 +23,10 @@ namespace ID.Application.Customers.Controllers;
 public class AccountController(ISender sender) : ControllerBase
 {
 
-    [HttpDelete("[action]")]
+    [HttpDelete("[action]/{teamId}")]
     [CustomerLeaderMinimumAuthenticator.ActionFilter]
-    public async Task<ActionResult<MessageResponseDto>> CloseAccount() =>
-        this.ProcessResult(await sender.Send(new CloseMyAccountCmd()));
+    public async Task<ActionResult<MessageResponseDto>> CloseAccount(Guid teamId) =>
+        this.ProcessResult(await sender.Send(new CloseMyAccountCmd(teamId)));
 
     //------------------------------------//
 

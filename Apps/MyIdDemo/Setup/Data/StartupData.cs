@@ -104,7 +104,7 @@ public class StartupData(IConfiguration config, IWebHostEnvironment Environment)
     /// </summary>
     /// <returns>A string representing the URL of the company logo.</returns>
     public string GetLogoUrl() =>
-        "https://www.thegrangegeethinn.com/images/logo.jpg";
+        "https://drive.google.com/file/d/1KDED_3o4dMV98rbSThl4TzKiPAu3JEGj/view";
 
 
 

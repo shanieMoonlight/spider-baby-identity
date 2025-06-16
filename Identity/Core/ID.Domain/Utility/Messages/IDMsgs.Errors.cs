@@ -140,6 +140,7 @@ public partial class IDMsgs
             public static string ALREADY_THE_TEAM_LEADER(AppUser user, Team team) => $"User with email, {user.Email} is ALREADY the leader of the Team, {team.Name}";
 
             public const string CAN_ONLY_REMOVE_CUSTOMER_TEAM = $"You can only delete a customer team.";
+            public const string CANT_CLOSE_ACCOUNT_OF_OTHER_TEAM = $"You can only close your own account.";
             public const string CANT_CHANGE_POSITION_OF_LEADER = "The Team leader must also have the highest team position";
             public const string MISSING_TEAM_DATA = "Missing Team Data";
             public const string MNTC_TEAM_ALREADY_CREATED = "The Maintenance Team is already created.";

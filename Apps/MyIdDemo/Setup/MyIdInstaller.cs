@@ -86,7 +86,7 @@ public class MyIdInstaller : IServiceInstaller
                 config.SmtpPassword = startupData.SmtpSettingsSection.GetPassword();
 
                 config.BccAddresses = startupData.IdentitySection.GetBccAddresses()!;
-                config.LogoUrl = startupData.GetLogoUrl();
+                //config.LogoUrl = startupData.GetLogoUrl();
                 config.FromAddress = startupData.IdentitySection.GetFromAddress()!;
                 config.ColorHexBrand = startupData.COLOR_HEX_BRAND;
                 config.FromName = startupData.IdentitySection.GetFromName();
@@ -101,7 +101,7 @@ public class MyIdInstaller : IServiceInstaller
 
                 config.BccAddresses = startupData.IdentitySection.GetBccAddresses()!;
                 config.FromAddress = startupData.IdentitySection.GetFromAddress()!;
-                config.LogoUrl = startupData.GetLogoUrl();
+                //config.LogoUrl = startupData.GetLogoUrl();
                 config.ColorHexBrand = startupData.COLOR_HEX_BRAND;
                 config.FromName = startupData.COMPANY_NAME;
             });

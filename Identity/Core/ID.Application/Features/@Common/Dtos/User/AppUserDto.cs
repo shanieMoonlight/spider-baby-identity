@@ -1,7 +1,6 @@
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace ID.Application.Features.Common.Dtos.User;
 public class AppUserDto : AuditableEntityDto
@@ -22,7 +21,7 @@ public class AppUserDto : AuditableEntityDto
 
     public int TeamPosition { get; set; }
 
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public TwoFactorProvider TwoFactorProvider { get; set; }
 
     public bool TwoFactorEnabled { get; set; }

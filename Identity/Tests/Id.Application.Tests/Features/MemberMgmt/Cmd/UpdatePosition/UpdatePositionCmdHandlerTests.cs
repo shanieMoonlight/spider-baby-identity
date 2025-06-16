@@ -1,13 +1,3 @@
-using ID.Tests.Data.Factories;
-using Moq;
-using MyResults;
-using Shouldly;
-using ID.Application.Features.MemberMgmt.Cmd.UpdatePosition;
-using ID.Application.AppAbs.Permissions;
-using ID.Domain.Entities.Teams;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Abstractions.Services.Teams;
-
 namespace ID.Application.Tests.Features.MemberMgmt.Cmd.UpdatePosition;
 
 public class UpdatePositionCmdHandlerTests
@@ -37,7 +27,8 @@ public class UpdatePositionCmdHandlerTests
         var team = TeamDataFactory.Create();
         var newPositionUser = AppUserDataFactory.Create(team.Id);
         var newPosition = 5;
-        var request = new UpdatePositionCmd(newLeaderId, newPosition) { PrincipalTeam = team };
+        var dto = new UpdatePositionDto(newLeaderId, newPosition);
+        var request = new UpdatePositionCmd(dto) { PrincipalTeam = team };
 
         _canUpdatePosiitonPermissionService.Setup(x => x.CanChangePositionAsync(newLeaderId, newPosition, request))
             .ReturnsAsync(GenResult<AppUser>.Success(newPositionUser));
@@ -63,7 +54,8 @@ public class UpdatePositionCmdHandlerTests
         var teamId = Guid.NewGuid();
         var appUser = AppUserDataFactory.Create(teamId: teamId);
         var expectedTeam = TeamDataFactory.Create(id: teamId, members: [appUser]);
-        var request = new UpdatePositionCmd(appUser.Id, 2)
+        var dto = new UpdatePositionDto(appUser.Id, 2);
+        var request = new UpdatePositionCmd(dto)
         {
             PrincipalTeam = expectedTeam
         };
@@ -91,7 +83,8 @@ public class UpdatePositionCmdHandlerTests
         // Arrange
         var appUser = AppUserDataFactory.Create(teamId: Guid.NewGuid());
         var expectedTeam = TeamDataFactory.Create(id: Guid.NewGuid());
-        var request = new UpdatePositionCmd(appUser.Id, 2)
+        var dto = new UpdatePositionDto(appUser.Id, 2);
+        var request = new UpdatePositionCmd(dto)
         {
             PrincipalTeam = expectedTeam
         };
@@ -120,7 +113,8 @@ public class UpdatePositionCmdHandlerTests
         var appUser = AppUserDataFactory.Create(teamId: otherTeamId);
         var team = TeamDataFactory.Create(id: teamId); // Different team
 
-        var request = new UpdatePositionCmd(appUser.Id, 5)
+        var dto = new UpdatePositionDto(appUser.Id, 5);
+        var request = new UpdatePositionCmd(dto)
         {
             PrincipalTeam = team
         };

@@ -18,8 +18,8 @@ public class UpdatePositionCmdHandler(
 
     public async Task<GenResult<AppUserDto>> Handle(UpdatePositionCmd request, CancellationToken cancellationToken)
     {
-        var newPositionUserId = request.UserId;
-        var newPosition = request.NewPosition!.Value; //Already Validated
+        var newPositionUserId = request.Dto.UserId;
+        var newPosition = request.Dto.NewPosition;
         var teamId = request.PrincipalTeamId;
         var team = request.PrincipalTeam;
 

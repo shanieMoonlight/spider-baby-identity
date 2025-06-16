@@ -5,6 +5,7 @@ using MyIdDemo.Setup;
 using MyIdDemo.Setup.Data;
 using MyIdDemo.Setup.Events;
 using MyIdDemo.Setup.Utils;
+using MyIdDemo.Utils;
 
 
 //------------------------------ Variables ------------------------------//
@@ -66,8 +67,17 @@ if (_app.Environment.IsDevelopment())
     _app.UseSwaggerUI();
 }
 
-
-_app.UseHttpsRedirection();
+if (!_env.IsDevelopment())
+{
+    _app.UseHttpsRedirection();
+}
+else
+{
+    _app.UseWhen(ctx =>
+           !ctx.Request.IsSwaggerRequest(),
+            builder => builder.UseHttpsRedirection()
+       );
+}
 
 
 _app.SetupStaticFilesUse(true);

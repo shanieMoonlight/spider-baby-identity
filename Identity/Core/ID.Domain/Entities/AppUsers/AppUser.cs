@@ -11,8 +11,6 @@ using ID.Domain.Utility.Exceptions;
 using ID.Domain.Utility.Extensions;
 using MassTransit;
 using Microsoft.AspNetCore.Identity;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -69,7 +67,6 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
     /// <summary>
     /// How will 2 factor be verified
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter))]
     public TwoFactorProvider TwoFactorProvider { get; private set; } = TwoFactorProvider.Email; //Everyone has an email
 
     //Delete this????

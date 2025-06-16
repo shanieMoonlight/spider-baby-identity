@@ -31,7 +31,6 @@ using Pagination;
 namespace ID.Presentation.Controllers;
 
 [ApiController]
-//[Route($"{IdRoutes.Base}/[controller]/[action]")]
 [Route($"{IdRoutes.Base}/{IdRoutes.UserManagement.Controller}/[action]")]
 [Authorize]
 //[MntcMinimumAuthenticator.ActionFilter]
@@ -44,10 +43,10 @@ public class UserManagementController(ISender sender) : ControllerBase
     /// </summary>
     /// <param name="dto">DTO containing user info</param>
     /// <returns>The Updated User</returns>
-    [HttpPatch("{userId}/{newPosition}")]
+    [HttpPatch]
     [MntcLeaderMinimumAuthenticator.ActionFilter]
-    public async Task<ActionResult<AppUserDto>> UpdatePosition(Guid userId, int newPosition) =>
-        this.ProcessResult(await sender.Send(new UpdatePositionCmd(userId, newPosition)));
+    public async Task<ActionResult<AppUserDto>> UpdatePosition(UpdatePositionDto dto) =>
+        this.ProcessResult(await sender.Send(new UpdatePositionCmd(dto)));
 
     //------------------------//
 

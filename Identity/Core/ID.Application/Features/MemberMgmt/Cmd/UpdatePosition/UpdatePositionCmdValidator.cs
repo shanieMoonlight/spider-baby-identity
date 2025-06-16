@@ -1,4 +1,3 @@
-
 using FluentValidation;
 using ID.Application.Mediatr.Validation;
 using ID.Domain.Utility.Messages;
@@ -9,13 +8,18 @@ public class UpdatePositionCmdValidator : IsMntcMinimumLeaderValidator<UpdatePos
     public UpdatePositionCmdValidator()
     {
 
-        RuleFor(p => p.UserId)
+        RuleFor(p => p.Dto)
             .NotEmpty()
                     .WithMessage(IDMsgs.Error.IsRequired("{PropertyName}"));
 
-        RuleFor(p => p.NewPosition)
-            .NotEmpty()
-                    .WithMessage(IDMsgs.Error.IsRequired("{PropertyName}"));
+
+        When(p => p.Dto != null, () =>
+        {
+
+            RuleFor(p => p.Dto.UserId)
+                .NotEmpty()
+                        .WithMessage(IDMsgs.Error.IsRequired("{PropertyName}"));
+        });
 
     }
 

@@ -1,6 +1,5 @@
 ﻿using ID.Domain.Utility.Dates;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace ID.Domain.Models;
@@ -34,7 +33,7 @@ public class JwtPackage
     /// <summary>
     /// How will 2 factor be verified
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public TwoFactorProvider TwoFactorProvider { get; private set; } = TwoFactorProvider.Sms;
 
     /// <summary>

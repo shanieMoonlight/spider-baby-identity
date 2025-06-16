@@ -1,6 +1,5 @@
 ﻿using ID.Domain.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace ID.OAuth.Google.Features.SignIn.GoogleCookieSignIn;
 
@@ -13,7 +12,7 @@ public class CookieSignInResultData()
     /// <summary>
     /// How will 2 factor be verified
     /// </summary>
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public TwoFactorProvider TwoFactorProvider { get; private set; } = TwoFactorProvider.Email; //Email always works
 
     public string Message { get; set; } = string.Empty;

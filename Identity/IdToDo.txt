@@ -25,13 +25,6 @@ Make sure teammanager uses the full team with members when updating team members
 
 
 
-
-Add INdexes to tables???
-
-
-       
-
-
 review Team -> mbr?.UpdatePosition
 
 Device Auth
@@ -61,3 +54,7 @@ CookieSignInService Testing (Integration)
 
 
  remove mfaResultData.ExtraInfo????
+
+ HttpPatch should not have query params . use frombody instead
+
+ move to [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]

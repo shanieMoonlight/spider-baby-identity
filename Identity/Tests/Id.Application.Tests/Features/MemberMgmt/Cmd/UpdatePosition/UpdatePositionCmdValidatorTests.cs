@@ -13,7 +13,8 @@ public class UpdatePositionCmdValidatorTests
     {
         // Arrange
         var validator = new UpdatePositionCmdValidator();
-        var command = new UpdatePositionCmd(default, 5);
+        var dto = new UpdatePositionDto(default, 5);
+        var command = new UpdatePositionCmd(dto);
         command.SetAuthenticated_CUSTOMER();
         command.IsLeader = true;
 
@@ -22,7 +23,7 @@ public class UpdatePositionCmdValidatorTests
 
         // Assert
         result.IsValid.ShouldBeFalse();
-        result.ShouldHaveValidationErrorFor(x => x.UserId);
+        result.ShouldHaveValidationErrorFor(x => x.Dto.UserId);
     }
 
     //------------------------------------//
@@ -32,7 +33,8 @@ public class UpdatePositionCmdValidatorTests
     {
         // Arrange
         var validator = new UpdatePositionCmdValidator();
-        var command = new UpdatePositionCmd(default, 5); 
+        var dto = new UpdatePositionDto(default, 5);
+        var command = new UpdatePositionCmd(dto);
         command.SetAuthenticated_MNTC();
         command.IsLeader = true;
 
@@ -41,25 +43,7 @@ public class UpdatePositionCmdValidatorTests
 
         // Assert
         result.IsValid.ShouldBeFalse();
-        result.ShouldHaveValidationErrorFor(x => x.UserId);
-    }
-
-    //------------------------------------//
-    [Fact]
-    public void Validate_ShouldReturnValidationFailure_WhenNewPositionIsNull()
-    {
-        // Arrange
-        var validator = new UpdatePositionCmdValidator();
-        var command = new UpdatePositionCmd(default, null);
-        command.SetAuthenticated_MNTC();
-        command.IsLeader = true;
-
-        // Act
-        var result = validator.TestValidate(command);
-
-        // Assert
-        result.IsValid.ShouldBeFalse();
-        result.ShouldHaveValidationErrorFor(x => x.NewPosition);
+        result.ShouldHaveValidationErrorFor(x => x.Dto.UserId);
     }
 
     //------------------------------------//
@@ -69,7 +53,8 @@ public class UpdatePositionCmdValidatorTests
     {
         // Arrange
         var validator = new UpdatePositionCmdValidator();
-        var command = new UpdatePositionCmd(Guid.NewGuid(), 5);
+        var dto = new UpdatePositionDto(Guid.NewGuid(), 5);
+        var command = new UpdatePositionCmd(dto);
         command.SetAuthenticated_MNTC();
         command.IsLeader = true;
 

@@ -1,16 +1,10 @@
 using ID.Application.AppAbs.ApplicationServices.User;
-using ID.Application.AppAbs.SignIn;
 using ID.Application.AppAbs.TokenVerificationServices;
 using ID.Application.Features.Account.Cmd.Cookies.TwoFactorVerifyCookie;
-using ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerifyCookie;
 using ID.Application.Tests.Utility;
-using ID.Domain.Entities.AppUsers;
 using ID.Domain.Utility.Messages;
-using ID.Tests.Data.Factories;
 using Moq;
-using MyResults;
 using Shouldly;
-using Xunit;
 
 namespace ID.Application.Tests.Features.Account.Cmd.Mfa.TwoFactorVerifyCookie;
 

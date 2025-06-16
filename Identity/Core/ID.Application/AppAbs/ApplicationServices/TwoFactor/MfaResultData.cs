@@ -1,6 +1,4 @@
 ﻿using ID.Domain.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace ID.Application.AppAbs.ApplicationServices.TwoFactor;
 

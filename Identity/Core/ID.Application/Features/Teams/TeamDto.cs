@@ -2,8 +2,7 @@
 using ID.Application.Features.Common.Dtos.User;
 using ID.Application.Features.Teams;
 using ID.Domain.Entities.Teams;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace ID.Application.Features.Teams;
 public class TeamDto
@@ -22,7 +21,7 @@ public class TeamDto
     public List<AppUserDto> Members { get; set; } = [];
 
 
-    [JsonConverter(typeof(StringEnumConverter))]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public TeamType TeamType { get; set; }
 
     public List<SubscriptionDto> Subscriptions = [];

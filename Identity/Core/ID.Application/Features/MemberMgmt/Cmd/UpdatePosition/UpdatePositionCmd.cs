@@ -3,7 +3,10 @@ using ID.Application.Mediatr.Cqrslmps.Commands;
 using ID.Domain.Entities.AppUsers;
 
 namespace ID.Application.Features.MemberMgmt.Cmd.UpdatePosition;
-public record UpdatePositionCmd(Guid UserId, int? NewPosition) : AIdUserAndTeamAwareCommand<AppUser, AppUserDto>;
+
+public record UpdatePositionDto(Guid UserId, int NewPosition);
+
+public record UpdatePositionCmd(UpdatePositionDto Dto) : AIdUserAndTeamAwareCommand<AppUser, AppUserDto>;
 
 
 

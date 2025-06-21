@@ -1,4 +1,5 @@
 ﻿using ControllerHelpers;
+using ID.Application.Dtos.Account.Cookies;
 using ID.Domain.Models;
 using ID.GlobalSettings.Routes;
 using ID.OAuth.Google.Features.SignIn;
@@ -27,7 +28,7 @@ public class AccountController(ISender sender) : ControllerBase
 
     [HttpPost("[action]")]
     [AllowAnonymous]
-    public async Task<ActionResult<JwtPackage>> GoogleCookieSignin(GoogleCookieSignInDto dto) =>
+    public async Task<ActionResult<CookieSignInResultData>> GoogleCookieSignin(GoogleCookieSignInDto dto) =>
         this.ProcessResult(await sender.Send(new GoogleCookieSignInCmd(dto)));
 
 }//Cls

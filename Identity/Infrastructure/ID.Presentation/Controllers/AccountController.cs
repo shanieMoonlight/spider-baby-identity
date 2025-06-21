@@ -2,6 +2,7 @@
 using ControllerHelpers.Responses;
 using ID.Application.AppAbs.MFA.AuthenticatorApps;
 using ID.Application.Authenticators.Teams;
+using ID.Application.Dtos.Account.Cookies;
 using ID.Application.Features.Account.Cmd.AddMntcMember;
 using ID.Application.Features.Account.Cmd.AddSprMember;
 using ID.Application.Features.Account.Cmd.ConfirmEmail;
@@ -132,7 +133,7 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
-    [HttpDelete("[action]")]
+    [HttpPost("[action]")]
     [Authorize]
     public async Task<ActionResult<MessageResponseDto>> RefreshTokenRevoke() =>
            this.ProcessResult(await sender.Send(new RefreshTokenRevokeCmd()));
@@ -152,7 +153,7 @@ public class AccountController(ISender sender) : ControllerBase
     /// <returns></returns>
     [HttpGet("[action]")]
     [Authorize]
-    public async Task<ActionResult<MessageResponseDto>> ResendEmailConfirmation() =>
+    public async Task<ActionResult<MessageResponseDto>> ResendEmailConfirmationAuthorized() =>
         this.ProcessResult(await sender.Send(new ResendEmailConfirmationPrincipalCmd()));
 
     //------------------------//
@@ -198,7 +199,7 @@ public class AccountController(ISender sender) : ControllerBase
     /// Use when already logged in
     /// </summary>
     /// <returns></returns>
-    [HttpGet("[action]/{code}")]
+    [HttpPost("[action]/{code}")]
     public async Task<ActionResult<AppUserDto>> TwoFactorAuthAppEmailComplete(string code) =>
         this.ProcessResult(await sender.Send(new TwoFactorAuthAppEmailCompleteCmd(code)));
 
@@ -208,7 +209,7 @@ public class AccountController(ISender sender) : ControllerBase
     /// Use when already logged in
     /// </summary>
     /// <returns>AppUser</returns>
-    [HttpGet("[action]")]
+    [HttpPost("[action]")]
     public async Task<ActionResult<AppUserDto>> TwoFactorAuthAppComplete([FromBody] TwoFactorAuthAppCompleteRegDto dto) =>
         this.ProcessResult(await sender.Send(new TwoFactorAuthAppCompleteRegCmd(dto)));
 

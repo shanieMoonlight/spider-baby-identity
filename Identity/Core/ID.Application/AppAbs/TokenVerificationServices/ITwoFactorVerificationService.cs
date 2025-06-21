@@ -92,7 +92,7 @@ public interface ITwoFactorVerificationService<TUser> where TUser : AppUser
     /// The <see cref="Task"/> that represents result of the asynchronous operation, true if the token is valid,
     /// otherwise false.
     /// </returns>
-    Task<bool> VerifyTwoFactorTokenAsync(Team team, TUser user, string token);
+    Task<bool> VerifyTwoFactorTokenAsync(Team team, TUser user, string code);
 
     //------------------------------------//
 

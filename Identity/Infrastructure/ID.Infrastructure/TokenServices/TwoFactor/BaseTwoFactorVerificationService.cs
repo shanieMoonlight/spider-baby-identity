@@ -15,8 +15,8 @@ internal abstract class BaseTwoFactorVerificationService<TUser>(IIdUserMgmtServi
     //-----------------------//
 
     public abstract Task<string> GenerateTwoFactorTokenAsync(Team team, TUser user, string tokenProvider);
-    public abstract Task<bool> VerifyTwoFactorTokenInDbAsync(Team team, TUser user, string token);
-    public abstract Task<bool> VerifyTwoFactorTokenInDbAsync(Team team, TUser user, string tokenProvider, string token);
+    public abstract Task<bool> VerifyTwoFactorTokenInDbAsync(Team team, TUser user, string code);
+    public abstract Task<bool> VerifyTwoFactorTokenInDbAsync(Team team, TUser user, string tokenProvider, string code);
 
     //-----------------------//
 
@@ -25,13 +25,13 @@ internal abstract class BaseTwoFactorVerificationService<TUser>(IIdUserMgmtServi
 
     //-----------------------//
 
-    public async Task<bool> VerifyTwoFactorTokenAsync(Team team, TUser user, string token) =>
+    public async Task<bool> VerifyTwoFactorTokenAsync(Team team, TUser user, string code) =>
         user.TwoFactorProvider switch
         {
             //TwoFactorProvider.WhatsApp => await VerifyTwoFactorTokenInDbAsync(user, token),
-            TwoFactorProvider.Sms => await VerifyTwoFactorTokenInDbAsync(team, user, token),
-            TwoFactorProvider.Email => await VerifyTwoFactorTokenInDbAsync(team, user, token),
-            TwoFactorProvider.AuthenticatorApp => await authy.ValidateAsync(user, token),
+            TwoFactorProvider.Sms => await VerifyTwoFactorTokenInDbAsync(team, user, code),
+            TwoFactorProvider.Email => await VerifyTwoFactorTokenInDbAsync(team, user, code),
+            TwoFactorProvider.AuthenticatorApp => await authy.ValidateAsync(user, code),
             //TwoFactorProvider.Authy => await authy.ValidateAsync(user, token),
             _ => false,
         };

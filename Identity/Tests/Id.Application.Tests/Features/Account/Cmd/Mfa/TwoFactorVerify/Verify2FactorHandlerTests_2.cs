@@ -71,7 +71,7 @@ public class Verify2FactorHandlerTests
         var token = "invalid-token";
         var deviceId = "device-123";
 
-        var dto = new Verify2FactorDto { Token = token, DeviceId = deviceId };
+        var dto = new Verify2FactorDto { Code = token, DeviceId = deviceId };
         var command = new Verify2FactorCmd(dto)
         {
         };
@@ -106,7 +106,7 @@ public class Verify2FactorHandlerTests
         var refreshToken = RefreshTokenDataFactory.Create(user: user);
         var jwtPackage = JwtPackageDataFactory.Create(accessToken: "new-access-token");
 
-        var dto = new Verify2FactorDto { Token = token, DeviceId = deviceId };
+        var dto = new Verify2FactorDto { Code = token, DeviceId = deviceId };
         var command = new Verify2FactorCmd(dto)
         {
         };
@@ -153,7 +153,7 @@ public class Verify2FactorHandlerTests
         var deviceId = "device-123";
         var jwtPackage = JwtPackageDataFactory.Create(accessToken: "new-access-token");
 
-        var dto = new Verify2FactorDto { Token = token, DeviceId = deviceId };
+        var dto = new Verify2FactorDto { Code = token, DeviceId = deviceId };
         var command = new Verify2FactorCmd(dto)
         {
         };
@@ -199,7 +199,7 @@ public class Verify2FactorHandlerTests
         var deviceId = "device-123";
         var expectedException = new InvalidOperationException("Service failure");
 
-        var dto = new Verify2FactorDto { Token = token, DeviceId = deviceId, UserId = Guid.NewGuid() };
+        var dto = new Verify2FactorDto { Code = token, DeviceId = deviceId, UserId = Guid.NewGuid() };
         var command = new Verify2FactorCmd(dto)
         { };
 
@@ -228,7 +228,7 @@ public class Verify2FactorHandlerTests
         var token = "valid-token";
         var deviceId = "device-123";
 
-        var dto = new Verify2FactorDto { Token = token, DeviceId = deviceId };
+        var dto = new Verify2FactorDto { Code = token, DeviceId = deviceId };
         var command = new Verify2FactorCmd(dto)
         {
         };
@@ -252,7 +252,7 @@ public class Verify2FactorHandlerTests
         var token = "valid-token";
         var deviceId = "device-123";
 
-        var dto = new Verify2FactorDto { Token = token, DeviceId = deviceId };
+        var dto = new Verify2FactorDto { Code = token, DeviceId = deviceId };
         var command = new Verify2FactorCmd(dto)
         {
             //PrincipalUser = null,

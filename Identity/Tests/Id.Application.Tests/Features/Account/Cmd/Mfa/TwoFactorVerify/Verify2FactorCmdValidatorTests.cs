@@ -39,7 +39,7 @@ public class Verify2FactorCmdValidatorTests
     public void Should_Not_Have_Error_When_Dto_Has_Valid_Email()
     {
         // Arrange
-        var dto = new Verify2FactorDto { Token = "TokenTokenTokenTokenTokenToken", };
+        var dto = new Verify2FactorDto { Code = "TokenTokenTokenTokenTokenToken", };
         var command = new Verify2FactorCmd(dto);
 
         // Act
@@ -56,7 +56,7 @@ public class Verify2FactorCmdValidatorTests
     {
         // Arrange
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-        var dto = new Verify2FactorDto { Token = null};
+        var dto = new Verify2FactorDto { Code = null};
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         var command = new Verify2FactorCmd(dto);
 

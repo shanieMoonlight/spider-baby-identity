@@ -1,8 +1,10 @@
 using ID.Application.AppAbs.SignIn;
+using ID.Application.Dtos.Account.Cookies;
 using ID.Application.Mediatr.CqrsAbs;
 using ID.Application.Utility.ExtensionMethods;
 using ID.Domain.Entities.AppUsers;
 using MyResults;
+
 
 namespace ID.Application.Features.Account.Cmd.Cookies.SignIn;
 public class CookieSignInCmdHandler(
@@ -15,7 +17,7 @@ public class CookieSignInCmdHandler(
     {
         var dto = request.Dto;
         var signInResult = await _preSignInService.Authenticate(dto, cancellationToken);
-        var cookieSignInResultData = new CookieSignInResultData(signInResult);
+        var cookieSignInResultData = signInResult.ToCookieSignInResultData();
 
         if (signInResult.TwoFactorRequired)
         {

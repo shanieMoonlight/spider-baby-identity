@@ -20,8 +20,6 @@ Current: Events created directly with constructors
 
 Suggested:
 
-🧹 6. Clean Up Exception Handling
-Current Issue in EventSetupMT:
 
 Suggested Fix:
 

@@ -96,11 +96,6 @@ Identity/
 - **SQL Server** (LocalDB, Express, or full version)
 - **Git** for version control
 
-### Optional Tools
-- **Azure CLI** (for Azure deployment)
-- **Docker** (for containerized deployment)
-- **Postman** or similar (for API testing)
-
 ### NuGet Package Requirements
 All package versions are centrally managed in `Directory.Packages.props`:
 - Entity Framework Core 8.0.16

@@ -39,13 +39,6 @@ public class StartupData(IConfiguration config, IWebHostEnvironment Environment)
     /// </summary>
     public string COMPANY_NAME_LOGGING => "Spider Baby Web";
 
-    /// <summary>
-    /// Where is the Company Logo stored. USed in emails etc.
-    /// </summary>
-    //protected string LOGO_FILE_NAME => "logo.png";
-    protected string LOGO_FILE_NAME => "stelga_logo.png";
-
-
 
     /// <summary>
     /// Default: "dist"
@@ -104,7 +97,7 @@ public class StartupData(IConfiguration config, IWebHostEnvironment Environment)
     /// </summary>
     /// <returns>A string representing the URL of the company logo.</returns>
     public string GetLogoUrl() =>
-        "https://drive.google.com/file/d/1KDED_3o4dMV98rbSThl4TzKiPAu3JEGj/view";
+        "https://spider-baby-hub.web.app/images/myid/sb-id-demo-logo.png";
 
 
 

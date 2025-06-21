@@ -16,9 +16,15 @@ public class ConfirmPhoneCmdHandler(IPhoneConfirmationService<AppUser> _phoneCon
         var user = request.PrincipalUser; //AUserAwareCommand ensures that this is not null
         var team = request.PrincipalTeam; //AUserAwareCommand ensures that this is not null
 
-        return await _phoneConfService.IsPhoneConfirmedAsync(user)
+        if (await _phoneConfService.IsPhoneConfirmedAsync(user))
+            return BasicResult.Success(IDMsgs.Info.Phone.PHONE_CONFIRMED(user.PhoneNumber ?? "no-phone"));
+
+        var confirmationResult = await _phoneConfService.ConfirmPhoneAsync(team, user, token, user.PhoneNumber ?? "");
+
+        return confirmationResult.Succeeded
             ? BasicResult.Success(IDMsgs.Info.Phone.PHONE_CONFIRMED(user.PhoneNumber ?? "no-phone"))
-            : await _phoneConfService.ConfirmPhoneAsync(team, user, token, user.PhoneNumber ?? "");
+            : BasicResult.BadRequestResult(confirmationResult.Info);
+
     }
 
 

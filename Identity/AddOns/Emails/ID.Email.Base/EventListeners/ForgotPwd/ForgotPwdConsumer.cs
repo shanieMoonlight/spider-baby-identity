@@ -35,8 +35,8 @@ public class ForgotPwdConsumer(
 
 
             string accountsRoute = GetBaseUrl(data.IsCustomerTeam);
-            string pwdResetTknAddress = UrlBuilder.Combine(accountsRoute, nameof(IdGlobalConstants.EmailRoutes.ResetPassword));
-            string pwdResetTknUrl = $"{pwdResetTknAddress}?userId={data.UserId}&resetToken={data.ResetToken}";
+            string pwdResetTknAddress = UrlBuilder.Combine(accountsRoute, IdGlobalConstants.EmailRoutes.ResetPassword);
+            string pwdResetTknUrl = $"{pwdResetTknAddress}?{IdGlobalConstants.EmailRoutes.Params.UserId}={data.UserId}&{IdGlobalConstants.EmailRoutes.Params.ResetToken}={data.ResetToken}";
 
 
             var eDetails = await emailDetailsTemplateGenerator

@@ -7,12 +7,13 @@ internal partial class IdGlobalConstants
     {
         internal const string ConfirmEmail = "confirm-email";
         internal const string ConfirmEmailWithPassword = "confirm-email-with-password";
-        internal const string ResetPassword = "resetpassword";
+        internal const string ResetPassword = "reset-password";
 
         internal static partial class Params
         {
             internal const string UserId = "userid";
             internal const string ConfirmationToken = "confirmationtoken";
+            internal const string ResetToken = "resettoken";
         }
     }
 

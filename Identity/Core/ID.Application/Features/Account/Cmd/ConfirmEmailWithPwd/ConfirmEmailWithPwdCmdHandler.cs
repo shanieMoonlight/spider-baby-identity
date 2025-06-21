@@ -25,10 +25,10 @@ public class ConfirmEmailWithPwdCmdHandler(IFindUserService<AppUser> findUserSer
 
 
         var confirmationResult = await _emailConfService.ConfirmEmailWithPasswordAsync(user.Team!, user, dto.ConfirmationToken, dto.Password);
-        if (confirmationResult.Succeeded)
-            return BasicResult.Success(IDMsgs.Info.Email.EMAIL_CONFIRMED);
-        else
-            return confirmationResult;
+
+        return confirmationResult.Succeeded
+            ? BasicResult.Success(IDMsgs.Info.Email.EMAIL_CONFIRMED)
+            : BasicResult.BadRequestResult(confirmationResult.Info);
     }
 
 }//Cls

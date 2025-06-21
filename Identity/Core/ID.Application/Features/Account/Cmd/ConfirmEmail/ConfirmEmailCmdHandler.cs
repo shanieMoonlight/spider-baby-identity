@@ -27,7 +27,7 @@ public class ConfirmEmailCmdHandler(IFindUserService<AppUser> findUserService, I
         var confirmationResult = await _emailConfService.ConfirmEmailAsync(user.Team!, user, dto.ConfirmationToken);
         return confirmationResult.Succeeded
             ? BasicResult.Success(IDMsgs.Info.Email.EMAIL_CONFIRMED)
-            : confirmationResult;
+            : BasicResult.BadRequestResult(confirmationResult.Info);
     }
 
 }//Cls

@@ -48,7 +48,7 @@ public partial class BasicResult
     /// </summary>
     /// <param name="info">What is wrong with request</param>
     /// <returns>Result with BadRequest status</returns>
-    public static BasicResult BadRequestResult(string? info) =>
+    public static BasicResult BadRequestResult(string? info = null) =>
         new(
             succeeded: false,
             info: info ?? _unknownErrorMessage,

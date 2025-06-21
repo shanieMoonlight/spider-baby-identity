@@ -25,8 +25,8 @@ public class ForgotPwdConsumerTests
     private readonly ForgotPwdConsumer _consumer;
 
     //------------------------------------//
-    
-        public ForgotPwdConsumerTests()
+
+    public ForgotPwdConsumerTests()
     {
         // Setup options
         _globalOptions = GlobalOptionsUtils.InitiallyValidOptions(
@@ -39,7 +39,9 @@ public class ForgotPwdConsumerTests
             claimTypePrefix: "test_claim",
             refreshTokensEnabled: true,
             phoneTokenTimeSpan: TimeSpan.FromMinutes(15)
-        );        _customerOptions = GlobalOptionsUtils.InitiallyValidCustomerOptions(
+        );
+
+        _customerOptions = GlobalOptionsUtils.InitiallyValidCustomerOptions(
             customerAccountsUrl: "https://customer.example.com/accounts",
             maxTeamPosition: 5,
             minTeamPosition: 1,
@@ -100,7 +102,7 @@ public class ForgotPwdConsumerTests
         var expectedEmailDetails = CreateTestEmailDetails();
         var successResult = BasicResult.Success();
 
-        var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, nameof(IdGlobalConstants.EmailRoutes.ResetPassword))}?userId={eventData.UserId}&resetToken={eventData.ResetToken}";
+        var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ResetPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ResetToken}={eventData.ResetToken}";
 
         _mockTemplateGenerator
             .Setup(x => x.GeneratePasswordResetTemplateAsync(
@@ -117,7 +119,7 @@ public class ForgotPwdConsumerTests
         // Assert
         _mockTemplateGenerator.Verify(x => x.GeneratePasswordResetTemplateAsync(
             eventData.Name, eventData.Email, expectedUrl), Times.Once);
-        
+
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }
 
@@ -131,7 +133,7 @@ public class ForgotPwdConsumerTests
         var expectedEmailDetails = CreateTestEmailDetails();
         var successResult = BasicResult.Success();
 
-        var expectedUrl = $"{UrlBuilder.Combine(_globalOptions.MntcAccountsUrl, nameof(IdGlobalConstants.EmailRoutes.ResetPassword))}?userId={eventData.UserId}&resetToken={eventData.ResetToken}";
+        var expectedUrl = $"{UrlBuilder.Combine(_globalOptions.MntcAccountsUrl, IdGlobalConstants.EmailRoutes.ResetPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ResetToken}={eventData.ResetToken}";
 
         _mockTemplateGenerator
             .Setup(x => x.GeneratePasswordResetTemplateAsync(
@@ -148,7 +150,7 @@ public class ForgotPwdConsumerTests
         // Assert
         _mockTemplateGenerator.Verify(x => x.GeneratePasswordResetTemplateAsync(
             eventData.Name, eventData.Email, expectedUrl), Times.Once);
-        
+
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }
 
@@ -162,7 +164,7 @@ public class ForgotPwdConsumerTests
         var expectedEmailDetails = CreateTestEmailDetails();
         var failureResult = BasicResult.NotFoundResult("Email service failed");
 
-        var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, nameof(IdGlobalConstants.EmailRoutes.ResetPassword))}?userId={eventData.UserId}&resetToken={eventData.ResetToken}";
+        var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ResetPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ResetToken}={eventData.ResetToken}";
 
         _mockTemplateGenerator
             .Setup(x => x.GeneratePasswordResetTemplateAsync(
@@ -211,7 +213,7 @@ public class ForgotPwdConsumerTests
         var expectedEmailDetails = CreateTestEmailDetails();
         var successResult = BasicResult.Success();
 
-        var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, nameof(IdGlobalConstants.EmailRoutes.ResetPassword))}?userId={eventData.UserId}&resetToken={eventData.ResetToken}";
+        var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ResetPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ResetToken}={eventData.ResetToken}";
 
         _mockTemplateGenerator
             .Setup(x => x.GeneratePasswordResetTemplateAsync(
@@ -231,13 +233,13 @@ public class ForgotPwdConsumerTests
             eventData.Email,
             expectedUrl),
         Times.Once);
-        
+
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }
 
     //------------------------------------//   
-    
-     [Fact]
+
+    [Fact]
     public async Task HandleEventAsync_ShouldGenerateCorrectResetPasswordUrl_ForCustomer()
     {
         // Arrange
@@ -245,7 +247,7 @@ public class ForgotPwdConsumerTests
         var expectedEmailDetails = CreateTestEmailDetails();
         var successResult = BasicResult.Success();
 
-        var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, nameof(IdGlobalConstants.EmailRoutes.ResetPassword))}?userId={eventData.UserId}&resetToken={eventData.ResetToken}";
+        var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ResetPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ResetToken}={eventData.ResetToken}";
 
         _mockTemplateGenerator
             .Setup(x => x.GeneratePasswordResetTemplateAsync(
@@ -262,12 +264,12 @@ public class ForgotPwdConsumerTests
         // Assert
         _mockTemplateGenerator.Verify(x => x.GeneratePasswordResetTemplateAsync(
             eventData.Name, eventData.Email, expectedUrl), Times.Once);
-        
+
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }
 
     //------------------------------------//   
-     [Fact]
+    [Fact]
     public async Task HandleEventAsync_ShouldGenerateCorrectResetPasswordUrl_ForMaintenance()
     {
         // Arrange
@@ -275,7 +277,7 @@ public class ForgotPwdConsumerTests
         var expectedEmailDetails = CreateTestEmailDetails();
         var successResult = BasicResult.Success();
 
-        var expectedUrl = $"{UrlBuilder.Combine(_globalOptions.MntcAccountsUrl, nameof(IdGlobalConstants.EmailRoutes.ResetPassword))}?userId={eventData.UserId}&resetToken={eventData.ResetToken}";
+        var expectedUrl = $"{UrlBuilder.Combine(_globalOptions.MntcAccountsUrl, IdGlobalConstants.EmailRoutes.ResetPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ResetToken}={eventData.ResetToken}";
 
         _mockTemplateGenerator
             .Setup(x => x.GeneratePasswordResetTemplateAsync(
@@ -292,7 +294,7 @@ public class ForgotPwdConsumerTests
         // Assert
         _mockTemplateGenerator.Verify(x => x.GeneratePasswordResetTemplateAsync(
             eventData.Name, eventData.Email, expectedUrl), Times.Once);
-        
+
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }
 
@@ -319,7 +321,7 @@ public class ForgotPwdConsumerTests
 
     //------------------------------------//
 
-    [Fact] 
+    [Fact]
     public async Task HandleEventAsync_ShouldCallEmailServiceOnlyOnce()
     {
         // Arrange

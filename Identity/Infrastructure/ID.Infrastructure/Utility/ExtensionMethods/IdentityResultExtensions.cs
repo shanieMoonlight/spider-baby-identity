@@ -13,7 +13,7 @@ public static class IdentityResultExtensions
     {
         var info = string.Join(
                  ", " + Environment.NewLine,
-                idResult.Errors.Select(err => "Code: " + err.Code + Environment.NewLine + err.Description)
+                idResult.Errors.Select(err => $"Code: {err.Code}{Environment.NewLine}Description: {err.Description}{Environment.NewLine}")
             );
 
         return idResult.Succeeded

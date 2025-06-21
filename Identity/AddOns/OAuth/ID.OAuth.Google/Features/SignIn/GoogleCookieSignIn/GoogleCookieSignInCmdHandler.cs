@@ -1,6 +1,7 @@
 using ID.Application.AppAbs.ApplicationServices.TwoFactor;
 using ID.Application.AppAbs.SignIn;
 using ID.Application.AppAbs.TokenVerificationServices;
+using ID.Application.Dtos.Account.Cookies;
 using ID.Application.Mediatr.CqrsAbs;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;

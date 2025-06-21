@@ -28,7 +28,7 @@ public class Verify2FactorHandler(
             return GenResult<JwtPackage>.UnauthorizedResult(IDMsgs.Error.Authorization.INVALID_AUTH);
 
 
-        bool validVerification = await _2FactorService.VerifyTwoFactorTokenAsync(team, user, dto.Token);
+        bool validVerification = await _2FactorService.VerifyTwoFactorTokenAsync(team, user, dto.Code);
         if (!validVerification)
             return GenResult<JwtPackage>.BadRequestResult(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_TOKEN);
 

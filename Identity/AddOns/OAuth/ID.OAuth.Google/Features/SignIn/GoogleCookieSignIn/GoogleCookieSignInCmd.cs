@@ -1,3 +1,4 @@
+using ID.Application.Dtos.Account.Cookies;
 using ID.Application.Mediatr.Cqrslmps.Commands;
 
 namespace ID.OAuth.Google.Features.SignIn.GoogleCookieSignIn;

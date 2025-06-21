@@ -19,7 +19,7 @@ public class Verify2FactorCmdValidator : IsAuthenticatedValidator<Verify2FactorC
 
         When(p => p.Dto is not null, () =>
         {
-            RuleFor(p => p.Dto.Token)
+            RuleFor(p => p.Dto.Code)
               .NotEmpty()
                       .WithMessage(IDMsgs.Error.IsRequired("{PropertyName}"));
 

@@ -19,7 +19,11 @@ public class ResetPwdHandler(IFindUserService<AppUser> findUserService, IPwdRese
             return BasicResult.NotFoundResult(IDMsgs.Error.Authorization.INVALID_AUTH);
 
 
-        return await _pwdReset.ResetPasswordAsync(user.Team!, user, dto.ResetToken, dto.NewPassword, cancellationToken);
+        var resetResult =   await _pwdReset.ResetPasswordAsync(user.Team!, user, dto.ResetToken, dto.NewPassword, cancellationToken);
+
+        return !resetResult.Succeeded
+            ? BasicResult.BadRequestResult(resetResult.Info)
+            : BasicResult.Success(IDMsgs.Info.Passwords.PASSWORD_CHANGE_SUCCESSFUL);
     }
 
 }//Cls

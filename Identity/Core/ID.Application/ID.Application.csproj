@@ -69,10 +69,4 @@
       <ProjectReference Include="..\ID.IntegrationEvents\ID.IntegrationEvents.csproj" />
     </ItemGroup>
 
-
-
-    <ItemGroup>
-      <Folder Include="Dtos\Account\Cookies\" />
-    </ItemGroup>
-
 </Project>

@@ -41,7 +41,7 @@ public class AccountController(ISender sender, ILogger<AccountController> logger
     /// <returns></returns>
     [HttpGet("[action]")]
     [Authorize]
-    public async Task<ActionResult<MessageResponseDto>> ResendPhoneConfirmation() =>
+    public async Task<ActionResult<MessageResponseDto>> ResendPhoneConfirmationAuthorized() =>
         this.ProcessResult(await sender.Send(new ResendPhoneConfirmationPrincipalCmd()), logger);
 
     //------------------------------------//

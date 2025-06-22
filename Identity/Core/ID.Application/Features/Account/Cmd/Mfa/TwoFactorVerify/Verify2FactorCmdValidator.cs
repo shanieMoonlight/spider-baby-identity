@@ -9,7 +9,7 @@ namespace ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerify;
 /// User must already be logged in to verify 2 factor authentication.
 /// Hence, IsAuthenticatedValidator
 /// </summary>
-public class Verify2FactorCmdValidator : IsAuthenticatedValidator<Verify2FactorCmd>
+public class Verify2FactorCmdValidator : AbstractValidator<Verify2FactorCmd>
 {
     public Verify2FactorCmdValidator()
     {
@@ -22,6 +22,10 @@ public class Verify2FactorCmdValidator : IsAuthenticatedValidator<Verify2FactorC
             RuleFor(p => p.Dto.Code)
               .NotEmpty()
                       .WithMessage(IDMsgs.Error.IsRequired("{PropertyName}"));
+
+            RuleFor(p => p.Dto.Token)
+             .NotEmpty()
+                     .WithMessage(IDMsgs.Error.IsRequired("{PropertyName}"));
 
         });
 

@@ -5,8 +5,8 @@ using ID.Domain.Entities.Refreshing.ValueObjects;
 using ID.Infrastructure.Auth.JWT.Setup;
 using ID.Infrastructure.Persistance.Abstractions.Repos;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.RefreshTokens;
+using ID.Infrastructure.Utility;
 using Microsoft.Extensions.Options;
-using System.Security.Cryptography;
 
 namespace ID.Infrastructure.Auth.JWT.AppServiceImps;
 
@@ -47,7 +47,7 @@ internal class JwtRefreshTokenService<TUser>(
     /// <inheritdoc />
     public async Task<IdRefreshToken> GenerateTokenAsync(TUser user, CancellationToken cancellationToken)
     {
-        var tokenPayload = JwtRefreshTokenService<TUser>.GeneratePayload();
+        var tokenPayload = RandomTokenGenerator.Generate();
         var token = IdRefreshToken.Create(
             TokenPayload.Create(tokenPayload),
             user,
@@ -65,7 +65,7 @@ internal class JwtRefreshTokenService<TUser>(
     /// <inheritdoc />
     public async Task<IdRefreshToken> UpdateTokenPayloadAsync(IdRefreshToken refreshToken, CancellationToken cancellationToken = default)
     {
-        var tokenPayload = JwtRefreshTokenService<TUser>.GeneratePayload();
+        var tokenPayload = RandomTokenGenerator.Generate();
         refreshToken.Update(
             TokenPayload.Create(tokenPayload),
             TokenLifetime.Create(_options.RefreshTokenTimeSpan)
@@ -75,14 +75,6 @@ internal class JwtRefreshTokenService<TUser>(
         await _uow.SaveChangesAsync(cancellationToken);
 
         return refreshToken;
-    }
-
-    //-----------------------//   
-
-    private static string GeneratePayload()
-    {
-        var tokenLength = RandomNumberGenerator.GetInt32(100, 120);
-        return Convert.ToBase64String(RandomNumberGenerator.GetBytes(tokenLength));
     }
 
 

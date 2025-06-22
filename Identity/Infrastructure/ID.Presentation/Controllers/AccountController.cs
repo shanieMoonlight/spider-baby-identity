@@ -175,14 +175,14 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
-    //[AllowAnonymous]
+    [AllowAnonymous]
     [HttpPost($"{IdRoutes.Account.Actions.TwoFactorVerification}")]
     public async Task<ActionResult<JwtPackage>> TwoFactorVerification([FromBody] Verify2FactorDto dto) =>
         this.ProcessResult(await sender.Send(new Verify2FactorCmd(dto)));
 
     //------------------------//
 
-    //[AllowAnonymous]
+    [AllowAnonymous]
     [HttpPost($"{IdRoutes.Account.Actions.TwoFactorVerificationCookie}")]
     public async Task<ActionResult<JwtPackage>> TwoFactorVerificationCookie([FromBody] Verify2FactorCookieDto dto) =>
         this.ProcessResult(await sender.Send(new Verify2FactorCookieCmd(dto)));

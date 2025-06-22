@@ -8,7 +8,7 @@ using Shouldly;
 namespace ID.Application.Customers.Tests.Setup;
 public class IdApplicationSetupExtensionsTests
 {
-    private readonly IdGlobalSetupOptions_CUSTOMER setupOptions = new()
+    private readonly IdGlobalSetupOptions_CUSTOMER _setupOptions = new()
     {
         CustomerAccountsUrl = "https://example.com/accounts"
     };
@@ -22,7 +22,7 @@ public class IdApplicationSetupExtensionsTests
         var services = new ServiceCollection();
 
         // Act
-        services.AddMyIdCustomers(setupOptions);
+        services.AddMyIdCustomers(_setupOptions);
 
         // Assert
 
@@ -37,6 +37,7 @@ public class IdApplicationSetupExtensionsTests
         validatorRegistrations.Count.ShouldBeGreaterThan(0, "No validators were registered");
 
     }
+
     //------------------------------------//
 
     [Fact]
@@ -46,7 +47,7 @@ public class IdApplicationSetupExtensionsTests
         var services = new ServiceCollection();
 
         // Act
-        services.AddMyIdCustomers(setupOptions);
+        services.AddMyIdCustomers(_setupOptions);
 
         // Assert
 

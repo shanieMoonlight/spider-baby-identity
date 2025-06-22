@@ -44,10 +44,8 @@ public class LoginHandler(
         {
             var pkg = await _jwtPackageProvider.CreateJwtPackageWithTwoFactorRequiredAsync(
                  signInResult.User!, 
-                 signInResult.Team!,  
                  signInResult.MfaResultData?.TwoFactorProvider ?? TwoFactorProvider.Email,
                  signInResult.MfaResultData?.ExtraInfo,
-                 dto.DeviceId,
                  cancellationToken);
             return GenResult<JwtPackage>.PreconditionRequiredResult(pkg);
         }

@@ -17,16 +17,17 @@ public class AtLeastOnePropertyAttribute(params string[] propertyList) : Validat
     public override object TypeId { get { return this; } }
 
 
+
     //------------------------------//
 
 
     // Override FormatErrorMessage to dynamically build the error message
-    public override string FormatErrorMessage(string name) => 
+    public override string FormatErrorMessage(string name) =>
         $"You must supply at least one of [{string.Join(", ", PropertyList)}]";
 
 
 
-    public override bool IsValid(object? value)
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         foreach (string propertyName in PropertyList)
         {
@@ -36,16 +37,23 @@ public class AtLeastOnePropertyAttribute(params string[] propertyList) : Validat
                 var propertyValue = propertyInfo?.GetValue(value, null);
 
                 if (propertyInfo is not null && propertyValue is not null && !string.IsNullOrWhiteSpace(propertyValue.ToString()))
-                    return true;
+                    return ValidationResult.Success;
 
             }
             catch (Exception)
             {
-                return false;
+                return new ValidationResult(
+                    $"Error accessing property '{propertyName}'.",
+                    [propertyName]
+                );
             }
         }
 
-        return false;
+        // Use a descriptive key for the error
+        return new ValidationResult(
+            FormatErrorMessage(validationContext.DisplayName),
+            ["AtLeastOneProperty"] // This will be the key in the errors dictionary
+        );
     }
 
 

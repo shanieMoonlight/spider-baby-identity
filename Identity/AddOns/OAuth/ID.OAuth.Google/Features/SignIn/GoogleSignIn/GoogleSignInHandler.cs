@@ -97,10 +97,8 @@ public class GoogleSignInHandler(
 
         JwtPackage jwtPackage = await _jwtPackageProvider.CreateJwtPackageWithTwoFactorRequiredAsync(
            user: user,
-           team: team,
            provider: mfaResultData.TwoFactorProvider,
            extraInfo: mfaResultData.ExtraInfo,
-           currentDeviceId: currentDeviceId,
            cancellationToken: cancellationToken);
 
         return GenResult<JwtPackage>.Success(jwtPackage);

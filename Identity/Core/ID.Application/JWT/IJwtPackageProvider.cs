@@ -25,10 +25,8 @@ public interface IJwtPackageProvider
     /// <returns>JWT package configured for two-factor authentication flow</returns>
     Task<JwtPackage> CreateJwtPackageWithTwoFactorRequiredAsync(
         AppUser user,
-        Team team,
         TwoFactorProvider provider,
         string? extraInfo = null,
-        string? currentDeviceId = null,
         CancellationToken cancellationToken = default);
 
     /// <summary>

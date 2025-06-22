@@ -10,6 +10,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="GlobalUsings.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="GlobalUsings.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="coverlet.collector" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" />
         <PackageReference Include="Lamar" />
@@ -28,6 +36,7 @@
         <ProjectReference Include="..\..\Core\ID.GlobalSettings\ID.GlobalSettings.csproj" />
         <!--<ProjectReference Include="..\..\ID.API\ID.API.csproj" />-->
         <ProjectReference Include="..\ID.Tests.Data\ID.Tests.Data.csproj" />
+        <ProjectReference Include="..\Id.Tests.Utility\ID.Tests.Utility.csproj" />
     </ItemGroup>
     
     <ItemGroup>

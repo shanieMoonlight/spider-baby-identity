@@ -134,7 +134,7 @@ public class LoginHandlerTests_2
         var result = await _handler.Handle(loginCmd, CancellationToken.None);
 
         // Assert
-        result.Value?.TwoStepVerificationRequired.ShouldBeTrue();
+        result.Value?.TwoFactorVerificationRequired.ShouldBeTrue();
         _mockPackageProvider.Verify(x => x.CreateJwtPackageWithTwoFactorRequiredAsync(
                 It.IsAny<AppUser>(), 
                 It.IsAny<Team>(), 

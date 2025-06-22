@@ -38,7 +38,7 @@ public static class JwtPackageDataFactory
                 new(nameof(JwtPackage.ExtraInfo),  () => extraInfo ),
                 //new PropertyAssignment("_teamSubscriptions",  () => subscriptions ),
                 new(nameof(JwtPackage.TwoFactorProvider),  () => twoFactorProvider ),
-                new(nameof(JwtPackage.TwoStepVerificationRequired),  () => twoStepVerificationRequired ),
+                new(nameof(JwtPackage.TwoFactorVerificationRequired),  () => twoStepVerificationRequired ),
                 new(nameof(JwtPackage.ExtraInfo),  () => extraInfo )
 
             };

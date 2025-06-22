@@ -3,6 +3,7 @@ using ID.Application.AppAbs.FromApp;
 using ID.Application.AppAbs.Messaging;
 using ID.Application.AppAbs.MFA.AuthenticatorApps;
 using ID.Application.AppAbs.Setup;
+using ID.Application.MFA;
 using ID.Domain.Abstractions.PasswordValidation;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
@@ -10,17 +11,15 @@ using ID.Infrastructure.Auth;
 using ID.Infrastructure.Auth.Cookies;
 using ID.Infrastructure.Auth.JWT.Setup;
 using ID.Infrastructure.Claims.Services;
-using ID.Infrastructure.Claims.Services.Abs;
-using ID.Infrastructure.Claims.Services.Imps;
 using ID.Infrastructure.DomainServices;
 using ID.Infrastructure.Jobs;
 using ID.Infrastructure.Persistance.EF.Setup;
-using ID.Infrastructure.Persistance.EF.Setup.Options;
 using ID.Infrastructure.Services.FromApp;
 using ID.Infrastructure.Services.Google;
 using ID.Infrastructure.Services.Initialization;
 using ID.Infrastructure.Services.Initialization.UsersAndRoles;
 using ID.Infrastructure.Services.Messaging;
+using ID.Infrastructure.Services.MFA;
 using ID.Infrastructure.Services.PasswordValidation;
 using ID.Infrastructure.Setup.Options;
 using ID.Infrastructure.Setup.Passwords;
@@ -113,6 +112,8 @@ public static class IdInfrastructureSetupExtensions
     /// <param name="services">Collection of services</param>
     private static IServiceCollection ConfigureDependencyInjection<TUser>(this IServiceCollection services, IdInfrastructureSetupOptions setupOptions) where TUser : AppUser
     {
+        services.AddMemoryCache(); // <-- Add this line
+
         services.AddDomainServices<TUser>();
 
         //Should be replaced by Twilio or something like that. The user will choose
@@ -130,6 +131,9 @@ public static class IdInfrastructureSetupExtensions
 
 
         services.TryAddTransient<IIdPasswordValidator, IdPasswordValidator>();
+
+        services.TryAddTransient<ITwofactorUserIdCacheService, TwofactorUserIdCacheService>();
+
 
 
 

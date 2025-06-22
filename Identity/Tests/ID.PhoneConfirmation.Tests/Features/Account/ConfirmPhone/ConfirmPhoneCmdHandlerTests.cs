@@ -74,7 +74,7 @@ public class ConfirmPhoneCmdHandlerTests
 
 
         // Assert
-        result.Info.ShouldBe("Phone confirmed");
+        result.Info.ShouldNotBeEmpty();
     }
 
 

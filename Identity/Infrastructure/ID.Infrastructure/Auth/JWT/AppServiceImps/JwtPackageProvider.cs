@@ -1,4 +1,5 @@
 using ID.Application.JWT;
+using ID.Application.MFA;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Refreshing;
 using ID.Domain.Entities.Teams;
@@ -22,6 +23,7 @@ namespace ID.Infrastructure.Auth.JWT.AppServiceImps;
 public class JwtPackageProvider(
     IJwtBuilder _jwtBuilder,
     IJwtRefreshTokenService<AppUser> _refreshTokenService,
+    ITwofactorUserIdCacheService _twofactorUserIdCache,
     IOptions<JwtOptions> _jwtOptions,
     IOptions<IdGlobalOptions> _globalOptionsProvider) : IJwtPackageProvider
 {
@@ -41,23 +43,22 @@ public class JwtPackageProvider(
     /// <param name="currentDeviceId">Optional device identifier for the current session</param>
     /// <param name="cancellationToken">Token to monitor for cancellation requests</param>
     /// <returns>JWT package configured for two-factor authentication flow</returns>
-    public async Task<JwtPackage> CreateJwtPackageWithTwoFactorRequiredAsync(
+    public Task<JwtPackage> CreateJwtPackageWithTwoFactorRequiredAsync(
         AppUser user,
-        Team team,
         TwoFactorProvider provider,
         string? extraInfo = null,
-        string? currentDeviceId = null,
         CancellationToken cancellationToken = default)
     {
-        string encodedToken = await _jwtBuilder.CreateJwtWithTwoFactorRequiredAsync(user, team, currentDeviceId);
-
         long expiration = GetTokenExpirationUnixTimestamp();
+        string twoFactorToken = _twofactorUserIdCache.StoreUserId(user.Id); 
 
-        return JwtPackage.CreateWithTwoFactoRequired(
-            encodedToken,
+        var pkg =  JwtPackage.CreateWithTwoFactoRequired(
+            twoFactorToken,
             expiration,
             provider,
             extraInfo);
+
+        return Task.FromResult(pkg);
     }
 
     //-----------------------------//
@@ -107,7 +108,7 @@ public class JwtPackageProvider(
     /// <param name="currentDeviceId">Optional device identifier for audit and security</param>
     /// <returns>A JWT package with new access token and potentially updated refresh token</returns>
     public async Task<JwtPackage> RefreshJwtPackageAsync(
-            IdRefreshToken existingToken,
+        IdRefreshToken existingToken,
         AppUser user,
         Team team,
         string? currentDeviceId = null)

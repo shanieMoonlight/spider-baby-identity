@@ -36,27 +36,35 @@ public class Verify2FactorCmdValidatorTests
     //------------------------------------//
 
     [Fact]
-    public void Should_Not_Have_Error_When_Dto_Has_Valid_Email()
+    public void Should_Not_Have_Error_When_Dto_Has_Valid_CodeAndToken()
     {
         // Arrange
-        var dto = new Verify2FactorDto { Code = "TokenTokenTokenTokenTokenToken", };
+        var dto = new Verify2FactorDto
+        {
+            Code = "CODECODECODECODE",
+            Token = "TokenTokenTokenToken"
+        };
         var command = new Verify2FactorCmd(dto);
 
         // Act
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldNotHaveValidationErrorFor(cmd => cmd.Dto);
+        result.ShouldNotHaveAnyValidationErrors();
     }
 
     //------------------------------------//
 
     [Fact]
-    public void Should_Not_Have_Error_When_Dto_Has_Valid_UserId()
+    public void Should_Have_Error_When_Dto_Code_Is_Null()
     {
         // Arrange
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-        var dto = new Verify2FactorDto { Code = null};
+        var dto = new Verify2FactorDto
+        {
+            Code = null,
+            Token = "TokenTokenTokenToken"
+        };
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         var command = new Verify2FactorCmd(dto);
 
@@ -64,7 +72,69 @@ public class Verify2FactorCmdValidatorTests
         var result = _validator.TestValidate(command);
 
         // Assert
-        result.ShouldNotHaveValidationErrorFor(cmd => cmd.Dto);
+        result.ShouldHaveValidationErrors();
+    }
+
+    //------------------------------------//
+
+    [Fact]
+    public void Should_Have_Error_When_Dto_Code_Is_Empty()
+    {
+        // Arrange
+        var dto = new Verify2FactorDto
+        {
+            Code = "   ",
+            Token = "TokenTokenTokenToken"
+        };
+        var command = new Verify2FactorCmd(dto);
+
+        // Act
+        var result = _validator.TestValidate(command);
+
+        // Assert
+        result.ShouldHaveValidationErrors();
+    }
+
+    //------------------------------------//
+
+    [Fact]
+    public void Should_Have_Error_When_Dto_Token_Is_Null()
+    {
+        // Arrange
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+        var dto = new Verify2FactorDto
+        {
+            Token = null,
+            Code = "CodeCodeCodeCode"
+        };
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+        var command = new Verify2FactorCmd(dto);
+
+        // Act
+        var result = _validator.TestValidate(command);
+
+        // Assert
+        result.ShouldHaveValidationErrors();
+    }
+
+    //------------------------------------//
+
+    [Fact]
+    public void Should_Have_Error_When_Dto_Token_Is_Empty()
+    {
+        // Arrange
+        var dto = new Verify2FactorDto
+        {
+            Token = "   ",
+            Code = "CodeCodeCodeCodeCode"
+        };
+        var command = new Verify2FactorCmd(dto);
+
+        // Act
+        var result = _validator.TestValidate(command);
+
+        // Assert
+        result.ShouldHaveValidationErrors();
     }
 
     //------------------------------------//

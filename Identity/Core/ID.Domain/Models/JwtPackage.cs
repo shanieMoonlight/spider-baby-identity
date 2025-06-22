@@ -16,7 +16,7 @@ public class JwtPackage
     public string AccessToken { get; private set; }
 
     /// <summary>
-    /// Actual token
+    /// Token for refreshing the access token without re-authenticating
     /// </summary>
     public string? RefreshToken { get; private set; }
 
@@ -26,9 +26,13 @@ public class JwtPackage
     public long Expiration { get; private set; }
 
     /// <summary>
+    /// Token for verififying the user with 2-factor authentication
+    /// </summary>
+    public string? TwoFactorToken { get; private set; }
+    /// <summary>
     /// Does the user need to verify themselves with a code as well
     /// </summary>
-    public bool TwoStepVerificationRequired { get; private set; } = false;
+    public bool TwoFactorVerificationRequired { get; private set; } = false;
 
     /// <summary>
     /// How will 2 factor be verified
@@ -40,6 +44,11 @@ public class JwtPackage
     /// Any details you need to add: I.E. Alternative 2-factor provider if first one fails 
     /// </summary>
     public string? ExtraInfo { get; private set; }
+    
+    //- - - - - - - - - - - - //
+
+    public DateTime ExpirationDate => Expiration.ConvertFromUnixTimestamp();
+
 
     //------------------------//
 
@@ -76,19 +85,16 @@ public class JwtPackage
     /// NO refresh token here. Wait until 2-Factor is verified
     /// </summary>
     /// <param name="provider"></param>
-    public static JwtPackage CreateWithTwoFactoRequired(string accessToken, long expiration, TwoFactorProvider provider, string? extraInfo = null) =>
-        new(accessToken)
+    public static JwtPackage CreateWithTwoFactoRequired(string twoFactorToken, long expiration, TwoFactorProvider provider, string? extraInfo = null) =>
+        new(string.Empty)
         {
             Expiration = expiration,
             TwoFactorProvider = provider,
-            TwoStepVerificationRequired = true,
-            ExtraInfo = extraInfo
+            TwoFactorVerificationRequired = true,
+            ExtraInfo = extraInfo,
+            TwoFactorToken = twoFactorToken
         };
 
-
-    //------------------------//
-
-    public DateTime ExpirationDate => Expiration.ConvertFromUnixTimestamp();
 
     //------------------------//
 
@@ -104,7 +110,5 @@ public class JwtPackage
 
 
     }
-
-    //------------------------//
 
 }//Cls

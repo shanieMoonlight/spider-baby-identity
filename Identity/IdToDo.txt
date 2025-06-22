@@ -55,4 +55,5 @@ CookieSignInService Testing (Integration)
  remove mfaResultData.ExtraInfo????
 
 
- move to [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+
+ retest Logins, Verify2Factor , JwtProvider 

@@ -1,5 +1,4 @@
-﻿using ID.Application.Features.Account.Cmd.Cookies.SignIn;
-using ID.Domain.Entities.AppUsers;
+﻿using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 
 namespace ID.Application.AppAbs.SignIn;

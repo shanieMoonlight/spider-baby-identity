@@ -2,6 +2,7 @@ using ID.Application.AppAbs.ApplicationServices.User;
 using ID.Application.AppAbs.TokenVerificationServices;
 using ID.Application.JWT;
 using ID.Application.Mediatr.CqrsAbs;
+using ID.Application.MFA;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Models;
 using ID.Domain.Utility.Messages;
@@ -11,6 +12,7 @@ namespace ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerify;
 public class Verify2FactorHandler(
     IJwtPackageProvider _jwtPackageProvider,
     IFindUserService<AppUser> _findUserService,
+    ITwofactorUserIdCacheService _twofactorUserIdCache,
     ITwoFactorVerificationService<AppUser> _2FactorService)
     : IIdCommandHandler<Verify2FactorCmd, JwtPackage>
 {
@@ -19,13 +21,13 @@ public class Verify2FactorHandler(
     {
         var dto = request.Dto;
 
-        var userId = request.PrincipalUserId ?? dto.UserId; //Two factor failure may have returned a Jwt or Cookie. If not clien cust supply an ID
+        var userId = _twofactorUserIdCache.GetUserId(dto.Token);
         var user = await _findUserService.FindUserWithTeamDetailsAsync(userId: userId);
         var team = user?.Team; 
 
 
         if (user is null || team is null)
-            return GenResult<JwtPackage>.UnauthorizedResult(IDMsgs.Error.Authorization.INVALID_AUTH);
+            return GenResult<JwtPackage>.BadRequestResult(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_TOKEN); //Just blame it on the token no more info should be revealed
 
 
         bool validVerification = await _2FactorService.VerifyTwoFactorTokenAsync(team, user, dto.Code);

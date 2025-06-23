@@ -1,19 +1,6 @@
-using ID.Application.AppAbs.ApplicationServices.TwoFactor;
 using ID.Application.AppAbs.SignIn;
-using ID.Application.AppAbs.TokenVerificationServices;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Entities.Teams;
-using ID.Domain.Models;
 using ID.Domain.Utility.Messages;
-using ID.OAuth.Google.Data;
-using ID.OAuth.Google.Features.SignIn;
 using ID.OAuth.Google.Features.SignIn.GoogleCookieSignIn;
-using ID.OAuth.Google.Services.Abs;
-using ID.Tests.Data.Factories;
-using Moq;
-using MyResults;
-using Shouldly;
-using Xunit;
 
 namespace ID.OAuth.Google.Tests.Features.SignIn.GoogleCookieSignIn;
 
@@ -148,7 +135,7 @@ public class GoogleCookieSignInCmdHandlerTests
         
         // Verify the cookie was attached
         _mockCookieSignInService.Verify(
-            s => s.SignInAsync(rememberMe, user, team, false, deviceId),
+            s => s.CreateWithTwoFactorRequiredAsync(rememberMe, user, deviceId),
             Times.Once);
     }
 
@@ -235,9 +222,9 @@ public class GoogleCookieSignInCmdHandlerTests
         result.Value.ShouldNotBeNull();
         result.Value.Succeeded.ShouldBeTrue();
         
-        // Verify the cookie was attached with SignInWithTwoFactorRequiredAsync (incorrect method name?)
+        // Verify the correct cookie sign-in method is called
         _mockCookieSignInService.Verify(
-            s => s.CreateWithTwoFactorRequiredAsync(rememberMe, user, deviceId),
+            s => s.SignInAsync(rememberMe, user, team, false, deviceId),
             Times.Once);
         
         // Verify OTP was not sent

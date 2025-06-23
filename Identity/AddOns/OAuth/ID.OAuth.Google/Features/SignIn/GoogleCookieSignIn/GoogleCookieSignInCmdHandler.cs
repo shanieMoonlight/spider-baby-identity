@@ -38,70 +38,34 @@ public class GoogleCookieSignInCmdHandler(
             return userResult.Convert<CookieSignInResultData>();
 
         AppUser user = userResult.Value!;  //Success is non-null
+        Team team = user.Team!; 
 
 
-        var tfEnabled = await _2FactorService.IsTwoFactorEnabledAsync(user);
+        var twoFactorEnabled = await _2FactorService.IsTwoFactorEnabledAsync(user);
 
-        if (tfEnabled)
-        {
-            var twoFactorResult = await SendTwoFactoAndAttachCookieAsync(
-                   user: user,
-                   team: user.Team!,
-                   dto.RememberMe,
-                   currentDeviceId: dto.DeviceId);
-
-            if (!twoFactorResult.Succeeded)
-                return twoFactorResult.Convert<CookieSignInResultData>();
-
-            var mfaResultData = twoFactorResult.Value!; //Success is non-null
-            var data = CookieSignInResultData.CreateWithTwoFactoRequired(
-                provider: mfaResultData.TwoFactorProvider,
-                message: IDMsgs.Error.Authorization.TWO_FACTOR_REQUIRED(mfaResultData.TwoFactorProvider));
-
-            return GenResult<CookieSignInResultData>.PreconditionRequiredResult(data); 
-        }
-        else
-        {
-            await AttachCookieAsync(
+        return twoFactorEnabled
+            ? await ReturnTwoFactorCookieAsync(
+               user: user,
+               team: team,
+               dto.RememberMe,
+               currentDeviceId: dto.DeviceId)
+            : await ReturnStandardCookieAsync(
                  user: user,
+                 team: team,
                  dto.RememberMe,
                  currentDeviceId: dto.DeviceId);
-        }
 
-        return GenResult<CookieSignInResultData>.Success(CookieSignInResultData.Success());
 
     }
 
     //-----------------------------//
 
-    private async Task AttachCookieAsync(
-        AppUser user,
-        bool rememberMe,
-        string? currentDeviceId)
-    {
-        await _cookieSignInService.CreateWithTwoFactorRequiredAsync(
-                isPersistent: rememberMe,
-                user: user!,
-                currentDeviceId);
-
-    }
-
-
-    //- - - - - - - - - - - - - - -//
-
-
-    private async Task<GenResult<MfaResultData>> SendTwoFactoAndAttachCookieAsync(
+    private async Task<GenResult<CookieSignInResultData>> ReturnStandardCookieAsync(
         AppUser user,
         Team team,
         bool rememberMe,
-        string? currentDeviceId = null)
+        string? currentDeviceId)
     {
-        var tfResultMsg = await _twoFactorMsgService.SendOTPFor2FactorAuth(team, user);
-        if (!tfResultMsg.Succeeded)
-            return GenResult<MfaResultData>.Failure(tfResultMsg.Info);
-
-        MfaResultData mfaResultData = tfResultMsg.Value!; //Success is non-null
-
         await _cookieSignInService.SignInAsync(
                 isPersistent: rememberMe,
                 user: user!,
@@ -109,10 +73,37 @@ public class GoogleCookieSignInCmdHandler(
                 false,
                 currentDeviceId: currentDeviceId);
 
-        return GenResult<MfaResultData>.Success(mfaResultData);
+        return GenResult<CookieSignInResultData>.Success(CookieSignInResultData.Success());
+
     }
 
 
     //- - - - - - - - - - - - - - -//
+
+    private async Task<GenResult<CookieSignInResultData>> ReturnTwoFactorCookieAsync(
+       AppUser user,
+       Team team,
+       bool rememberMe,
+       string? currentDeviceId)
+    {      
+        var twoFactorResult = await _twoFactorMsgService.SendOTPFor2FactorAuth(team, user);
+        if (!twoFactorResult.Succeeded)
+            return GenResult<CookieSignInResultData>.Failure(twoFactorResult.Info);
+
+        MfaResultData mfaResultData = twoFactorResult.Value!; //Success is non-null
+
+        await _cookieSignInService.CreateWithTwoFactorRequiredAsync(
+                isPersistent: rememberMe,
+                user: user!,
+                currentDeviceId);
+
+        var data = CookieSignInResultData.CreateWithTwoFactoRequired(
+            provider: mfaResultData.TwoFactorProvider,
+            message: IDMsgs.Error.Authorization.TWO_FACTOR_REQUIRED(mfaResultData.TwoFactorProvider));
+
+        return GenResult<CookieSignInResultData>.PreconditionRequiredResult(data);
+
+    }
+
 }//Cls
 

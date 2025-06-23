@@ -196,9 +196,11 @@ public partial class IDMsgs
         public static class TwoFactor
         {
             public const string INVALID_2_FACTOR_PROVIDER = "Invalid 2-Factor Verification Provider.";
-            public const string INVALID_2_FACTOR_TOKEN = "Invalid 2-Factor verification code.";
+            public const string INVALID_2_FACTOR_TOKEN = "Invalid 2-Factor verification token. Try logging in again";
+            public const string INVALID_2_FACTOR_CODE = "Invalid 2-Factor verification code.";
             public static readonly string MULTI_FACTOR_NOT_YET_VERIFIED = $"Unauthorized: Two-factor authentication required.";
             public static readonly string NO_MSG_PROVIDER_SET = $"No message provider has been setup yet.";
+            public static readonly string MULTI_FACTOR_NOT_ENABLED = $"2-Factor auith has not been enabled on this account";
             public static string NO_EMAIL_FOR_TWO_FACTOR(AppUser user) => user.UserName.IsNullOrWhiteSpace() ? NO_EMAIL_FOR_TWO_FACTOR(user.Id.ToString()) : NO_EMAIL_FOR_TWO_FACTOR(user.UserName!);
             public static string NO_EMAIL_FOR_TWO_FACTOR(string userIdentifier) => $"There is no email address on {userIdentifier}'s account.{NL}A email number is required for 2-Factor authentication if you have set 'email' as the preferred 2-Factor method.";
             public static string NO_PHONE_FOR_TWO_FACTOR(AppUser user) => user.UserName.IsNullOrWhiteSpace() ? NO_PHONE_FOR_TWO_FACTOR(user.Email!) : NO_PHONE_FOR_TWO_FACTOR(user.UserName!);

@@ -27,12 +27,12 @@ public class Verify2FactorHandler(
 
 
         if (user is null || team is null)
-            return GenResult<JwtPackage>.BadRequestResult(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_TOKEN); //Just blame it on the token no more info should be revealed
+            return GenResult<JwtPackage>.BadRequestResult(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_CODE); //Just blame it on the token no more info should be revealed
 
 
         bool validVerification = await _2FactorService.VerifyTwoFactorTokenAsync(team, user, dto.Code);
         if (!validVerification)
-            return GenResult<JwtPackage>.BadRequestResult(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_TOKEN);
+            return GenResult<JwtPackage>.BadRequestResult(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_CODE);
 
         //Package all user info in JWT and send it back to client.
         JwtPackage jwtPackage = await _jwtPackageProvider.CreateJwtPackageAsync(

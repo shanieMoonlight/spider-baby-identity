@@ -10,7 +10,7 @@ global using ID.Infrastructure.Persistance.EF.Repos.Specs.SubPlans;
 global using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
 global using ID.Infrastructure.Tests.Persistence.EF.TestHelpers;
 global using ID.Tests.Data.Factories;
-//global using FluentAssertions;
+global using ID.Infrastructure.Utility;
 global using Microsoft.EntityFrameworkCore;
 global using MyResults;
 global  using Pagination;

@@ -119,10 +119,8 @@ public class GoogleSignInHandlerTests
         _mockJwtPackageProvider
             .Setup(p => p.CreateJwtPackageWithTwoFactorRequiredAsync(
                 user,
-                team,
                 mfaData.TwoFactorProvider,
                 mfaData.ExtraInfo,
-                deviceId,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(jwtPackage);
 
@@ -181,10 +179,8 @@ public class GoogleSignInHandlerTests
         _mockJwtPackageProvider.Verify(
             p => p.CreateJwtPackageWithTwoFactorRequiredAsync(
                 It.IsAny<AppUser>(), 
-                It.IsAny<Team>(), 
                 It.IsAny<TwoFactorProvider>(), 
                 It.IsAny<string>(), 
-                It.IsAny<string>(),
                 It.IsAny<CancellationToken>()),
             Times.Never);
     }
@@ -236,9 +232,7 @@ public class GoogleSignInHandlerTests
         _mockJwtPackageProvider.Verify(
             p => p.CreateJwtPackageWithTwoFactorRequiredAsync(
                 It.IsAny<AppUser>(), 
-                It.IsAny<Team>(), 
                 It.IsAny<TwoFactorProvider>(), 
-                It.IsAny<string>(), 
                 It.IsAny<string>(),
                 It.IsAny<CancellationToken>()),
             Times.Never);

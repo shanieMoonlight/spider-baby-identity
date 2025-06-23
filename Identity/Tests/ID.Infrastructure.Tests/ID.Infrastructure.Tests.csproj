@@ -39,7 +39,6 @@
 
 
     <ItemGroup>
-      <Folder Include="Auth\Cookies\" />
       <Folder Include="Jobs\Misc\" />
     </ItemGroup>
 

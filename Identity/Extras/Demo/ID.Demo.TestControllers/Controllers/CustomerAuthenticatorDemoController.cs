@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ID.Demo.TestControllers.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("identity/[controller]")]
 [Authorize]
 public class CustomerAuthenticatorDemoController : ControllerBase
 {

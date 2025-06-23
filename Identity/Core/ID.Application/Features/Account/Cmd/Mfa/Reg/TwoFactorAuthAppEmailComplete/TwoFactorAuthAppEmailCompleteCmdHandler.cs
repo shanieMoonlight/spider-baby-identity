@@ -20,7 +20,7 @@ public class TwoFactorAuthAppEmailCompleteCmdHandler(ITwoFactorCompleteRegistrat
         var enableResult = await regCompleteHandler.EnableAsync(user, twoFactorCode);
 
         if (!enableResult.Succeeded)
-            return GenResult<AppUserDto>.Failure(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_TOKEN);
+            return GenResult<AppUserDto>.Failure(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_CODE);
 
         return GenResult<AppUserDto>.Success(user.ToDto());
     }

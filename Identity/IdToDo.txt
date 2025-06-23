@@ -56,4 +56,14 @@ CookieSignInService Testing (Integration)
 
 
 
- retest Logins, Verify2Factor , JwtProvider 
+ re-test Logins, Verify2Factor , JwtProvider , 
+ Resend2FactorHandlerTests
+ GoogleSignInHandlerTests
+ Verify2FactorCookieCmdHandlerTests CookieAuthService
+
+
+
+
+ TwoFactor Middleware : remove????
+
+ JwtPackage change twoFactorrequired name

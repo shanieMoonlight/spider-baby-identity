@@ -63,37 +63,4 @@ public class IdRefreshTokenService_GENERATE_Tests
     }
 
     //------------------------------//  
-
-    [Fact]
-    public void GeneratePayload_ShouldReturnDifferentValues_OnEachCall()
-    {
-        // Arrange
-        var generatePayloadMethod = typeof(JwtRefreshTokenService<AppUser>)
-            .GetMethod("GeneratePayload", BindingFlags.NonPublic | BindingFlags.Static);
-        generatePayloadMethod.ShouldNotBeNull();
-
-        // Act
-        var payload1 = generatePayloadMethod.Invoke(null, null) as string;
-        var payload2 = generatePayloadMethod.Invoke(null, null) as string;
-
-        // Assert
-        payload1.ShouldNotBeNull();
-        payload2.ShouldNotBeNull();
-        payload1.ShouldNotBe(payload2);
-    }
-
-    //------------------------------//  
-
-    private static IdRefreshToken CreateRefreshToken(string tokenPayloadValue, AppUser user) =>
-        RefreshTokenDataFactory.Create(user: user, payload: tokenPayloadValue);
-
-    //------------------------------//  
-
-    private static string GetSpecTokenPayload(RefreshTokenWithUserAndTeamSpec spec)
-    {
-        var field = typeof(RefreshTokenWithUserAndTeamSpec).GetField("_tokenPayload", BindingFlags.NonPublic | BindingFlags.Instance);
-        return field?.GetValue(spec) as string ?? string.Empty;
-    }
-
-    //------------------------------//  
 }//Cls

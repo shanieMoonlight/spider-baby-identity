@@ -50,6 +50,14 @@ public partial class IDMsgs
         }
 
         //---------------------------//
+
+        public static class TwoFactor
+        {
+            public static string TWO_FACTOR_HAS_BEEN_SENT(AppUser user) => $"Two factor code has been sent to user, {user.Email}. Provider: {user.TwoFactorProvider}";
+
+        }
+
+        //---------------------------//
     }
 
 

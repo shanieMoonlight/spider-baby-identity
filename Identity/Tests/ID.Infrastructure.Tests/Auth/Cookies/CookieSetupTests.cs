@@ -177,8 +177,8 @@ public class CookieSetupTests
 
         // Assert
         services.ShouldContain(s =>
-            s.ServiceType == typeof(ICookieSignInService<AppUser>) &&
-            s.ImplementationType == typeof(CookieSignInService<AppUser>) &&
+            s.ServiceType == typeof(ICookieAuthService<AppUser>) &&
+            s.ImplementationType == typeof(CookieAuthService<AppUser>) &&
             s.Lifetime == ServiceLifetime.Scoped);
         //var serviceProvider = services.BuildServiceProvider();
         //var cookieSignInService = serviceProvider.GetService<ICookieSignInService<AppUser>>();

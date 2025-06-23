@@ -13,7 +13,7 @@ namespace ID.OAuth.Google.Features.SignIn.GoogleCookieSignIn;
 
 public class GoogleCookieSignInCmdHandler(
     IFindOrCreateService<AppUser> _findOrCreate,
-    ICookieSignInService<AppUser> _cookieSignInService,
+    ICookieAuthService<AppUser> _cookieSignInService,
     IGoogleTokenVerifier _verifier,
     ITwoFactorVerificationService<AppUser> _2FactorService,
     ITwoFactorMsgService _twoFactorMsgService)
@@ -64,13 +64,11 @@ public class GoogleCookieSignInCmdHandler(
         {
             await AttachCookieAsync(
                  user: user,
-                 team: user.Team!,
                  dto.RememberMe,
                  currentDeviceId: dto.DeviceId);
         }
 
         return GenResult<CookieSignInResultData>.Success(CookieSignInResultData.Success());
-
 
     }
 
@@ -78,15 +76,13 @@ public class GoogleCookieSignInCmdHandler(
 
     private async Task AttachCookieAsync(
         AppUser user,
-        Team team,
         bool rememberMe,
-        string? currentDeviceId = null)
+        string? currentDeviceId)
     {
-        await _cookieSignInService.SignInWithTwoFactorRequiredAsync(
+        await _cookieSignInService.CreateWithTwoFactorRequiredAsync(
                 isPersistent: rememberMe,
                 user: user!,
-                team: team!,
-                currentDeviceId: currentDeviceId);
+                currentDeviceId);
 
     }
 

@@ -47,10 +47,9 @@ public class GoogleSignInHandler(
         var tfEnabled = await _2FactorService.IsTwoFactorEnabledAsync(user);
 
         return tfEnabled
-            ? await SendTwoFactoAndReturnJwtPackageAsync(
+            ? await SendTwoFactorAndReturnJwtPackageAsync(
                 user: user,
                 team: user.Team!,
-                currentDeviceId: dto.DeviceId,
                 cancellationToken: cancellationToken)
             : await ReturnStandardJwtPackageAsync(
                 user: user,
@@ -83,10 +82,9 @@ public class GoogleSignInHandler(
     //- - - - - - - - - - - - - - -//
 
 
-    private async Task<GenResult<JwtPackage>> SendTwoFactoAndReturnJwtPackageAsync(
+    private async Task<GenResult<JwtPackage>> SendTwoFactorAndReturnJwtPackageAsync(
         AppUser user,
         Team team,
-        string? currentDeviceId = null,
         CancellationToken cancellationToken = default)
     {
         var tfResultMsg = await _twoFactorMsgService.SendOTPFor2FactorAuth(team, user);

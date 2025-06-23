@@ -9,6 +9,7 @@ using ID.Application.Features.Account.Cmd.ConfirmEmail;
 using ID.Application.Features.Account.Cmd.ConfirmEmailWithPwd;
 using ID.Application.Features.Account.Cmd.Cookies.SignIn;
 using ID.Application.Features.Account.Cmd.Cookies.SignOut;
+using ID.Application.Features.Account.Cmd.Cookies.TwoFactorResendCookie;
 using ID.Application.Features.Account.Cmd.Cookies.TwoFactorVerifyCookie;
 using ID.Application.Features.Account.Cmd.Login;
 using ID.Application.Features.Account.Cmd.LoginRefresh;
@@ -165,13 +166,17 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
-    /// <summary>
-    /// Use when already logged in
-    /// </summary>
     [HttpPost($"{IdRoutes.Account.Actions.TwoFactorResend}")]
     [AllowAnonymous]
-    public async Task<ActionResult<MessageResponseDto>> TwoFactorResend([FromBody] Resend2FactorDto dto) =>
+    public async Task<ActionResult<MessageResponseDto>> ResendTwoFactor([FromBody] Resend2FactorDto dto) =>
            this.ProcessResult(await sender.Send(new Resend2FactorCmd(dto)));
+
+    //------------------------//
+
+    [HttpPost($"{IdRoutes.Account.Actions.TwoFactorResendCookie}")]
+    [AllowAnonymous]
+    public async Task<ActionResult<MessageResponseDto>> ResendTwoFactorCookie() =>
+           this.ProcessResult(await sender.Send(new Resend2FactorCookieCmd()));
 
     //------------------------//
 

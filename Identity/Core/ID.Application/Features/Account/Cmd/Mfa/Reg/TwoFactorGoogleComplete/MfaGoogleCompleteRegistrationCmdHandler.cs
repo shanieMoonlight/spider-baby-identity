@@ -17,7 +17,7 @@ public class MfaGoogleCompleteRegistrationCmdHandler(IAuthenticatorAppService go
         var enableResult = await googleAuth.EnableAsync(user, request.TwoFactorCode);
 
         return !enableResult.Succeeded
-            ? GenResult<AppUserDto>.Failure(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_TOKEN)
+            ? GenResult<AppUserDto>.Failure(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_CODE)
             : GenResult<AppUserDto>.Success(user.ToDto());
     }
 

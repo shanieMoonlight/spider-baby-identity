@@ -1,3 +1,4 @@
+using FluentValidation;
 using FluentValidation.TestHelper;
 using ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerify;
 using ID.Application.Mediatr.Validation;
@@ -146,9 +147,8 @@ public class Verify2FactorCmdValidatorTests
         var validator = new Verify2FactorCmdValidator();
 
         // Act & Assert
-        validator.ShouldBeAssignableTo<IsAuthenticatedValidator<Verify2FactorCmd>>();
+        validator.ShouldBeAssignableTo<AbstractValidator<Verify2FactorCmd>>();
     }
 
-    //------------------------------------//
 
 }//Cls

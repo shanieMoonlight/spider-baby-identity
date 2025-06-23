@@ -1,10 +1,9 @@
-﻿using ID.GlobalSettings.Utility.ExtensionMethods;
+﻿using ID.Application.Utility.ExtensionMethods;
+using ID.Domain.Claims;
+using ID.Domain.Utility.Messages;
+using ID.GlobalSettings.Routes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using ID.Application.Utility.ExtensionMethods;
-using ID.Domain.Utility.Messages;
-using ID.Domain.Claims;
-using ID.GlobalSettings.Routes;
 
 
 

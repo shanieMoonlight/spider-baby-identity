@@ -1,16 +1,9 @@
 using ID.Application.AppAbs.ApplicationServices.TwoFactor;
-using ID.Application.AppAbs.SignIn;
 using ID.Application.Features.Account.Cmd.Login;
 using ID.Application.JWT;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Entities.Teams;
-using ID.Domain.Models;
 using ID.GlobalSettings.Setup.Options;
-using ID.Tests.Data.Factories;
 using ID.Tests.Data.GlobalOptions;
 using Microsoft.Extensions.Options;
-using Moq;
-using Shouldly;
 
 namespace ID.Application.Tests.Features.Account.Cmd.Login;
 
@@ -123,9 +116,7 @@ public class LoginHandlerTests_2
             .ReturnsAsync(signInResult);
         _mockPackageProvider.Setup(x => x.CreateJwtPackageWithTwoFactorRequiredAsync(
             It.IsAny<AppUser>(), 
-            It.IsAny<Team>(), 
             It.IsAny<TwoFactorProvider>(), 
-            It.IsAny<string>(), 
             It.IsAny<string>(),
             It.IsAny<CancellationToken>()))
             .ReturnsAsync(JwtPackageDataFactory.Create(twoStepVerificationRequired: true, twoFactorProvider: TwoFactorProvider.Email));
@@ -137,10 +128,8 @@ public class LoginHandlerTests_2
         result.Value?.TwoFactorVerificationRequired.ShouldBeTrue();
         _mockPackageProvider.Verify(x => x.CreateJwtPackageWithTwoFactorRequiredAsync(
                 It.IsAny<AppUser>(), 
-                It.IsAny<Team>(), 
                 It.IsAny<TwoFactorProvider>(), 
                 It.IsAny<string>(), 
-                It.IsAny<string>(),
                 It.IsAny<CancellationToken>()),
             Times.Once);
     }

@@ -61,7 +61,7 @@ public class TwoFactorAuthyCompleteRegCmdCmdHandlerTests
 
         // Assert
         result.Succeeded.ShouldBeFalse();
-        result.Info.ShouldBe(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_TOKEN);
+        result.Info.ShouldBe(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_CODE);
     }
 
     //------------------------------------//

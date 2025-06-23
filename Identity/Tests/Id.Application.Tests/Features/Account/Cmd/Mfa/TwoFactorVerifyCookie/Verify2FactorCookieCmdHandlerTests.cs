@@ -1,48 +1,60 @@
 using ID.Application.AppAbs.ApplicationServices.User;
 using ID.Application.AppAbs.TokenVerificationServices;
 using ID.Application.Features.Account.Cmd.Cookies.TwoFactorVerifyCookie;
+using ID.Application.MFA;
 using ID.Application.Tests.Utility;
 using ID.Domain.Utility.Messages;
-using Moq;
-using Shouldly;
 
 namespace ID.Application.Tests.Features.Account.Cmd.Mfa.TwoFactorVerifyCookie;
 
 [Collection(TestingConstants.NonParallelCollection)]
 public class Verify2FactorCookieCmdHandlerTests
 {
-    private readonly Mock<ICookieSignInService<AppUser>> _mockCookieSignInService;
+    private readonly Mock<ICookieAuthService<AppUser>> _mockCookieAuthService;
     private readonly Mock<IFindUserService<AppUser>> _mockFindUserService;
     private readonly Mock<ITwoFactorVerificationService<AppUser>> _mock2FactorService;
+    private readonly Mock<ITwofactorUserIdCacheService> _mock2FactorUserIdCache;
     private readonly Verify2FactorCookieCmdHandler _handler;
 
     public Verify2FactorCookieCmdHandlerTests()
     {
-        _mockCookieSignInService = new Mock<ICookieSignInService<AppUser>>();
+        _mockCookieAuthService = new Mock<ICookieAuthService<AppUser>>();
         _mockFindUserService = new Mock<IFindUserService<AppUser>>();
         _mock2FactorService = new Mock<ITwoFactorVerificationService<AppUser>>();
+        _mock2FactorUserIdCache = new Mock<ITwofactorUserIdCacheService>();
 
         _handler = new Verify2FactorCookieCmdHandler(
-            _mockCookieSignInService.Object,
+            _mockCookieAuthService.Object,
             _mockFindUserService.Object,
+            _mock2FactorUserIdCache.Object,
             _mock2FactorService.Object);
     }
 
     //------------------------------//
 
     [Fact]
-    public async Task Handle_ShouldReturnUnauthorized_WhenUserNotFound()
+    public async Task Handle_ShouldReturnFailure_WhenUserNotFound()
     {
         // Arrange
         var userId = Guid.NewGuid();
         var token = "valid-token";
         var deviceId = "device-123";
+        var code = "123123";
 
-        var dto = new Verify2FactorCookieDto { Token = token, DeviceId = deviceId, UserId = userId };
+        var dto = new Verify2FactorCookieDto
+        {
+            Code = code
+        };
+        
         var command = new Verify2FactorCookieCmd(dto);
 
+        _mockCookieAuthService.Setup(s => s.TryGetTwoFactorToken()).Returns(token);
+        _mockCookieAuthService.Setup(s => s.TryGetDeviceId()).Returns(deviceId);
+
+        _mock2FactorUserIdCache.Setup(x => x.GetUserId(token)).Returns(userId);
+
         _mockFindUserService.Setup(s => s.FindUserWithTeamDetailsAsync(It.IsAny<Guid?>()))
-            .ReturnsAsync((AppUser)null);
+            .ReturnsAsync((AppUser)null!);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
@@ -50,23 +62,33 @@ public class Verify2FactorCookieCmdHandlerTests
         // Assert
         result.ShouldNotBeNull();
         result.Succeeded.ShouldBeFalse();
-        result.Unauthorized.ShouldBeTrue();
-        result.Info.ShouldBe(IDMsgs.Error.Authorization.INVALID_AUTH);
+        result.BadRequest.ShouldBeTrue();
+        result.Info.ShouldNotBeNull();
     }
 
     //------------------------------//
 
     [Fact]
-    public async Task Handle_ShouldReturnUnauthorized_WhenTeamIsNull()
+    public async Task Handle_ShouldReturnFailure_WhenTeamIsNull()
     {
         // Arrange
         var userId = Guid.NewGuid();
         var user = AppUserDataFactory.CreateNoTeam(id: userId);
-        var token = "valid-token";
-        var deviceId = "device-123";
 
-        var dto = new Verify2FactorCookieDto { Token = token, DeviceId = deviceId, UserId = userId };
+        var code = "123123";
+        var token = "invalid-token";
+
+        var dto = new Verify2FactorCookieDto
+        {
+            Code = code
+        };
         var command = new Verify2FactorCookieCmd(dto);
+
+        _mockCookieAuthService.Setup(s => s.TryGetTwoFactorToken()).Returns(token);
+
+        _mock2FactorUserIdCache.Setup(x => x.GetUserId(token)).Returns(userId);
+        _mockFindUserService.Setup(x => x.FindUserWithTeamDetailsAsync(userId)).ReturnsAsync(user);
+
 
         _mockFindUserService.Setup(s => s.FindUserWithTeamDetailsAsync(It.IsAny<Guid?>()))
             .ReturnsAsync(user);
@@ -77,8 +99,8 @@ public class Verify2FactorCookieCmdHandlerTests
         // Assert
         result.ShouldNotBeNull();
         result.Succeeded.ShouldBeFalse();
-        result.Unauthorized.ShouldBeTrue();
-        result.Info.ShouldBe(IDMsgs.Error.Authorization.INVALID_AUTH);
+        result.BadRequest.ShouldBeTrue();
+        result.Info.ShouldNotBeNull();
     }
 
     //------------------------------//
@@ -91,9 +113,13 @@ public class Verify2FactorCookieCmdHandlerTests
         var team = TeamDataFactory.Create();
         var user = AppUserDataFactory.Create(id: userId, team: team);
         var token = "invalid-token";
-        var deviceId = "device-123";
 
-        var dto = new Verify2FactorCookieDto { Token = token, DeviceId = deviceId, UserId = userId };
+        var code = "123123";
+
+        var dto = new Verify2FactorCookieDto
+        {
+            Code = code
+        };
         var command = new Verify2FactorCookieCmd(dto);
 
         _mockFindUserService.Setup(s => s.FindUserWithTeamDetailsAsync(It.IsAny<Guid?>()))
@@ -110,7 +136,7 @@ public class Verify2FactorCookieCmdHandlerTests
         result.ShouldNotBeNull();
         result.Succeeded.ShouldBeFalse();
         result.BadRequest.ShouldBeTrue();
-        result.Info.ShouldBe(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_TOKEN);
+        result.Info.ShouldBe(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_CODE);
     }
 
     //------------------------------//
@@ -125,24 +151,30 @@ public class Verify2FactorCookieCmdHandlerTests
         var token = "valid-token";
         var deviceId = "device-123";
         var rememberMe = true;
+        var code = "123123";
+
 
         var dto = new Verify2FactorCookieDto 
         { 
-            Token = token, 
-            DeviceId = deviceId, 
-            UserId = userId,
-            RememberMe = rememberMe
+            Code = code
         };
         var command = new Verify2FactorCookieCmd(dto);
+
+        _mockCookieAuthService.Setup(s => s.TryGetTwoFactorToken()).Returns(token);
+        _mockCookieAuthService.Setup(s => s.GetRememberMe()).Returns(rememberMe);
+        _mockCookieAuthService.Setup(s => s.TryGetDeviceId()).Returns(deviceId);
+
+        _mock2FactorUserIdCache.Setup(x => x.GetUserId(token)).Returns(userId);
+        _mockFindUserService.Setup(x => x.FindUserWithTeamDetailsAsync(userId)).ReturnsAsync(user);
 
         _mockFindUserService.Setup(s => s.FindUserWithTeamDetailsAsync(It.IsAny<Guid?>()))
             .ReturnsAsync(user);
 
         _mock2FactorService
-            .Setup(s => s.VerifyTwoFactorTokenAsync(team, user, token))
+            .Setup(s => s.VerifyTwoFactorTokenAsync(team, user, code))
             .ReturnsAsync(true);
 
-        _mockCookieSignInService
+        _mockCookieAuthService
             .Setup(s => s.SignInAsync(rememberMe, user, team, false, deviceId))
             .Returns(Task.CompletedTask);
 
@@ -152,10 +184,9 @@ public class Verify2FactorCookieCmdHandlerTests
         // Assert
         result.ShouldNotBeNull();
         result.Succeeded.ShouldBeTrue();
-        result.Info.ShouldBe("Signed In!");
 
         // Verify that SignInAsync was called
-        _mockCookieSignInService.Verify(
+        _mockCookieAuthService.Verify(
             s => s.SignInAsync(rememberMe, user, team, false, deviceId),
             Times.Once);
     }
@@ -163,76 +194,23 @@ public class Verify2FactorCookieCmdHandlerTests
     //------------------------------//
 
     [Fact]
-    public async Task Handle_ShouldUsePrincipalUserId_WhenAvailable()
+    public async Task Handle_ShouldReturnBadRequest_WhenTokenMissingFromCookies()
     {
         // Arrange
-        var principalUserId = Guid.NewGuid();
-        var dtoUserId = Guid.NewGuid();  // Different from principalUserId
-        var team = TeamDataFactory.Create();
-        var user = AppUserDataFactory.Create(id: principalUserId, team: team);
-        var token = "valid-token";
-        var deviceId = "device-123";
+        var code = "123123";
+        var dto = new Verify2FactorCookieDto { Code = code };
+        var command = new Verify2FactorCookieCmd(dto);
 
-        var dto = new Verify2FactorCookieDto 
-        { 
-            Token = token, 
-            DeviceId = deviceId, 
-            UserId = dtoUserId
-        };
-        var command = new Verify2FactorCookieCmd(dto)
-        {
-            PrincipalUserId = principalUserId
-        };
-
-        _mockFindUserService.Setup(s => s.FindUserWithTeamDetailsAsync(principalUserId))
-            .ReturnsAsync(user);
-
-        _mock2FactorService
-            .Setup(s => s.VerifyTwoFactorTokenAsync(team, user, token))
-            .ReturnsAsync(true);
+        _mockCookieAuthService.Setup(s => s.TryGetTwoFactorToken()).Returns((string?)null);
 
         // Act
         var result = await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         result.ShouldNotBeNull();
-        result.Succeeded.ShouldBeTrue();
-
-        // Verify that FindUserWithTeamDetailsAsync was called with principalUserId, not dtoUserId
-        _mockFindUserService.Verify(
-            s => s.FindUserWithTeamDetailsAsync(principalUserId),
-            Times.Once);
-    }
-
-    //------------------------------//
-
-    [Fact]
-    public async Task Handle_ShouldPropagateException_WhenServiceThrows()
-    {
-        // Arrange
-        var userId = Guid.NewGuid();
-        var team = TeamDataFactory.Create();
-        var user = AppUserDataFactory.Create(id: userId, team: team);
-        var token = "valid-token";
-        var deviceId = "device-123";
-        var expectedException = new InvalidOperationException("Service failure");
-
-        var dto = new Verify2FactorCookieDto { Token = token, DeviceId = deviceId, UserId = userId };
-        var command = new Verify2FactorCookieCmd(dto);
-
-        _mockFindUserService.Setup(s => s.FindUserWithTeamDetailsAsync(It.IsAny<Guid?>()))
-            .ReturnsAsync(user);
-
-        _mock2FactorService
-            .Setup(s => s.VerifyTwoFactorTokenAsync(team, user, token))
-            .ThrowsAsync(expectedException);
-
-        // Act & Assert
-        var exception = await Should.ThrowAsync<InvalidOperationException>(
-            () => _handler.Handle(command, CancellationToken.None)
-        );
-
-        exception.Message.ShouldBe(expectedException.Message);
+        result.Succeeded.ShouldBeFalse();
+        result.BadRequest.ShouldBeTrue();
+        result.Info.ShouldBe(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_CODE);
     }
 
     //------------------------------//

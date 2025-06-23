@@ -84,7 +84,7 @@ internal static class CookieSetup
 
     private static IServiceCollection AddCookieServices<TUser>(this IServiceCollection services) where TUser : AppUser
     {
-        services.TryAddScoped<ICookieSignInService<TUser>, CookieSignInService<TUser>>();
+        services.TryAddScoped<ICookieAuthService<TUser>, CookieAuthService<TUser>>();
 
         return services;
     }

@@ -9,7 +9,7 @@ namespace ID.Application.Features.Account.Cmd.Cookies.TwoFactorVerifyCookie;
 /// User must already be logged in to verify 2 factor authentication.
 /// Hence, IsAuthenticatedValidator
 /// </summary>
-public class Verify2FactorCookieCmdValidator : IsAuthenticatedValidator<Verify2FactorCookieCmd>
+public class Verify2FactorCookieCmdValidator : AbstractValidator<Verify2FactorCookieCmd>
 {
     public Verify2FactorCookieCmdValidator()
     {
@@ -19,7 +19,7 @@ public class Verify2FactorCookieCmdValidator : IsAuthenticatedValidator<Verify2F
 
         When(p => p.Dto is not null, () =>
         {
-            RuleFor(p => p.Dto.Token)
+            RuleFor(p => p.Dto.Code)
               .NotEmpty()
                       .WithMessage(IDMsgs.Error.IsRequired("{PropertyName}"));
 

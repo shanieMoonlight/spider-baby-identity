@@ -20,7 +20,7 @@ namespace ID.OAuth.Google.Tests.Features.SignIn.GoogleCookieSignIn;
 public class GoogleCookieSignInCmdHandlerTests
 {
     private readonly Mock<IFindOrCreateService<AppUser>> _mockFindOrCreate;
-    private readonly Mock<ICookieSignInService<AppUser>> _mockCookieSignInService;
+    private readonly Mock<ICookieAuthService<AppUser>> _mockCookieSignInService;
     private readonly Mock<IGoogleTokenVerifier> _mockVerifier;
     private readonly Mock<ITwoFactorVerificationService<AppUser>> _mockTwoFactorService;
     private readonly Mock<ITwoFactorMsgService> _mockTwoFactorMsgService;
@@ -29,7 +29,7 @@ public class GoogleCookieSignInCmdHandlerTests
     public GoogleCookieSignInCmdHandlerTests()
     {
         _mockFindOrCreate = new Mock<IFindOrCreateService<AppUser>>();
-        _mockCookieSignInService = new Mock<ICookieSignInService<AppUser>>();
+        _mockCookieSignInService = new Mock<ICookieAuthService<AppUser>>();
         _mockVerifier = new Mock<IGoogleTokenVerifier>();
         _mockTwoFactorService = new Mock<ITwoFactorVerificationService<AppUser>>();
         _mockTwoFactorMsgService = new Mock<ITwoFactorMsgService>();
@@ -237,7 +237,7 @@ public class GoogleCookieSignInCmdHandlerTests
         
         // Verify the cookie was attached with SignInWithTwoFactorRequiredAsync (incorrect method name?)
         _mockCookieSignInService.Verify(
-            s => s.SignInWithTwoFactorRequiredAsync(rememberMe, user, team, deviceId),
+            s => s.CreateWithTwoFactorRequiredAsync(rememberMe, user, deviceId),
             Times.Once);
         
         // Verify OTP was not sent

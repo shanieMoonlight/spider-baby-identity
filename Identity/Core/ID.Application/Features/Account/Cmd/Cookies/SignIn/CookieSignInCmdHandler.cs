@@ -9,7 +9,7 @@ using MyResults;
 namespace ID.Application.Features.Account.Cmd.Cookies.SignIn;
 public class CookieSignInCmdHandler(
     IPreSignInService<AppUser> _preSignInService,
-    ICookieSignInService<AppUser> _cookieSignInService)
+    ICookieAuthService<AppUser> _cookieSignInService)
     : IIdCommandHandler<CookieSignInCmd, CookieSignInResultData>
 {
 
@@ -22,10 +22,9 @@ public class CookieSignInCmdHandler(
         if (signInResult.TwoFactorRequired)
         {
             //Attach cookie
-            await _cookieSignInService.SignInWithTwoFactorRequiredAsync(
+            await _cookieSignInService.CreateWithTwoFactorRequiredAsync(
                dto.RememberMe,
                signInResult.User!,
-               signInResult.Team!,
                dto.DeviceId);
             return signInResult.ToGenResult(cookieSignInResultData);
         }

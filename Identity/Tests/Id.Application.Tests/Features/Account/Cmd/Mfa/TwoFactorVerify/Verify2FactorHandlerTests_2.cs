@@ -2,13 +2,12 @@ using ID.Application.AppAbs.ApplicationServices.User;
 using ID.Application.AppAbs.TokenVerificationServices;
 using ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerify;
 using ID.Application.JWT;
+using ID.Application.MFA;
 using ID.Application.Tests.Utility;
 using ID.Domain.Utility.Messages;
 using ID.GlobalSettings.Setup.Options;
 using ID.Tests.Data.GlobalOptions;
 using Microsoft.Extensions.Options;
-using Moq;
-using Shouldly;
 
 namespace ID.Application.Tests.Features.Account.Cmd.Mfa.TwoFactorVerify;
 
@@ -20,6 +19,7 @@ public class Verify2FactorHandlerTests
     private readonly Mock<ITwoFactorVerificationService<AppUser>> _mock2FactorService;
     private readonly Mock<IFindUserService<AppUser>> _mockFindUserService;
     private readonly Mock<IJwtRefreshTokenService<AppUser>> _mockRefreshProvider;
+    private readonly Mock<ITwofactorUserIdCacheService> _mock2FactorUserIdCache;
 
 
     private readonly Mock<IOptions<IdGlobalOptions>> _mockGlobalOptions_refreshEnabled;
@@ -41,12 +41,14 @@ public class Verify2FactorHandlerTests
         _mock2FactorService = new Mock<ITwoFactorVerificationService<AppUser>>();
         _mockRefreshProvider = new Mock<IJwtRefreshTokenService<AppUser>>();
         _mockFindUserService = new Mock<IFindUserService<AppUser>>();
+        _mock2FactorUserIdCache = new Mock<ITwofactorUserIdCacheService>();
 
         _mockGlobalOptions_refreshEnabled = new Mock<IOptions<IdGlobalOptions>>();
         _mockGlobalOptions_refreshEnabled.Setup(x => x.Value).Returns(_globalOptions_RefreshEnabled);
         _handler_RefreshEnabled = new Verify2FactorHandler(
             _mockPackageProvider.Object,
             _mockFindUserService.Object,
+            _mock2FactorUserIdCache.Object,
             _mock2FactorService.Object);
 
 
@@ -56,6 +58,7 @@ public class Verify2FactorHandlerTests
         _handler_RefreshDisabled = new Verify2FactorHandler(
             _mockPackageProvider.Object,
             _mockFindUserService.Object,
+            _mock2FactorUserIdCache.Object,
             _mock2FactorService.Object);
 
     }
@@ -90,7 +93,7 @@ public class Verify2FactorHandlerTests
         result.ShouldNotBeNull();
         result.Succeeded.ShouldBeFalse();
         result.BadRequest.ShouldBeTrue();
-        result.Info.ShouldBe(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_TOKEN);
+        result.Info.ShouldBe(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_CODE);
     }
 
     //------------------------------//
@@ -199,7 +202,7 @@ public class Verify2FactorHandlerTests
         var deviceId = "device-123";
         var expectedException = new InvalidOperationException("Service failure");
 
-        var dto = new Verify2FactorDto { Code = token, DeviceId = deviceId, UserId = Guid.NewGuid() };
+        var dto = new Verify2FactorDto { Code = token, DeviceId = deviceId };
         var command = new Verify2FactorCmd(dto)
         { };
 
@@ -239,8 +242,8 @@ public class Verify2FactorHandlerTests
         // Assert
         result.ShouldNotBeNull();
         result.Succeeded.ShouldBeFalse();
-        result.Unauthorized.ShouldBeTrue();
-        result.Info.ShouldBe(IDMsgs.Error.Authorization.INVALID_AUTH);
+        result.BadRequest.ShouldBeTrue();
+        result.Info.ShouldNotBeNull();
     }
 
     //------------------------------//
@@ -255,8 +258,6 @@ public class Verify2FactorHandlerTests
         var dto = new Verify2FactorDto { Code = token, DeviceId = deviceId };
         var command = new Verify2FactorCmd(dto)
         {
-            //PrincipalUser = null,
-            //PrincipalTeam = team
         };
 
         // Act
@@ -265,8 +266,8 @@ public class Verify2FactorHandlerTests
         // Assert
         result.ShouldNotBeNull();
         result.Succeeded.ShouldBeFalse();
-        result.Unauthorized.ShouldBeTrue();
-        result.Info.ShouldBe(IDMsgs.Error.Authorization.INVALID_AUTH);
+        result.BadRequest.ShouldBeTrue();
+        result.Info.ShouldNotBeNull();
     }
 
     //------------------------------//

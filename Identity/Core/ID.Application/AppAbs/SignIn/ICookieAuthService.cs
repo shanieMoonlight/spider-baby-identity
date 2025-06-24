@@ -36,7 +36,7 @@ public interface ICookieAuthService<TUser> where TUser : AppUser
     /// <remarks>
     /// This method clears any two-factor authentication cookies and signs in the user with the specified claims.
     /// </remarks>
-    Task SignInAsync(bool isPersistent, TUser user, Team team, bool twoFactorVerified, string? currentDeviceId = null);
+    Task SignInAsync(bool isPersistent, TUser user, Team team, string? currentDeviceId = null);
 
     /// <summary>
     /// Signs out the current user from the cookie authentication scheme.

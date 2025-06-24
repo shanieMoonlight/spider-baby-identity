@@ -67,3 +67,5 @@ CookieSignInService Testing (Integration)
  TwoFactor Middleware : remove????
 
  JwtPackage change twoFactorrequired name
+ Remove , bool twoFactorVerified from CreateJwtAsync, IClaimsBuilderService
+ Delete  public async Task<List<Claim>> BuildClaimsAsync(AppUser user, Team team, bool twoFactorVerified, string? currentDeviceId)

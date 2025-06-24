@@ -36,7 +36,6 @@ public class CookieSignInCmdHandler(
                dto.RememberMe,
                signInResult.User!,
                signInResult.Team!,
-               false,
                dto.DeviceId);
             return signInResult.ToGenResult(cookieSignInResultData);
         }

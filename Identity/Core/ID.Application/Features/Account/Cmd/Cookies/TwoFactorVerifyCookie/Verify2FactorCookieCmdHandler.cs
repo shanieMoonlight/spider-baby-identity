@@ -45,7 +45,6 @@ public class Verify2FactorCookieCmdHandler(
            rememberMe,
            user!,
            team!,
-           false,
            deviceId);
 
         return BasicResult.Success("Signed In!");

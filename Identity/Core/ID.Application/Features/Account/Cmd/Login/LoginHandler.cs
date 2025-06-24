@@ -55,7 +55,6 @@ public class LoginHandler(
             var pkg = await _jwtPackageProvider.CreateJwtPackageAsync(
                 signInResult.User!,
                 signInResult.Team!,
-                false,
                 dto.DeviceId,
                 cancellationToken);
             return GenResult<JwtPackage>.Success(pkg);

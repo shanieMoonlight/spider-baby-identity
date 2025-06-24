@@ -70,7 +70,6 @@ public class GoogleCookieSignInCmdHandler(
                 isPersistent: rememberMe,
                 user: user!,
                 team: team!,
-                false,
                 currentDeviceId: currentDeviceId);
 
         return GenResult<CookieSignInResultData>.Success(CookieSignInResultData.Success());

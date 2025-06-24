@@ -62,7 +62,9 @@ public class MiscellaneousAuthenticatorDemoController : ControllerBase
             message = "You are authenticated!!!",
             Authenticator = "LeaderAuthenticator.ResourceFilter"
         });
-    }    [HttpGet("policy-example")]
+    }
+
+    [HttpGet("policy-example")]
     [Authorize(Policy = CustomerAuthenticator.Policy.NAME)]
     public IActionResult TestPolicyBasedAuthenticator()
     {

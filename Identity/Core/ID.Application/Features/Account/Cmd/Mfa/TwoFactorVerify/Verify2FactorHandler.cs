@@ -38,7 +38,6 @@ public class Verify2FactorHandler(
         JwtPackage jwtPackage = await _jwtPackageProvider.CreateJwtPackageAsync(
             user: user,
             team: user.Team!,
-            twoFactorVerified: true,
             currentDeviceId: dto.DeviceId,
             cancellationToken: cancellationToken);
 

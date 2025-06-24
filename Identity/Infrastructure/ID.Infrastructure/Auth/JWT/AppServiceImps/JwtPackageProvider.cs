@@ -76,15 +76,14 @@ public class JwtPackageProvider(
     public async Task<JwtPackage> CreateJwtPackageAsync(
         AppUser user,
         Team team,
-        bool twoFactorVerified,
         string? currentDeviceId = null,
         CancellationToken cancellationToken = default)
     {
         // Generate JWT token
-        string encodedToken = await _jwtBuilder.CreateJwtAsync(user, team, twoFactorVerified, currentDeviceId);
+        string encodedToken = await _jwtBuilder.CreateJwtAsync(user, team, currentDeviceId);
 
         // Generate refresh token if eligible
-        IdRefreshToken? refreshToken = await GenerateRefreshTokenIfEligibleAsync(user, twoFactorVerified, cancellationToken);
+        IdRefreshToken? refreshToken = await GenerateRefreshTokenIfEligibleAsync(user, cancellationToken);
 
         long expiration = GetTokenExpirationUnixTimestamp();
 
@@ -117,7 +116,6 @@ public class JwtPackageProvider(
         string encodedToken = await _jwtBuilder.CreateJwtAsync(
             user: user,
             team: team,
-            twoFactorVerified: true,//If user has a valid RefreshToken, then we can assume that the user is logged in. And if the user has two-factor authentication enabled the got here by Verifying that 2-factor auth.
             currentDeviceId: currentDeviceId);
 
         var refreshToken = await GetRefreshTokenWithSmartUpdateAsync(existingToken);
@@ -147,17 +145,13 @@ public class JwtPackageProvider(
     /// <returns>Generated refresh token if eligible, null otherwise</returns>
     private async Task<IdRefreshToken?> GenerateRefreshTokenIfEligibleAsync(
         AppUser user,
-        bool twoFactorVerified,
         CancellationToken cancellationToken)
     {
         // Check if refresh tokens are globally disabled
         if (!_globalOptions.JwtRefreshTokensEnabled)
             return null;
 
-        // Business rule: Only generate refresh token if:
-        // 1. Two-factor authentication has been verified, OR
-        // 2. User doesn't have two-factor authentication enabled
-        if (user.TwoFactorEnabled && !twoFactorVerified)
+        if (user.TwoFactorEnabled)
             return null;
 
 

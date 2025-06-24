@@ -16,20 +16,6 @@ public class ClaimsBuilderService(
     IIsFromMobileApp _fromAppService)
     : IClaimsBuilderService
 {
-    public async Task<List<Claim>> BuildClaimsWithTwoFactorRequiredAsync(AppUser user, Team team, string? currentDeviceId)
-    {
-
-        List<Claim> claims = await BuildClaimsAsync(user, team, currentDeviceId);
-
-        if (user.TwoFactorEnabled)
-        {
-            claims.Add(TwoFactorClaims.TwoFactorRequired);
-            claims.Add(TwoFactorClaims.TwoFactor_NOT_Verified);
-        }
-        return [.. claims];
-    }
-
-    //--------------------------------//
 
     public async Task<List<Claim>> BuildClaimsAsync(AppUser user, Team team, bool twoFactorVerified, string? currentDeviceId)
     {
@@ -46,7 +32,7 @@ public class ClaimsBuilderService(
 
     //--------------------------------//
 
-    private async Task<List<Claim>> BuildClaimsAsync(AppUser user, Team team, string? currentDeviceId)
+    public async Task<List<Claim>> BuildClaimsAsync(AppUser user, Team team, string? currentDeviceId)
     {
         IList<string> userRoles = await userMgr.GetRolesAsync(user);
 

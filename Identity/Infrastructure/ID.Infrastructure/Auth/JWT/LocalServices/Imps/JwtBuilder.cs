@@ -34,26 +34,6 @@ public class JwtBuilder(
     //-----------------------------//
 
     /// <summary>
-    /// Creates a JWT token for two-factor authentication required scenarios.
-    /// This token contains limited claims and indicates that 2FA verification is needed.
-    /// </summary>
-    /// <param name="user">User for whom the token is being created</param>
-    /// <param name="team">Team context for the user</param>
-    /// <param name="currentDeviceId">Optional device identifier for the current session</param>
-    /// <returns>Encoded JWT token string ready for transmission</returns>
-    public async Task<string> CreateJwtWithTwoFactorRequiredAsync(
-        AppUser user,
-        Team team,
-        string? currentDeviceId = null)
-    {
-        var mfaRequiredClaims = await _claimsBuilder.BuildClaimsWithTwoFactorRequiredAsync(user, team, currentDeviceId);
-        var claims = _jwtClaims.AddRegisteredClaims(mfaRequiredClaims, user);
-        return GenerateAndSerializeToken(claims);
-    }
-
-    //-----------------------------//
-
-    /// <summary>
     /// Creates a full JWT token with complete user claims and permissions.
     /// Use this when the user has verified 2FA or is not using 2FA.
     /// </summary>
@@ -65,10 +45,9 @@ public class JwtBuilder(
     public async Task<string> CreateJwtAsync(
         AppUser user,
         Team team,
-        bool twoFactorVerified,
         string? currentDeviceId = null)
     {
-        var regularClaims = await _claimsBuilder.BuildClaimsAsync(user, team, twoFactorVerified, currentDeviceId);
+        var regularClaims = await _claimsBuilder.BuildClaimsAsync(user, team, currentDeviceId);
         List<Claim> claims = _jwtClaims.AddRegisteredClaims(regularClaims, user);
         return GenerateAndSerializeToken(claims);
     }

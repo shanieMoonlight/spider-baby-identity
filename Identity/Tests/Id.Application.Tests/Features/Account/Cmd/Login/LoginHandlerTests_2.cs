@@ -168,7 +168,6 @@ public class LoginHandlerTests_2
             .Setup(p => p.CreateJwtPackageAsync(
                 user,
                 team,
-                false,
                 loginDto.DeviceId,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(jwtPackage);
@@ -212,7 +211,6 @@ public class LoginHandlerTests_2
             .Setup(p => p.CreateJwtPackageAsync(
                 user,
                 team,
-                false,
                 loginDto.DeviceId,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(jwtPackage);

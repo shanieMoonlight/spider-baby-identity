@@ -134,7 +134,7 @@ public class GoogleSignInHandlerTests
         
         // Verify the standard JWT package creation was not called
         _mockJwtPackageProvider.Verify(
-            p => p.CreateJwtPackageAsync(It.IsAny<AppUser>(), It.IsAny<Team>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
+            p => p.CreateJwtPackageAsync(It.IsAny<AppUser>(), It.IsAny<Team>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
@@ -215,7 +215,6 @@ public class GoogleSignInHandlerTests
             .Setup(p => p.CreateJwtPackageAsync(
                 user,
                 team,
-                false,
                 deviceId,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(jwtPackage);

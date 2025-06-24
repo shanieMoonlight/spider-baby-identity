@@ -24,6 +24,7 @@ public class MaintenanceAuthenticatorDemoController : ControllerBase
     [MntcMinimumAuthenticator.ActionFilter]
     public IActionResult TestMntcMinimumAuthenticator()
     {
+        return BadRequest(new { Message = "This is a mess" });
         return Ok(new
         {
             message = "You are authenticated!!!",

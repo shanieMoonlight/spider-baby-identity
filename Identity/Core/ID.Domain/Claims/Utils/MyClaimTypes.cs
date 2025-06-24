@@ -11,17 +11,13 @@ public class MyIdClaimTypes
     /// <summary>
     /// Claim describing the the app being used to contact server.
     /// </summary>
-    public static readonly string APPLICATION_ID = $"{CLAIM_TYPE_PREFIX}.ApplicationId";
+    public static readonly string APPLICATION_ID = $"{CLAIM_TYPE_PREFIX}.app_id";
 
     /// <summary>
     /// Claim describing the the company that the user works for.
     /// </summary>
-    public static readonly string COMPANY = $"{CLAIM_TYPE_PREFIX}.Company";
+    public static readonly string COMPANY = $"{CLAIM_TYPE_PREFIX}.company";
 
-    /// <summary>
-    /// Claim describing the the service that is contacting the server.
-    /// </summary>
-    public static readonly string REQUESTING_SERVICE = $"{CLAIM_TYPE_PREFIX}.requestingService";
 
     /// <summary>
     /// Claim describing the Role of user. (Manager, Employee, Customer etc.)
@@ -33,35 +29,31 @@ public class MyIdClaimTypes
     /// </summary>
     public static readonly string NAME = $"name";
 
-    /// <summary>
-    /// List of registered devices
-    /// </summary>
-    public static readonly string DEVICES = $"{CLAIM_TYPE_PREFIX}.devices.deviceList";
-
-    /// <summary>
-    /// List of apps that this user has connected with their account.
-    /// </summary>
-    public static readonly string APPS = $"{CLAIM_TYPE_PREFIX}.apps.AppList";
 
     /// <summary>
     /// The name of the application being used 
     /// </summary>
-    public static readonly string APPLICATION = $"{CLAIM_TYPE_PREFIX}.apps.ApplicationName";
+    public static readonly string APPLICATION = $"{CLAIM_TYPE_PREFIX}.apps.application";
 
     /// <summary>
     /// List of registered devices
     /// </summary>
-    public static readonly string CURRENT_DEVICE = $"{CLAIM_TYPE_PREFIX}.devices.CurrentDeviceId";
+    public static readonly string CURRENT_DEVICE = $"{CLAIM_TYPE_PREFIX}.devices.current_device_id";
+
+    /// <summary>
+    /// Max Devices allowed for the subscription
+    /// </summary>
+    public static readonly string DEVICE_LIMIT = $"{CLAIM_TYPE_PREFIX}.devices.device_limit";
 
     /// <summary>
     /// First Name of user (Optional)
     /// </summary>
-    public static readonly string FIRST_NAME = $"firstName";
+    public static readonly string FIRST_NAME = $"firstname";
 
     /// <summary>
     /// Last Name of user (Optional)
     /// </summary>
-    public static readonly string LAST_NAME = $"lastName";
+    public static readonly string LAST_NAME = $"lastname";
 
     /// <summary>
     /// Last Name of user (Optional)

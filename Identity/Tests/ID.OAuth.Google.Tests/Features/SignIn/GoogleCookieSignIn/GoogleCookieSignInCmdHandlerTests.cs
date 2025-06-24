@@ -182,7 +182,6 @@ public class GoogleCookieSignInCmdHandlerTests
                 It.IsAny<bool>(), 
                 It.IsAny<AppUser>(), 
                 It.IsAny<Team>(), 
-                It.IsAny<bool>(), 
                 It.IsAny<string>()),
             Times.Never);
     }
@@ -224,7 +223,7 @@ public class GoogleCookieSignInCmdHandlerTests
         
         // Verify the correct cookie sign-in method is called
         _mockCookieSignInService.Verify(
-            s => s.SignInAsync(rememberMe, user, team, false, deviceId),
+            s => s.SignInAsync(rememberMe, user, team, deviceId),
             Times.Once);
         
         // Verify OTP was not sent

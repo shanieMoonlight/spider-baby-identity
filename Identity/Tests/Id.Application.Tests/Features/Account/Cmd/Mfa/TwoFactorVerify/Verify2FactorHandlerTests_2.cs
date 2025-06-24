@@ -3,7 +3,6 @@ using ID.Application.AppAbs.TokenVerificationServices;
 using ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerify;
 using ID.Application.JWT;
 using ID.Application.MFA;
-using ID.Application.Tests.Utility;
 using ID.Domain.Utility.Messages;
 using ID.GlobalSettings.Setup.Options;
 using ID.Tests.Data.GlobalOptions;
@@ -11,8 +10,6 @@ using Microsoft.Extensions.Options;
 
 namespace ID.Application.Tests.Features.Account.Cmd.Mfa.TwoFactorVerify;
 
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-[Collection(TestingConstants.NonParallelCollection)]
 public class Verify2FactorHandlerTests
 {
     private readonly Mock<IJwtPackageProvider> _mockPackageProvider;
@@ -24,7 +21,7 @@ public class Verify2FactorHandlerTests
 
     private readonly Mock<IOptions<IdGlobalOptions>> _mockGlobalOptions_refreshEnabled;
     private readonly Mock<IOptions<IdGlobalOptions>> _mockGlobalOptions_refreshDisabled;
-    private Verify2FactorHandler _handler_RefreshEnabled;
+    private readonly Verify2FactorHandler _handler_RefreshEnabled;
     private readonly Verify2FactorHandler _handler_RefreshDisabled;
 
     private readonly IdGlobalOptions _globalOptions_RefreshEnabled = GlobalOptionsUtils.InitiallyValidOptions(
@@ -129,7 +126,6 @@ public class Verify2FactorHandlerTests
             .Setup(p => p.CreateJwtPackageAsync(
                 user,
                 user.Team!,
-                true,
                 deviceId,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(jwtPackage);
@@ -172,7 +168,6 @@ public class Verify2FactorHandlerTests
             .Setup(p => p.CreateJwtPackageAsync(
                 user,
                 user.Team!,
-                true,
                 deviceId,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(jwtPackage);
@@ -227,7 +222,6 @@ public class Verify2FactorHandlerTests
     public async Task Handle_ShouldHandleNullUser_WithAppropriateError()
     {
         // Arrange
-        var team = TeamDataFactory.Create();
         var token = "valid-token";
         var deviceId = "device-123";
 

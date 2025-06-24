@@ -33,7 +33,6 @@ internal class CookieAuthService<TUser>(
         bool isPersistent,
         TUser user,
         Team team,
-        bool twoFactorVerified,
         string? currentDeviceId = null)
     {
         HttpContext httpContext = httpContextAccessor.HttpContext!;
@@ -43,7 +42,7 @@ internal class CookieAuthService<TUser>(
         httpContext.Response.Cookies.Delete(CookieConstants.IsPersistentKey);
         httpContext.Response.Cookies.Delete(CookieConstants.DeviceIdKey);
 
-        var claims = await _claimsBuilder.BuildClaimsAsync(user, team, twoFactorVerified, currentDeviceId);
+        var claims = await _claimsBuilder.BuildClaimsAsync(user, team, currentDeviceId);
         var principal = CreateClaimsPrincipal(claims);
         var authProps = CreateAuthenticationProperties(isPersistent);
 

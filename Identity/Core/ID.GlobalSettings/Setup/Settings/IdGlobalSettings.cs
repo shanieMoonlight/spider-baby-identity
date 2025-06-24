@@ -19,7 +19,7 @@ internal partial class IdGlobalSettings
         set => _claimTypePrefix = value;
     }
 
-    //------------------------------------//
+    //------------------------//
 
     internal static void Setup(IdGlobalOptions options)
     {

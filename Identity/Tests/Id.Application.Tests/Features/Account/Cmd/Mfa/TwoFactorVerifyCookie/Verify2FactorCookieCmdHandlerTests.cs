@@ -175,7 +175,7 @@ public class Verify2FactorCookieCmdHandlerTests
             .ReturnsAsync(true);
 
         _mockCookieAuthService
-            .Setup(s => s.SignInAsync(rememberMe, user, team, false, deviceId))
+            .Setup(s => s.SignInAsync(rememberMe, user, team, deviceId))
             .Returns(Task.CompletedTask);
 
         // Act
@@ -187,7 +187,7 @@ public class Verify2FactorCookieCmdHandlerTests
 
         // Verify that SignInAsync was called
         _mockCookieAuthService.Verify(
-            s => s.SignInAsync(rememberMe, user, team, false, deviceId),
+            s => s.SignInAsync(rememberMe, user, team, deviceId),
             Times.Once);
     }
 

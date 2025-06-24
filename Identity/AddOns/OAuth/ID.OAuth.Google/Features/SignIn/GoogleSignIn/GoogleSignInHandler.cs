@@ -71,7 +71,6 @@ public class GoogleSignInHandler(
         JwtPackage jwtPackage = await _jwtPackageProvider.CreateJwtPackageAsync(
            user: user,
            team: team,
-           twoFactorVerified: false,
            currentDeviceId: currentDeviceId,
            cancellationToken: cancellationToken);
 

@@ -42,7 +42,6 @@ public interface IJwtPackageProvider
     Task<JwtPackage> CreateJwtPackageAsync(
         AppUser user,
         Team team,
-        bool twoFactorVerified,
         string? currentDeviceId = null,
         CancellationToken cancellationToken = default);
 

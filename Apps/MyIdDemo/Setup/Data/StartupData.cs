@@ -14,17 +14,6 @@ public class StartupData(IConfiguration config, IWebHostEnvironment Environment)
     public string APP_NAME => "MyId Demo";
 
     /// <summary>
-    /// Root url this application
-    /// </summary>
-    protected string BASE_URL => "https://stelga.ie";
-
-
-    /// <summary>
-    /// Root url this application, during production
-    /// </summary>
-    protected string BASE_URL_DEV => "https://localhost:44380";
-
-    /// <summary>
     /// Company Colors. Used in Emails etc.
     /// </summary>
     public string COLOR_HEX_BRAND => "#eeb313";
@@ -99,29 +88,6 @@ public class StartupData(IConfiguration config, IWebHostEnvironment Environment)
     public string GetLogoUrl() =>
         "https://spider-baby-hub.web.app/images/myid/sb-id-demo-logo.png";
 
-
-
-    /// <summary>
-    /// Gets the base URL for the application, depending on the environment.
-    /// </summary>
-    /// <returns>The base URL as a string.</returns>
-    public string GetBaseUrl() =>
-        Environment.IsDevelopment() ? BASE_URL_DEV : BASE_URL;
-
-
-
-    /// <summary>
-    /// Gets the production base URL for the application.
-    /// </summary>
-    /// <returns>The production base URL as a string.</returns>
-    public string GetBaseUrlProd() => new(BASE_URL);
-
-
-    /// <summary>
-    /// Gets the base URI for the application, depending on the environment.
-    /// </summary>
-    /// <returns>The base URI as a <see cref="Uri"/> object.</returns>
-    public Uri GetBaseUri() => new(GetBaseUrl());
 
 
 }//Cls

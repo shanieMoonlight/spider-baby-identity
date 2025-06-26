@@ -17,7 +17,6 @@ public interface IJwtPackageProvider
     /// This package contains a limited JWT token and no refresh token (refresh token will be provided after 2FA verification).
     /// </summary>
     /// <param name="user">User requiring two-factor authentication</param>
-    /// <param name="team">Team context for the user</param>
     /// <param name="provider">Two-factor authentication provider being used</param>
     /// <param name="extraInfo">Optional additional information for the 2FA process</param>
     /// <param name="currentDeviceId">Optional device identifier for the current session</param>
@@ -35,7 +34,6 @@ public interface IJwtPackageProvider
     /// </summary>
     /// <param name="user">Authenticated user</param>
     /// <param name="team">Team context for the user</param>
-    /// <param name="twoFactorVerified">Whether the user has completed 2FA verification</param>
     /// <param name="currentDeviceId">Optional device identifier for the current session</param>
     /// <param name="cancellationToken">Token to monitor for cancellation requests</param>
     /// <returns>Complete JWT package with access token and optional refresh token</returns>
@@ -56,5 +54,9 @@ public interface IJwtPackageProvider
     /// <param name="team">The user's team context (explicit validation required)</param>
     /// <param name="currentDeviceId">Optional device identifier for audit and security</param>
     /// <returns>A JWT package with new access token and potentially updated refresh token</returns>
-    Task<JwtPackage> RefreshJwtPackageAsync(IdRefreshToken existingToken, AppUser user, Team team, string? currentDeviceId = null);
+    Task<JwtPackage> RefreshJwtPackageAsync(
+        IdRefreshToken existingToken, 
+        AppUser user, 
+        Team team, 
+        string? currentDeviceId = null);
 }

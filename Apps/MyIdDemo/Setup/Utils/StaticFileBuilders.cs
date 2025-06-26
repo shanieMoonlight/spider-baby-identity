@@ -11,7 +11,7 @@ public static class StaticFileBuilders
     /// <param name="app">The Microsoft.AspNetCore.Builder.IApplicationBuilder to add the middleware to.</param>
     /// <param name="env"> Provides information about the web hosting environment an application is running in.</param>
     /// <returns> A reference to this instance after the operation has completed.</returns>
-    public static IApplicationBuilder SetupStaticFilesUse(this IApplicationBuilder app, bool serveUnknownFileTypes = true)
+    public static IApplicationBuilder UseStaticFilesWithUnknownTypes(this IApplicationBuilder app, bool serveUnknownFileTypes = true)
     {
 
         var options = new StaticFileOptions()
@@ -20,6 +20,7 @@ public static class StaticFileBuilders
             ContentTypeProvider = GetServiceWorkerManifestProvider()
         };
 
+        //app.UseDefaultFiles(); // Enables serving default files like index.html
         app.UseStaticFiles(options);
 
         return app;

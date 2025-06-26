@@ -15,7 +15,7 @@ public class MaintenanceAuthenticatorDemoController : ControllerBase
     {
         return Ok(new
         {
-            message = "You are authenticated!!!",
+            Message =  "You are authenticated!!!",
             Authenticator = "MntcAuthenticator"
         });
     }
@@ -24,10 +24,9 @@ public class MaintenanceAuthenticatorDemoController : ControllerBase
     [MntcMinimumAuthenticator.ActionFilter]
     public IActionResult TestMntcMinimumAuthenticator()
     {
-        return BadRequest(new { Message = "This is a mess" });
         return Ok(new
         {
-            message = "You are authenticated!!!",
+            Message =  "You are authenticated!!!",
             Authenticator = "MntcMinimumAuthenticator"
         });
     }
@@ -38,7 +37,7 @@ public class MaintenanceAuthenticatorDemoController : ControllerBase
     {
         return Ok(new
         {
-            message = "You are authenticated!!!",
+            Message =  "You are authenticated!!!",
             Authenticator = "MntcLeaderAuthenticator"
         });
     }
@@ -49,7 +48,7 @@ public class MaintenanceAuthenticatorDemoController : ControllerBase
     {
         return Ok(new
         {
-            message = "You are authenticated!!!",
+            Message =  "You are authenticated!!!",
             Authenticator = "MntcLeaderMinimumAuthenticator"
         });
     }
@@ -60,7 +59,7 @@ public class MaintenanceAuthenticatorDemoController : ControllerBase
     {
         return Ok(new
         {
-            message = "You are authenticated!!!",
+            Message =  "You are authenticated!!!",
             Authenticator = "MntcMinimumOrDevAuthenticator"
         });
     }
@@ -71,7 +70,7 @@ public class MaintenanceAuthenticatorDemoController : ControllerBase
     {
         return Ok(new
         {
-            message = "You are authenticated!!!",
+            Message =  "You are authenticated!!!",
             Authenticator = "MntcMinimumAuthenticator.ResourceFilter(2)"
         });
     }

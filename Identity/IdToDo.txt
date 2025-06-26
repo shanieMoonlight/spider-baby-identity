@@ -33,8 +33,6 @@ IIsFromMobileApp _fromAppService
  - Maybe remove this and and send 2 factor anyway???
 
  
-Include appsettings.json in the demo project
-
 
 Make TeamManager a bit smaller. Maybe use factories to smaller services.
 Make sure teammanager uses the full team with members when updating team members
@@ -56,16 +54,6 @@ CookieSignInService Testing (Integration)
 
 
 
- re-test Logins, Verify2Factor , JwtProvider , 
- Resend2FactorHandlerTests
- GoogleSignInHandlerTests
- Verify2FactorCookieCmdHandlerTests CookieAuthService
-
-
-
-
- TwoFactor Middleware : remove????
-
- JwtPackage change twoFactorrequired name
- Remove , bool twoFactorVerified from CreateJwtAsync, IClaimsBuilderService
  Delete  public async Task<List<Claim>> BuildClaimsAsync(AppUser user, Team team, bool twoFactorVerified, string? currentDeviceId)
+
+ IdRoutes - renmove all but base

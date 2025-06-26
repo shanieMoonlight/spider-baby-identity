@@ -19,12 +19,12 @@ public static class SubscriptionClaimDataExtensions
     public static Claim ToClaim(this TeamSubscription sub, string? currentDeviceId) =>
         SubscriptionClaimData.Create(sub, currentDeviceId).ToClaim();
 
-    //------------------------------------//
+    //----------------------//
 
     public static Claim ToClaim(this SubscriptionClaimData data) =>
         new(MyIdClaimTypes.TEAM_SUBSCRIPTIONS, data.Serialize(), JsonClaimValueTypes.Json);
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Converts a collection of <see cref="TeamSubscription"/> to a list of <see cref="Claim"/>.
@@ -41,7 +41,7 @@ public static class SubscriptionClaimDataExtensions
         return claims;
     }
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Serializes the subscription claim data to a JSON string.
@@ -52,6 +52,6 @@ public static class SubscriptionClaimDataExtensions
         ContractResolver = new SubscriptionClaimDataContractResolver()
     });
 
-    //------------------------------------//
-}
+
+}//Cls
 

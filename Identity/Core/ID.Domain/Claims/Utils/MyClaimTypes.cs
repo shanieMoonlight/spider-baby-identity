@@ -22,7 +22,7 @@ public class MyIdClaimTypes
     /// <summary>
     /// Claim describing the Role of user. (Manager, Employee, Customer etc.)
     /// </summary>
-    public static readonly string ROLE = $"{CLAIM_TYPE_PREFIX}.role";
+    public static readonly string ROLE = $"role";
 
     /// <summary>
     /// Claim describing the Name of user.
@@ -48,17 +48,41 @@ public class MyIdClaimTypes
     /// <summary>
     /// First Name of user (Optional)
     /// </summary>
-    public static readonly string FIRST_NAME = $"firstname";
+    public static readonly string FIRST_NAME = $"given_name";
 
     /// <summary>
     /// Last Name of user (Optional)
     /// </summary>
-    public static readonly string LAST_NAME = $"lastname";
+    public static readonly string LAST_NAME = $"family_name";
 
     /// <summary>
     /// Last Name of user (Optional)
     /// </summary>
     public static readonly string EMAIL = $"email";
+    /// <summary>
+    /// Time zone information for the user (Optional)
+    /// </summary>
+    public static readonly string ZONEINFO = "zoneinfo";
+
+    /// <summary>
+    /// The time the user's information was last updated (Optional)
+    /// </summary>
+    public static readonly string UPDATED_AT = "updated_at";
+
+    /// <summary>
+    /// The user's birthdate (Optional)
+    /// </summary>
+    public static readonly string BIRTHDATE = "birthdate";
+
+    /// <summary>
+    /// The user's gender (Optional)
+    /// </summary>
+    public static readonly string GENDER = "gender";
+
+    /// <summary>
+    /// The user's address (Optional)
+    /// </summary>
+    public static readonly string ADDRESS = "address";
 
     /// <summary>
     /// User has logged in using two-factor authentication

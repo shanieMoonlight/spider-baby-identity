@@ -22,14 +22,19 @@ var _startupData = new StartupData(_configuration, _env);
 //-------------------------- Configure Services --------------------------//
 
 _services.AddCors(options =>
-    options.AddDefaultPolicy(
-        policy => policy
+    options.AddDefaultPolicy(policy => policy
             .AllowAnyHeader()
             .AllowAnyMethod()
             .WithOrigins(_startupData.GetAllowedOrigins())
         )
     );
 
+
+// In production, the Angular files will be served from this directory
+_services.AddSpaStaticFiles(configuration =>
+{
+    configuration.RootPath = _startupData.SPA_STATIC_FILES_PATH;
+});
 
 
 _services.AddControllers();
@@ -51,6 +56,9 @@ _services
 
 var _app = _builder.Build();
 
+_app.UseStaticFilesWithUnknownTypes(true);
+_app.UseSpaStaticFiles();
+
 
 _app.UseRouting();
 _app.UseCors();
@@ -63,24 +71,15 @@ _app.UseCustomExceptionHandler(new MyIdDemoExceptionConverter());
 // Configure the HTTP request pipeline.
 if (_app.Environment.IsDevelopment())
 {
-    _app.UseSwagger();
-    _app.UseSwaggerUI();
+    _app.UseSwagger()
+        .UseSwaggerUI()
+        .UseDeveloperExceptionPage();
 }
 
 if (!_env.IsDevelopment())
-{
     _app.UseHttpsRedirection();
-}
 else
-{
-    _app.UseWhen(ctx =>
-           !ctx.Request.IsSwaggerRequest(),
-            builder => builder.UseHttpsRedirection()
-       );
-}
-
-
-_app.SetupStaticFilesUse(true);
+    _app.UseWhen(ctx => !ctx.Request.IsSwaggerRequest(), builder => builder.UseHttpsRedirection());
 
 
 //app.UseAuthorization();
@@ -104,19 +103,11 @@ _app.UseSpa(spa =>
     // see https://go.microsoft.com/fwlink/?linkid=864501
     spa.Options.SourcePath = _startupData.SPA_STATIC_FILES_PATH;
 
-    if (_env.IsDevelopment())
-        spa.UseProxyToSpaDevelopmentServer($"http://localhost:{4208}");
+    //if (_env.IsDevelopment())
+    //    spa.UseProxyToSpaDevelopmentServer($"http://localhost:{4208}");
 
 });
 
-
-
-
-if (_app.Environment.IsDevelopment())
-    _app.UseDeveloperExceptionPage();
-
-
-//JobStarter.StartTestJob1();
 
 
 //-------------------------- Run the AppBuilder --------------------------//

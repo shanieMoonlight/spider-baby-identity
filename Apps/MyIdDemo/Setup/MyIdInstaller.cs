@@ -27,6 +27,7 @@ public class MyIdInstaller : IServiceInstaller
     public WebApplicationBuilder Install(WebApplicationBuilder builder, StartupData startupData)
     {
         var what = startupData.LoggingSection.LogLevelSection.GetDefault();
+        var isDev = builder.Environment.IsDevelopment();
         //builder.Services.AddMyId<TeamRole_User_to_Mgr_ClaimsGenerator>( // Uncomment this to use the TeamRoles User to Admin feature
         builder.Services.AddMyId(
            config =>
@@ -36,7 +37,7 @@ public class MyIdInstaller : IServiceInstaller
                //config.TokenSigningKey = startupData.IdentitySection.GetSymetricKey();
                config.JwtAsymmetricPrivateKey_Xml = startupData.GetAsymmetricPrivateKeyXmlString();
                config.JwtAsymmetricPublicKey_Xml = startupData.GetAsymmetricPublicKeyXmlString();
-               config.JwtTokenExpirationMinutes = startupData.IdentitySection.GetJwtExpirationMinutes();
+               config.JwtTokenExpirationMinutes = isDev ? 1000000 : startupData.IdentitySection.GetJwtExpirationMinutes();
                config.JwtRefreshTokensEnabled = true;
                config.JwtRefreshTokenUpdatePolicy = RefreshTokenUpdatePolicy.HalfLife;
                config.MntcAccountsUrl = startupData.IdentitySection.GetMntcRoute();
@@ -67,8 +68,8 @@ public class MyIdInstaller : IServiceInstaller
            .AddMyIdPhoneConfirmation()
            .AddMyIdOAuthGoogle(config =>
            {
-                config.ClientId = startupData.OAuthSection.GoogleSection.GetClientId()!;
-                config.ClientSecret = startupData.OAuthSection.GoogleSection.GetClientSecret()!;
+               config.ClientId = startupData.OAuthSection.GoogleSection.GetClientId()!;
+               config.ClientSecret = startupData.OAuthSection.GoogleSection.GetClientSecret()!;
            })
            //.AddTeamRolesUserToAdmin()// Uncomment this to add the TeamRoles User to Admin Policies
            ;

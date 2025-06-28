@@ -39,16 +39,13 @@ internal static class EventSetupMT
         return services;
     }
 
-    //------------------------------------//
-
     /// <summary>
     /// Setup Event pub/sub with MassTransit
     /// </summary>
-    /// <param name="services"></param>
-    /// <returns></returns>
+    /// <param name="services">The service collection to add the MassTransit configuration to.</param>
+    /// <param name="assembly">The assembly containing the consumers to register.</param>
     public static IServiceCollection AddMTWithCustomBus(this IServiceCollection services, Assembly assembly)
     {
-
         services.AddMassTransit<IMyIdDemoMtBus>(busConfigurator =>
         {
             busConfigurator.SetKebabCaseEndpointNameFormatter();

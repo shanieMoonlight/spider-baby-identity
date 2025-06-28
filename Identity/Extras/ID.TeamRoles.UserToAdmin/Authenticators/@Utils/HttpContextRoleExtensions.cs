@@ -49,7 +49,6 @@ public static class HttpContextTeamRoleExtensions
     public static bool IsHigherThanMntc(this HttpContext ctx) =>
       ctx.IsInSuperTeam();
 
-    //-----------------------------------//
 
 
 }

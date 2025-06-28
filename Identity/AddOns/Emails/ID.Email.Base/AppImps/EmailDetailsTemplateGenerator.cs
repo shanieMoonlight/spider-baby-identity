@@ -20,7 +20,7 @@ internal class EmailDetailsTemplateGenerator(
     private const string EMAIL_CONFIRMATION_CUSTOMER_TEMPLATE_PATH = @"Assets\html-templates\EmailConfirmation\IdEmailConfirmationCustomer.html";
     private const string PASSWORD_RESET_TEMPLATE_PATH = @"Assets\html-templates\ResetPassword\IdResetPassword.html";
     private const string TWO_FACTOR_TEMPLATE_PATH = @"Assets\html-templates\TwoFactor\IdTwoFactorLogin.html";
-    private const string TWO_FACTOR_GOOGLE_AUTH_TEMPLATE_PATH = @"Assets\html-templates\IdTwoFactor\TwoFactorGoogleAuthSetup.html";
+    private const string TWO_FACTOR_GOOGLE_AUTH_TEMPLATE_PATH = @"Assets\html-templates\TwoFactor\IdTwoFactorGoogleAuthSetup.html";
     private const string SUBSCRIPTION_PAUSED_TEMPLATE_PATH = @"Assets\html-templates\Subs\IdSubPaused.html";
 
     //------------------------------------//   

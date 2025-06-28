@@ -38,7 +38,7 @@ using Microsoft.AspNetCore.Routing;
 namespace ID.Presentation.Controllers;
 
 [ApiController]
-[Route($"{IdRoutes.Base}/{IdRoutes.Account.Controller}")]
+[Route($"{IdRoutes.Base}/[controller]")]
 [Authorize]
 public class AccountController(ISender sender) : ControllerBase
 {
@@ -64,7 +64,7 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
-    [HttpPost($"{IdRoutes.Account.Actions.Login}")]
+    [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<JwtPackage>> Login([FromBody] LoginDto dto) =>
            this.ProcessResult(await sender.Send(new LoginCmd(dto)));
@@ -79,7 +79,7 @@ public class AccountController(ISender sender) : ControllerBase
     //------------------------//
 
     [HttpPost("[action]")]
-    [AllowAnonymous]
+    [AllowAnonymous]    
     public async Task<IActionResult> CookieSignOut()
     {
         var result = await sender.Send(new SignOutCmd());
@@ -100,7 +100,7 @@ public class AccountController(ISender sender) : ControllerBase
     /// Returns a <see cref="PreconditionRequiredResponse"/> if two-factor authentication or email confirmation is required.
     /// Returns <see cref="Unauthorized"/> if the credentials are invalid.
     /// </returns>
-    [HttpPost($"{IdRoutes.Account.Actions.CookieSignIn}")]
+    [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<CookieSignInResultData>> CookieSignIn([FromBody] CookieSignInDto dto) =>
            this.ProcessResult(await sender.Send(new CookieSignInCmd(dto)));
@@ -115,6 +115,7 @@ public class AccountController(ISender sender) : ControllerBase
     //------------------------//
 
     [HttpGet("[action]")]
+    [Authorize]
     public async Task<ActionResult<AppUserDto>> MyInfo() =>
         this.ProcessResult(await sender.Send(new MyInfoQry()));
 
@@ -166,14 +167,14 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
-    [HttpPost($"{IdRoutes.Account.Actions.TwoFactorResend}")]
+    [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> ResendTwoFactor([FromBody] Resend2FactorDto dto) =>
            this.ProcessResult(await sender.Send(new Resend2FactorCmd(dto)));
 
     //------------------------//
 
-    [HttpPost($"{IdRoutes.Account.Actions.TwoFactorResendCookie}")]
+    [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> ResendTwoFactorCookie() =>
            this.ProcessResult(await sender.Send(new Resend2FactorCookieCmd()));
@@ -181,14 +182,14 @@ public class AccountController(ISender sender) : ControllerBase
     //------------------------//
 
     [AllowAnonymous]
-    [HttpPost($"{IdRoutes.Account.Actions.TwoFactorVerification}")]
+    [HttpPost("[action]")]
     public async Task<ActionResult<JwtPackage>> TwoFactorVerification([FromBody] Verify2FactorDto dto) =>
         this.ProcessResult(await sender.Send(new Verify2FactorCmd(dto)));
 
     //------------------------//
 
     [AllowAnonymous]
-    [HttpPost($"{IdRoutes.Account.Actions.TwoFactorVerificationCookie}")]
+    [HttpPost("[action]")]
     public async Task<ActionResult<JwtPackage>> TwoFactorVerificationCookie([FromBody] Verify2FactorCookieDto dto) =>
         this.ProcessResult(await sender.Send(new Verify2FactorCookieCmd(dto)));
 

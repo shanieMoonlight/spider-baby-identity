@@ -1,18 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="MediatR" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MediatR" />      
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Libs\ControllerHelpers\ContollerHelpers\ControllerHelpers.csproj" />
-    <ProjectReference Include="..\..\Core\ID.Application\ID.Application.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Libs\ControllerHelpers\ContollerHelpers\ControllerHelpers.csproj" />
+		<ProjectReference Include="..\..\Core\ID.Application\ID.Application.csproj" />
+	</ItemGroup>
 
 </Project>

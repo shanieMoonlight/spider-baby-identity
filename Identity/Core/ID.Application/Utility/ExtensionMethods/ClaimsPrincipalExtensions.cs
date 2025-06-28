@@ -16,7 +16,7 @@ public static class ClaimsPrincipalExtensions
     /// Checks the Email claim on this <paramref name="user"/>
     /// </summary>
     /// <param name="user">ClaimsPrincipal</param>
-    public static string? GetEmail(this ClaimsPrincipal user) => 
+    public static string? GetEmail(this ClaimsPrincipal? user) => 
         user.GetClaimValue(MyIdClaimTypes.EMAIL) 
         ?? user.GetClaimValue(ClaimTypes.Email);
 
@@ -27,10 +27,13 @@ public static class ClaimsPrincipalExtensions
     /// with name <paramref name="subscritionPlanName"/>
     /// </summary>
     /// <param name="user">ClaimsPrincipal</param>
-    public static string? GetDeviceId(this ClaimsPrincipal user, string? subscritionPlanName)
+    public static string? GetDeviceId(this ClaimsPrincipal? user, string? subscritionPlanName)
     {
         try
         {
+            if(user is null)
+                return null;
+
             if (string.IsNullOrWhiteSpace(subscritionPlanName))
                 return null;
 
@@ -173,8 +176,8 @@ public static class ClaimsPrincipalExtensions
     /// Checks if <paramref name="user"/> is in team with Id <paramref name="teamId"/>
     /// </summary>
     /// <param name="user">ClaimsPrincipal</param>
-    public static bool IsInMyRole(this ClaimsPrincipal principal, string role) =>
-        principal.HasClaim(c => c.Type == MyIdClaimTypes.ROLE && c.Value == role);
+    public static bool IsInMyRole(this ClaimsPrincipal? principal, string role) =>
+        principal?.HasClaim(c => c.Type == MyIdClaimTypes.ROLE && c.Value == role) ?? false;
 
     //-----------------------------------//
 
@@ -191,7 +194,7 @@ public static class ClaimsPrincipalExtensions
     /// Checks if <paramref name="user"/> is in team with Id <paramref name="teamId"/>
     /// </summary>
     /// <param name="user">ClaimsPrincipal</param>
-    public static bool IsInTeam(this ClaimsPrincipal user, Guid teamId) =>
+    public static bool IsInTeam(this ClaimsPrincipal? user, Guid teamId) =>
         user.GetTeamId() == teamId;
 
     //-----------------------------------//
@@ -200,7 +203,7 @@ public static class ClaimsPrincipalExtensions
     /// Checks if <paramref name="user"/> is in team with Id <paramref name="teamId"/>
     /// </summary>
     /// <param name="user">ClaimsPrincipal</param>
-    public static bool IsTeamLeader(this ClaimsPrincipal user) =>
+    public static bool IsTeamLeader(this ClaimsPrincipal? user) =>
         user.IsInMyRole(MyTeamClaimValues.LEADER);
 
     //-----------------------------------//
@@ -209,7 +212,7 @@ public static class ClaimsPrincipalExtensions
     /// Checks the team id claim on this <paramref name="user"/>
     /// </summary>
     /// <param name="user">ClaimsPrincipal</param>
-    public static int TeamPosition(this ClaimsPrincipal user)
+    public static int TeamPosition(this ClaimsPrincipal? user)
     {
         var teamPositionStr = user.GetClaimValue(MyIdClaimTypes.TEAM_POSITION);
         return int.TryParse(teamPositionStr, out var teamPosition) ? teamPosition : -1;

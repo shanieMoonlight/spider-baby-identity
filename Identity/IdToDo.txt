@@ -57,3 +57,13 @@ CookieSignInService Testing (Integration)
  Delete  public async Task<List<Claim>> BuildClaimsAsync(AppUser user, Team team, bool twoFactorVerified, string? currentDeviceId)
 
  IdRoutes - renmove all but base
+
+ Add docs to controllers
+
+ SwaggerAuth Super only
+ Checkout rebus for message bus
+
+ SubscriptionDto to use TeamDto
+
+
+ userName  -> username

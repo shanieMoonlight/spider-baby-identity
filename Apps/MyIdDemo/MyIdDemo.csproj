@@ -7,6 +7,8 @@
 		<EnableDefaultContentItems>false</EnableDefaultContentItems>
 
 		<SpaRoot>ClientApp\dist</SpaRoot>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn><!-- Optional: suppresses missing XML comment warnings -->
 	</PropertyGroup>
 
 
@@ -37,6 +39,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\Identity\AddOns\Emails\ID.Email.SG\ID.Email.SG.csproj" />
 		<ProjectReference Include="..\..\Identity\AddOns\Emails\ID.Email.SMTP\ID.Email.SMTP.csproj" />
+		<ProjectReference Include="..\..\Identity\AddOns\ID.AddOns\ID.AddOns.csproj" />
 		<ProjectReference Include="..\..\Identity\AddOns\ID.PhoneConfirmation\ID.PhoneConfirmation.csproj" />
 		<ProjectReference Include="..\..\Identity\AddOns\OAuth\ID.OAuth.Google\ID.OAuth.Google.csproj" />
 		<ProjectReference Include="..\..\Identity\API\ID.API\ID.API.csproj" />

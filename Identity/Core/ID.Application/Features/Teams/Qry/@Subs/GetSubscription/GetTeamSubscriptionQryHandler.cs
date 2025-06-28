@@ -1,9 +1,8 @@
-using MyResults;
-using ID.Application.Features.Teams;
 using ID.Application.Mediatr.CqrsAbs;
-using ID.Domain.Utility.Messages;
-using ID.Domain.Entities.Teams;
 using ID.Domain.Abstractions.Services.Teams.Subs;
+using ID.Domain.Entities.Teams;
+using ID.Domain.Utility.Messages;
+using MyResults;
 
 namespace ID.Application.Features.Teams.Qry.@Subs.GetSubscription;
 public class GetTeamSubscriptionQryHandler(ITeamSubscriptionServiceFactory subsServiceFactory) : IIdCommandHandler<GetTeamSubscriptionQry, SubscriptionDto>

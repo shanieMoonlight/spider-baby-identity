@@ -141,7 +141,7 @@ public static class IdApiSetupExtensions
     /// <param name="app">The IApplicationBuilder to configure.</param>
     /// <param name="minTypeDashboardAccess">The Job dashboard is protected. This is the minimum level required to access it. No auth required in Dev Mode</param>
     /// <returns>The IApplicationBuilder with MyId authentication and authorization configured.</returns>
-    public static IApplicationBuilder UseMyId(this IApplicationBuilder app, TeamType minTypeDashboardAccess = TeamType.Maintenance)
+    public static IApplicationBuilder UseMyId(this IApplicationBuilder app, TeamType minTypeDashboardAccess = TeamType.Super)
     {
         app.UseAuthentication();
         app.UseAuthorization();

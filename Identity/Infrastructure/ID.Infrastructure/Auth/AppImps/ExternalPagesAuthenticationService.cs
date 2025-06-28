@@ -35,7 +35,7 @@ public class ExternalPageAuthenticationService(
     public async Task<AuthenticateResult> TryAuthenticateAsync(HttpContext context)
     {
         try
-        {
+       {
 
             var request = context.Request;
 

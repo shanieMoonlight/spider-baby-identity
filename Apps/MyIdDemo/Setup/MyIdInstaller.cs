@@ -1,6 +1,7 @@
 ﻿using ID.API.Setup;
 using ID.API.Setup.ExtraSetup;
 using ID.Application.Customers.Setup;
+using ID.Demo.TestControllers.Setup;
 using ID.Email.SG.Setup;
 using ID.Email.SMTP.Setup;
 using ID.Infrastructure.Auth.JWT.Setup;
@@ -26,8 +27,11 @@ public class MyIdInstaller : IServiceInstaller
     /// <param name="startupData">All the app config and settings</param>
     public WebApplicationBuilder Install(WebApplicationBuilder builder, StartupData startupData)
     {
-        var what = startupData.LoggingSection.LogLevelSection.GetDefault();
         var isDev = builder.Environment.IsDevelopment();
+
+        builder.Services
+            .AddMyIdDemoTestControllers();
+
         //builder.Services.AddMyId<TeamRole_User_to_Mgr_ClaimsGenerator>( // Uncomment this to use the TeamRoles User to Admin feature
         builder.Services.AddMyId(
            config =>

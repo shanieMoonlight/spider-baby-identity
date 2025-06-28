@@ -120,7 +120,7 @@ public static class HttpContextIdExtensions
     /// <summary>
     /// <inheritdoc cref="ClaimsPrincipalExtensions.IsInCustomerTeam(ClaimsPrincipal)"/>
     /// </summary>
-    public static bool IsInCustomerTeam(this HttpContext? ctx) =>
+    public static bool IsInCustomerTeam(this HttpContext ctx) =>
         ctx?.User.GetClaimValue(MyIdClaimTypes.TEAM_TYPE) == MyTeamClaimValues.CUSTOMER_TEAM_NAME;
 
     //----------------------//
@@ -128,8 +128,16 @@ public static class HttpContextIdExtensions
     /// <summary>
     /// <inheritdoc cref="ClaimsPrincipalExtensions.IsInMntcTeam(ClaimsPrincipal)"/>
     /// </summary>
-    public static bool IsInMntcTeam(this HttpContext? ctx) =>
-        ctx?.User.GetClaimValue(MyIdClaimTypes.TEAM_TYPE) == MyTeamClaimValues.MAINTENANCE_TEAM_NAME;
+    public static bool IsInMntcTeam(this HttpContext ctx) =>
+        ctx?.User.IsInMntcTeam() ?? false;
+
+    //----------------------//
+
+    /// <summary>
+    /// <inheritdoc cref="ClaimsPrincipalExtensions.IsInMntcTeam(ClaimsPrincipal)"/>
+    /// </summary>
+    public static bool IsInMntcTeamMinimum(this HttpContext ctx) =>
+        ctx?.User.IsInMntcTeamMinimum() ?? false;
 
     //----------------------//
 
@@ -145,7 +153,7 @@ public static class HttpContextIdExtensions
     /// <inheritdoc cref="ClaimsPrincipalExtensions.IsInSuperTeam(ClaimsPrincipal)"/>
     /// </summary>
     public static bool IsInSuperTeam(this HttpContext? ctx) =>
-        ctx?.User.GetClaimValue(MyIdClaimTypes.TEAM_TYPE) == MyTeamClaimValues.SUPER_TEAM_NAME;
+        ctx?.User.IsInSuperTeam() ?? false;
 
     //----------------------//
 
@@ -153,7 +161,7 @@ public static class HttpContextIdExtensions
     /// <inheritdoc cref="ClaimsPrincipalExtensions.IsInTeam(ClaimsPrincipal, Guid)"/>
     /// </summary>
     public static bool IsInTeam(this HttpContext ctx, Guid teamId) =>
-        ctx.User.GetTeamId() == teamId;
+        ctx?.User?.IsInTeam(teamId) ?? false;
 
     //----------------------//
 
@@ -161,16 +169,13 @@ public static class HttpContextIdExtensions
     /// <inheritdoc cref="ClaimsPrincipalExtensions.IsTeamLeader(ClaimsPrincipal)"/>
     /// </summary>
     public static bool IsTeamLeader(this HttpContext ctx) =>
-        ctx.User.IsInMyRole(MyTeamClaimValues.LEADER);
+        ctx?.User?.IsTeamLeader() ?? false;
 
     //----------------------//
 
     /// <summary>
     /// <inheritdoc cref="ClaimsPrincipalExtensions.TeamPosition(ClaimsPrincipal)"/>
     /// </summary>
-    public static int TeamPosition(this HttpContext ctx)
-    {
-        var teamPositionStr = ctx.User.GetClaimValue(MyIdClaimTypes.TEAM_POSITION);
-        return int.TryParse(teamPositionStr, out var teamPosition) ? teamPosition : -1000;
-    }
+    public static int TeamPosition(this HttpContext ctx)=> 
+        ctx?.User?.TeamPosition() ?? -1;
 }

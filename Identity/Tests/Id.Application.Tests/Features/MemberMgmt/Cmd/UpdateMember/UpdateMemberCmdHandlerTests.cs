@@ -43,12 +43,12 @@ public class UpdateMemberCmdHandlerTests
             Id = appUser.Id,
             FirstName = appUser.FirstName,
             LastName = appUser.LastName,
-            Username = appUser.UserName,
+            UserName = appUser.UserName,
             Email = appUser.Email!,
             PhoneNumber = appUser.PhoneNumber,
             TwoFactorProvider = appUser.TwoFactorProvider,
             TwoFactorEnabled = appUser.TwoFactorEnabled,
-            TeamId = expectedTeam.Id
+            //TeamId = expectedTeam.Id
         };
         var request = new UpdateSelfCmd(updateMemberDto) { PrincipalTeam = expectedTeam };
 
@@ -79,12 +79,12 @@ public class UpdateMemberCmdHandlerTests
             Id = appUser.Id,
             FirstName = appUser.FirstName,
             LastName = appUser.LastName,
-            Username = appUser.UserName,
+            UserName = appUser.UserName,
             Email = appUser.Email!,
             PhoneNumber = appUser.PhoneNumber,
             TwoFactorProvider = appUser.TwoFactorProvider,
             TwoFactorEnabled = appUser.TwoFactorEnabled,
-            TeamId = expectedTeam.Id
+            //TeamId = expectedTeam.Id
         };
         var request = new UpdateSelfCmd(updateMemberDto) { PrincipalTeam = expectedTeam };
 
@@ -120,13 +120,13 @@ public class UpdateMemberCmdHandlerTests
             Id = appUser.Id,
             FirstName = appUser.FirstName,
             LastName = appUser.LastName,
-            Username = appUser.UserName,
+            UserName = appUser.UserName,
             Email = appUser.Email!,
             PhoneNumber = appUser.PhoneNumber,
             //TeamPosition = appUser.TeamPosition,
             TwoFactorProvider = appUser.TwoFactorProvider,
             TwoFactorEnabled = appUser.TwoFactorEnabled,
-            TeamId = expectedTeam.Id
+            //TeamId = expectedTeam.Id
         };
         var request = new UpdateSelfCmd(updateMemberDto) { PrincipalTeam = expectedTeam };
 

@@ -31,7 +31,7 @@ using Pagination;
 namespace ID.Presentation.Controllers;
 
 [ApiController]
-[Route($"{IdRoutes.Base}/{IdRoutes.UserManagement.Controller}/[action]")]
+[Route($"{IdRoutes.Base}/[controller]/[action]")]
 [Authorize]
 //[MntcMinimumAuthenticator.ActionFilter]
 public class UserManagementController(ISender sender) : ControllerBase
@@ -78,13 +78,11 @@ public class UserManagementController(ISender sender) : ControllerBase
     public async Task<ActionResult<TeamDto>> UpdateLeader([FromBody] UpdateTeamLeaderDto dto) =>
         this.ProcessResult(await sender.Send(new UpdateTeamLeaderCmd(dto)));
 
-    //------------------------//
-
     /// <summary>
-    /// Edit a user
+    /// Edit a user's two-factor authentication provider
     /// </summary>
-    /// <param name="provider">New TwoFactorProvider</param>
-    /// <returns>The Updated User</returns>
+    /// <param name="dto">DTO containing the new two-factor provider</param>
+    /// <returns>The updated user</returns>
     [HttpPatch]
     [Authorize]
     public async Task<ActionResult<AppUserDto>> UpdateTwoFactorProvider([FromBody] UpdateTwoFactorProviderDto dto) =>

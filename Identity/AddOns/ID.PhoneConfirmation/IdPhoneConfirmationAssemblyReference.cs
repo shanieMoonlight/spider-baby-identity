@@ -10,5 +10,5 @@ public static class IdPhoneConfirmationAssemblyReference
     /// <summary>
     /// Project Assemble
     /// </summary>
-    public static readonly Assembly AssemblyReference = typeof(IdPhoneConfirmationAssemblyReference).Assembly;
+    public static readonly Assembly Assembly = typeof(IdPhoneConfirmationAssemblyReference).Assembly;
 }

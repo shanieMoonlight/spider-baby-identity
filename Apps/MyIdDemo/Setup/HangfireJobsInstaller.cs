@@ -47,15 +47,15 @@ internal static class HangfireJobsInstaller
     /// <summary>
     /// Configures Middleware and Exception Handling for IdInfrastructure
     /// </summary>
-    /// <param name="app"></param>
-    /// <returns></returns>
+    /// <param name="app">The application builder.</param>
+    /// <param name="startupData">All the app config and settings.</param>
+    /// <param name="customAuthFilters">Custom authorization filters for the Hangfire dashboard.</param>
+    /// <returns>The application builder.</returns>
     public static IApplicationBuilder UseDemoHangfireJobs(
         this IApplicationBuilder app,
         StartupData startupData,
         IEnumerable<IDashboardAuthorizationFilter>? customAuthFilters = null)
     {
-
-
         var dashboardOptions = new DashboardOptions
         {
             DashboardTitle = startupData.HangFireSection.GetDashboardTitle(),
@@ -70,9 +70,7 @@ internal static class HangfireJobsInstaller
 
         app.UseHangfireDashboard(dashboardPath, dashboardOptions);
 
-
         return app;
-
     }
 
 

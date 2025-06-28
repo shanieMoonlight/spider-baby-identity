@@ -19,7 +19,7 @@ public static class PositionMinimumAuthenticator
         /// <inheritdoc cref="AuthHandler"/>
         /// </summary>
         public bool IsAuthorized(HttpContext context, int? level = -1) =>
-            context.TeamPosition() >= (level ?? -1);
+            context.IsAuthenticated() &&  context.TeamPosition() >= (level ?? -1);
 
     }//Cls
 

@@ -18,6 +18,10 @@ public class IdImagesController(ISender sender) : Controller
 
     //------------------------//
 
+    /// <summary>
+    /// Returns the welcome image shown after email confirmation.
+    /// </summary>
+    /// <returns>The welcome image file or an error message.</returns>
     [HttpGet()]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> EmailConfirmed()
@@ -28,6 +32,10 @@ public class IdImagesController(ISender sender) : Controller
 
     //------------------------//
 
+    /// <summary>
+    /// Returns the image shown after phone confirmation.
+    /// </summary>
+    /// <returns>The phone confirmed image file or an error message.</returns>
     [HttpGet()]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> PhoneConfirmed()
@@ -38,6 +46,10 @@ public class IdImagesController(ISender sender) : Controller
 
     //------------------------//
 
+    /// <summary>
+    /// Returns the fallback logo image for the application.
+    /// </summary>
+    /// <returns>The fallback logo image file or an error message.</returns>
     [HttpGet()]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> FallbackLogo()
@@ -48,6 +60,11 @@ public class IdImagesController(ISender sender) : Controller
 
     //------------------------//
 
+    /// <summary>
+    /// Processes the result of an image query and returns the appropriate file or error response.
+    /// </summary>
+    /// <param name="imgResult">The result of the image query.</param>
+    /// <returns>The image file if successful, otherwise an error response.</returns>
     private ActionResult<MessageResponseDto> ProcessImgResult(BasicResult imgResult)
     {
         if (!imgResult.Succeeded)

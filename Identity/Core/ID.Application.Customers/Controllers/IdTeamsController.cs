@@ -15,6 +15,11 @@ namespace ID.Application.Customers.Controllers;
 public class TeamsController(ISender sender) : Controller
 {
 
+    /// <summary>
+    /// Adds a new customer member to a team. Requires Maintenance-level authorization.
+    /// </summary>
+    /// <param name="dto">The new customer member's details, including team and position.</param>
+    /// <returns>The updated team information with the new member added.</returns>
     [HttpPost]
     [MntcMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<TeamDto>> AddCustomerToTeam([FromBody] AddCustomerMember_MntcDto dto) =>

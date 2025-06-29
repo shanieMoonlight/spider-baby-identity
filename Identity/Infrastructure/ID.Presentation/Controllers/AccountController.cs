@@ -43,6 +43,11 @@ namespace ID.Presentation.Controllers;
 public class AccountController(ISender sender) : ControllerBase
 {
 
+    /// <summary>
+    /// Confirms a user's email address using a confirmation token sent to their email.
+    /// </summary>
+    /// <param name="dto">The confirmation data including email and token.</param>
+    /// <returns>A message indicating success or failure of email confirmation.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> ConfirmEmail([FromBody] ConfirmEmailDto dto) =>
@@ -50,6 +55,11 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Confirms a user's email address and sets their password in a single step.
+    /// </summary>
+    /// <param name="dto">The confirmation data including email, token, and new password.</param>
+    /// <returns>A message indicating success or failure of the operation.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> ConfirmEmailWithPassword([FromBody] ConfirmEmailWithPwdDto dto) =>
@@ -57,6 +67,11 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Initiates the forgot password process by sending a reset link to the user's email.
+    /// </summary>
+    /// <param name="dto">The forgot password data including email or username.</param>
+    /// <returns>A message indicating whether the reset email was sent.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> ForgotPassword([FromBody] ForgotPwdDto dto) =>
@@ -64,6 +79,11 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Authenticates a user and returns a JWT package if successful.
+    /// </summary>
+    /// <param name="dto">The login data including username/email and password.</param>
+    /// <returns>A JWT package containing access and refresh tokens, or two-factor requirements.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<JwtPackage>> Login([FromBody] LoginDto dto) =>
@@ -71,6 +91,11 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Refreshes the JWT access token using a valid refresh token and device ID.
+    /// </summary>
+    /// <param name="dto">The refresh token data including reset token and device ID.</param>
+    /// <returns>A new JWT package or a message if the refresh fails.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> LoginRefresh([FromBody]  LoginRefreshDto dto ) =>
@@ -78,6 +103,10 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Signs out the current user from cookie authentication.
+    /// </summary>
+    /// <returns>A message indicating the result of the sign-out operation.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]    
     public async Task<IActionResult> CookieSignOut()
@@ -92,14 +121,10 @@ public class AccountController(ISender sender) : ControllerBase
     //------------------------//
 
     /// <summary>
-    /// Signs in a user using cookies.
+    /// Signs in a user using cookies. Supports two-factor and email confirmation requirements.
     /// </summary>
-    /// <param name="dto">The sign-in data transfer object containing user credentials.</param>
-    /// <returns>
-    /// A <see cref="MessageResponseDto"/> indicating the result of the sign-in attempt.
-    /// Returns a <see cref="PreconditionRequiredResponse"/> if two-factor authentication or email confirmation is required.
-    /// Returns <see cref="Unauthorized"/> if the credentials are invalid.
-    /// </returns>
+    /// <param name="dto">The sign-in data including credentials and RememberMe flag.</param>
+    /// <returns>Sign-in result data, including two-factor or email confirmation requirements if needed.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<CookieSignInResultData>> CookieSignIn([FromBody] CookieSignInDto dto) =>
@@ -107,6 +132,11 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Changes the password for a user. Requires authentication.
+    /// </summary>
+    /// <param name="dto">The change password data including current and new passwords.</param>
+    /// <returns>A message indicating the result of the password change.</returns>
     [HttpPost("[action]")]
     [Authorize]
     public async Task<ActionResult<MessageResponseDto>> ChangePassword([FromBody] ChPwdDto dto) =>
@@ -114,6 +144,10 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Retrieves the current authenticated user's profile information.
+    /// </summary>
+    /// <returns>The current user's profile as an AppUserDto.</returns>
     [HttpGet("[action]")]
     [Authorize]
     public async Task<ActionResult<AppUserDto>> MyInfo() =>
@@ -121,6 +155,11 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Adds a new member to the Maintenance team. Requires Maintenance-level authorization.
+    /// </summary>
+    /// <param name="dto">The new member's details.</param>
+    /// <returns>The created user's profile.</returns>
     [HttpPost("[action]")]
     [MntcMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<AppUserDto>> AddMntcTeamMember([FromBody] AddMntcMemberDto dto) =>
@@ -128,6 +167,11 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Adds a new member to the Super team. Requires Super-level authorization.
+    /// </summary>
+    /// <param name="dto">The new member's details.</param>
+    /// <returns>The created user's profile.</returns>
     [HttpPost("[action]")]
     [SuperMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<AppUserDto>> AddSuperTeamMember([FromBody] AddSprMemberDto dto) =>
@@ -135,6 +179,10 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Revokes the current user's refresh token, invalidating all sessions.
+    /// </summary>
+    /// <returns>A message indicating the result of the revocation.</returns>
     [HttpPost("[action]")]
     [Authorize]
     public async Task<ActionResult<MessageResponseDto>> RefreshTokenRevoke() =>
@@ -142,6 +190,11 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Resends the email confirmation link to the specified email address.
+    /// </summary>
+    /// <param name="dto">The email confirmation resend data.</param>
+    /// <returns>A message indicating whether the email was sent.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> ResendEmailConfirmation([FromBody] ResendEmailConfirmationDto dto) =>
@@ -150,9 +203,9 @@ public class AccountController(ISender sender) : ControllerBase
     //------------------------//
 
     /// <summary>
-    /// Use when already logged in
+    /// Resends the email confirmation link to the currently authenticated user.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>A message indicating whether the email was sent.</returns>
     [HttpGet("[action]")]
     [Authorize]
     public async Task<ActionResult<MessageResponseDto>> ResendEmailConfirmationAuthorized() =>
@@ -160,6 +213,11 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Resends the email confirmation link to the specified email address (anonymous access).
+    /// </summary>
+    /// <param name="email">The email address to resend confirmation to.</param>
+    /// <returns>A message indicating whether the email was sent.</returns>
     [HttpGet("[action]/{email}")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> ResendEmailConfirmation(string email) =>
@@ -167,6 +225,11 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Resends a two-factor authentication code to the user.
+    /// </summary>
+    /// <param name="dto">The two-factor resend data.</param>
+    /// <returns>A message indicating whether the code was sent.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> ResendTwoFactor([FromBody] Resend2FactorDto dto) =>
@@ -174,6 +237,10 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Resends a two-factor authentication code for cookie-based authentication.
+    /// </summary>
+    /// <returns>A message indicating whether the code was sent.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> ResendTwoFactorCookie() =>
@@ -181,6 +248,11 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Verifies a two-factor authentication code for the user.
+    /// </summary>
+    /// <param name="dto">The verification data including code and provider.</param>
+    /// <returns>A JWT package if verification is successful.</returns>
     [AllowAnonymous]
     [HttpPost("[action]")]
     public async Task<ActionResult<JwtPackage>> TwoFactorVerification([FromBody] Verify2FactorDto dto) =>
@@ -188,6 +260,11 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Verifies a two-factor authentication code for cookie-based authentication.
+    /// </summary>
+    /// <param name="dto">The verification data including code and provider.</param>
+    /// <returns>A JWT package if verification is successful.</returns>
     [AllowAnonymous]
     [HttpPost("[action]")]
     public async Task<ActionResult<JwtPackage>> TwoFactorVerificationCookie([FromBody] Verify2FactorCookieDto dto) =>
@@ -195,6 +272,10 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Retrieves setup data for configuring an authenticator app for two-factor authentication.
+    /// </summary>
+    /// <returns>Setup data including QR code and secret key.</returns>
     [HttpGet("[action]")]
     public async Task<ActionResult<AuthAppSetupDto>> TwoFactorSetupData() =>
         this.ProcessResult(await sender.Send(new GetTwoFactorAppSetupDataQry()));
@@ -202,9 +283,10 @@ public class AccountController(ISender sender) : ControllerBase
     //------------------------//
 
     /// <summary>
-    /// Use when already logged in
+    /// Completes two-factor authentication app registration via email code.
     /// </summary>
-    /// <returns></returns>
+    /// <param name="code">The code sent to the user's email.</param>
+    /// <returns>The user's profile if registration is successful.</returns>
     [HttpPost("[action]/{code}")]
     public async Task<ActionResult<AppUserDto>> TwoFactorAuthAppEmailComplete(string code) =>
         this.ProcessResult(await sender.Send(new TwoFactorAuthAppEmailCompleteCmd(code)));
@@ -212,15 +294,20 @@ public class AccountController(ISender sender) : ControllerBase
     //------------------------//
 
     /// <summary>
-    /// Use when already logged in
+    /// Completes two-factor authentication app registration.
     /// </summary>
-    /// <returns>AppUser</returns>
+    /// <param name="dto">The registration data for the authenticator app.</param>
+    /// <returns>The user's profile if registration is successful.</returns>
     [HttpPost("[action]")]
     public async Task<ActionResult<AppUserDto>> TwoFactorAuthAppComplete([FromBody] TwoFactorAuthAppCompleteRegDto dto) =>
         this.ProcessResult(await sender.Send(new TwoFactorAuthAppCompleteRegCmd(dto)));
 
     //------------------------//
 
+    /// <summary>
+    /// Enables two-factor authentication for the current user.
+    /// </summary>
+    /// <returns>The user's profile with two-factor enabled.</returns>
     [HttpPatch("[action]")]
     [Authorize]
     public async Task<ActionResult<AppUserDto>> EnableTwoFactorAuthentication() =>
@@ -228,6 +315,10 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Disables two-factor authentication for the current user.
+    /// </summary>
+    /// <returns>The user's profile with two-factor disabled.</returns>
     [HttpPatch("[action]")]
     [Authorize]
     public async Task<ActionResult<AppUserDto>> DisableTwoFactorAuthentication() =>
@@ -235,6 +326,11 @@ public class AccountController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Resets the password for a user using a reset token.
+    /// </summary>
+    /// <param name="dto">The reset password data including token and new password.</param>
+    /// <returns>A message indicating the result of the password reset.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> ResetPassword([FromBody] ResetPwdDto dto) =>

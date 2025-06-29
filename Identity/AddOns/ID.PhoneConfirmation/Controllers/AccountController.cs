@@ -21,6 +21,11 @@ public class AccountController(ISender sender, ILogger<AccountController> logger
 
     //------------------------------------//
 
+    /// <summary>
+    /// Confirms a user's phone number using a confirmation code sent to their phone.
+    /// </summary>
+    /// <param name="dto">The confirmation data including phone and code.</param>
+    /// <returns>A message indicating success or failure of phone confirmation.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> ConfirmPhone(ConfirmPhoneDto dto) =>
@@ -28,6 +33,11 @@ public class AccountController(ISender sender, ILogger<AccountController> logger
 
     //------------------------------------//
 
+    /// <summary>
+    /// Resends the phone confirmation code to the specified user.
+    /// </summary>
+    /// <param name="dto">The phone confirmation resend data.</param>
+    /// <returns>A message indicating whether the confirmation code was sent.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> ResendPhoneConfirmation([FromBody] ResendPhoneConfirmationDto dto) =>
@@ -36,9 +46,9 @@ public class AccountController(ISender sender, ILogger<AccountController> logger
     //------------------------------------//
 
     /// <summary>
-    /// Use when already logged in
+    /// Resends the phone confirmation code to the currently authenticated user.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>A message indicating whether the confirmation code was sent.</returns>
     [HttpGet("[action]")]
     [Authorize]
     public async Task<ActionResult<MessageResponseDto>> ResendPhoneConfirmationAuthorized() =>
@@ -46,6 +56,11 @@ public class AccountController(ISender sender, ILogger<AccountController> logger
 
     //------------------------------------//
 
+    /// <summary>
+    /// Resends the phone confirmation code to the specified email address (anonymous access).
+    /// </summary>
+    /// <param name="email">The email address to resend confirmation to.</param>
+    /// <returns>A message indicating whether the confirmation code was sent.</returns>
     [HttpGet("[action]/{email}")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> ResendPhoneConfirmation(string email) =>

@@ -34,6 +34,11 @@ namespace ID.Presentation.Controllers;
 [Authorize]
 public class TeamsController(ISender sender) : Controller
 {
+    /// <summary>
+    /// Adds a new customer team. Requires Super or Dev authorization.
+    /// </summary>
+    /// <param name="dto">The team details.</param>
+    /// <returns>The created team.</returns>
     [HttpPost]
     [SuperMinimumOrDevAuthenticator.ActionFilter]
     public async Task<ActionResult<TeamDto>> Add([FromBody] TeamDto dto) =>
@@ -41,6 +46,11 @@ public class TeamsController(ISender sender) : Controller
 
     //------------------------//
 
+    /// <summary>
+    /// Updates an existing team. Requires team leader authorization.
+    /// </summary>
+    /// <param name="dto">The updated team details.</param>
+    /// <returns>The updated team.</returns>
     [HttpPatch]
     [LeaderAuthenticator.ActionFilter]
     public async Task<ActionResult<TeamDto>> Edit([FromBody] TeamDto dto) =>
@@ -48,7 +58,11 @@ public class TeamsController(ISender sender) : Controller
 
     //------------------------//
 
-
+    /// <summary>
+    /// Updates the position range for a team. Requires team leader authorization.
+    /// </summary>
+    /// <param name="dto">The new position range details.</param>
+    /// <returns>The updated team.</returns>
     [HttpPatch]
     [LeaderAuthenticator.ActionFilter]
     public async Task<ActionResult<TeamDto>> UpdatePositionRange([FromBody] UpdateTeamPositionRangeDto dto) =>
@@ -56,7 +70,11 @@ public class TeamsController(ISender sender) : Controller
 
     //------------------------//
 
-
+    /// <summary>
+    /// Deletes a customer team by ID. Requires team leader authorization.
+    /// </summary>
+    /// <param name="id">The ID of the team to delete.</param>
+    /// <returns>A message indicating the result of the deletion.</returns>
     [HttpDelete("{id}")]
     [LeaderAuthenticator.ActionFilter]
     public async Task<ActionResult<MessageResponseDto>> Delete(Guid id) =>
@@ -64,6 +82,10 @@ public class TeamsController(ISender sender) : Controller
 
     //------------------------//
 
+    /// <summary>
+    /// Retrieves all teams. Requires Maintenance authorization (level 1).
+    /// </summary>
+    /// <returns>A list of all teams.</returns>
     [HttpGet]
     [MntcMinimumAuthenticator.ResourceFilter(1)]
     public async Task<ActionResult<TeamDto>> GetAll() =>
@@ -72,9 +94,9 @@ public class TeamsController(ISender sender) : Controller
     //------------------------//
 
     /// <summary>
-    /// Gets the Super Team 
+    /// Gets the Super Team.
     /// </summary>
-    /// <returns>The Super Team matching the id or NotFound</returns>
+    /// <returns>The Super Team or NotFound.</returns>
     [HttpGet]
     [AllowAnonymous]
     public async Task<ActionResult<TeamDto>> GetSuper() =>
@@ -83,9 +105,9 @@ public class TeamsController(ISender sender) : Controller
     //------------------------//
 
     /// <summary>
-    /// Gets the Maintenance Team 
+    /// Gets the Maintenance Team.
     /// </summary>
-    /// <returns>The Maintenance Team matching the id or NotFound</returns>
+    /// <returns>The Maintenance Team or NotFound.</returns>
     [HttpGet]
     [AllowAnonymous]
     public async Task<ActionResult<TeamDto>> GetMntc() =>
@@ -94,9 +116,10 @@ public class TeamsController(ISender sender) : Controller
     //------------------------//
 
     /// <summary>
-    /// Gets the Team with Id = <paramref name="id"/> 
+    /// Gets a team by its unique ID.
     /// </summary>
-    /// <returns>The Team matching the id or NotFound</returns>
+    /// <param name="id">The ID of the team.</param>
+    /// <returns>The team matching the ID, or NotFound.</returns>
     [HttpGet("{id}")]
     public async Task<ActionResult<TeamDto>> Get(Guid id) =>
         this.ProcessResult(await sender.Send(new GetTeamByIdQry(id)));
@@ -104,9 +127,10 @@ public class TeamsController(ISender sender) : Controller
     //------------------------//
 
     /// <summary>
-    /// Gets the Team with Name = <paramref name="name"/> 
+    /// Gets all teams with the specified name.
     /// </summary>
-    /// <returns>The Team matching the id or NotFound</returns>
+    /// <param name="name">The name to filter by.</param>
+    /// <returns>A list of teams matching the name.</returns>
     [HttpGet("{name}")]
     public async Task<ActionResult<IEnumerable<TeamDto>>> GetAllByName(string name) =>
         this.ProcessResult(await sender.Send(new GetTeamsByNameQry(name)));
@@ -114,16 +138,21 @@ public class TeamsController(ISender sender) : Controller
     //------------------------//
 
     /// <summary>
-    /// Gets a paginated list of Teams
+    /// Gets a paginated list of teams.
     /// </summary>
-    /// <param name="request">Filtering and Sorting Info</param>
-    /// <returns>Paginated list of Teams</returns>
+    /// <param name="request">Filtering and sorting information.</param>
+    /// <returns>A paginated list of teams.</returns>
     [HttpPost]
     public async Task<ActionResult<PagedResponse<TeamDto>>> Page([FromBody] PagedRequest? request) =>
         this.ProcessResult(await sender.Send(new GetTeamsPageQry(request)));
 
     //------------------------//
 
+    /// <summary>
+    /// Adds a subscription to a team. Requires Maintenance authorization.
+    /// </summary>
+    /// <param name="dto">The subscription details.</param>
+    /// <returns>The updated team with the new subscription.</returns>
     [HttpPost]
     [MntcMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<TeamDto>> AddSubscription([FromBody] AddTeamSubscriptionDto dto) =>
@@ -131,6 +160,11 @@ public class TeamsController(ISender sender) : Controller
 
     //------------------------//
 
+    /// <summary>
+    /// Gets a subscription by its unique ID.
+    /// </summary>
+    /// <param name="subId">The subscription ID.</param>
+    /// <returns>The subscription details.</returns>
     [HttpGet("{subId}")]
     [Authorize]
     public async Task<ActionResult<SubscriptionDto>> GetSubscription([FromRoute] Guid subId) =>
@@ -138,6 +172,11 @@ public class TeamsController(ISender sender) : Controller
 
     //------------------------//
 
+    /// <summary>
+    /// Removes a subscription from a team. Requires Maintenance authorization.
+    /// </summary>
+    /// <param name="dto">The subscription removal details.</param>
+    /// <returns>The updated team after removal.</returns>
     [HttpPost]
     [MntcMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<TeamDto>> RemoveSubscription([FromBody] RemoveTeamSubscriptionDto dto) =>
@@ -145,6 +184,11 @@ public class TeamsController(ISender sender) : Controller
 
     //------------------------//
 
+    /// <summary>
+    /// Records a payment for a team subscription. Requires Maintenance authorization.
+    /// </summary>
+    /// <param name="dto">The payment details.</param>
+    /// <returns>The updated team after recording the payment.</returns>
     [HttpPost]
     [MntcMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<TeamDto>> RecordSubscriptionPayment([FromBody] RecordSubscriptionPaymentDto dto) =>
@@ -152,6 +196,12 @@ public class TeamsController(ISender sender) : Controller
 
     //------------------------//
 
+    /// <summary>
+    /// Gets a device by subscription and device ID.
+    /// </summary>
+    /// <param name="subId">The subscription ID.</param>
+    /// <param name="dvcId">The device ID.</param>
+    /// <returns>The device details.</returns>
     [HttpGet("{subId}/{dvcId}")]
     [Authorize]
     public async Task<ActionResult<DeviceDto>> GetDevice([FromRoute] Guid subId, [FromRoute] Guid dvcId) =>
@@ -159,6 +209,11 @@ public class TeamsController(ISender sender) : Controller
 
     //------------------------//
 
+    /// <summary>
+    /// Adds a device to a team subscription.
+    /// </summary>
+    /// <param name="dto">The device details.</param>
+    /// <returns>A message indicating the result.</returns>
     [HttpPost]
     [Authorize]
     public async Task<ActionResult<MessageResponseDto>> AddDevice([FromBody] AddDeviceToTeamDto dto) =>
@@ -166,6 +221,11 @@ public class TeamsController(ISender sender) : Controller
 
     //------------------------//
 
+    /// <summary>
+    /// Removes a device from a team subscription.
+    /// </summary>
+    /// <param name="dto">The device removal details.</param>
+    /// <returns>A message indicating the result.</returns>
     [HttpPost]
     [Authorize]
     public async Task<ActionResult<MessageResponseDto>> RemoveDevice([FromBody] RemoveDeviceFromTeamSubscriptionDto dto) =>
@@ -173,6 +233,11 @@ public class TeamsController(ISender sender) : Controller
 
     //------------------------//
 
+    /// <summary>
+    /// Updates a device in a team subscription.
+    /// </summary>
+    /// <param name="dto">The updated device details.</param>
+    /// <returns>A message indicating the result.</returns>
     [HttpPatch]
     [Authorize]
     public async Task<ActionResult<MessageResponseDto>> UpdateDevice([FromBody] DeviceDto dto) =>

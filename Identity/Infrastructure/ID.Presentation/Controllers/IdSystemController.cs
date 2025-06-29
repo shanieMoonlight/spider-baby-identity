@@ -21,6 +21,11 @@ namespace ID.Presentation.Controllers;
 public class IdSystemController(ISender sender, ILogger<IdSystemController> logger) : Controller
 {
 
+    /// <summary>
+    /// Initializes the identity system, runs migrations, and creates the Super and Maintenance teams and users.
+    /// </summary>
+    /// <param name="dto">Initialization data including admin credentials and options.</param>
+    /// <returns>A message indicating the result of initialization.</returns>
     [HttpPost]
     [InitializedAuthenticator.ActionFilter]
     public async Task<ActionResult<MessageResponseDto>> Initialize([FromBody] InitializeDto dto) =>
@@ -28,6 +33,10 @@ public class IdSystemController(ISender sender, ILogger<IdSystemController> logg
 
     //------------------------//
 
+    /// <summary>
+    /// Runs database migrations for the identity system. Requires Super or Dev authorization.
+    /// </summary>
+    /// <returns>A message indicating the result of the migration.</returns>
     [HttpPost]
     [SuperMinimumOrDevAuthenticator.ActionFilter]
     public async Task<ActionResult<MessageResponseDto>> Migrate() =>
@@ -36,8 +45,9 @@ public class IdSystemController(ISender sender, ILogger<IdSystemController> logg
     //------------------------//
 
     /// <summary>
-    /// Send Client the public JWT key
+    /// Returns the public JWT signing key for the system. Requires Super authorization.
     /// </summary>
+    /// <returns>The public signing key information.</returns>
     [HttpGet]
     [SuperMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<PublicSigningKeyDto>> PublicSigningKey() =>
@@ -46,8 +56,9 @@ public class IdSystemController(ISender sender, ILogger<IdSystemController> logg
     //------------------------//
 
     /// <summary>
-    /// Send Client the public JWT key
+    /// Returns the configured email routes for the system. Requires Super authorization.
     /// </summary>
+    /// <returns>The email routes configuration.</returns>
     [HttpGet]
     [SuperMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<EmailRoutesDto>> EmailRoutes() =>
@@ -56,9 +67,9 @@ public class IdSystemController(ISender sender, ILogger<IdSystemController> logg
     //------------------------//
 
     /// <summary>
-    /// List of available Multi-Facotor-Auth providers
+    /// Lists the available multi-factor authentication providers.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>An array of provider names.</returns>
     [HttpGet]
     public async Task<ActionResult<string[]>> GetTwoFactorProviders() =>
         this.ProcessResult(await sender.Send(new GetProvidersQry()));
@@ -66,8 +77,9 @@ public class IdSystemController(ISender sender, ILogger<IdSystemController> logg
     //------------------------//
 
     /// <summary>
-    /// Get global application settings
+    /// Returns the global application settings. Requires Super or Dev authorization.
     /// </summary>
+    /// <returns>The global settings for the identity system.</returns>
     [HttpGet]
     [SuperMinimumOrDevAuthenticator.ActionFilter]
     public async Task<ActionResult<SettingsDto>> GlobalSettings() =>

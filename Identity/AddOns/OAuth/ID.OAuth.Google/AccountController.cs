@@ -19,13 +19,21 @@ namespace ID.OAuth.Google;
 public class AccountController(ISender sender) : ControllerBase
 {
 
+    /// <summary>
+    /// Authenticates a user using Google OAuth and returns a JWT package if successful.
+    /// </summary>
+    /// <param name="dto">The Google sign-in data including ID token and optional subscription/device info.</param>
+    /// <returns>A JWT package containing access and refresh tokens, or two-factor requirements.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<JwtPackage>> GoogleLogin(GoogleSignInDto dto) =>
         this.ProcessResult(await sender.Send(new GoogleSignInCmd(dto)));
 
-
-
+    /// <summary>
+    /// Authenticates a user using Google OAuth and issues a cookie-based sign-in result.
+    /// </summary>
+    /// <param name="dto">The Google cookie sign-in data including ID token, RememberMe, and optional subscription/device info.</param>
+    /// <returns>Sign-in result data, including two-factor or email confirmation requirements if needed.</returns>
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<CookieSignInResultData>> GoogleCookieSignin(GoogleCookieSignInDto dto) =>

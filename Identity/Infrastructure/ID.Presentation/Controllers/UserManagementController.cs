@@ -39,10 +39,10 @@ public class UserManagementController(ISender sender) : ControllerBase
 
     //------------------------//
     /// <summary>
-    /// Edit a user's position in the team
+    /// Updates a user's position within their team. Requires Maintenance Leader authorization.
     /// </summary>
-    /// <param name="dto">DTO containing user info</param>
-    /// <returns>The Updated User</returns>
+    /// <param name="dto">The update position data including user and new position.</param>
+    /// <returns>The updated user profile.</returns>
     [HttpPatch]
     [MntcLeaderMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<AppUserDto>> UpdatePosition([FromBody] UpdatePositionDto dto) =>
@@ -51,10 +51,10 @@ public class UserManagementController(ISender sender) : ControllerBase
     //------------------------//
 
     /// <summary>
-    /// Edit a user
+    /// Updates the current user's profile information.
     /// </summary>
-    /// <param name="dto">DTO containing user info</param>
-    /// <returns>The Updated User</returns>
+    /// <param name="dto">The update data for the current user.</param>
+    /// <returns>The updated user profile.</returns>
     [HttpPatch]
     public async Task<ActionResult<AppUserDto>> UpdateMember([FromBody] UpdateSelfDto dto) =>
         this.ProcessResult(await sender.Send(new UpdateSelfCmd(dto)));
@@ -73,16 +73,21 @@ public class UserManagementController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Updates the leader of a team. Requires Maintenance Leader authorization.
+    /// </summary>
+    /// <param name="dto">The update team leader data.</param>
+    /// <returns>The updated team information.</returns>
     [HttpPatch]
     [MntcLeaderMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<TeamDto>> UpdateLeader([FromBody] UpdateTeamLeaderDto dto) =>
         this.ProcessResult(await sender.Send(new UpdateTeamLeaderCmd(dto)));
 
     /// <summary>
-    /// Edit a user's two-factor authentication provider
+    /// Updates the two-factor authentication provider for the current user.
     /// </summary>
-    /// <param name="dto">DTO containing the new two-factor provider</param>
-    /// <returns>The updated user</returns>
+    /// <param name="dto">The new two-factor provider data.</param>
+    /// <returns>The updated user profile.</returns>
     [HttpPatch]
     [Authorize]
     public async Task<ActionResult<AppUserDto>> UpdateTwoFactorProvider([FromBody] UpdateTwoFactorProviderDto dto) =>
@@ -91,10 +96,10 @@ public class UserManagementController(ISender sender) : ControllerBase
     //------------------------//
 
     /// <summary>
-    /// Change your address
+    /// Updates the address for the current user.
     /// </summary>
-    /// <param name="address">New Address</param>
-    /// <returns>The Updated User</returns>
+    /// <param name="address">The new address data.</param>
+    /// <returns>The updated user profile.</returns>
     [HttpPatch]
     [Authorize]
     public async Task<ActionResult<AppUserDto>> UpdateAddress([FromBody] IdentityAddressDto address) =>
@@ -103,9 +108,10 @@ public class UserManagementController(ISender sender) : ControllerBase
     //------------------------//
 
     /// <summary>
-    /// Delete a user
+    /// Deletes a Maintenance team member by user ID. Requires Maintenance authorization.
     /// </summary>
-    /// <param name="userId">Team member Identifier Identifier</param>
+    /// <param name="userId">The user ID of the member to delete.</param>
+    /// <returns>A message indicating the result of the deletion.</returns>
     [HttpDelete("{userId}")]
     [MntcMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<MessageResponseDto>> DeleteMntcMember(Guid userId) =>
@@ -114,9 +120,10 @@ public class UserManagementController(ISender sender) : ControllerBase
     //------------------------//
 
     /// <summary>
-    /// Delete a user
+    /// Deletes a Super team member by user ID. Requires Super authorization.
     /// </summary>
-    /// <param name="userId">Team member Identifier Identifier</param>
+    /// <param name="userId">The user ID of the member to delete.</param>
+    /// <returns>A message indicating the result of the deletion.</returns>
     [HttpDelete("{userId}")]
     [SuperMinimumAuthenticator.ActionFilter()]
     public async Task<ActionResult<MessageResponseDto>> DeleteSuperMember(Guid userId) =>
@@ -125,21 +132,30 @@ public class UserManagementController(ISender sender) : ControllerBase
     //------------------------//
 
     /// <summary>
-    /// Delete one of your Team Members
+    /// Deletes a team member by user ID. Only accessible by the user's own team leader.
     /// </summary>
-    /// <param name="userId">Team member Identifier Identifier</param>
+    /// <param name="userId">The user ID of the member to delete.</param>
+    /// <returns>A message indicating the result of the deletion.</returns>
     [HttpDelete("{userId}")]
     public async Task<ActionResult<MessageResponseDto>> DeleteTeamMember(Guid userId) =>
         this.ProcessResult(await sender.Send(new DeleteMyTeamMemberCmd(userId)));
 
     //------------------------//
 
+    /// <summary>
+    /// Retrieves all members of the current user's team.
+    /// </summary>
+    /// <returns>A list of team members.</returns>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AppUserDto>>> GetTeamMembers() =>
         this.ProcessResult(await sender.Send(new GetMyTeamMembersQry()));
 
     //------------------------//
 
+    /// <summary>
+    /// Retrieves all members of the Maintenance team. Requires Super authorization.
+    /// </summary>
+    /// <returns>A list of Maintenance team members.</returns>
     [HttpGet]
     [SuperMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<IEnumerable<AppUserDto>>> GetMntcTeamMembers() =>
@@ -147,6 +163,10 @@ public class UserManagementController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Retrieves all members of the Super team. Requires Super authorization.
+    /// </summary>
+    /// <returns>A list of Super team members.</returns>
     [HttpGet]
     [SuperMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<IEnumerable<AppUserDto>>> GetSuperTeamMembers() =>
@@ -154,6 +174,11 @@ public class UserManagementController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Retrieves a paged list of Maintenance team members. Requires Maintenance authorization.
+    /// </summary>
+    /// <param name="request">The paging request parameters.</param>
+    /// <returns>A paged response of Maintenance team members.</returns>
     [HttpPost]
     [MntcMinimumAuthenticator.ActionFilter]
     //[AllowAnonymous]
@@ -162,6 +187,11 @@ public class UserManagementController(ISender sender) : ControllerBase
 
     //------------------------//
 
+    /// <summary>
+    /// Retrieves a paged list of Super team members. Requires Super authorization.
+    /// </summary>
+    /// <param name="request">The paging request parameters.</param>
+    /// <returns>A paged response of Super team members.</returns>
     [HttpPost]
     [SuperMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<PagedResponse<AppUserDto>>> GetSuperTeamMembersPage([FromBody] PagedRequest request) =>
@@ -170,30 +200,31 @@ public class UserManagementController(ISender sender) : ControllerBase
     //------------------------//
 
     /// <summary>
-    /// Returns a TeamMember/AppUSer matching id, <paramref name="userId"/>n 
-    /// If the logged in user is on the same team
+    /// Retrieves a team member by user ID if the logged-in user is on the same team.
     /// </summary>
-    /// <returns>AppUser</returns>   
+    /// <param name="userId">The user ID of the team member.</param>
+    /// <returns>The team member's profile.</returns>
     [HttpGet("{userId}")]
     public async Task<ActionResult<AppUserDto>> GetMyTeamMember(Guid userId) =>
         this.ProcessResult(await sender.Send(new GetMyTeamMemberQry(userId)));
 
     //------------------------//
     /// <summary>
-    /// Returns a TeamMember/AppUSer matching id, <paramref name="userId"/>n 
-    /// If the logged in user is on the same team or a team with a higher rank
+    /// Retrieves a team member by team and user ID if the logged-in user is on the same or higher-ranked team.
     /// </summary>
-    /// <returns>AppUser</returns>   
+    /// <param name="teamId">The team ID.</param>
+    /// <param name="userId">The user ID of the team member.</param>
+    /// <returns>The team member's profile.</returns>
     [HttpGet("{teamId}/{userId}")]
     public async Task<ActionResult<AppUserDto>> GetTeamMember(Guid teamId, Guid userId) =>
         this.ProcessResult(await sender.Send(new GetTeamMemberQry(teamId, userId)));
 
     //------------------------//
     /// <summary>
-    /// Returns a TeamMember/AppUser matching id, <paramref name="userId"/> if found oin the Super Team
-    /// If the logged in user must be also in the Suepr Team and have a higher rank
+    /// Retrieves a Super team member by user ID. Only accessible by higher-ranked Super team members.
     /// </summary>
-    /// <returns>AppUser</returns>   
+    /// <param name="userId">The user ID of the Super team member.</param>
+    /// <returns>The Super team member's profile.</returns>
     [HttpGet("{userId}")]
     public async Task<ActionResult<AppUserDto>> GetSuperTeamMember(Guid userId) =>
         this.ProcessResult(await sender.Send(new GetSuperTeamMemberQry(userId)));
@@ -201,10 +232,10 @@ public class UserManagementController(ISender sender) : ControllerBase
     //------------------------//
 
     /// <summary>
-    /// Returns a TeamMember/AppUser matching id, <paramref name="userId"/> if found oin the Mntc Team
-    /// If the logged in user must be also in the Suepr Team and have a higher rank
+    /// Retrieves a Maintenance team member by user ID. Only accessible by higher-ranked Super team members.
     /// </summary>
-    /// <returns>AppUser</returns>   
+    /// <param name="userId">The user ID of the Maintenance team member.</param>
+    /// <returns>The Maintenance team member's profile.</returns>
     [HttpGet("{userId}")]
     public async Task<ActionResult<AppUserDto>> GetMntcTeamMember(Guid userId) =>
         this.ProcessResult(await sender.Send(new GetMntcTeamMemberQry(userId)));

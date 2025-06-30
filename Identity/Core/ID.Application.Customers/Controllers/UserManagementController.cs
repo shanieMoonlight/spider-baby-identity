@@ -1,6 +1,8 @@
 ﻿using ControllerHelpers;
 using ControllerHelpers.Responses;
 using ID.Application.Authenticators.Teams;
+using ID.Application.Customers.Features.Account.Cmd.AddCustomerMember;
+using ID.Application.Customers.Features.Account.Cmd.AddCustomerMemberMntc;
 using ID.Application.Customers.Features.Common.Dtos.User;
 using ID.Application.Customers.Features.MemberMgmt.Cmd.DeleteCustomerMember;
 using ID.Application.Customers.Features.MemberMgmt.Qry.GetCustomer;
@@ -20,12 +22,32 @@ namespace ID.Application.Customers.Controllers;
 public class UserManagementController(ISender sender) : ControllerBase
 {
 
-    //------------------------------------//
+    /// <summary>
+    /// Adds a new member to the current customer's team.
+    /// </summary>
+    /// <param name="dto">The new team member's details.</param>
+    /// <returns>The created team member object.</returns>
+    [HttpPost]
+    public async Task<ActionResult<AppUser_Customer_Dto>> AddCustomerTeamMember([FromBody] AddCustomerMemberDto dto) =>
+        this.ProcessResult(await sender.Send(new AddCustomerMemberCmd(dto)));
+
+    //----------------------//
+
+    /// <summary>
+    /// Adds a new member to a customer team as a Maintenance team member.
+    /// </summary>
+    /// <param name="dto">The new team member's details.</param>
+    /// <returns>The created team member object.</returns>
+    [HttpPost]
+    [MntcMinimumAuthenticator.ActionFilter]
+    public async Task<ActionResult<AppUser_Customer_Dto>> AddCustomerTeamMemberMntc([FromBody] AddCustomerMember_MntcDto dto) =>
+           this.ProcessResult(await sender.Send(new AddCustomerMemberCmd_Mntc(dto)));
+
+    //----------------------//
 
     /// <summary>
     /// Delete a Customer
     /// </summary>
-    /// <param name="teamId">Team Identifier</param>
     /// <param name="userId">User Identifier</param>
     /// <returns>The Deleted Customer</returns>
     [HttpDelete("{userId}")]

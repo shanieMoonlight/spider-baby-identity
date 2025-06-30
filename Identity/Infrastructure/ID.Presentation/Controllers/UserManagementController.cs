@@ -1,6 +1,8 @@
 ﻿using ControllerHelpers;
 using ControllerHelpers.Responses;
 using ID.Application.Authenticators.Teams;
+using ID.Application.Features.Account.Cmd.AddMntcMember;
+using ID.Application.Features.Account.Cmd.AddSprMember;
 using ID.Application.Features.Account.Cmd.Mfa.TwoFactorUpdateMethod;
 using ID.Application.Features.Common.Dtos.User;
 using ID.Application.Features.MemberMgmt.Cmd.DeleteMember;
@@ -38,6 +40,31 @@ public class UserManagementController(ISender sender) : ControllerBase
 {
 
     //------------------------//
+
+    /// <summary>
+    /// Adds a new member to the Maintenance team. Requires Maintenance-level authorization.
+    /// </summary>
+    /// <param name="dto">The new member's details.</param>
+    /// <returns>The created user's profile.</returns>
+    [HttpPost]
+    [MntcMinimumAuthenticator.ActionFilter]
+    public async Task<ActionResult<AppUserDto>> AddMntcTeamMember([FromBody] AddMntcMemberDto dto) =>
+           this.ProcessResult(await sender.Send(new AddMntcMemberCmd(dto)));
+
+    //------------------------//
+
+    /// <summary>
+    /// Adds a new member to the Super team. Requires Super-level authorization.
+    /// </summary>
+    /// <param name="dto">The new member's details.</param>
+    /// <returns>The created user's profile.</returns>
+    [HttpPost]
+    [SuperMinimumAuthenticator.ActionFilter]
+    public async Task<ActionResult<AppUserDto>> AddSuperTeamMember([FromBody] AddSprMemberDto dto) =>
+        this.ProcessResult(await sender.Send(new AddSprMemberCmd(dto)));
+
+    //------------------------//
+
     /// <summary>
     /// Updates a user's position within their team. Requires Maintenance Leader authorization.
     /// </summary>

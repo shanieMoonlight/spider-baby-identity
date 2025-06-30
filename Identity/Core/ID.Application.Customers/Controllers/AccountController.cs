@@ -44,7 +44,7 @@ public class AccountController(ISender sender) : ControllerBase
     public async Task<ActionResult<AppUser_Customer_Dto>> MyInfoCustomer() =>
         this.ProcessResult(await sender.Send(new MyInfoCustomerQry()));
 
-    //-----------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Registers a new customer account.
@@ -56,10 +56,12 @@ public class AccountController(ISender sender) : ControllerBase
     public async Task<ActionResult<MessageResponseDto>> RegisterCustomer([FromBody] RegisterCustomerDto dto) =>
            this.ProcessResult(await sender.Send(new RegisterCustomerCmd(dto)));
 
-    //-----------------------------------------//
+    //----------------------//
 
     /// <summary>
-    /// Creates a new customer account as a Maintenance team member (no password required).
+    /// Creates a new customer accountwithout a password.
+    /// The customer will get an email requiring them to confiem email WITH a password
+    /// Must be a Maintencnce Team member to access. 
     /// </summary>
     /// <param name="dto">The customer registration information.</param>
     /// <returns>The created customer object.</returns>
@@ -68,30 +70,7 @@ public class AccountController(ISender sender) : ControllerBase
     public async Task<ActionResult<AppUser_Customer_Dto>> CreateCustomer([FromBody] RegisterCustomer_NoPwdDto dto) =>
            this.ProcessResult(await sender.Send(new RegisterCustomerNoPwdCmd(dto)));
 
-    //-----------------------------------------//
-    
-    /// <summary>
-    /// Adds a new member to the current customer's team.
-    /// </summary>
-    /// <param name="dto">The new team member's details.</param>
-    /// <returns>The created team member object.</returns>
-    [HttpPost("[action]")]
-    public async Task<ActionResult<AppUser_Customer_Dto>> AddCustomerTeamMember([FromBody] AddCustomerMemberDto dto) =>
-        this.ProcessResult(await sender.Send(new AddCustomerMemberCmd(dto)));
-
-    //-----------------------------------------//
-
-    /// <summary>
-    /// Adds a new member to a customer team as a Maintenance team member.
-    /// </summary>
-    /// <param name="dto">The new team member's details.</param>
-    /// <returns>The created team member object.</returns>
-    [HttpPost("[action]")]
-    [MntcMinimumAuthenticator.ActionFilter]
-    public async Task<ActionResult<AppUser_Customer_Dto>> AddCustomerTeamMemberMntc([FromBody] AddCustomerMember_MntcDto dto) =>
-           this.ProcessResult(await sender.Send(new AddCustomerMemberCmd_Mntc(dto)));
-
-    //-----------------------------------------//
+    //----------------------//
 
 }//Cls
 

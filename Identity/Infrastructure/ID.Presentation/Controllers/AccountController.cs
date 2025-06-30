@@ -156,30 +156,6 @@ public class AccountController(ISender sender) : ControllerBase
     //------------------------//
 
     /// <summary>
-    /// Adds a new member to the Maintenance team. Requires Maintenance-level authorization.
-    /// </summary>
-    /// <param name="dto">The new member's details.</param>
-    /// <returns>The created user's profile.</returns>
-    [HttpPost("[action]")]
-    [MntcMinimumAuthenticator.ActionFilter]
-    public async Task<ActionResult<AppUserDto>> AddMntcTeamMember([FromBody] AddMntcMemberDto dto) =>
-           this.ProcessResult(await sender.Send(new AddMntcMemberCmd(dto)));
-
-    //------------------------//
-
-    /// <summary>
-    /// Adds a new member to the Super team. Requires Super-level authorization.
-    /// </summary>
-    /// <param name="dto">The new member's details.</param>
-    /// <returns>The created user's profile.</returns>
-    [HttpPost("[action]")]
-    [SuperMinimumAuthenticator.ActionFilter]
-    public async Task<ActionResult<AppUserDto>> AddSuperTeamMember([FromBody] AddSprMemberDto dto) =>
-        this.ProcessResult(await sender.Send(new AddSprMemberCmd(dto)));
-
-    //------------------------//
-
-    /// <summary>
     /// Revokes the current user's refresh token, invalidating all sessions.
     /// </summary>
     /// <returns>A message indicating the result of the revocation.</returns>

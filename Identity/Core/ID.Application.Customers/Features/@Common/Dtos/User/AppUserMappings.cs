@@ -4,7 +4,7 @@ namespace ID.Application.Customers.Features.Common.Dtos.User;
 
 public static class AppUserMappings
 {
-    //------------------------------------//
+    //----------------------//
 
     //public static AppUser Update(this AppUser model, AppUserDto dto)
     //{
@@ -22,7 +22,7 @@ public static class AppUserMappings
 
     //}
 
-    //------------------------------------//
+    //----------------------//
 
     //public static AppUser ToModel(this AppUserDto dto, NewId teamId)
     //{
@@ -38,7 +38,7 @@ public static class AppUserMappings
 
     //}
 
-    //------------------------------------//
+    //----------------------//
 
     public static AppUser_Customer_Dto ToCustomerDto(this AppUser appUser) => new()
     {
@@ -56,12 +56,12 @@ public static class AppUserMappings
 
     };
 
-    //------------------------------------//
+    //----------------------//
 
     public static IEnumerable<AppUser_Customer_Dto> ToCustomerDtos(this IEnumerable<AppUser> teams) =>
         teams.Select(t => t.ToCustomerDto());
 
-    //------------------------------------//
+    //----------------------//
 
 }//Cls
 

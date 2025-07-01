@@ -51,25 +51,25 @@ public class UserManagementController(ISender sender) : ControllerBase
     /// <param name="userId">User Identifier</param>
     /// <returns>The Deleted Customer</returns>
     [HttpDelete("{userId}")]
-    [MntcMinimumAuthenticator.ActionFilter]
+    [CustomerAuthenticator.ActionFilter]
     public async Task<ActionResult<MessageResponseDto>> DeleteCustomer(Guid userId) =>
         this.ProcessResult(await sender.Send(new DeleteCustomerMemberCmd(userId)));
 
-    //------------------------------------//
+    //----------------------//
 
     [HttpGet]
     [MntcMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<IEnumerable<AppUser_Customer_Dto>>> GetCustomers() =>
         this.ProcessResult(await sender.Send(new GetCustomersQry()));
 
-    //------------------------------------//
+    //----------------------//
 
     [HttpPost]
     [MntcMinimumAuthenticator.ActionFilter]
     public async Task<ActionResult<PagedResponse<AppUser_Customer_Dto>>> GetCustomersPage([FromBody] PagedRequest request) =>
         this.ProcessResult(await sender.Send(new GetCustomersPageQry(request)));
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Returns a Customer matching id, <paramref name="userId"/>
@@ -80,7 +80,7 @@ public class UserManagementController(ISender sender) : ControllerBase
     public async Task<ActionResult<AppUser_Customer_Dto>> GetCustomer(Guid teamId, Guid userId) =>
         this.ProcessResult(await sender.Send(new GetCustomerQry(teamId, userId)));
 
-    //------------------------------------//
+    //----------------------//
 
 
 }//Cls

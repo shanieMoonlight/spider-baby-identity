@@ -21,7 +21,7 @@ internal class IdCustomerRegistrationService(IIdentityTeamManager<AppUser> _team
         Register_NoPwd_Async(
             EmailAddress.Create(dto.Email),
             UsernameNullable.Create(dto.Username),
-            PhoneNullable.Create(dto.Phone),
+            PhoneNullable.Create(dto.PhoneNumber),
             FirstNameNullable.Create(dto.FirstName),
             LastNameNullable.Create(dto.LastName),
             TeamPositionNullable.Create(dto.TeamPosition),
@@ -74,7 +74,7 @@ internal class IdCustomerRegistrationService(IIdentityTeamManager<AppUser> _team
         RegisterAsync(
             EmailAddress.Create(dto.Email),
             UsernameNullable.Create(dto.Username),
-            PhoneNullable.Create(dto.Phone),
+            PhoneNullable.Create(dto.PhoneNumber),
             FirstNameNullable.Create(dto.FirstName),
             LastNameNullable.Create(dto.LastName),
             Password.Create(dto.Password),

@@ -10,13 +10,6 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NoWarn>$(NoWarn);1591</NoWarn><!-- Optional: suppresses missing XML comment warnings -->
 	</PropertyGroup>
-
-
-	<ItemGroup>
-		<Content Include="ClientApp\dist\**\*">
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-	</ItemGroup>
 	
 
 	<ItemGroup>

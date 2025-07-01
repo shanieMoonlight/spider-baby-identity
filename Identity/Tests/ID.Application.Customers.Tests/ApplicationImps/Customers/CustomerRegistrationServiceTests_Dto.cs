@@ -46,7 +46,7 @@ public class CustomerRegistrationServiceTests_Dto
             FirstName = appUser.FirstName,
             LastName = appUser.LastName,
             Username = appUser.UserName,
-            Phone = appUser.PhoneNumber,
+            PhoneNumber = appUser.PhoneNumber,
             Password = "password",
             ConfirmPassword = "password",
             SubscriptionPlanId = subscriptionPlanId
@@ -98,7 +98,7 @@ public class CustomerRegistrationServiceTests_Dto
             FirstName = appUser.FirstName,
             LastName = appUser.LastName,
             Username = appUser.UserName,
-            Phone = appUser.PhoneNumber,
+            PhoneNumber = appUser.PhoneNumber,
             Password = "password",
             ConfirmPassword = "password",
             SubscriptionPlanId = null
@@ -146,7 +146,7 @@ public class CustomerRegistrationServiceTests_Dto
             FirstName = appUser.FirstName,
             LastName = appUser.LastName,
             Username = appUser.UserName,
-            Phone = appUser.PhoneNumber,
+            PhoneNumber = appUser.PhoneNumber,
             Password = "password",
             ConfirmPassword = "password",
             SubscriptionPlanId = subscriptionPlanId
@@ -194,7 +194,7 @@ public class CustomerRegistrationServiceTests_Dto
             FirstName = appUser.FirstName,
             LastName = appUser.LastName,
             Username = appUser.UserName,
-            Phone = appUser.PhoneNumber,
+            PhoneNumber = appUser.PhoneNumber,
             Password = "password",
             ConfirmPassword = "password",
             SubscriptionPlanId = subscriptionPlanId

@@ -2,7 +2,7 @@ using FluentValidation;
 using ID.Application.Customers.Mediatr.Validation;
 using ID.Domain.Utility.Messages;
 
-namespace ID.Application.Customers.Features.Account.Cmd.CloseAccount;
+namespace ID.Application.Customers.Features.Account.Cmd.CloseMyAccount;
 public class CloseMyAccountCmdValidator : ACustomerLeaderValidator<CloseMyAccountCmd> {
     public CloseMyAccountCmdValidator()
     {

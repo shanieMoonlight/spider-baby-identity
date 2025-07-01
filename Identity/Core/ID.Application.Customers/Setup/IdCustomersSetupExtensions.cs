@@ -44,7 +44,7 @@ public static class IdCustomersSetupExtensions
         return services;
     }
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Setup Customer auth (Customer Accounts url is required)

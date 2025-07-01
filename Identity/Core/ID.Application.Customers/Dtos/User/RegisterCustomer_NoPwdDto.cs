@@ -14,7 +14,7 @@ public class RegisterCustomer_NoPwdDto
     [EmailAddress]
     public string Email { get; set; } = string.Empty;
 
-    public string? Phone { get; set; }
+    public string? PhoneNumber { get; set; }
 
     public Guid? SubscriptionPlanId { get; set; }
 

@@ -2,9 +2,8 @@
 using ControllerHelpers.Responses;
 using ID.Application.Authenticators.Teams;
 using ID.Application.Customers.Dtos.User;
-using ID.Application.Customers.Features.Account.Cmd.AddCustomerMember;
-using ID.Application.Customers.Features.Account.Cmd.AddCustomerMemberMntc;
 using ID.Application.Customers.Features.Account.Cmd.CloseAccount;
+using ID.Application.Customers.Features.Account.Cmd.CloseMyAccount;
 using ID.Application.Customers.Features.Account.Cmd.RegCustomer;
 using ID.Application.Customers.Features.Account.Cmd.RegCustomerNoPwd;
 using ID.Application.Customers.Features.Account.Qry.MyInfoCustomer;
@@ -24,16 +23,29 @@ public class AccountController(ISender sender) : ControllerBase
 {
 
     /// <summary>
+    /// Closes the account for the specified customer team. Requires maintenance or higher team member authorization.
+    /// Use when yoiu are deleing a customer account, such as when they are no longer a customer or have requested account closure.
+    /// </summary>
+    /// <param name="teamId">The ID of the team whose account will be closed.</param>
+    /// <returns>A message indicating the result of the account closure.</returns>
+    [HttpDelete("[action]/{teamId}")]
+    [MntcMinimumAuthenticator.ActionFilter]
+    public async Task<ActionResult<MessageResponseDto>> CloseAccount(Guid teamId) =>
+        this.ProcessResult(await sender.Send(new CloseAccountCmd(teamId)));
+
+    //----------------------//
+
+    /// <summary>
     /// Closes the account for the specified customer team. Requires customer leader authorization.
     /// </summary>
     /// <param name="teamId">The ID of the team whose account will be closed.</param>
     /// <returns>A message indicating the result of the account closure.</returns>
     [HttpDelete("[action]/{teamId}")]
     [CustomerLeaderMinimumAuthenticator.ActionFilter]
-    public async Task<ActionResult<MessageResponseDto>> CloseAccount(Guid teamId) =>
+    public async Task<ActionResult<MessageResponseDto>> CloseMyAccount(Guid teamId) =>
         this.ProcessResult(await sender.Send(new CloseMyAccountCmd(teamId)));
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Retrieves the current authenticated customer's profile information.

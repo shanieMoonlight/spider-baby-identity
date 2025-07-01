@@ -1,4 +1,5 @@
 using ID.Application.Customers.Features.Account.Cmd.CloseAccount;
+using ID.Application.Customers.Features.Account.Cmd.CloseMyAccount;
 using ID.Domain.Abstractions.Services.Teams;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
@@ -7,33 +8,33 @@ using Moq;
 using MyResults;
 using Shouldly;
 
-namespace ID.Application.Customers.Tests.Features.Account.Cmd.CloseAccount;
+namespace ID.Application.Customers.Tests.Features.Account.Cmd.CloseMyAccount;
 
-public class CloseAccountCmdHandlerTests
+public class CloseMyAccountCmdHandlerTests
 {
     private readonly Mock<IIdentityTeamManager<AppUser>> _mockTeamManager;
-    private readonly CloseAccountCmdHandler _handler;
+    private readonly CloseMyAccountCmdHandler _handler;
 
     //- - - - - - - - - - - - - - - - - - - - -//
 
-    public CloseAccountCmdHandlerTests()
+    public CloseMyAccountCmdHandlerTests()
     {
         _mockTeamManager = new Mock<IIdentityTeamManager<AppUser>>();
-        _handler = new CloseAccountCmdHandler(_mockTeamManager.Object);
+        _handler = new CloseMyAccountCmdHandler(_mockTeamManager.Object);
     }
 
     //------------------------------------//
 
     [Fact]
-    public async Task Handle_ShouldReturnUnauthorized_WhenNotMntcMinimum_1()
+    public async Task Handle_ShouldReturUnauthorized_WhenTeamIdsDOntMatch()
     {
         // Arrange
         var team = TeamDataFactory.Create(
-           teamType: TeamType.Customer
-        );
-        var request = new CloseAccountCmd(team.Id)
+           teamType: TeamType.Customer);
+        var request = new CloseMyAccountCmd(team.Id)
         {
             PrincipalTeam = team,
+            IsCustomer = false,
             TeamId = Guid.NewGuid(), // Ensure TeamId matches PrincipalTeam.Id
         };
 
@@ -46,15 +47,40 @@ public class CloseAccountCmdHandlerTests
     }
 
     //------------------------------------//
-    
+
     [Fact]
-    public async Task Handle_ShouldReturnUnauthorized_WhenNotMntcMinimum_2()
+    public async Task Handle_ShouldReturnFailure_WhenUserIsNotACustomer()
     {
         // Arrange
-        var request = new CloseAccountCmd(Guid.NewGuid())
+        var team = TeamDataFactory.Create(
+           teamType: TeamType.Customer);
+        var request = new CloseMyAccountCmd(team.Id)
         {
+            PrincipalTeam = team,
+            IsCustomer = false,
+        };
+
+        // Act
+        var result = await _handler.Handle(request, CancellationToken.None);
+
+        // Assert
+        result.Succeeded.ShouldBeFalse();
+        result.Unauthorized.ShouldBeTrue();
+    }
+
+    //------------------------------------//
+
+    [Fact]
+    public async Task Handle_ShouldReturnFailure_WhenUserIsNotALeader()
+    {
+        // Arrange
+        var team = TeamDataFactory.Create(
+           teamType: TeamType.Customer);
+        var request = new CloseMyAccountCmd(team.Id)
+        {
+            PrincipalTeam = team,
             IsCustomer = true,
-            TeamId = Guid.NewGuid(), // Ensure TeamId matches PrincipalTeam.Id
+            IsLeader = false,
         };
 
         // Act
@@ -63,32 +89,6 @@ public class CloseAccountCmdHandlerTests
         // Assert
         result.Succeeded.ShouldBeFalse();
         result.Unauthorized.ShouldBeTrue();
-    }
-
-    //------------------------------------//
-
-    [Fact]
-    public async Task Handle_ShouldReturnNotFoundWhenTeamNotFound()
-    {
-        // Arrange
-        var team = TeamDataFactory.Create(
-           teamType: TeamType.Maintenance
-        );
-        var request = new CloseAccountCmd(Guid.NewGuid())
-        {
-            PrincipalTeam = team,
-            IsCustomer = false
-        };
-
-        _mockTeamManager.Setup(m => m.GetByIdWithEverythingAsync(request.TeamId, 10000))
-            .ReturnsAsync((Team)null!); // Simulate team not found   
-
-        // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
-
-        // Assert
-        result.Succeeded.ShouldBeFalse();
-        result.NotFound.ShouldBeTrue();
     }
 
     //------------------------------------//
@@ -97,19 +97,17 @@ public class CloseAccountCmdHandlerTests
     public async Task Handle_ShouldReturnSuccess_TeamIsDeletedSuccessfully()
     {
         // Arrange
-        var team = TeamDataFactory.Create(
-             teamType: TeamType.Maintenance
-          );
-        var request = new CloseAccountCmd(Guid.NewGuid())
+        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var request = new CloseMyAccountCmd(team.Id)
         {
+            IsAuthenticated = true,
+            Principal = new System.Security.Claims.ClaimsPrincipal(),
             PrincipalTeam = team,
-            IsCustomer = false
+            IsCustomer = true,
+            IsLeader = true,
         };
 
-        _mockTeamManager.Setup(m => m.GetByIdWithEverythingAsync(request.TeamId, It.IsAny<int>()))
-            .ReturnsAsync(team); 
-
-        _mockTeamManager.Setup(m => m.DeleteTeamAsync(team))
+        _mockTeamManager.Setup(m => m.DeleteTeamAsync(It.IsAny<Team>()))
             .ReturnsAsync(BasicResult.Success());
 
         // Act
@@ -125,27 +123,26 @@ public class CloseAccountCmdHandlerTests
     public async Task Handle_Should_Call_DeleteTeamAsyncAsync()
     {
         // Arrange
-        // Arrange
-        var team = TeamDataFactory.Create(
-             teamType: TeamType.Maintenance
-          );
-        var request = new CloseAccountCmd(Guid.NewGuid())
+        var teamMgrMock = new Mock<IIdentityTeamManager<AppUser>>();
+        var handler = new CloseMyAccountCmdHandler(teamMgrMock.Object);
+        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var request = new CloseMyAccountCmd(team.Id)
         {
+
+            Principal = new System.Security.Claims.ClaimsPrincipal(),
             PrincipalTeam = team,
-            IsCustomer = false
+            IsCustomer = true,
+            IsLeader = true,
         };
 
-        _mockTeamManager.Setup(m => m.GetByIdWithEverythingAsync(request.TeamId, It.IsAny<int>()))
-            .ReturnsAsync(team);
-
-        _mockTeamManager.Setup(m => m.DeleteTeamAsync(team))
-            .ReturnsAsync(BasicResult.Success());
+        teamMgrMock.Setup(m => m.DeleteTeamAsync(It.IsAny<Team>()))
+                   .ReturnsAsync(BasicResult.Success());
 
         // Act
-        await _handler.Handle(request, CancellationToken.None);
+        await handler.Handle(request, CancellationToken.None);
 
         // Assert
-        _mockTeamManager.Verify(m => m.DeleteTeamAsync(It.IsAny<Team>()), Times.Once);
+        teamMgrMock.Verify(m => m.DeleteTeamAsync(It.IsAny<Team>()), Times.Once);
     }
 
     //------------------------------------//

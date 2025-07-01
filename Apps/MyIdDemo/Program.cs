@@ -110,8 +110,8 @@ _app.UseSpa(spa =>
 {
     spa.Options.SourcePath = _startupData.SPA_STATIC_FILES_PATH;
 
-    if (_env.IsDevelopment())
-        spa.UseProxyToSpaDevelopmentServer($"http://localhost:{4208}");
+    //if (_env.IsDevelopment())
+    //    spa.UseProxyToSpaDevelopmentServer($"http://localhost:{4208}");
 
 });
 

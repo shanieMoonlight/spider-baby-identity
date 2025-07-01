@@ -5,7 +5,7 @@ using ID.Domain.Entities.AppUsers;
 using ID.Domain.Utility.Messages;
 using MyResults;
 
-namespace ID.Application.Customers.Features.Account.Cmd.CloseAccount;
+namespace ID.Application.Customers.Features.Account.Cmd.CloseMyAccount;
 public class CloseMyAccountCmdHandler(IIdentityTeamManager<AppUser> teamMgr)
     : IIdCommandHandler<CloseMyAccountCmd>
 {
@@ -14,8 +14,8 @@ public class CloseMyAccountCmdHandler(IIdentityTeamManager<AppUser> teamMgr)
     {
         var team = request.PrincipalTeam!;
 
-        if(request.TeamId != team.Id)
-            return GenResult<AppUserDto>.BadRequestResult(IDMsgs.Error.Teams.CANT_CLOSE_ACCOUNT_OF_OTHER_TEAM);
+        if (request.TeamId != team.Id)
+            return GenResult<AppUserDto>.UnauthorizedResult(IDMsgs.Error.Teams.CANT_CLOSE_ACCOUNT_OF_OTHER_TEAM);
 
         //Only leader or Higher team member can delete a team
         if (!request.IsLeader)

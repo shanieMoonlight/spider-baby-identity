@@ -29,7 +29,6 @@ public class SubscriptionDto : AuditableEntityDto
 
     //Fks
     public Guid TeamId { get; set; }
-    public Team? Team { get; set; }
     public IEnumerable<DeviceDto> Devices { get; set; } = [];
 
 

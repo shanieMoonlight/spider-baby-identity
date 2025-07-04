@@ -49,7 +49,7 @@ public class AddCustomerMemberCmdHandler_MntcTests
             name: "Test Team",
             description: "Test description",
             subscriptions: null,
-            TeamType.Customer
+            TeamType.customer
         );
 
         var newUser = AppUserDataFactory.Create(
@@ -117,7 +117,7 @@ public class AddCustomerMemberCmdHandler_MntcTests
             name: "Test Team",
             description: "Test description",
             null,
-            TeamType.Super
+            TeamType.super
         );
 
         var request = new AddCustomerMemberCmd_Mntc(new AddCustomerMember_MntcDto
@@ -174,7 +174,7 @@ public class AddCustomerMemberCmdHandler_MntcTests
             name: "Test Team",
             description: "Test description",
             subscriptions: null,
-            TeamType.Customer
+            TeamType.customer
         );
 
         var newUser = AppUserDataFactory.Create(
@@ -233,7 +233,7 @@ public class AddCustomerMemberCmdHandler_MntcTests
             name: "Test Team",
             description: "Test description",
             subscriptions: null,
-            TeamType.Customer
+            TeamType.customer
         ));
 
         // Act

@@ -77,7 +77,7 @@ public static class HttpContextIdExtensions
     public static TeamType GetTeamType(this HttpContext? ctx)
     {
         var teamTypeStr = ctx?.User.GetClaimValue(MyIdClaimTypes.TEAM_TYPE);
-        return Enum.TryParse(typeof(TeamType), teamTypeStr, out var teamPosition) ? (TeamType)teamPosition : TeamType.Customer;
+        return Enum.TryParse(typeof(TeamType), teamTypeStr, out var teamPosition) ? (TeamType)teamPosition : TeamType.customer;
     }
 
     //----------------------//

@@ -52,7 +52,7 @@ public class GetSprMembersQryHandlerTests
         var mbr4 = AppUserDataFactory.Create(teamId: teamId);
         var mbr5 = AppUserDataFactory.Create(teamId: teamId);
         HashSet<AppUser> members = [mbr1, mbr2, mbr3, mbr4, mbr5];
-        var mntcTeam = TeamDataFactory.Create(id: teamId, teamType: TeamType.Super, members: members);
+        var mntcTeam = TeamDataFactory.Create(id: teamId, teamType: TeamType.super, members: members);
 
         _mockTeamManager.Setup(mgr => mgr.GetSuperTeamWithMembersAsync(It.IsAny<int>()))
             .ReturnsAsync(mntcTeam);

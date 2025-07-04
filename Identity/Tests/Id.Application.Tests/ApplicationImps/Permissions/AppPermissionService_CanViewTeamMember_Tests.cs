@@ -29,32 +29,32 @@ public class AppPermissionService_CanViewTeamMember_Tests
         return new TheoryData<TeamType, TeamType, Func<GenResult<AppUser>, bool?>, Func<Team, AppUser, string>>
         {
             {
-                TeamType.Customer,
-                TeamType.Maintenance,
+                TeamType.customer,
+                TeamType.maintenance,
                 (GenResult<AppUser> result) => result.Forbidden,
                 (Team mbrTeam, AppUser mbr) => IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(mbrTeam.TeamType)
             },
             {
-                TeamType.Customer,
-                TeamType.Super,
+                TeamType.customer,
+                TeamType.super,
                 (GenResult<AppUser> result) => result.Forbidden,
                 (Team mbrTeam, AppUser mbr) => IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(mbrTeam.TeamType)
             },
             {
-                TeamType.Maintenance,
-                TeamType.Super,
+                TeamType.maintenance,
+                TeamType.super,
                 (GenResult<AppUser> result) => result.Forbidden,
                 (Team mbrTeam, AppUser mbr) => IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(mbrTeam.TeamType)
             },
             {
-                TeamType.Maintenance,
-                TeamType.Customer,
+                TeamType.maintenance,
+                TeamType.customer,
                 (GenResult<AppUser> result) => null,
                 (Team mbrTeam, AppUser mbr) => string.Empty
             },   
             {
-                TeamType.Super,
-                TeamType.Maintenance,
+                TeamType.super,
+                TeamType.maintenance,
                 (GenResult<AppUser> result) => null,
                 (Team mbrTeam, AppUser mbr) => string.Empty
             },

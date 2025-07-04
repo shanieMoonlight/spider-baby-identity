@@ -44,7 +44,7 @@ internal class TeamTypeWithMemberSpec : ASimpleSpecification<Team>
 /// <param name="userId">The ID of the user to include in the query.</param>
 /// <param name="maxPosition">The maximum position of the members to include in the query.</param>
 internal class SuperTeamWithMemberSpec(Guid? userId, int maxPosition = 1000)
-    : TeamTypeWithMemberSpec(TeamType.Super, userId, maxPosition)
+    : TeamTypeWithMemberSpec(TeamType.super, userId, maxPosition)
 { }
 
 
@@ -60,7 +60,7 @@ internal class SuperTeamWithMemberSpec(Guid? userId, int maxPosition = 1000)
 /// <param name="userId">The ID of the user to include in the query.</param>
 /// <param name="maxPosition">The maximum position of the members to include in the query.</param>
 internal class MntcTeamWithMemberSpec(Guid? userId, int maxPosition = 1000)
-    : TeamTypeWithMemberSpec(TeamType.Maintenance, userId, maxPosition)
+    : TeamTypeWithMemberSpec(TeamType.maintenance, userId, maxPosition)
 { }
 
 

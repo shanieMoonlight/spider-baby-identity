@@ -16,7 +16,7 @@ public class MemberRemovalValidatorTests
         var teamId = Guid.NewGuid();
         var member1 = AppUserDataFactory.Create(teamId: teamId);
         var member2 = AppUserDataFactory.Create(teamId: teamId);
-        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.Customer, members: [member1, member2]);
+        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.customer, members: [member1, member2]);
 
         // Act
         var result = TeamValidators.MemberRemoval.Validate(team, member1);
@@ -51,8 +51,8 @@ public class MemberRemovalValidatorTests
     //------------------------------------//
 
     [Theory]
-    [InlineData(TeamType.Super)]
-    [InlineData(TeamType.Maintenance)]
+    [InlineData(TeamType.super)]
+    [InlineData(TeamType.maintenance)]
     public void Validate_WhenRemovingLastMemberFromSystemTeam_ShouldFail(TeamType teamType)
     {
         // Arrange
@@ -76,7 +76,7 @@ public class MemberRemovalValidatorTests
         // Arrange
         var teamId = Guid.NewGuid();
         var lastMember = AppUserDataFactory.Create(teamId: teamId);
-        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.Customer, members: [lastMember]);
+        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.customer, members: [lastMember]);
 
         // Act
         var result = TeamValidators.MemberRemoval.Validate(team, lastMember);
@@ -132,9 +132,9 @@ public class MemberRemovalValidatorTests
     //------------------------------------//
 
     [Theory]
-    [InlineData(TeamType.Customer, 3)]
-    [InlineData(TeamType.Super, 5)]
-    [InlineData(TeamType.Maintenance, 2)]
+    [InlineData(TeamType.customer, 3)]
+    [InlineData(TeamType.super, 5)]
+    [InlineData(TeamType.maintenance, 2)]
     public void Validate_WithMultipleMembersInDifferentTeamTypes_ShouldSucceed(TeamType teamType, int memberCount)
     {
         // Arrange
@@ -223,7 +223,7 @@ public class MemberRemovalValidatorTests
         var teamId = Guid.NewGuid();
         var otherTeamId = Guid.NewGuid();
         var memberFromOtherTeam = AppUserDataFactory.Create(teamId: otherTeamId);
-        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.Super, members: []); // Empty system team
+        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.super, members: []); // Empty system team
 
         // Act
         var result = TeamValidators.MemberRemoval.Validate(team, memberFromOtherTeam);
@@ -236,8 +236,8 @@ public class MemberRemovalValidatorTests
     //------------------------------------//
 
     [Theory]
-    [InlineData(TeamType.Super)]
-    [InlineData(TeamType.Maintenance)]
+    [InlineData(TeamType.super)]
+    [InlineData(TeamType.maintenance)]
     public void Validate_WhenNonCustomerTeamLeaderIsLastMember_ShouldStillFailLeaderCheck(TeamType teamType)
     {
         // Arrange - Leader is last member, should fail on leader rule regardless of team type

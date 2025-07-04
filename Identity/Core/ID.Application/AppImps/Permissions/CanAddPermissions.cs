@@ -55,7 +55,7 @@ internal class CanAddPermissions() : ICanAddPermissions
         var principalIsLeader = request.IsLeader;
 
         if (!request.IsCustomer)
-            return Task.FromResult(BasicResult.ForbiddenResult(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.Customer)));
+            return Task.FromResult(BasicResult.ForbiddenResult(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.customer)));
 
 
         //Leader can do whatever they want

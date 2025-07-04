@@ -33,8 +33,8 @@ public class DeleteCustomerTeamCmdHandlerTests
 
 
     [Theory]
-    [InlineData(TeamType.Maintenance)]
-    [InlineData(TeamType.Super)]
+    [InlineData(TeamType.maintenance)]
+    [InlineData(TeamType.super)]
     public async Task Handle_TeamIsNotCustomer_ReturnsBadRequestResult(TeamType teamType)
     {
         // Arrange
@@ -77,7 +77,7 @@ public class DeleteCustomerTeamCmdHandlerTests
     {
         // Arrange
         var command = new DeleteCustomerTeamCmd(Guid.NewGuid());
-        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(teamType: TeamType.customer);
         _mockTeamManager.Setup(m => m.GetByIdWithMembersAsync(command.Id, 1000)).ReturnsAsync(team);
         _mockTeamManager.Setup(m => m.DeleteTeamAsync(team)).ReturnsAsync(BasicResult.Success);
 

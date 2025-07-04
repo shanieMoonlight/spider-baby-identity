@@ -37,9 +37,9 @@ internal class TeamManagerService<TUser>(
         var allTeams = await _teamRepo.ListAllAsync(new AllTeamsSpec(), cancellationToken);
 
         if (!includeMntc)
-            allTeams = [.. allTeams.Where(t => t.TeamType != TeamType.Maintenance)];
+            allTeams = [.. allTeams.Where(t => t.TeamType != TeamType.maintenance)];
         if (!includeSuper)
-            allTeams = [.. allTeams.Where(t => t.TeamType != TeamType.Super)];
+            allTeams = [.. allTeams.Where(t => t.TeamType != TeamType.super)];
 
         return allTeams;
     }
@@ -426,7 +426,7 @@ internal class TeamManagerService<TUser>(
 
     private static BasicResult CanDeleteAsync(Team dbTeam)
     {
-        if (dbTeam.TeamType != TeamType.Customer)
+        if (dbTeam.TeamType != TeamType.customer)
             return BasicResult.BadRequestResult(IDMsgs.Error.Teams.CAN_ONLY_REMOVE_CUSTOMER_TEAM);
 
         var nonLeaderMemberCount = dbTeam.Members

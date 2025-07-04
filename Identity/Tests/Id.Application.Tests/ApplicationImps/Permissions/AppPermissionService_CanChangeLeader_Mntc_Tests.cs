@@ -102,7 +102,7 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
         var request = new Mock<IIdUserAndTeamAwareRequest<AppUser>>();
         request.Setup(r => r.IsCustomer).Returns(false);
         request.Setup(r => r.IsMntc).Returns(true);
-        var team = TeamDataFactory.Create(teamType: TeamType.Super);
+        var team = TeamDataFactory.Create(teamType: TeamType.super);
         _mockTeamManager.Setup(m => m.GetByIdWithMemberAsync(It.IsAny<Guid>(), It.IsAny<Guid>())).ReturnsAsync(team);
 
         // Act
@@ -169,7 +169,7 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
 
         var teamId = Guid.NewGuid();
         var newLeader = AppUserDataFactory.Create(teamId: teamId);
-        var team = TeamDataFactory.Create(id:teamId, teamType: TeamType.Maintenance, leader: newLeader); //different from PrincipalUserId
+        var team = TeamDataFactory.Create(id:teamId, teamType: TeamType.maintenance, leader: newLeader); //different from PrincipalUserId
 
         _mockTeamManager.Setup(m => m.GetByIdWithMemberAsync(It.IsAny<Guid>(), It.IsAny<Guid>())).ReturnsAsync(team);
 
@@ -197,7 +197,7 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
         var newLeader = AppUserDataFactory.Create(teamId: teamId);
         var team = TeamDataFactory.Create(
             id: teamId, 
-            teamType: TeamType.Super, 
+            teamType: TeamType.super, 
             leaderId: Guid.NewGuid(),//different from PrincipalUserId
             members: [newLeader]); //Must be already in team
 
@@ -226,7 +226,7 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
 
         var teamId = Guid.NewGuid();
         var newLeader = AppUserDataFactory.Create(id: leaderId, teamId: teamId);
-        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.Super, leader: newLeader); //different from PrincipalUserId
+        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.super, leader: newLeader); //different from PrincipalUserId
 
 
         _mockTeamManager.Setup(m => m.GetByIdWithMemberAsync(It.IsAny<Guid>(), It.IsAny<Guid>())).ReturnsAsync(team);

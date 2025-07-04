@@ -32,7 +32,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task DeleteAsync_WithValidCustomerTeamId_ShouldDeleteTeam()
     {
         // Arrange
-        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(teamType: TeamType.customer);
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
 
@@ -71,7 +71,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task DeleteAsync_WithSuperTeamId_ShouldThrowCantDeleteException()
     {
         // Arrange
-        var superTeam = TeamDataFactory.Create(teamType: TeamType.Super);
+        var superTeam = TeamDataFactory.Create(teamType: TeamType.super);
         await _repo.AddAsync(superTeam);
         await DbContext.SaveChangesAsync();
 
@@ -86,7 +86,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task DeleteAsync_WithMaintenanceTeamId_ShouldThrowCantDeleteException()
     {
         // Arrange
-        var maintenanceTeam = TeamDataFactory.Create(teamType: TeamType.Maintenance);
+        var maintenanceTeam = TeamDataFactory.Create(teamType: TeamType.maintenance);
         await _repo.AddAsync(maintenanceTeam);
         await DbContext.SaveChangesAsync();
 
@@ -104,7 +104,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
         var leader = AppUserDataFactory.Create();
         var member = AppUserDataFactory.Create();
         var team = TeamDataFactory.Create(
-            teamType: TeamType.Customer,
+            teamType: TeamType.customer,
             leader: leader,
             members: [leader, member]);
 
@@ -130,7 +130,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task DeleteAsync_WithValidCustomerTeamEntity_ShouldDeleteTeam()
     {
         // Arrange
-        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(teamType: TeamType.customer);
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
 
@@ -147,7 +147,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task DeleteAsync_WithSuperTeamEntity_ShouldThrowCantDeleteException()
     {
         // Arrange
-        var superTeam = TeamDataFactory.Create(teamType: TeamType.Super);
+        var superTeam = TeamDataFactory.Create(teamType: TeamType.super);
 
         // Act & Assert
         var exception = await Should.ThrowAsync<CantDeleteException>(async () =>
@@ -160,7 +160,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task DeleteAsync_WithMaintenanceTeamEntity_ShouldThrowCantDeleteException()
     {
         // Arrange
-        var maintenanceTeam = TeamDataFactory.Create(teamType: TeamType.Maintenance);
+        var maintenanceTeam = TeamDataFactory.Create(teamType: TeamType.maintenance);
 
         // Act & Assert
         var exception = await Should.ThrowAsync<CantDeleteException>(async () =>
@@ -199,7 +199,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task CanDeleteAsync_WithSuperTeam_ShouldReturnFailure()
     {
         // Arrange
-        var superTeam = TeamDataFactory.Create(teamType: TeamType.Super);
+        var superTeam = TeamDataFactory.Create(teamType: TeamType.super);
 
         // Use reflection to access protected method for testing
         var canDeleteMethod = typeof(TeamRepo)
@@ -218,7 +218,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task CanDeleteAsync_WithMaintenanceTeam_ShouldReturnFailure()
     {
         // Arrange
-        var maintenanceTeam = TeamDataFactory.Create(teamType: TeamType.Maintenance);
+        var maintenanceTeam = TeamDataFactory.Create(teamType: TeamType.maintenance);
 
         // Use reflection to access protected method for testing
         var canDeleteMethod = typeof(TeamRepo)
@@ -237,7 +237,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task CanDeleteAsync_WithCustomerTeamWithoutMembers_ShouldReturnSuccess()
     {
         // Arrange
-        var customerTeam = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var customerTeam = TeamDataFactory.Create(teamType: TeamType.customer);
 
         // Use reflection to access protected method for testing
         var canDeleteMethod = typeof(TeamRepo)
@@ -259,7 +259,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
         var member1 = AppUserDataFactory.Create();
         var member2 = AppUserDataFactory.Create();
         var customerTeam = TeamDataFactory.Create(
-            teamType: TeamType.Customer,
+            teamType: TeamType.customer,
             leader: leader,
             members: [leader, member1, member2]);
 
@@ -282,7 +282,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
         // Arrange
         var leader = AppUserDataFactory.Create();
         var customerTeam = TeamDataFactory.Create(
-            teamType: TeamType.Customer,
+            teamType: TeamType.customer,
             leader: leader,
             members: [leader]);
 
@@ -310,9 +310,9 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task RemoveRangeAsync_WithMultipleValidCustomerTeams_ShouldRemoveAll()
     {
         // Arrange
-        var team1 = TeamDataFactory.Create(name: "Team 1", teamType: TeamType.Customer);
-        var team2 = TeamDataFactory.Create(name: "Team 2", teamType: TeamType.Customer);
-        var team3 = TeamDataFactory.Create(name: "Team 3", teamType: TeamType.Customer);
+        var team1 = TeamDataFactory.Create(name: "Team 1", teamType: TeamType.customer);
+        var team2 = TeamDataFactory.Create(name: "Team 2", teamType: TeamType.customer);
+        var team3 = TeamDataFactory.Create(name: "Team 3", teamType: TeamType.customer);
 
         await _repo.AddAsync(team1);
         await _repo.AddAsync(team2);
@@ -350,9 +350,9 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task RemoveRangeAsync_WithSpecification_ShouldRemoveMatchingTeams()
     {
         // Arrange
-        var customerTeam1 = TeamDataFactory.Create(name: "Customer A", teamType: TeamType.Customer);
-        var customerTeam2 = TeamDataFactory.Create(name: "Customer B", teamType: TeamType.Customer);
-        var maintenanceTeam = TeamDataFactory.Create(name: "Maintenance", teamType: TeamType.Maintenance);
+        var customerTeam1 = TeamDataFactory.Create(name: "Customer A", teamType: TeamType.customer);
+        var customerTeam2 = TeamDataFactory.Create(name: "Customer B", teamType: TeamType.customer);
+        var maintenanceTeam = TeamDataFactory.Create(name: "Maintenance", teamType: TeamType.maintenance);
 
         await _repo.AddAsync(customerTeam1);
         await _repo.AddAsync(customerTeam2);
@@ -360,7 +360,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
         await DbContext.SaveChangesAsync();
 
         // Create a simple spec that matches customer teams
-        var spec = new GetTeamsByTypeSpec(TeamType.Customer);
+        var spec = new GetTeamsByTypeSpec(TeamType.customer);
 
         // Act
         await _repo.RemoveRangeAsync(spec);
@@ -388,7 +388,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task DeleteAsync_ShouldPersistDeletionAfterSaveChanges()
     {
         // Arrange
-        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(teamType: TeamType.customer);
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
 

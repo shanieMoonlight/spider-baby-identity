@@ -50,9 +50,9 @@ public class TeamManagerServiceTests
         // Arrange
         var teams = new List<Team>
         {
-           TeamDataFactory.Create(teamType: TeamType.Super),
-           TeamDataFactory.Create(teamType: TeamType.Maintenance),
-           TeamDataFactory.Create(teamType: TeamType.Customer),
+           TeamDataFactory.Create(teamType: TeamType.super),
+           TeamDataFactory.Create(teamType: TeamType.maintenance),
+           TeamDataFactory.Create(teamType: TeamType.customer),
         };
         _teamRepoMock.Setup(repo => repo.ListAllAsync(It.IsAny<AllTeamsSpec>(), CancellationToken.None)).ReturnsAsync(teams);
 
@@ -71,9 +71,9 @@ public class TeamManagerServiceTests
         // Arrange
         var teams = new List<Team>
         {
-           TeamDataFactory.Create(teamType: TeamType.Super),
-           TeamDataFactory.Create(teamType: TeamType.Maintenance),
-           TeamDataFactory.Create(teamType: TeamType.Customer),
+           TeamDataFactory.Create(teamType: TeamType.super),
+           TeamDataFactory.Create(teamType: TeamType.maintenance),
+           TeamDataFactory.Create(teamType: TeamType.customer),
         };
         _teamRepoMock.Setup(repo => repo.ListAllAsync(It.IsAny<AllTeamsSpec>(), CancellationToken.None)).ReturnsAsync(teams);
 
@@ -90,9 +90,9 @@ public class TeamManagerServiceTests
     public async Task GetAllTeams_ShouldReturnAllExceptSuper_WhenSuperIsFalse()
     {
         // Arrange
-        var cusTeam = TeamDataFactory.Create(teamType: TeamType.Customer);
-        var mntcTeam = TeamDataFactory.Create(teamType: TeamType.Maintenance);
-        var superTeam = TeamDataFactory.Create(teamType: TeamType.Super);
+        var cusTeam = TeamDataFactory.Create(teamType: TeamType.customer);
+        var mntcTeam = TeamDataFactory.Create(teamType: TeamType.maintenance);
+        var superTeam = TeamDataFactory.Create(teamType: TeamType.super);
         var teams = new List<Team>
         {
             cusTeam,
@@ -116,9 +116,9 @@ public class TeamManagerServiceTests
     public async Task GetAllTeams_ShouldReturnAllExceptMntc_WhenMntcIsFalse()
     {
         // Arrange
-        var cusTeam = TeamDataFactory.Create(teamType: TeamType.Customer);
-        var mntcTeam = TeamDataFactory.Create(teamType: TeamType.Maintenance);
-        var superTeam = TeamDataFactory.Create(teamType: TeamType.Super);
+        var cusTeam = TeamDataFactory.Create(teamType: TeamType.customer);
+        var mntcTeam = TeamDataFactory.Create(teamType: TeamType.maintenance);
+        var superTeam = TeamDataFactory.Create(teamType: TeamType.super);
         var teams = new List<Team>
         {
             cusTeam,

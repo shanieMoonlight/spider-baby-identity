@@ -13,19 +13,19 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
     // Test data
     private readonly Team _customerTeam1 = TeamDataFactory.Create(
         name: "Alpha Customer Team",
-        teamType: TeamType.Customer);
+        teamType: TeamType.customer);
 
     private readonly Team _customerTeam2 = TeamDataFactory.Create(
         name: "Beta Customer Team", 
-        teamType: TeamType.Customer);
+        teamType: TeamType.customer);
 
     private readonly Team _maintenanceTeam = TeamDataFactory.Create(
         name: "Maintenance Team",
-        teamType: TeamType.Maintenance);
+        teamType: TeamType.maintenance);
 
     private readonly Team _superTeam = TeamDataFactory.Create(
         name: "Super Team",
-        teamType: TeamType.Super);
+        teamType: TeamType.super);
 
     private readonly List<Team> _allTeams;
 
@@ -87,9 +87,9 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         result.ShouldNotBeNull();
-        result.ShouldContain(t => t.TeamType == TeamType.Customer);
-        result.ShouldContain(t => t.TeamType == TeamType.Maintenance);
-        result.ShouldContain(t => t.TeamType == TeamType.Super);
+        result.ShouldContain(t => t.TeamType == TeamType.customer);
+        result.ShouldContain(t => t.TeamType == TeamType.maintenance);
+        result.ShouldContain(t => t.TeamType == TeamType.super);
     }
 
     [Fact]
@@ -128,8 +128,8 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         // Assert
         result.ShouldNotBeNull();
         result.Count.ShouldBe(1);
-        result.ShouldContain(t => t.Name.Contains("Alpha") && t.TeamType == TeamType.Customer);
-        result.ShouldNotContain(t => t.TeamType != TeamType.Customer);
+        result.ShouldContain(t => t.Name.Contains("Alpha") && t.TeamType == TeamType.customer);
+        result.ShouldNotContain(t => t.TeamType != TeamType.customer);
     }
 
     [Fact]
@@ -146,7 +146,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         result.Count.ShouldBe(2);
         result.ShouldContain(t => t.Id == _customerTeam1.Id);
         result.ShouldContain(t => t.Id == _customerTeam2.Id);
-        result.ShouldNotContain(t => t.TeamType != TeamType.Customer);
+        result.ShouldNotContain(t => t.TeamType != TeamType.customer);
     }
 
     [Fact]
@@ -217,9 +217,9 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         result.ShouldNotBeNull();
-        result.ShouldAllBe(t => t.TeamType == TeamType.Customer);
-        result.ShouldNotContain(t => t.TeamType == TeamType.Maintenance);
-        result.ShouldNotContain(t => t.TeamType == TeamType.Super);
+        result.ShouldAllBe(t => t.TeamType == TeamType.customer);
+        result.ShouldNotContain(t => t.TeamType == TeamType.maintenance);
+        result.ShouldNotContain(t => t.TeamType == TeamType.super);
     }
 
     #endregion
@@ -362,8 +362,8 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         allResults.Count.ShouldBeGreaterThan(customerResults.Count);
-        allResults.ShouldContain(t => t.TeamType == TeamType.Maintenance);
-        customerResults.ShouldNotContain(t => t.TeamType == TeamType.Maintenance);
+        allResults.ShouldContain(t => t.TeamType == TeamType.maintenance);
+        customerResults.ShouldNotContain(t => t.TeamType == TeamType.maintenance);
     }
 
     [Fact]

@@ -73,7 +73,7 @@ public class GetMntcMembersQryHandlerTests
         var mbr4 = AppUserDataFactory.Create(teamId: teamId);
         var mbr5 = AppUserDataFactory.Create(teamId: teamId);
         HashSet<AppUser> members = [mbr1, mbr2, mbr3, mbr4, mbr5];
-        var mntcTeam = TeamDataFactory.Create(id: teamId, teamType: TeamType.Maintenance, members: members);
+        var mntcTeam = TeamDataFactory.Create(id: teamId, teamType: TeamType.maintenance, members: members);
         
         _mockTeamManager.Setup(mgr => mgr.GetMntcTeamWithMembersAsync(It.IsAny<int>()))
             .ReturnsAsync(mntcTeam);

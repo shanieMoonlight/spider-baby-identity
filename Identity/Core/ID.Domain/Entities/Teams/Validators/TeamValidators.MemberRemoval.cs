@@ -30,11 +30,11 @@ public partial class TeamValidators
 
             // Business rule: Cannot remove the last Super or Maintenance member,
             // Customer teams will delete the last member/leader when closing account
-            if (team.TeamType != TeamType.Customer && team.Members.Count == 1)
+            if (team.TeamType != TeamType.customer && team.Members.Count == 1)
                 return GenResult<Token>.BadRequestResult(IDMsgs.Error.Teams.CANT_REMOVE_LAST_MAINTENANCE_OR_SUPER_MEMBER);
 
             // Business rule: Removing the last Customer member is allowed
-            if (team.TeamType == TeamType.Customer && team.Members.Count == 1)
+            if (team.TeamType == TeamType.customer && team.Members.Count == 1)
                 return GenResult<Token>.Success(new Token(team, member));
 
             // Business rule: Cannot remove team leader without transferring leadership first

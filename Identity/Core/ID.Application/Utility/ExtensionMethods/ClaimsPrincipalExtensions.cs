@@ -87,7 +87,7 @@ public static class ClaimsPrincipalExtensions
     public static TeamType GetTeamType(this ClaimsPrincipal? user)
     {
         var teamTypeStr = user.GetClaimValue(MyIdClaimTypes.TEAM_TYPE);
-        return Enum.TryParse(typeof(TeamType), teamTypeStr, out var teamPosition) ? (TeamType)teamPosition : TeamType.Customer;
+        return Enum.TryParse(typeof(TeamType), teamTypeStr, out var teamPosition) ? (TeamType)teamPosition : TeamType.customer;
     }
 
     //-----------------------------------//

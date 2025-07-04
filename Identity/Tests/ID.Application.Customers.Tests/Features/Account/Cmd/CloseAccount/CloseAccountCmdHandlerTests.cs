@@ -29,7 +29,7 @@ public class CloseAccountCmdHandlerTests
     {
         // Arrange
         var team = TeamDataFactory.Create(
-           teamType: TeamType.Customer
+           teamType: TeamType.customer
         );
         var request = new CloseAccountCmd(team.Id)
         {
@@ -72,7 +72,7 @@ public class CloseAccountCmdHandlerTests
     {
         // Arrange
         var team = TeamDataFactory.Create(
-           teamType: TeamType.Maintenance
+           teamType: TeamType.maintenance
         );
         var request = new CloseAccountCmd(Guid.NewGuid())
         {
@@ -98,7 +98,7 @@ public class CloseAccountCmdHandlerTests
     {
         // Arrange
         var team = TeamDataFactory.Create(
-             teamType: TeamType.Maintenance
+             teamType: TeamType.maintenance
           );
         var request = new CloseAccountCmd(Guid.NewGuid())
         {
@@ -127,7 +127,7 @@ public class CloseAccountCmdHandlerTests
         // Arrange
         // Arrange
         var team = TeamDataFactory.Create(
-             teamType: TeamType.Maintenance
+             teamType: TeamType.maintenance
           );
         var request = new CloseAccountCmd(Guid.NewGuid())
         {

@@ -34,7 +34,7 @@ public class ForgotPwdHandler(IFindUserService<AppUser> findUserService, IPwdRes
             new ForgotPwdEmailRequestIntegrationEvent(
                 user,
                 safePwdResetTkn,
-                user.Team!.TeamType == TeamType.Customer),
+                user.Team!.TeamType == TeamType.customer),
             cancellationToken);
 
         //We must trust Publish

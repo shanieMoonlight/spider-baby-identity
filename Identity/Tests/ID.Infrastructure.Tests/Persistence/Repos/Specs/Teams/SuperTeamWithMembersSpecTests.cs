@@ -12,7 +12,7 @@ public class SuperTeamWithMembersSpecTests
     public void Constructor_SetsCriteriaCorrectly()
     {
         // Arrange
-        var team = TeamDataFactory.Create(teamType: TeamType.Super);
+        var team = TeamDataFactory.Create(teamType: TeamType.super);
 
         // Act
         var spec = new SuperTeamWithMembersSpec(1000);
@@ -28,7 +28,7 @@ public class SuperTeamWithMembersSpecTests
     public void Constructor_SetsCriteriaCorrectly_FALSE_IfWrongType()
     {
         // Arrange
-        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(teamType: TeamType.customer);
 
         // Act
         var spec = new SuperTeamWithMembersSpec(1000);

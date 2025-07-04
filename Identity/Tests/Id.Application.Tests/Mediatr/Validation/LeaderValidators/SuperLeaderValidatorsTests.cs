@@ -27,7 +27,7 @@ public class SuperLeaderValidatorsTests
         var request = new TestIsSuperLeaderRequest { IsLeader = true, IsSuper = false };
         var result = _validator.TestValidate(request);
         result.ShouldHaveValidationErrorFor(r => r.IsSuper)
-              .WithErrorMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.Super));
+              .WithErrorMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.super));
     }
 
     //------------------------------------//

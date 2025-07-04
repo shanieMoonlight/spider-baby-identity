@@ -6,10 +6,10 @@ namespace ID.Domain.Entities.Teams;
 public enum TeamType
 {
     [Description("Customer Team")]
-    Customer = 1,
+    customer = 1,
     [Description(IdGlobalConstants.Teams.MAINTENANCE_TEAM_NAME)]
-    Maintenance = 2,
+    maintenance = 2,
     [Description(IdGlobalConstants.Teams.SUPER_TEAM_NAME)]
-    Super = 3,
+    super = 3,
 
 }//Enm

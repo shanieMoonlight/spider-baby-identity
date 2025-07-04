@@ -11,7 +11,7 @@ public class CustomerTeamsByNameSpecTests
     public void Constructor_SetsCriteriaCorrectly()
     {
         // Arrange
-        var team = TeamDataFactory.Create(name: "TestTeam", teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(name: "TestTeam", teamType: TeamType.customer);
 
         // Act
         var spec = new CustomerTeamsByNameSpec(team.Name);
@@ -27,7 +27,7 @@ public class CustomerTeamsByNameSpecTests
     public void Constructor_SetsCriteriaCorrectly_FALSE_IfWrongName()
     {
         // Arrange
-        var team = TeamDataFactory.Create(name: "TestTeam", teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(name: "TestTeam", teamType: TeamType.customer);
         var differentName = "DifferentTeam";
 
         // Act

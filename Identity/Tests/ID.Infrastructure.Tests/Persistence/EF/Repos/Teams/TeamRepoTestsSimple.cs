@@ -18,17 +18,17 @@ public class TeamRepoTests : RepoTestBase, IAsyncLifetime
     private readonly Team _customerTeam = TeamDataFactory.Create(
         name: "Customer Alpha",
         description: "Primary customer team",
-        teamType: TeamType.Customer);
+        teamType: TeamType.customer);
 
     private readonly Team _maintenanceTeam = TeamDataFactory.Create(
         name: "Maintenance Team",
         description: "System maintenance team",
-        teamType: TeamType.Maintenance);
+        teamType: TeamType.maintenance);
 
     private readonly Team _superTeam = TeamDataFactory.Create(
         name: "Super Team", 
         description: "Super admin team",
-        teamType: TeamType.Super);
+        teamType: TeamType.super);
 
     private readonly List<Team> _teams;
 
@@ -99,9 +99,9 @@ public class TeamRepoTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         result.ShouldNotBeNull();
-        result.Data.ShouldNotContain(t => t.TeamType == TeamType.Super);
-        result.Data.ShouldContain(t => t.TeamType == TeamType.Customer);
-        result.Data.ShouldContain(t => t.TeamType == TeamType.Maintenance);
+        result.Data.ShouldNotContain(t => t.TeamType == TeamType.super);
+        result.Data.ShouldContain(t => t.TeamType == TeamType.customer);
+        result.Data.ShouldContain(t => t.TeamType == TeamType.maintenance);
     }
 
     [Fact]
@@ -212,7 +212,7 @@ public class TeamRepoTests : RepoTestBase, IAsyncLifetime
     public async Task CanDeleteAsync_WithCustomerTeamWithoutMembers_ShouldReturnSuccess()
     {
         // Arrange
-        var customerTeam = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var customerTeam = TeamDataFactory.Create(teamType: TeamType.customer);
 
         // Use reflection to access protected method for testing
         var canDeleteMethod = typeof(TeamRepo)
@@ -235,7 +235,7 @@ public class TeamRepoTests : RepoTestBase, IAsyncLifetime
         var member2 = AppUserDataFactory.Create();
         
         var customerTeam = TeamDataFactory.Create(
-            teamType: TeamType.Customer,
+            teamType: TeamType.customer,
             leader: leader,
             members: [leader, member1, member2]);
 
@@ -271,8 +271,8 @@ public class TeamRepoTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         result.ShouldNotBeNull();
-        result.ShouldContain(t => t.Name.Contains("Customer") && t.TeamType == TeamType.Customer);
-        result.ShouldNotContain(t => t.TeamType != TeamType.Customer);
+        result.ShouldContain(t => t.Name.Contains("Customer") && t.TeamType == TeamType.customer);
+        result.ShouldNotContain(t => t.TeamType != TeamType.customer);
     }
 
     [Fact]

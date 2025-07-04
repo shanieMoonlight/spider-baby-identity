@@ -357,7 +357,7 @@ public class IdPrincipalInfoTests
 
         var idPrincipalInfo = new IdPrincipalInfo(_httpContextAccessorMock.Object);
         var result = idPrincipalInfo.TeamType();
-        result.ShouldBe(TeamType.Customer);
+        result.ShouldBe(TeamType.customer);
     }
 
     //------------------------------//

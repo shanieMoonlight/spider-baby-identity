@@ -24,7 +24,7 @@ public class AddCustomerMemberCmdHandler_Mntc(IIdentityTeamManager<AppUser> team
         if (team == null)
             return GenResult<AppUser_Customer_Dto>.NotFoundResult(IDMsgs.Error.NotFound<Team>(teamId));
 
-        if (team.TeamType is not TeamType.Customer)
+        if (team.TeamType is not TeamType.customer)
             return GenResult<AppUser_Customer_Dto>.Failure(IDMsgs.Error.Teams.NotACustomerTeam(teamId));
 
         var newUser = AppUser.Create(

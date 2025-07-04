@@ -32,7 +32,7 @@ public record PhoneConfirmationIntegrationEvent : AIdIntegrationEvent
         UserId = user.Id;
         Phone = user.PhoneNumber!; //Let the consumer handle it.
         ConfirmationToken = confirmationToken;
-        IsCustomerTeam = type == TeamType.Customer;
+        IsCustomerTeam = type == TeamType.customer;
 
 
         Username = user.FirstName;

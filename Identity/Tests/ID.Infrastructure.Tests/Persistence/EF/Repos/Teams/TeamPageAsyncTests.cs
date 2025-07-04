@@ -25,21 +25,21 @@ public class TeamPageAsyncTests : RepoTestBase, IAsyncLifetime
             .Select(i => TeamDataFactory.Create(
                 name: $"Customer Team {i:D2}",
                 description: $"Customer team description {i}",
-                teamType: TeamType.Customer))
+                teamType: TeamType.customer))
             .ToList();
 
         _maintenanceTeams = Enumerable.Range(1, 3)
             .Select(i => TeamDataFactory.Create(
                 name: $"Maintenance Team {i:D2}",
                 description: $"Maintenance team description {i}",
-                teamType: TeamType.Maintenance))
+                teamType: TeamType.maintenance))
             .ToList();
 
         _superTeams = Enumerable.Range(1, 2)
             .Select(i => TeamDataFactory.Create(
                 name: $"Super Team {i:D2}",
                 description: $"Super team description {i}",
-                teamType: TeamType.Super))
+                teamType: TeamType.super))
             .ToList();
 
         _allTeams = [.. _customerTeams, .. _maintenanceTeams, .. _superTeams];
@@ -100,9 +100,9 @@ public class TeamPageAsyncTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         result.ShouldNotBeNull();
-        result.Data.ShouldNotContain(t => t.TeamType == TeamType.Super);
-        result.Data.ShouldContain(t => t.TeamType == TeamType.Customer);
-        result.Data.ShouldContain(t => t.TeamType == TeamType.Maintenance);
+        result.Data.ShouldNotContain(t => t.TeamType == TeamType.super);
+        result.Data.ShouldContain(t => t.TeamType == TeamType.customer);
+        result.Data.ShouldContain(t => t.TeamType == TeamType.maintenance);
     }
 
     [Fact]
@@ -308,7 +308,7 @@ public class TeamPageAsyncTests : RepoTestBase, IAsyncLifetime
         // Assert
         result.ShouldNotBeNull();
         // Super teams should still be excluded regardless of filter
-        result.Data.ShouldNotContain(t => t.TeamType == TeamType.Super);
+        result.Data.ShouldNotContain(t => t.TeamType == TeamType.super);
     }
 
     [Fact]
@@ -348,7 +348,7 @@ public class TeamPageAsyncTests : RepoTestBase, IAsyncLifetime
         result.ShouldNotBeNull();
         result.Data.ShouldNotBeEmpty();
         // Should still exclude Super teams
-        result.Data.ShouldNotContain(t => t.TeamType == TeamType.Super);
+        result.Data.ShouldNotContain(t => t.TeamType == TeamType.super);
     }
 
     [Fact]
@@ -367,7 +367,7 @@ public class TeamPageAsyncTests : RepoTestBase, IAsyncLifetime
         result.ShouldNotBeNull();
         result.Data.ShouldNotBeEmpty();
         // Should still exclude Super teams
-        result.Data.ShouldNotContain(t => t.TeamType == TeamType.Super);
+        result.Data.ShouldNotContain(t => t.TeamType == TeamType.super);
     }
 
     #endregion
@@ -457,7 +457,7 @@ public class TeamPageAsyncTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         result.ShouldNotBeNull();
-        result.Data.ShouldNotContain(t => t.TeamType == TeamType.Super);
+        result.Data.ShouldNotContain(t => t.TeamType == TeamType.super);
         
         // If any results, they should be sorted
         if (result.Data.Count > 1)

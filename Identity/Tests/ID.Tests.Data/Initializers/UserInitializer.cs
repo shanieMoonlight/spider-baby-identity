@@ -19,7 +19,7 @@ public class UserInitializer
         foreach (var team in teams)
         {
             Guid userId = Guid.NewGuid();
-            if (team.TeamType == TeamType.Super)
+            if (team.TeamType == TeamType.super)
             {
                 users.Add(
                     AppUserDataFactory.Create(
@@ -34,7 +34,7 @@ public class UserInitializer
                         identityAddress: IdentityAddressDataFactory.Create(userId))
                     );
             }
-            else if (team.TeamType == TeamType.Maintenance)
+            else if (team.TeamType == TeamType.maintenance)
             {
                 users.Add(
                     AppUserDataFactory.Create(

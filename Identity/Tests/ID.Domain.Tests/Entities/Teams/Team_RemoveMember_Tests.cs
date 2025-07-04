@@ -105,7 +105,7 @@ public class Team_RemoveMember_Tests
         // Arrange
         var teamId = Guid.NewGuid();
         var lastMember = AppUserDataFactory.Create(teamId: teamId);
-        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.Customer, members: [lastMember]); // Super team can be empty
+        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.customer, members: [lastMember]); // Super team can be empty
 
         var validationResult = TeamValidators.MemberRemoval.Validate(team, lastMember);
         validationResult.Succeeded.ShouldBeTrue(); // Should pass validation for Super team
@@ -184,9 +184,9 @@ public class Team_RemoveMember_Tests
     //------------------------------------//
 
     [Theory]
-    [InlineData(TeamType.Customer)]
-    [InlineData(TeamType.Super)]
-    [InlineData(TeamType.Maintenance)]
+    [InlineData(TeamType.customer)]
+    [InlineData(TeamType.super)]
+    [InlineData(TeamType.maintenance)]
     public void RemoveMember_WithDifferentTeamTypes_ShouldWorkConsistently(TeamType teamType)
     {
         // Arrange
@@ -255,7 +255,7 @@ public class Team_RemoveMember_Tests
         // Arrange - Customer team with only one member
         var teamId = Guid.NewGuid();
         var lastMember = AppUserDataFactory.Create(teamId: teamId);
-        var customerTeam = TeamDataFactory.Create(id: teamId, teamType: TeamType.Customer, members: [lastMember]);
+        var customerTeam = TeamDataFactory.Create(id: teamId, teamType: TeamType.customer, members: [lastMember]);
 
         // Act - Validate removal of last Customer member
         var validationResult = TeamValidators.MemberRemoval.Validate(customerTeam, lastMember);
@@ -286,8 +286,8 @@ public class Team_RemoveMember_Tests
     //------------------------------------//
 
     [Theory]
-    [InlineData(TeamType.Super)]
-    [InlineData(TeamType.Maintenance)]
+    [InlineData(TeamType.super)]
+    [InlineData(TeamType.maintenance)]
     public void RemoveMember_NonCustomerTeamWithLastMember_ShouldFailValidation(TeamType teamType)
     {
         // Arrange - Non-Customer team with only one member

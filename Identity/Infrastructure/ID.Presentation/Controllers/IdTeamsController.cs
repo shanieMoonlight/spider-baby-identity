@@ -88,7 +88,7 @@ public class TeamsController(ISender sender) : Controller
     /// <returns>A list of all teams.</returns>
     [HttpGet]
     [MntcMinimumAuthenticator.ResourceFilter(1)]
-    public async Task<ActionResult<TeamDto>> GetAll() =>
+    public async Task<ActionResult<IEnumerable<TeamDto>>> GetAll() =>
         this.ProcessResult(await sender.Send(new GetAllTeamsQry()));
 
     //------------------------//

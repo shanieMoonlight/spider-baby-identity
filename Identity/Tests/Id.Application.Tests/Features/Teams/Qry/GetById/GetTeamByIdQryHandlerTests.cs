@@ -47,7 +47,7 @@ public class GetTeamByIdQryHandlerTests
     public async Task Handle_TeamIsSuperAndUserNotSuper_ReturnsForbiddenResult()
     {
         // Arrange
-        var team = TeamDataFactory.Create(teamType: TeamType.Super);
+        var team = TeamDataFactory.Create(teamType: TeamType.super);
         var request = new GetTeamByIdQry(team.Id) { IsSuper = false };
         _mockTeamManager.Setup(m => m.GetByIdWithEverythingAsync(It.IsAny<Guid>(), It.IsAny<int>()))
             .ReturnsAsync(team);

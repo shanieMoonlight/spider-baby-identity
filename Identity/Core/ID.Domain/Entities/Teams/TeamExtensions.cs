@@ -3,17 +3,17 @@ public static class TeamExtensions
 {
 
     public static bool IsSuper(this Team team) =>
-        team.TeamType == TeamType.Super;
+        team.TeamType == TeamType.super;
 
     //- - - - - - - - - - - - //
 
     public static bool IsMntc(this Team team) =>
-        team.TeamType == TeamType.Maintenance;
+        team.TeamType == TeamType.maintenance;
 
     //- - - - - - - - - - - - //
 
     public static bool IsCustomer(this Team team) =>
-        team.TeamType == TeamType.Customer;
+        team.TeamType == TeamType.customer;
 
     //------------------------//
 

@@ -33,7 +33,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
         var team = TeamDataFactory.Create(
             name: "Original Team",
             description: "Original description",
-            teamType: TeamType.Customer);
+            teamType: TeamType.customer);
 
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
@@ -51,7 +51,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
         result.Id.ShouldBe(team.Id);
         result.Name.ShouldBe("Updated Team Name");
         result.Description.ShouldBe("Updated description");
-        result.TeamType.ShouldBe(TeamType.Customer); // Should remain unchanged
+        result.TeamType.ShouldBe(TeamType.customer); // Should remain unchanged
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
         var team = TeamDataFactory.Create(
             name: "Test Team",
             description: "Has description",
-            teamType: TeamType.Customer);
+            teamType: TeamType.customer);
 
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
@@ -87,7 +87,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
         var team = TeamDataFactory.Create(
             name: "Test Team",
             description: "Has description",
-            teamType: TeamType.Customer);
+            teamType: TeamType.customer);
 
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
@@ -117,7 +117,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task UpdateAsync_CustomerTeam_ShouldPreserveTeamType()
     {
         // Arrange
-        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(teamType: TeamType.customer);
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
 
@@ -129,14 +129,14 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
         var result = await _repo.UpdateAsync(team);
 
         // Assert
-        result.TeamType.ShouldBe(TeamType.Customer);
+        result.TeamType.ShouldBe(TeamType.customer);
     }
 
     [Fact]
     public async Task UpdateAsync_MaintenanceTeam_ShouldPreserveTeamType()
     {
         // Arrange
-        var team = TeamDataFactory.Create(teamType: TeamType.Maintenance);
+        var team = TeamDataFactory.Create(teamType: TeamType.maintenance);
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
 
@@ -148,14 +148,14 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
         var result = await _repo.UpdateAsync(team);
 
         // Assert
-        result.TeamType.ShouldBe(TeamType.Maintenance);
+        result.TeamType.ShouldBe(TeamType.maintenance);
     }
 
     [Fact]
     public async Task UpdateAsync_SuperTeam_ShouldPreserveTeamType()
     {
         // Arrange
-        var team = TeamDataFactory.Create(teamType: TeamType.Super);
+        var team = TeamDataFactory.Create(teamType: TeamType.super);
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
 
@@ -167,7 +167,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
         var result = await _repo.UpdateAsync(team);
 
         // Assert
-        result.TeamType.ShouldBe(TeamType.Super);
+        result.TeamType.ShouldBe(TeamType.super);
     }
 
     #endregion
@@ -182,7 +182,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task UpdateAsync_ShouldPreserveId()
     {
         // Arrange
-        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(teamType: TeamType.customer);
         var originalId = team.Id;
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
@@ -203,7 +203,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
     {
         // Arrange
         var team = TeamDataFactory.Create(
-            teamType: TeamType.Customer,
+            teamType: TeamType.customer,
             capacity: 25);
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
@@ -224,7 +224,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
     {
         // Arrange
         var team = TeamDataFactory.Create(
-            teamType: TeamType.Customer,
+            teamType: TeamType.customer,
             minPosition: 2,
             maxPosition: 8);
         await _repo.AddAsync(team);
@@ -248,7 +248,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
         // Arrange
         var leader = AppUserDataFactory.Create();
         var team = TeamDataFactory.Create(
-            teamType: TeamType.Customer,
+            teamType: TeamType.customer,
             leader: leader,
             members: [leader]);
         
@@ -282,7 +282,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
         var team = TeamDataFactory.Create(
             name: "Before Update",
             description: "Before description",
-            teamType: TeamType.Customer);
+            teamType: TeamType.customer);
 
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
@@ -312,7 +312,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
         // Arrange
         var team = TeamDataFactory.Create(
             name: "Version 1",
-            teamType: TeamType.Customer);
+            teamType: TeamType.customer);
 
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
@@ -357,7 +357,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
         // Arrange
         var team = TeamDataFactory.Create(
             name: "Normal Team",
-            teamType: TeamType.Customer);
+            teamType: TeamType.customer);
 
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
@@ -384,7 +384,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
         var team = TeamDataFactory.Create(
             name: "Unchanged Team",
             description: "Unchanged description",
-            teamType: TeamType.Customer);
+            teamType: TeamType.customer);
 
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();
@@ -417,7 +417,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task UpdateAsync_WithNonExistentTeam_ShouldStillWork()
     {
         // Arrange - Create team but don't add to database
-        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(teamType: TeamType.customer);
         
         team.Update(
             Name.Create("Updated Team"),
@@ -446,7 +446,7 @@ public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
         // Arrange
         var team = TeamDataFactory.Create(
             name: "Concurrent Team",
-            teamType: TeamType.Customer);
+            teamType: TeamType.customer);
 
         await _repo.AddAsync(team);
         await DbContext.SaveChangesAsync();

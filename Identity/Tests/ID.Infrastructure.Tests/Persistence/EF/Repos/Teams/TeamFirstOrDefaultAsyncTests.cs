@@ -14,15 +14,15 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
 
     private readonly Team _customerTeam = TeamDataFactory.Create(
         name: "Customer Team Alpha",
-        teamType: TeamType.Customer);
+        teamType: TeamType.customer);
 
     private readonly Team _superTeam = TeamDataFactory.Create(
         name: "Super Team",
-        teamType: TeamType.Super);
+        teamType: TeamType.super);
 
     private readonly Team _maintenanceTeam = TeamDataFactory.Create(
         name: "Maintenance Team", 
-        teamType: TeamType.Maintenance);
+        teamType: TeamType.maintenance);
 
     private readonly List<Team> _teams;
 
@@ -68,7 +68,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
         result.ShouldNotBeNull();
         result.Id.ShouldBe(_customerTeam.Id);
         result.Name.ShouldBe(_customerTeam.Name);
-        result.TeamType.ShouldBe(TeamType.Customer);
+        result.TeamType.ShouldBe(TeamType.customer);
     }
 
     [Fact]
@@ -113,7 +113,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
         var member = AppUserDataFactory.Create(teamId: _customerTeam.Id);
         var teamWithMember = TeamDataFactory.Create(
             id: _customerTeam.Id,
-            teamType: TeamType.Customer,
+            teamType: TeamType.customer,
             members: [member]);
 
         await DbContext.Set<ID.Domain.Entities.AppUsers.AppUser>().AddAsync(member);
@@ -161,7 +161,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
         var member2 = AppUserDataFactory.Create(teamId: _customerTeam.Id, teamPosition: 3);
         var teamWithMembers = TeamDataFactory.Create(
             id: _customerTeam.Id,
-            teamType: TeamType.Customer,
+            teamType: TeamType.customer,
             members: [member1, member2]);
 
         await DbContext.Set<ID.Domain.Entities.AppUsers.AppUser>().AddRangeAsync(member1, member2);
@@ -186,7 +186,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
         var member2 = AppUserDataFactory.Create(teamId: _customerTeam.Id, teamPosition: 5);
         var teamWithMembers = TeamDataFactory.Create(
             id: _customerTeam.Id,
-            teamType: TeamType.Customer,
+            teamType: TeamType.customer,
             members: [member1, member2]);
 
         await DbContext.Set<ID.Domain.Entities.AppUsers.AppUser>().AddRangeAsync(member1, member2);
@@ -222,7 +222,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         result.ShouldNotBeNull();
-        result.TeamType.ShouldBe(TeamType.Super);
+        result.TeamType.ShouldBe(TeamType.super);
         result.Name.ShouldBe(_superTeam.Name);
     }
 
@@ -241,7 +241,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         result.ShouldNotBeNull();
-        result.TeamType.ShouldBe(TeamType.Super);
+        result.TeamType.ShouldBe(TeamType.super);
     }
 
     [Fact]
@@ -278,7 +278,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         result.ShouldNotBeNull();
-        result.TeamType.ShouldBe(TeamType.Maintenance);
+        result.TeamType.ShouldBe(TeamType.maintenance);
         result.Name.ShouldBe(_maintenanceTeam.Name);
     }
 
@@ -297,7 +297,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         result.ShouldNotBeNull();
-        result.TeamType.ShouldBe(TeamType.Maintenance);
+        result.TeamType.ShouldBe(TeamType.maintenance);
     }
 
     [Fact]

@@ -22,7 +22,7 @@ internal class TestRequest : IIdPrincipalInfoRequest
     public ClaimsPrincipal? Principal { get; set; }
     public string? UserIdentifier { get; }
 
-    public TeamType TeamType => TeamType.Customer;
+    public TeamType TeamType => TeamType.customer;
 
     public bool IsLeader { get; set; }
 }

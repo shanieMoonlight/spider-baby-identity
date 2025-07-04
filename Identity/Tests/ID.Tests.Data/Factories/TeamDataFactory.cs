@@ -50,7 +50,7 @@ public static class TeamDataFactory
         administratorUsername ??= $"{RandomStringGenerator.FirstName()}{id}";
         administratorId ??= $"{RandomStringGenerator.Generate(20)}{id}";
         subscriptions ??= [];
-        teamType ??= TeamType.Maintenance;
+        teamType ??= TeamType.maintenance;
         minPosition ??= 0;
         maxPosition ??= 5;
 

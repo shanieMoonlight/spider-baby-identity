@@ -27,11 +27,11 @@ public record APrincipalInfoRequest : IIdPrincipalInfoRequest
         get
         {
             if (IsMntc)
-                return TeamType.Maintenance;
+                return TeamType.maintenance;
             else if (IsSuper)
-                return TeamType.Super;
+                return TeamType.super;
             else
-                return TeamType.Customer;
+                return TeamType.customer;
         }
     }
     public ClaimsPrincipal? Principal { get; set; }

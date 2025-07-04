@@ -35,7 +35,7 @@ public class TeamUpdateAsyncDeviceTrackingTests : RepoTestBase, IAsyncLifetime
         // Arrange - Create team with subscription but no devices initially
         var teamId = Guid.NewGuid();
         var subscription = SubscriptionDataFactory.Create(teamId: teamId);
-        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.customer);
         
         // Add subscription to team (using proper domain method would require validation token)
         // For testing, we'll use the factory to set up the relationship
@@ -80,7 +80,7 @@ public class TeamUpdateAsyncDeviceTrackingTests : RepoTestBase, IAsyncLifetime
         // Arrange - Create team with subscription and existing device
         var teamId = Guid.NewGuid();
         var subscription = SubscriptionDataFactory.Create(teamId: teamId);
-        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.customer);
         var existingDevice = DeviceDataFactory.Create(subscriptionId: subscription.Id);
 
         // Set up initial state with existing device
@@ -116,7 +116,7 @@ public class TeamUpdateAsyncDeviceTrackingTests : RepoTestBase, IAsyncLifetime
         // Arrange - Create team with subscription and one existing device
         var teamId = Guid.NewGuid();
         var subscription = SubscriptionDataFactory.Create(teamId: teamId);
-        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.customer);
         var existingDevice = DeviceDataFactory.Create(subscriptionId: subscription.Id);
         var newDevice = DeviceDataFactory.Create(subscriptionId: subscription.Id);
 
@@ -160,7 +160,7 @@ public class TeamUpdateAsyncDeviceTrackingTests : RepoTestBase, IAsyncLifetime
         var teamId = Guid.NewGuid();
         var subscription1 = SubscriptionDataFactory.Create(teamId: teamId);
         var subscription2 = SubscriptionDataFactory.Create(teamId: teamId);
-        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(id: teamId, teamType: TeamType.customer);
         
         var device1ForSub1 = DeviceDataFactory.Create(subscriptionId: subscription1.Id);
         var device2ForSub2 = DeviceDataFactory.Create(subscriptionId: subscription2.Id);
@@ -207,7 +207,7 @@ public class TeamUpdateAsyncDeviceTrackingTests : RepoTestBase, IAsyncLifetime
     {
         // Arrange - Create team with subscription but no devices
         var subscription = SubscriptionDataFactory.Create();
-        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(teamType: TeamType.customer);
 
         await DbContext.Teams.AddAsync(team);
         await DbContext.Set<TeamSubscription>().AddAsync(subscription);
@@ -233,7 +233,7 @@ public class TeamUpdateAsyncDeviceTrackingTests : RepoTestBase, IAsyncLifetime
     public async Task UpdateAsync_WithNoSubscriptions_ShouldWorkWithoutErrors()
     {
         // Arrange - Create team with no subscriptions
-        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(teamType: TeamType.customer);
 
         await DbContext.Teams.AddAsync(team);
         await DbContext.SaveChangesAsync();

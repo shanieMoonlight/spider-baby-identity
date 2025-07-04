@@ -81,7 +81,7 @@ public class ForgotPwdHandlerTests
     public async Task Handle_ValidUser_ShouldPublishEventAndReturnSuccessResult()
     {
         // Arrange
-        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(teamType: TeamType.customer);
         var user = AppUserDataFactory.Create(
             team: team,
             email: "test@example.com");

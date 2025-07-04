@@ -30,7 +30,7 @@ public class CloseMyAccountCmdHandlerTests
     {
         // Arrange
         var team = TeamDataFactory.Create(
-           teamType: TeamType.Customer);
+           teamType: TeamType.customer);
         var request = new CloseMyAccountCmd(team.Id)
         {
             PrincipalTeam = team,
@@ -53,7 +53,7 @@ public class CloseMyAccountCmdHandlerTests
     {
         // Arrange
         var team = TeamDataFactory.Create(
-           teamType: TeamType.Customer);
+           teamType: TeamType.customer);
         var request = new CloseMyAccountCmd(team.Id)
         {
             PrincipalTeam = team,
@@ -75,7 +75,7 @@ public class CloseMyAccountCmdHandlerTests
     {
         // Arrange
         var team = TeamDataFactory.Create(
-           teamType: TeamType.Customer);
+           teamType: TeamType.customer);
         var request = new CloseMyAccountCmd(team.Id)
         {
             PrincipalTeam = team,
@@ -97,7 +97,7 @@ public class CloseMyAccountCmdHandlerTests
     public async Task Handle_ShouldReturnSuccess_TeamIsDeletedSuccessfully()
     {
         // Arrange
-        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(teamType: TeamType.customer);
         var request = new CloseMyAccountCmd(team.Id)
         {
             IsAuthenticated = true,
@@ -125,7 +125,7 @@ public class CloseMyAccountCmdHandlerTests
         // Arrange
         var teamMgrMock = new Mock<IIdentityTeamManager<AppUser>>();
         var handler = new CloseMyAccountCmdHandler(teamMgrMock.Object);
-        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(teamType: TeamType.customer);
         var request = new CloseMyAccountCmd(team.Id)
         {
 

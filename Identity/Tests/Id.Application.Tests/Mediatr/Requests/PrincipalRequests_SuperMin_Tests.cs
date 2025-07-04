@@ -15,7 +15,7 @@ public class PrincipalRequests_SuperMin_Tests
         var teamType = request.TeamType;
 
         // Assert
-        Assert.Equal(TeamType.Maintenance, teamType);
+        Assert.Equal(TeamType.maintenance, teamType);
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - -//
@@ -30,7 +30,7 @@ public class PrincipalRequests_SuperMin_Tests
         var teamType = request.TeamType;
 
         // Assert
-        Assert.Equal(TeamType.Super, teamType);
+        Assert.Equal(TeamType.super, teamType);
     }
 
     //- - - - - - - - - - - - - - - - - - - - - - -//
@@ -45,7 +45,7 @@ public class PrincipalRequests_SuperMin_Tests
         var teamType = request.TeamType;
 
         // Assert
-        Assert.Equal(TeamType.Customer, teamType);
+        Assert.Equal(TeamType.customer, teamType);
     }
 
     //---------------------------------------------//

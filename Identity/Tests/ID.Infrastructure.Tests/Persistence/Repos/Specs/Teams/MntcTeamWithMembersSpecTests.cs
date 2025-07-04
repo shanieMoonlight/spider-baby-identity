@@ -12,7 +12,7 @@ public class MntcTeamWithMembersSpecTests
     public void Constructor_SetsCriteriaCorrectly()
     {
         // Arrange
-        var team = TeamDataFactory.Create(teamType: TeamType.Maintenance);
+        var team = TeamDataFactory.Create(teamType: TeamType.maintenance);
 
         // Act
         var spec = new MntcTeamWithMembersSpec(1000);
@@ -28,7 +28,7 @@ public class MntcTeamWithMembersSpecTests
     public void Constructor_SetsCriteriaCorrectly_FALSE_IfWrongType()
     {
         // Arrange
-        var team = TeamDataFactory.Create(teamType: TeamType.Customer);
+        var team = TeamDataFactory.Create(teamType: TeamType.customer);
 
         // Act
         var spec = new MntcTeamWithMembersSpec(1000);

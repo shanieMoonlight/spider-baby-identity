@@ -19,7 +19,7 @@ internal class CustomerTeamsByNameSpec : ASimpleSpecification<Team>
         : base(tm =>
             tm.Name.ToLower().Contains(name!.ToLower())
             &&
-            tm.TeamType == TeamType.Customer)
+            tm.TeamType == TeamType.customer)
     {
 
         // Set short circuit condition to avoid query execution if name is not provided

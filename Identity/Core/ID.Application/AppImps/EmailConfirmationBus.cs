@@ -48,7 +48,7 @@ internal class EmailConfirmationBus(IEmailConfirmationService<AppUser> _emailCon
                new EmailConfirmationRequiringPasswordIntegrationEvent(
                    user,
                    safePwdResetTkn,
-                   team.TeamType == TeamType.Customer),
+                   team.TeamType == TeamType.customer),
                cancellationToken);
 
     //------------------------------------//
@@ -65,7 +65,7 @@ internal class EmailConfirmationBus(IEmailConfirmationService<AppUser> _emailCon
                 new EmailConfirmationIntegrationEvent(
                     user,
                     safePwdResetTkn,
-                    team.TeamType == TeamType.Customer),
+                    team.TeamType == TeamType.customer),
                 cancellationToken);
 
     //------------------------------------//

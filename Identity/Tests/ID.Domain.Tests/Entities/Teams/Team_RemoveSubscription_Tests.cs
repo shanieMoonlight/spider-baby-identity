@@ -196,9 +196,9 @@ public class Team_RemoveSubscription_Tests
     //------------------------------------//
 
     [Theory]
-    [InlineData(TeamType.Customer)]
-    [InlineData(TeamType.Super)]
-    [InlineData(TeamType.Maintenance)]
+    [InlineData(TeamType.customer)]
+    [InlineData(TeamType.super)]
+    [InlineData(TeamType.maintenance)]
     public void RemoveSubscription_WithDifferentTeamTypes_ShouldWorkConsistently(TeamType teamType)
     {
         // Arrange

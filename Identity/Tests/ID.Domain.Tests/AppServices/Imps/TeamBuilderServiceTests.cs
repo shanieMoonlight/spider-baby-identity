@@ -53,7 +53,7 @@ public class TeamBuilderServiceTests
 
         // Assert
         team.ShouldNotBeNull();
-        team.TeamType.ShouldBe(TeamType.Customer);
+        team.TeamType.ShouldBe(TeamType.customer);
     }
 
 
@@ -95,7 +95,7 @@ public class TeamBuilderServiceTests
         team.ShouldNotBeNull();
         team.Name.ShouldBe(name.Value);
         team.Description.ShouldBe(description.Value);
-        team.TeamType.ShouldBe(TeamType.Customer);
+        team.TeamType.ShouldBe(TeamType.customer);
     }
 
 
@@ -108,7 +108,7 @@ public class TeamBuilderServiceTests
 
         // Assert
         team.ShouldNotBeNull();
-        team.TeamType.ShouldBe(TeamType.Maintenance);
+        team.TeamType.ShouldBe(TeamType.maintenance);
     }
 
     [Fact]
@@ -153,7 +153,7 @@ public class TeamBuilderServiceTests
 
         // Assert
         team.ShouldNotBeNull();
-        team.TeamType.ShouldBe(TeamType.Super);
+        team.TeamType.ShouldBe(TeamType.super);
     }
 
     [Fact]

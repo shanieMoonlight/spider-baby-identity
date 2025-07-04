@@ -187,9 +187,9 @@ public class Team_AddSubscription_Tests
     //------------------------------------//
 
     [Theory]
-    [InlineData(TeamType.Customer)]
-    [InlineData(TeamType.Super)]
-    [InlineData(TeamType.Maintenance)]
+    [InlineData(TeamType.customer)]
+    [InlineData(TeamType.super)]
+    [InlineData(TeamType.maintenance)]
     public void AddSubscription_WithDifferentTeamTypes_ShouldWorkConsistently(TeamType teamType)
     {
         // Arrange

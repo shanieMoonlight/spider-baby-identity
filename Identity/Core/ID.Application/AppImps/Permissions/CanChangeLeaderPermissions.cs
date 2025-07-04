@@ -72,8 +72,8 @@ internal class CanChangeLeaderPermissions<TUser>(IIdentityTeamManager<TUser> _te
 
 
         //Mntc Members can't change the Super Team
-        if (request.IsMntc && newLeaderTeam.TeamType == TeamType.Super)
-            return GenResult<Team>.ForbiddenResult(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.Super));
+        if (request.IsMntc && newLeaderTeam.TeamType == TeamType.super)
+            return GenResult<Team>.ForbiddenResult(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.super));
 
 
         //NewLeader must be in team

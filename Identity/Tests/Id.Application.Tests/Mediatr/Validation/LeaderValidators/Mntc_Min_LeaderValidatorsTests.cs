@@ -16,7 +16,7 @@ public class Mntc_Min_LeaderValidatorsTests
         var request = new TestIsMntcLeaderRequest { IsLeader = true, IsMntc = false };  // This will cause MntcMin to be false
         var result = _validator.TestValidate(request);
         result.ShouldHaveValidationErrorFor(r => r.IsMntcMinimum)
-              .WithErrorMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.Maintenance));
+              .WithErrorMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.maintenance));
     }
 
     //------------------------------------//

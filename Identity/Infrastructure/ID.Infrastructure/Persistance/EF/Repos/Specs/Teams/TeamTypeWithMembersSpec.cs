@@ -33,7 +33,7 @@ internal class TeamTypeWithMembersSpec : ASimpleSpecification<Team>
 /// Specification for querying super teams with members up to a certain position.
 /// </summary>
 internal class SuperTeamWithMembersSpec(int maxPosition)
-    : TeamTypeWithMembersSpec(TeamType.Super, maxPosition)
+    : TeamTypeWithMembersSpec(TeamType.super, maxPosition)
 { }
 
 
@@ -44,7 +44,7 @@ internal class SuperTeamWithMembersSpec(int maxPosition)
 /// Specification for querying maintenance teams with members up to a certain position.
 /// </summary>
 internal class MntcTeamWithMembersSpec(int maxPosition)
-    : TeamTypeWithMembersSpec(TeamType.Maintenance, maxPosition)
+    : TeamTypeWithMembersSpec(TeamType.maintenance, maxPosition)
 { }
 
 

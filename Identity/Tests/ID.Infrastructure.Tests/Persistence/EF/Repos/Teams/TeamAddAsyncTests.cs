@@ -29,7 +29,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         var team = TeamDataFactory.Create(
             name: "Test Customer Team",
             description: "A test customer team",
-            teamType: TeamType.Customer);
+            teamType: TeamType.customer);
 
         // Act
         var result = await _repo.AddAsync(team);
@@ -39,7 +39,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         result.Id.ShouldBe(team.Id);
         result.Name.ShouldBe("Test Customer Team");
         result.Description.ShouldBe("A test customer team");
-        result.TeamType.ShouldBe(TeamType.Customer);
+        result.TeamType.ShouldBe(TeamType.customer);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         var team = TeamDataFactory.Create(
             name: "Test Maintenance Team",
             description: "A test maintenance team",
-            teamType: TeamType.Maintenance);
+            teamType: TeamType.maintenance);
 
         // Act
         var result = await _repo.AddAsync(team);
@@ -58,7 +58,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         result.ShouldNotBeNull();
         result.Id.ShouldBe(team.Id);
         result.Name.ShouldBe("Test Maintenance Team");
-        result.TeamType.ShouldBe(TeamType.Maintenance);
+        result.TeamType.ShouldBe(TeamType.maintenance);
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         var team = TeamDataFactory.Create(
             name: "Test Super Team",
             description: "A test super team",
-            teamType: TeamType.Super);
+            teamType: TeamType.super);
 
         // Act
         var result = await _repo.AddAsync(team);
@@ -77,7 +77,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         result.ShouldNotBeNull();
         result.Id.ShouldBe(team.Id);
         result.Name.ShouldBe("Test Super Team");
-        result.TeamType.ShouldBe(TeamType.Super);
+        result.TeamType.ShouldBe(TeamType.super);
     }
 
 
@@ -97,7 +97,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         var leader = AppUserDataFactory.Create();
         var team = TeamDataFactory.Create(
             name: "Team with Leader",
-            teamType: TeamType.Customer,
+            teamType: TeamType.customer,
             leader: leader,
             members: [leader]);
 
@@ -123,7 +123,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         
         var team = TeamDataFactory.Create(
             name: "Team with Multiple Members",
-            teamType: TeamType.Customer,
+            teamType: TeamType.customer,
             leader: leader,
             members: members);
 
@@ -144,7 +144,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         // Arrange
         var team = TeamDataFactory.Create(
             name: "Team with Custom Capacity",
-            teamType: TeamType.Customer,
+            teamType: TeamType.customer,
             capacity: 50);
 
         // Act
@@ -161,7 +161,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         // Arrange
         var team = TeamDataFactory.Create(
             name: "Team with Custom Positions",
-            teamType: TeamType.Customer,
+            teamType: TeamType.customer,
             minPosition: 2,
             maxPosition: 8);
 
@@ -188,7 +188,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         // Arrange
         var team = TeamDataFactory.Create(
             name: "Persistence Test Team",
-            teamType: TeamType.Customer);
+            teamType: TeamType.customer);
 
         // Act
         var addedTeam = await _repo.AddAsync(team);
@@ -202,16 +202,16 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         persistedTeam.ShouldNotBeNull();
         persistedTeam.Id.ShouldBe(team.Id);
         persistedTeam.Name.ShouldBe("Persistence Test Team");
-        persistedTeam.TeamType.ShouldBe(TeamType.Customer);
+        persistedTeam.TeamType.ShouldBe(TeamType.customer);
     }
 
     [Fact]
     public async Task AddAsync_MultipleTeams_ShouldAddAllTeams()
     {
         // Arrange
-        var team1 = TeamDataFactory.Create(name: "Team 1", teamType: TeamType.Customer);
-        var team2 = TeamDataFactory.Create(name: "Team 2", teamType: TeamType.Maintenance);
-        var team3 = TeamDataFactory.Create(name: "Team 3", teamType: TeamType.Super);
+        var team1 = TeamDataFactory.Create(name: "Team 1", teamType: TeamType.customer);
+        var team2 = TeamDataFactory.Create(name: "Team 2", teamType: TeamType.maintenance);
+        var team3 = TeamDataFactory.Create(name: "Team 3", teamType: TeamType.super);
 
         // Act
         var result1 = await _repo.AddAsync(team1);
@@ -245,7 +245,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         var team = TeamDataFactory.Create(
             name: "Team with Null Description",
             description: null,
-            teamType: TeamType.Customer);
+            teamType: TeamType.customer);
 
         // Act
         var result = await _repo.AddAsync(team);
@@ -263,7 +263,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         var longName = new string('A', 100); // 100 character name
         var team = TeamDataFactory.Create(
             name: longName,
-            teamType: TeamType.Customer);
+            teamType: TeamType.customer);
 
         // Act
         var result = await _repo.AddAsync(team);
@@ -281,7 +281,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         var specialName = "Team-With_Special@Characters#2024!";
         var team = TeamDataFactory.Create(
             name: specialName,
-            teamType: TeamType.Customer);
+            teamType: TeamType.customer);
 
         // Act
         var result = await _repo.AddAsync(team);
@@ -314,11 +314,11 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task AddAsync_WithDuplicateId_ShouldHandleCorrectly()
     {
         // Arrange
-        var team1 = TeamDataFactory.Create(name: "First Team", teamType: TeamType.Customer);
+        var team1 = TeamDataFactory.Create(name: "First Team", teamType: TeamType.customer);
         var team2 = TeamDataFactory.Create(
             id: team1.Id, // Same ID
             name: "Second Team", 
-            teamType: TeamType.Maintenance);
+            teamType: TeamType.maintenance);
 
         // Act
         await _repo.AddAsync(team1);

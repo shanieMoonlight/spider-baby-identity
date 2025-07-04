@@ -38,7 +38,7 @@ public abstract class IsMntcLeaderValidator<TRequest>
 
         RuleFor(p => p.IsMntc)
           .NotEqual(false)
-              .WithMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.Maintenance))
+              .WithMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.maintenance))
               .WithState(state => ValidationError.Forbidden);
     }
 
@@ -57,7 +57,7 @@ public abstract class IsMntcMinimumLeaderValidator<TRequest>
 
         RuleFor(p => p.IsMntcMinimum)
           .NotEqual(false)
-              .WithMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.Maintenance))
+              .WithMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.maintenance))
               .WithState(state => ValidationError.Forbidden);
     }
 }
@@ -77,7 +77,7 @@ public abstract class IsSuperLeaderValidator<TRequest>
 
         RuleFor(p => p.IsSuper)
           .NotEqual(false)
-              .WithMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.Super))
+              .WithMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.super))
               .WithState(state => ValidationError.Forbidden);
     }
 
@@ -98,7 +98,7 @@ public abstract class IsSuperMinimumLeaderValidator<TRequest>
 
         RuleFor(p => p.IsSuperMinimum)
           .NotEqual(false)
-              .WithMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.Super))
+              .WithMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.super))
               .WithState(state => ValidationError.Forbidden);
     }
 }

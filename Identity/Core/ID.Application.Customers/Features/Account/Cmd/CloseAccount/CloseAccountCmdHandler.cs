@@ -16,7 +16,7 @@ public class CloseAccountCmdHandler(IIdentityTeamManager<AppUser> teamMgr)
         var principalTeam = request.PrincipalTeam!;
         var teamId = request.TeamId;
 
-        if (principalTeam?.TeamType == TeamType.Customer || request.IsCustomer)
+        if (principalTeam?.TeamType == TeamType.customer || request.IsCustomer)
             return GenResult<AppUserDto>.UnauthorizedResult();
 
 

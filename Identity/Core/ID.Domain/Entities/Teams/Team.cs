@@ -113,7 +113,7 @@ public class Team : IdDomainEntity
         var team = new Team(
             name,
             description,
-            TeamType.Customer,
+            TeamType.customer,
             minPosition,
             maxPosition)
         {
@@ -140,7 +140,7 @@ public class Team : IdDomainEntity
         var team = new Team(
             ClArch.ValueObjects.Name.Create(IdGlobalConstants.Teams.MAINTENANCE_TEAM_NAME),
             DescriptionNullable.Create(IdGlobalConstants.Teams.MAINTENANCE_TEAM_DESCRIPTION),
-            TeamType.Maintenance,
+            TeamType.maintenance,
             minPosition,
             maxPosition);
 
@@ -165,7 +165,7 @@ public class Team : IdDomainEntity
         var team = new Team(
             ClArch.ValueObjects.Name.Create(IdGlobalConstants.Teams.SUPER_TEAM_NAME),
             DescriptionNullable.Create(IdGlobalConstants.Teams.SUPER_TEAM_DESCRIPTION),
-            TeamType.Super,
+            TeamType.super,
             minPosition,
             maxPosition);
 

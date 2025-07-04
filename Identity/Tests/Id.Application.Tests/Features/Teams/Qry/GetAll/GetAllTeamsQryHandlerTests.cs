@@ -25,9 +25,9 @@ public class GetAllTeamsQryHandlerTests
     public async Task Handle_ShouldReturnAllTeams_IsMntc_IsNotSuper()
     {
         // Arrange
-        var cusTeam = TeamDataFactory.Create(teamType: TeamType.Customer);
-        var mntcTeam = TeamDataFactory.Create(teamType: TeamType.Maintenance);
-        var superTeam = TeamDataFactory.Create(teamType: TeamType.Super);
+        var cusTeam = TeamDataFactory.Create(teamType: TeamType.customer);
+        var mntcTeam = TeamDataFactory.Create(teamType: TeamType.maintenance);
+        var superTeam = TeamDataFactory.Create(teamType: TeamType.super);
         var teams = new List<Team>
         {
             cusTeam,
@@ -55,9 +55,9 @@ public class GetAllTeamsQryHandlerTests
     public async Task Handle_ShouldReturnAllTeams_IsSuper_INcludesIsMntc()
     {
         // Arrange
-        var cusTeam = TeamDataFactory.Create(teamType: TeamType.Customer);
-        var mntcTeam = TeamDataFactory.Create(teamType: TeamType.Maintenance);
-        var superTeam = TeamDataFactory.Create(teamType: TeamType.Super);
+        var cusTeam = TeamDataFactory.Create(teamType: TeamType.customer);
+        var mntcTeam = TeamDataFactory.Create(teamType: TeamType.maintenance);
+        var superTeam = TeamDataFactory.Create(teamType: TeamType.super);
         var teams = new List<Team>
         {
             cusTeam,
@@ -85,9 +85,9 @@ public class GetAllTeamsQryHandlerTests
     public async Task Handle_ShouldReturnAllTeams_IsSuper_AND_IsMntc()
     {
         // Arrange
-        var cusTeam = TeamDataFactory.Create(teamType: TeamType.Customer);
-        var mntcTeam = TeamDataFactory.Create(teamType: TeamType.Maintenance);
-        var superTeam = TeamDataFactory.Create(teamType: TeamType.Super);
+        var cusTeam = TeamDataFactory.Create(teamType: TeamType.customer);
+        var mntcTeam = TeamDataFactory.Create(teamType: TeamType.maintenance);
+        var superTeam = TeamDataFactory.Create(teamType: TeamType.super);
         var teams = new List<Team>
         {
             cusTeam,

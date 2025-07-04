@@ -35,7 +35,7 @@ internal class MemberAuditRepo(IdDbContext Db) : IIdentityMemberAuditRepo<AppUse
     /// </summary>
     /// <returns>A list of customer team members.</returns>
     public async Task<IReadOnlyList<AppUser>> GetAllCustomersAsync() =>
-        await GetAllTeamMembersAsync(TeamType.Customer);
+        await GetAllTeamMembersAsync(TeamType.customer);
 
     //- - - - - - - - - - - - - - - - - - // 
 
@@ -45,7 +45,7 @@ internal class MemberAuditRepo(IdDbContext Db) : IIdentityMemberAuditRepo<AppUse
     /// <param name="maxPosition">The maximum position of the members.</param>
     /// <returns>A list of maintenance team members.</returns>
     public async Task<IReadOnlyList<AppUser>> GetAllMntcMembersAsync(int maxPosition = 1000) =>
-        await GetAllTeamMembersAsync(TeamType.Maintenance, maxPosition);
+        await GetAllTeamMembersAsync(TeamType.maintenance, maxPosition);
 
     //- - - - - - - - - - - - - - - - - - // 
 
@@ -55,7 +55,7 @@ internal class MemberAuditRepo(IdDbContext Db) : IIdentityMemberAuditRepo<AppUse
     /// <param name="maxPosition">The maximum position of the members.</param>
     /// <returns>A list of super team members.</returns>
     public async Task<IReadOnlyList<AppUser>> GetAllSuperMembersAsync(int maxPosition = 1000) =>
-        await GetAllTeamMembersAsync(TeamType.Super, maxPosition);
+        await GetAllTeamMembersAsync(TeamType.super, maxPosition);
 
 
     //- - - - - - - - - - - - - - - - - - // 
@@ -109,7 +109,7 @@ internal class MemberAuditRepo(IdDbContext Db) : IIdentityMemberAuditRepo<AppUse
     /// <param name="filterList">The list of filtering criteria.</param>
     /// <returns>A paginated list of customer team members.</returns>
     public Task<Page<AppUser>> GetCustomerPageAsync(int pageNumber, int pageSize, IEnumerable<SortRequest> sortList, IEnumerable<FilterRequest>? filterList) =>
-        GetTeamMembersPageAsync(TeamType.Customer, pageNumber, pageSize, sortList, filterList); 
+        GetTeamMembersPageAsync(TeamType.customer, pageNumber, pageSize, sortList, filterList); 
 
     //-----------------------//
 
@@ -134,7 +134,7 @@ internal class MemberAuditRepo(IdDbContext Db) : IIdentityMemberAuditRepo<AppUse
     /// <param name="filterList">The list of filtering criteria.</param>
     /// <returns>A paginated list of maintenance team members.</returns>
     public Task<Page<AppUser>> GetMntcPageAsync(int maxPosition, int pageNumber, int pageSize, IEnumerable<SortRequest> sortList, IEnumerable<FilterRequest>? filterList) =>
-        GetTeamMembersPageAsync(TeamType.Maintenance, maxPosition, pageNumber, pageSize, sortList, filterList);
+        GetTeamMembersPageAsync(TeamType.maintenance, maxPosition, pageNumber, pageSize, sortList, filterList);
 
     //-----------------------//
 
@@ -159,7 +159,7 @@ internal class MemberAuditRepo(IdDbContext Db) : IIdentityMemberAuditRepo<AppUse
     /// <param name="filterList">The list of filtering criteria.</param>
     /// <returns>A paginated list of super team members.</returns>
     public Task<Page<AppUser>> GetSuperPageAsync(int maxPosition, int pageNumber, int pageSize, IEnumerable<SortRequest> sortList, IEnumerable<FilterRequest>? filterList) =>
-        GetTeamMembersPageAsync(TeamType.Super, maxPosition, pageNumber, pageSize, sortList, filterList);
+        GetTeamMembersPageAsync(TeamType.super, maxPosition, pageNumber, pageSize, sortList, filterList);
 
     //-----------------------//
 

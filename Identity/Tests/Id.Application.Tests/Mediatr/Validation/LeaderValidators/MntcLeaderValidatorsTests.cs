@@ -27,7 +27,7 @@ public class MntcLeaderValidatorsTests
         var request = new TestIsMntcLeaderRequest { IsLeader = true, IsMntc = false };
         var result = _validator.TestValidate(request);
         result.ShouldHaveValidationErrorFor(r => r.IsMntc)
-              .WithErrorMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.Maintenance));
+              .WithErrorMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.maintenance));
     }
 
     //------------------------------------//

@@ -25,13 +25,13 @@ internal static class ClaimTeamExtensions
 
         switch (team.TeamType)
         {
-            case TeamType.Customer:
+            case TeamType.customer:
                 claims.AddRange([IdTeamClaims.CUSTOMER_TEAM]);
                 break;
-            case TeamType.Maintenance:
+            case TeamType.maintenance:
                 claims.AddRange([IdTeamClaims.MAINTENANCE_TEAM]);
                 break;
-            case TeamType.Super:
+            case TeamType.super:
                 claims.AddRange([IdTeamClaims.SUPER_TEAM]);
                 break;
         }

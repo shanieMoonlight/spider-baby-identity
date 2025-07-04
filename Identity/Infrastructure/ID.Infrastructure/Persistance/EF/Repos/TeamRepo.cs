@@ -58,7 +58,7 @@ internal class TeamRepo(IdDbContext db) : AGenCrudRepo<Team>(db), IIdentityTeamR
 
         var data = Db
            .Set<Team>()
-           .Where(t => t.TeamType != TeamType.Super)
+           .Where(t => t.TeamType != TeamType.super)
            .AddFiltering(filterList, GetFilteringPropertySelectorLambda)
            .AddEfSorting(sortList, GetSortBuider())
            .AsNoTracking();   //, GetSortingPropertySelectorLambda);
@@ -73,11 +73,11 @@ internal class TeamRepo(IdDbContext db) : AGenCrudRepo<Team>(db), IIdentityTeamR
         if (dbTeam == null)
             return Task.FromResult(BasicResult.Success());
 
-        if(TeamType.Super == dbTeam.TeamType)
+        if(TeamType.super == dbTeam.TeamType)
             return Task.FromResult(BasicResult.BadRequestResult(IDMsgs.Error.Teams.CANNOT_DELETE_SUPER_TEAM));
 
 
-        if (TeamType.Maintenance == dbTeam.TeamType)
+        if (TeamType.maintenance == dbTeam.TeamType)
             return Task.FromResult(BasicResult.BadRequestResult(IDMsgs.Error.Teams.CANNOT_DELETE_MNTC_TEAM));
 
 
@@ -87,7 +87,7 @@ internal class TeamRepo(IdDbContext db) : AGenCrudRepo<Team>(db), IIdentityTeamR
         var isAre = mbrCount > 1 ? "are" : "is";
         var mbr = mbrCount > 1 ? "members" : "member";
 
-        if (dbTeam.TeamType != TeamType.Customer)
+        if (dbTeam.TeamType != TeamType.customer)
             return Task.FromResult(BasicResult.BadRequestResult(IDMsgs.Error.Teams.CAN_ONLY_REMOVE_CUSTOMER_TEAM));
 
         var result = mbrCount > 0

@@ -70,9 +70,9 @@ internal static class HangfireJobsSetup
     {
         IDashboardAuthorizationFilter? customAuthFilter = minType switch
         {
-            TeamType.Customer => new HangFire_Authenticated_AuthorizationFilter(),
-            TeamType.Maintenance => new HangFire_MntcMin_AuthorizationFilter(),
-            TeamType.Super => new HangFire_SuperMin_AuthorizationFilter(),
+            TeamType.customer => new HangFire_Authenticated_AuthorizationFilter(),
+            TeamType.maintenance => new HangFire_MntcMin_AuthorizationFilter(),
+            TeamType.super => new HangFire_SuperMin_AuthorizationFilter(),
             _ => new HangFire_Authenticated_AuthorizationFilter(),
         };
 

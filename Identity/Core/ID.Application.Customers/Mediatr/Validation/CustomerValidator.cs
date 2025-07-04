@@ -84,7 +84,7 @@ public abstract class ACustomerLeaderValidator<TRequest>
 
         RuleFor(p => p.IsCustomer)
           .NotEqual(false)
-              .WithMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.Customer))
+              .WithMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.customer))
               .WithState(state => ValidationError.Forbidden);
     }
 

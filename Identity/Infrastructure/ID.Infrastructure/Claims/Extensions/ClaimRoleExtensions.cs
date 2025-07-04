@@ -1,4 +1,5 @@
 ﻿using CollectionHelpers;
+using ID.Domain.Claims.Utils;
 using System.Security.Claims;
 
 namespace ID.Infrastructure.Claims.Extensions;
@@ -13,7 +14,7 @@ internal static class ClaimRoleExtensions
 
         foreach (string role in userRoles)
         {
-            claims.Add(new Claim(ClaimTypes.Role, role));
+            claims.Add(new Claim(MyIdClaimTypes.ROLE, role));
         }
 
         return claims;

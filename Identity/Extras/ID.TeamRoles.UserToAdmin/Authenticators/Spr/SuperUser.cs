@@ -25,7 +25,7 @@ public static class SuperUserAuthenticator
         public bool IsAuthorized(HttpContext context) =>
             context.IsInSuperTeam()
             &&
-            context.IsInMyRole(MyTeamRoleClaimValues.USER);
+            context.IsInMyIdRole(MyTeamRoleClaimValues.USER);
 
     }//Cls
 

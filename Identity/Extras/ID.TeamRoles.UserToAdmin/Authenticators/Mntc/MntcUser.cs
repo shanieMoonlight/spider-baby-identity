@@ -24,7 +24,7 @@ public static class MntcUserAuthenticator
         public bool IsAuthorized(HttpContext context) =>
             context.IsInMntcTeam()
             &&
-            context.IsInMyRole(MyTeamRoleClaimValues.USER);
+            context.IsInMyIdRole(MyTeamRoleClaimValues.USER);
 
     }//Cls
 

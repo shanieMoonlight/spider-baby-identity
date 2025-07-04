@@ -24,7 +24,7 @@ public static class CustomerManagerAuthenticator
         public bool IsAuthorized(HttpContext context) =>
             context.IsInCustomerTeam()
             &&
-            context.IsInMyRole(MyTeamRoleClaimValues.MANAGER);
+            context.IsInMyIdRole(MyTeamRoleClaimValues.MANAGER);
 
     }//Cls
 

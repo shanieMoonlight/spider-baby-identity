@@ -10,14 +10,14 @@ namespace ID.Application.Utility.ExtensionMethods;
 
 public static class ClaimsPrincipalExtensions
 {
-    //-----------------------------------//
 
     /// <summary>
     /// Checks the Email claim on this <paramref name="user"/>
     /// </summary>
     /// <param name="user">ClaimsPrincipal</param>
-    public static string? GetEmail(this ClaimsPrincipal? user) => 
-        user.GetClaimValue(MyIdClaimTypes.EMAIL) 
+    public static string? GetEmail(this ClaimsPrincipal? user) =>
+        user.GetClaimValue(JwtRegisteredClaimNames.Email)
+        ?? user.GetClaimValue(MyIdClaimTypes.EMAIL)
         ?? user.GetClaimValue(ClaimTypes.Email);
 
     //-----------------------------------//
@@ -31,7 +31,7 @@ public static class ClaimsPrincipalExtensions
     {
         try
         {
-            if(user is null)
+            if (user is null)
                 return null;
 
             if (string.IsNullOrWhiteSpace(subscritionPlanName))
@@ -98,7 +98,8 @@ public static class ClaimsPrincipalExtensions
     /// <param name="user">ClaimsPrincipal</param>
     public static Guid? GetUserId(this ClaimsPrincipal user)
     {
-        var userIdStr = user.GetClaimValue(JwtRegisteredClaimNames.Sub) ?? user.GetClaimValue(ClaimTypes.NameIdentifier);
+        var userIdStr = user.GetClaimValue(JwtRegisteredClaimNames.Sub) 
+            ?? user.GetClaimValue(ClaimTypes.NameIdentifier);
         return Guid.TryParse(userIdStr, out var userId) ? userId : null;
     }
 
@@ -110,7 +111,8 @@ public static class ClaimsPrincipalExtensions
     /// <param name="user">ClaimsPrincipal</param>
     public static string? GetUsername(this ClaimsPrincipal user) =>
         user.GetClaimValue(MyIdClaimTypes.NAME)
-        ?? user.GetClaimValue(ClaimTypes.Name) 
+        ?? user.GetClaimValue(JwtRegisteredClaimNames.Name)
+        ?? user.GetClaimValue(ClaimTypes.Name)
         ?? user.GetClaimValue(ClaimTypes.NameIdentifier);
 
     //-----------------------------------//
@@ -176,8 +178,11 @@ public static class ClaimsPrincipalExtensions
     /// Checks if <paramref name="user"/> is in team with Id <paramref name="teamId"/>
     /// </summary>
     /// <param name="user">ClaimsPrincipal</param>
-    public static bool IsInMyRole(this ClaimsPrincipal? principal, string role) =>
-        principal?.HasClaim(c => c.Type == MyIdClaimTypes.ROLE && c.Value == role) ?? false;
+    public static bool IsInMyIdRole(this ClaimsPrincipal? principal, string role) =>
+        principal?.HasClaim(c =>
+        (c.Type == MyIdClaimTypes.ROLE || c.Type == ClaimTypes.Role || c.Type == "role")
+        && c.Value == role)
+        ?? false;
 
     //-----------------------------------//
 
@@ -204,7 +209,7 @@ public static class ClaimsPrincipalExtensions
     /// </summary>
     /// <param name="user">ClaimsPrincipal</param>
     public static bool IsTeamLeader(this ClaimsPrincipal? user) =>
-        user.IsInMyRole(MyTeamClaimValues.LEADER);
+        IsInMyIdRole(user, MyTeamClaimValues.LEADER);
 
     //-----------------------------------//
 

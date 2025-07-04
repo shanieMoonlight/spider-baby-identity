@@ -25,8 +25,8 @@ internal static class ClaimUserInfoExtensions
         //if (!claims.HasClaim(MyIdClaimTypes.LAST_NAME) && !user.LastName.IsNullOrWhiteSpace())
         //    claims.Add(new Claim(MyIdClaimTypes.LAST_NAME, user.LastName ?? _unknown_value));
 
-        if (!claims.HasClaim(MyIdClaimTypes.EMAIL) && !user.Email.IsNullOrWhiteSpace())
-            claims.Add(new Claim(MyIdClaimTypes.EMAIL, user.Email ?? _unknown_value));
+        if (!claims.HasClaim(JwtRegisteredClaimNames.Email) && !user.Email.IsNullOrWhiteSpace())
+            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email ?? _unknown_value));
 
         return claims;
 

@@ -1,7 +1,6 @@
 ﻿using ID.Application.JWT;
 using ID.Domain.Claims.Utils;
 using ID.GlobalSettings.Setup.Defaults;
-using ID.GlobalSettings.Utility;
 using ID.Infrastructure.Auth.JWT.AppServiceImps;
 using ID.Infrastructure.Auth.JWT.LocalServices.Abs;
 using ID.Infrastructure.Auth.JWT.LocalServices.Imps;

@@ -41,7 +41,7 @@ public class MyIdInstaller : IServiceInstaller
                //config.TokenSigningKey = startupData.IdentitySection.GetSymetricKey();
                config.JwtAsymmetricPrivateKey_Xml = startupData.GetAsymmetricPrivateKeyXmlString();
                config.JwtAsymmetricPublicKey_Xml = startupData.GetAsymmetricPublicKeyXmlString();
-               config.JwtTokenExpirationMinutes = isDev ? 1000000 : startupData.IdentitySection.GetJwtExpirationMinutes();
+               config.JwtTokenExpirationMinutes = startupData.IdentitySection.GetJwtExpirationMinutes();
                config.JwtRefreshTokensEnabled = true;
                config.JwtRefreshTokenUpdatePolicy = RefreshTokenUpdatePolicy.HalfLife;
                config.MntcAccountsUrl = startupData.IdentitySection.GetMntcRoute();

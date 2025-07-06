@@ -40,6 +40,7 @@
 		<ProjectReference Include="..\..\Identity\Extras\Demo\ID.Demo.TestControllers\ID.Demo.TestControllers.csproj" />
 		<ProjectReference Include="..\..\Identity\Extras\ID.TeamRoles.UserToAdmin\ID.TeamRoles.UserToAdmin.csproj" />
 		<ProjectReference Include="..\..\Libs\Logging\LogToFile\LogToFile\LogToFile.csproj" />
+		<ProjectReference Include="..\..\Libs\SpaHelpers\PrerenderedSpa\PrerenderedSpa.csproj" />
 	</ItemGroup>
 
 

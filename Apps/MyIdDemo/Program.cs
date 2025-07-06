@@ -7,6 +7,7 @@ using MyIdDemo.Setup.Events;
 using MyIdDemo.Setup.Swagger;
 using MyIdDemo.Setup.Utils;
 using MyIdDemo.Utils;
+using PrerenderedSpa.PrerenderedBuilder;
 
 
 //------------------------------ Variables ------------------------------//
@@ -103,17 +104,22 @@ _app.UseSwagger()
 _app.UseDemoHangfireJobs(_startupData);
 
 
-//_app.UseCookieDebugger();
-_app.UseSpaStaticFilesWithUnknownTypes(true);
 
-_app.UseSpa(spa =>
+_app.UsePrerenderedSpa(new PrerenderedSpaOptions
 {
-    spa.Options.SourcePath = _startupData.SPA_STATIC_FILES_PATH;
-
-    //if (_env.IsDevelopment())
-    //    spa.UseProxyToSpaDevelopmentServer($"http://localhost:{4208}");
-
+    SourcePath = _startupData.SPA_STATIC_FILES_PATH,
+    FallbackToNearestParentDirectory = true
 });
+
+////_app.UseCookieDebugger();
+//_app.UseSpaStaticFilesWithUnknownTypes(true);
+//_app.UseSpa(spa =>
+//{
+//    spa.Options.SourcePath = _startupData.SPA_STATIC_FILES_PATH;
+//    if (_env.IsDevelopment())
+//        spa.UseProxyToSpaDevelopmentServer($"http://localhost:{4208}");
+
+//});
 
 
 //-------------------------- Run the AppBuilder --------------------------//

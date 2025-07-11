@@ -1,12 +1,8 @@
 using ID.Application.AppAbs.Setup;
-using ID.Application.Features.Mntc.Cmd.Init;
-using ID.Application.Features.Mntc.Cmd.Migrate;
-using ID.Application.Features.Mntc.Qry.PublicSigningKey;
+using ID.Application.Features.System.Cmd.Init;
 using ID.Domain.Utility.Messages;
-using Moq;
-using Shouldly;
 
-namespace ID.Application.Tests.Features.Mntc.Init;
+namespace ID.Application.Tests.Features.System.Init;
 
 public class InitializeCmdHandlerTests
 {

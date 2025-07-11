@@ -39,7 +39,6 @@ public class JwtPackageProviderTests
         // Arrange
         var teamId = Guid.NewGuid();
         var user = AppUserDataFactory.Create(teamId);
-        var team = TeamDataFactory.Create(id: teamId);
         var provider = TwoFactorProvider.Email;
         var extraInfo = "Test extra info";
 
@@ -109,7 +108,6 @@ public class JwtPackageProviderTests
         var user = AppUserDataFactory.Create(teamId);
         user.TwoFactorEnabled = false; // No 2FA required
         var team = TeamDataFactory.Create(id: teamId);
-        var twoFactorVerified = false; // Not needed since 2FA disabled
         var deviceId = "device123";
         var encodedToken = "encoded.jwt.token";
         var refreshToken = RefreshTokenDataFactory.Create();
@@ -158,7 +156,6 @@ public class JwtPackageProviderTests
         var user = AppUserDataFactory.Create(teamId);
         user.TwoFactorEnabled = true; // 2FA enabled
         var team = TeamDataFactory.Create(id: teamId);
-        var twoFactorVerified = false; // But not verified yet
         var deviceId = "device123";
         var encodedToken = "encoded.jwt.token";
 
@@ -200,7 +197,6 @@ public class JwtPackageProviderTests
         var user = AppUserDataFactory.Create(teamId);
         user.TwoFactorEnabled = false;
         var team = TeamDataFactory.Create(id: teamId);
-        var twoFactorVerified = true;
         var deviceId = "device123";
         var encodedToken = "encoded.jwt.token";
 

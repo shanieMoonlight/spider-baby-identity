@@ -39,6 +39,7 @@
 
 
     <ItemGroup>
+      <Folder Include="Auth\JWT\AppServices\" />
       <Folder Include="Jobs\Misc\" />
     </ItemGroup>
 

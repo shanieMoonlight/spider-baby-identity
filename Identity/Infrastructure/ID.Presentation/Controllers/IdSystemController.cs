@@ -1,17 +1,20 @@
-﻿using ID.Application.Authenticators;
+﻿using ControllerHelpers;
+using ControllerHelpers.Responses;
+using ID.Application.Authenticators;
 using ID.Application.Authenticators.Teams;
-using ID.Application.Features.Mntc.Cmd.Init;
 using ID.Application.Features.Account.Qry.GetProviders;
-using ID.Application.Features.Mntc.Qry.PublicSigningKey;
+using ID.Application.Features.System.Cmd.Init;
+using ID.Application.Features.System.Cmd.Migrate;
+using ID.Application.Features.System.Qry.EmailRoutes;
+using ID.Application.Features.System.Qry.JWKS;
+using ID.Application.Features.System.Qry.PublicSigningKey;
+using ID.Application.Features.System.Qry.Settings;
+using ID.Application.JWT;
+using ID.GlobalSettings.Routes;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ControllerHelpers;
-using ControllerHelpers.Responses;
-using ID.Application.Features.Mntc.Qry.EmailRoutes;
-using ID.Application.Features.Mntc.Qry.Settings;
-using ID.Application.Features.Mntc.Cmd.Migrate;
-using ID.GlobalSettings.Routes;
 
 
 namespace ID.Presentation.Controllers;
@@ -54,6 +57,14 @@ public class IdSystemController(ISender sender, ILogger<IdSystemController> logg
         this.ProcessResult(await sender.Send(new GetPublicSigningKeyCmd()));
 
     //------------------------//
+
+    [HttpGet]
+    [AllowAnonymous]
+    public async Task<ActionResult<JwkListDto>> JsonWebKey() =>
+        this.ProcessResult(await sender.Send(new GetJwksCmd()));
+
+    //------------------------//
+
 
     /// <summary>
     /// Returns the configured email routes for the system. Requires Super authorization.

@@ -1,12 +1,8 @@
 using ID.Application.Authenticators;
 using ID.Application.JWT.Subscriptions;
-using ID.Domain.Entities.Teams;
-using ID.Tests.Data.Factories;
 using ID.Tests.Data.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Moq;
-using Shouldly;
 using Xunit.Abstractions;
 
 namespace ID.Application.Tests.Authenticators;
@@ -38,7 +34,7 @@ public class ValidDeviceAuthenticatorTests(ITestOutputHelper _output)
 
 
         // Act
-        var handleResult = authHandler.IsAuthorized(httpContext, subName);
+        var handleResult = ValidDeviceAuthenticator.AuthHandler.IsAuthorized(httpContext, subName);
         actionFilter.OnActionExecuting(actionContext);
         await resourceFilter.OnResourceExecutionAsync(resourceExecutingContext, resourceFilterNext.Object);
 
@@ -73,7 +69,7 @@ public class ValidDeviceAuthenticatorTests(ITestOutputHelper _output)
 
 
         // Act
-        var handleResult = authHandler.IsAuthorized(httpContext, subName);
+        var handleResult = ValidDeviceAuthenticator.AuthHandler.IsAuthorized(httpContext, subName);
         actionFilter.OnActionExecuting(actionContext);
         await resourceFilter.OnResourceExecutionAsync(resourceExecutingContext, resourceFilterNext.Object);
         // Assert

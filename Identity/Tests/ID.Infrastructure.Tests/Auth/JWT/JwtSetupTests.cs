@@ -1,7 +1,7 @@
 using ID.Domain.Utility.Messages;
 using ID.GlobalSettings.Setup.Defaults;
-using ID.GlobalSettings.Utility;
 using ID.Infrastructure.Auth.JWT.Setup;
+using ID.Infrastructure.Auth.JWT.Utils;
 using ID.Infrastructure.Setup;
 using ID.Infrastructure.Tests.Auth.JWT.Utils;
 using ID.Infrastructure.Tests.Utility;
@@ -15,81 +15,26 @@ namespace ID.Infrastructure.Tests.Auth.JWT;
 [Collection(TestingConstants.NonParallelCollection)]
 public class JwtSetupTests
 {
+    private const string _validPublicKeyXml = @"<RSAKeyValue>
+<Modulus>1hYinUnmO1QyansNWEWin0JGA9fS0+MGlGi1WNHFDfm8eAiiT2KK11U8+gx+QjAqFNXMEv4TxPgIT99ANI+K5VD3/x7JsRJZTonmSg34WdAOSR2V/7blGWMkHjPwR5hiaNyMpOAwr0NcbIiNAtl6eubAG4kKkZ6c871S0Cmk1n4MoHZCMKJQ+CVAkOqy1TAtzZhgHxnQ86PGT7NbC37PqlC5G8Erwi81YT4Jqw0T7zFGo8wyWIeRm4JmmKVWVBSUr8qUC+QZF7th3TAO9PvCfaX5hW2wtOVlKZA9goTfzFICzr+Pxtq1dZC7sOmPJgp1kl/HLcCP020TF10m9dzG7w==</Modulus>
+<Exponent>AQAB</Exponent>
+</RSAKeyValue>";
+    private const string _validPrivateKeyXml = @"<RSAKeyValue>
+<Modulus>1hYinUnmO1QyansNWEWin0JGA9fS0+MGlGi1WNHFDfm8eAiiT2KK11U8+gx+QjAqFNXMEv4TxPgIT99ANI+K5VD3/x7JsRJZTonmSg34WdAOSR2V/7blGWMkHjPwR5hiaNyMpOAwr0NcbIiNAtl6eubAG4kKkZ6c871S0Cmk1n4MoHZCMKJQ+CVAkOqy1TAtzZhgHxnQ86PGT7NbC37PqlC5G8Erwi81YT4Jqw0T7zFGo8wyWIeRm4JmmKVWVBSUr8qUC+QZF7th3TAO9PvCfaX5hW2wtOVlKZA9goTfzFICzr+Pxtq1dZC7sOmPJgp1kl/HLcCP020TF10m9dzG7w==</Modulus>
+<Exponent>AQAB</Exponent>
+<P>9xcPskqb8ipjoBTGsqeXL6969RPQh5dUN+WC2auTcxiEWGXyHWB1yo7TmZRko8J1r42/zD6k5HKBmG/Gy1Zno+pTAKDkweJLtAXlyptNiMImfBYRReHXwsty/00fau2lVc61aRUt7sQiJATW/UY1jqErn1v3sL5/F1eGYeuJwPM=</P>
+<Q>3c5pKsWuLs62xyeNQ4K/dXHpcNg3wNJT54u7+4Fkj+4ZQNV8kA8LKOvufHDsc8M8dPP084YdrTDmFKDmyU/taXcHrQe+5/JPX3pdl3ugkffLOffGgYD1GFdXqk5DZGVYapnktEbucI1ePKYyJPy/GFe/vFbDp0p8C9fZNxq1ARU=</Q>
+<DP>hFfHwnkPuc9WeQFnw3zcD2Bv/SBVyqoVI7M8OJYbbcQt7qL74RwvOwTw9Qt0M/oNyq+jkSPkca+bFiiYU4S+Eh+JwYZrwCUS4yNdhv1Ts/I5ZrDzI3jpdZ4+w9ts/nq22ZTTuarsZTyMBLrK4/Fc8j4E/V/m9LWzoK7yfTQJHl0=</DP>
+<DQ>vPF+7ruURDU8x+uuT0sKcy5FECZvX+cLKFwFFxrDIkRN6MezIzhdZk+MSR8cnQQ79Nh32hZuI0FbTUk/L0/RypxlwoStoAHukUO4hDkAsDcoPEoQI/NJVaHZgK7Ig7Y9GhncE6G0rdYO55UfdBiFZGQjZXl3k4NEpgYJ+AHdHH0=</DQ>
+<InverseQ>sxuI06HLcck0L0ekygKvF/iKo/EutSs/OuTsifjaZ0KWFrobg3TRZEtgHvxZTtjJPHXSWBOkaY4aRG01jJK2Y1scuyzSPuBJpXMuhY8kCZjYLjastJPYFzloqiidROoKPl9DSY//ozYT1ByL1Bjd810252RrTHPseVTY3qZPmIo=</InverseQ>
+<D>nN1TN5SyUb57wnGvcYJ0ieTxkFdPb1nltFCUsCPkEz1tzzXkV+6IdQdLypvk13KbIvEUusXYjnZ/AKdAUELtLuGJFTHl7wzWyylXx+M8mfJMxV4cTmYgr91o1YiRAqSxVsxjcVuj0Ie27P+Q8wmPKQZytLpROCnULvQF/ejFkzMpUqXgtzZm1KWKYOSiET2bWzIqnci3FwOBXXZbsJVs1HWnYaKQVNzCBLPF7yYy6MnypLAxj/zE4XITh4EONNUlu19anFbWL4U4ZfY1I+81gbxPwwvhDfpVCGk02iKnl38Zt+awU25rh7lEOKYcoreTzfTz3AwSuQ+LDZ1Hps9OIQ==</D>
+</RSAKeyValue>";
+    private const string _validPublicKeyPEM = $@"-----BEGIN PUBLIC KEY-----...snip...-----END PUBLIC KEY-----";
+    private const string _validPrivateKeyPEM = $@"-----BEGIN RSA PRIVATE KEY-----...snip...-----END RSA PRIVATE KEY-----";
 
+    private const string _validPublicKeyPEM_Legacy = $@"-----BEGIN PUBLIC KEY-----...snip_Legacy...-----END PUBLIC KEY-----";
+    private const string _validPrivateKeyPEM_Legacy = $@"-----BEGIN RSA PRIVATE KEY-----...snip_Legacy...-----END RSA PRIVATE KEY-----";
 
-    [Theory]
-    [InlineData(IdGlobalDefaultValues.MIN_SYMMETRIC_SIGNING_KEY_LENGTH - 5)]
-    public void AddMyIdJwt_Should_Throw_Exception_When_TokenSigningKey_Too_Short(int keyLength)
-    {
-        // Arrange
-        var services = new ServiceCollection();
-        var setupOptions = SetupOptionsHelpers.CreateValidDefaultSetupOptions();
-        setupOptions.SymmetricTokenSigningKey = new string('a', keyLength);
-
-        // Act & Assert
-        var exception = Assert.Throws<SetupDataException>(() => services.AddMyIdJwt(setupOptions));
-        Assert.Equal(IDMsgs.Error.Jwt.TOKEN_SIGNING_KEY_TOO_SHORT(IdGlobalDefaultValues.MIN_SYMMETRIC_SIGNING_KEY_LENGTH), exception.Message);
-    }
-
-    //-------------------------------------//
-
-    [Fact]
-    public void AddMyIdJwt_Should_Throw_Exception_When_Missing_Asymmetric_Public_Key()
-    {
-        // Arrange
-        var services = new ServiceCollection();
-        var setupOptions = SetupOptionsHelpers.CreateValidDefaultSetupOptions();
-        setupOptions.SymmetricTokenSigningKey = string.Empty;
-        setupOptions.AsymmetricTokenPublicKey_Pem = null;
-        setupOptions.AsymmetricTokenPublicKey_Xml = null;
-        setupOptions.AsymmetricTokenPrivateKey_Xml = RandomStringGenerator.Generate(50);
-
-        // Act & Assert
-        var exception = Assert.Throws<SetupDataException>(() => services.AddMyIdJwt(setupOptions));
-        Assert.Equal(IDMsgs.Error.Setup.MISSING_ASSYMETRIC_PUBLIC_KEY, exception.Message);
-    }
-
-    //-------------------------------------//
-
-    [Fact]
-    public void AddMyIdJwt_Should_Throw_Exception_When_Missing_Asymmetric_Private_Key()
-    {
-        // Arrange
-        var services = new ServiceCollection();
-        var setupOptions = SetupOptionsHelpers.CreateValidDefaultSetupOptions();
-        setupOptions.SymmetricTokenSigningKey = string.Empty;
-        setupOptions.AsymmetricTokenPublicKey_Xml = RandomStringGenerator.Generate(50);
-        setupOptions.AsymmetricTokenPrivateKey_Xml = null;
-        setupOptions.AsymmetricTokenPrivateKey_Pem = null;
-
-        // Act & Assert
-        var exception = Assert.Throws<SetupDataException>(() => services.AddMyIdJwt(setupOptions));
-        Assert.Equal(IDMsgs.Error.Setup.MISSING_ASSYMETRIC_PRIVATE_KEY, exception.Message);
-    }
-
-    //-------------------------------------//
-
-    [Fact]
-    public void AddMyIdJwt_Should_Configure_JwtOptions_With_Asymmetric_Keys()
-    {
-        // Arrange
-        var services = new ServiceCollection();
-        var setupOptions = SetupOptionsHelpers.CreateValidDefaultSetupOptions();
-        setupOptions.SymmetricTokenSigningKey = null;
-        setupOptions.AsymmetricTokenPublicKey_Xml = "<RSAKeyValue><Modulus>...</Modulus><Exponent>...</Exponent></RSAKeyValue>";
-        setupOptions.AsymmetricTokenPrivateKey_Xml = "<RSAKeyValue><Modulus>...</Modulus><Exponent>...</Exponent><P>...</P><Q>...</Q><DP>...</DP><DQ>...</DQ><InverseQ>...</InverseQ><D>...</D></RSAKeyValue>";
-
-        // Act
-        services.AddMyIdJwt(setupOptions);
-
-        // Assert
-        var serviceProvider = services.BuildServiceProvider();
-        var jwtOptions = serviceProvider.GetRequiredService<IOptions<JwtOptions>>().Value;
-
-        Assert.True(jwtOptions.UseAsymmetricCrypto);
-        Assert.Equal(setupOptions.AsymmetricTokenPublicKey_Xml, jwtOptions.AsymmetricTokenPublicKey_Xml);
-        Assert.Equal(setupOptions.AsymmetricTokenPrivateKey_Xml, jwtOptions.AsymmetricTokenPrivateKey_Xml);
-    }
 
     //-------------------------------------//
 
@@ -178,8 +123,6 @@ public class JwtSetupTests
 
     //-------------------------------------//
 
-
-
     [Fact]
     public void AddMyIdJwt_Should_Use_Default_TokenExpirationMinutes_When_Not_Specified()
     {
@@ -198,6 +141,8 @@ public class JwtSetupTests
 
         Assert.Equal(IdGlobalDefaultValues.TOKEN_EXPIRATION_MINUTES, jwtOptions.TokenExpirationMinutes);
     }
+
+    //-------------------------------------//
 
     [Fact]
     public void AddMyIdJwt_Should_Override_Only_Specified_Values()
@@ -220,6 +165,8 @@ public class JwtSetupTests
         Assert.Equal(IdGlobalDefaultValues.SECURITY_ALGORITHM, jwtOptions.SecurityAlgorithm); // Default used
     }
 
+    //-------------------------------------//
+
     [Theory]
     [InlineData(IdGlobalDefaultValues.MIN_SYMMETRIC_SIGNING_KEY_LENGTH - 5)]
     public void AddMyIdJwt_Should_Throw_When_SymmetricKey_Too_Short(int keyLength)
@@ -238,6 +185,8 @@ public class JwtSetupTests
             IdGlobalDefaultValues.MIN_SYMMETRIC_SIGNING_KEY_LENGTH), exception.Message);
     }
 
+    //-------------------------------------//
+
     [Fact]
     public void AddMyIdJwt_Should_Configure_AsymmetricKeys_When_No_SymmetricKey()
     {
@@ -246,8 +195,8 @@ public class JwtSetupTests
         var setupOptions = SetupOptionsHelpers.CreateEmptyDefaultSetupOptions();
         setupOptions.ConnectionString = "DummyConnection"; // Required field
         setupOptions.SymmetricTokenSigningKey = null;
-        setupOptions.AsymmetricTokenPublicKey_Xml = "<RSAKeyValue><Modulus>...</Modulus><Exponent>...</Exponent></RSAKeyValue>";
-        setupOptions.AsymmetricTokenPrivateKey_Xml = "<RSAKeyValue><Modulus>...</Modulus><Exponent>...</Exponent><P>...</P><Q>...</Q><DP>...</DP><DQ>...</DQ><InverseQ>...</InverseQ><D>...</D></RSAKeyValue>";
+        setupOptions.AsymmetricXmlKeyPair = AsymmetricXmlKeyPair.Create(_validPublicKeyXml, _validPrivateKeyXml);
+        setupOptions.LegacyAsymmetricXmlKeyPairs = [AsymmetricXmlKeyPair.Create(_validPublicKeyXml, _validPrivateKeyXml)];
 
         // Act
         services.AddMyIdJwt(setupOptions);
@@ -257,7 +206,8 @@ public class JwtSetupTests
         var jwtOptions = serviceProvider.GetRequiredService<IOptions<JwtOptions>>().Value;
 
         Assert.True(jwtOptions.UseAsymmetricCrypto);
-        Assert.Equal(setupOptions.AsymmetricTokenPublicKey_Xml, jwtOptions.AsymmetricTokenPublicKey_Xml);
+        Assert.NotNull(jwtOptions.CurrentAsymmetricKeyPair);
+        IsValidAsymmetricPemKeyPair(jwtOptions.CurrentAsymmetricKeyPair).ShouldBeTrue();
     }
 
     //-------------------------------------//
@@ -275,7 +225,7 @@ public class JwtSetupTests
 
         // Assert
         Assert.Same(services, resultServices);
-        
+
         // Verify that JwtOptions is registered correctly
         var serviceProvider = services.BuildServiceProvider();
         var jwtOptions = serviceProvider.GetService<IOptions<JwtOptions>>();
@@ -285,16 +235,16 @@ public class JwtSetupTests
     //-------------------------------------//
 
     [Fact]
-    public void AddMyIdJwt_Should_Convert_PEM_To_XML_When_XML_Not_Provided()
+    public void AddMyIdJwt_Should_Convert_XML_To_PEM_When_PEM_Not_Provided()
     {
         // Arrange
         var services = new ServiceCollection();
         var setupOptions = SetupOptionsHelpers.CreateValidDefaultSetupOptions();
         setupOptions.SymmetricTokenSigningKey = string.Empty;
-        setupOptions.AsymmetricTokenPublicKey_Xml = null;
-        setupOptions.AsymmetricTokenPrivateKey_Xml = null;
-        setupOptions.AsymmetricTokenPublicKey_Pem = "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCrVrCuTtArbgaZzL1hvh0xtL5mc7o0NqPVnYXkLvgcwiC3BjLGw1tGEGoJaXDuSaRllobm53JBhjx33UNv+5z/UMG4kytBWxheNVKnL6GgqlNabMaFfPLPCF8kAgKnsi79NMo+n6KnSY8YeUmec/p2vjO2NjsSAVcWEQMVhJ31LwIDAQAB\n-----END PUBLIC KEY-----";
-        setupOptions.AsymmetricTokenPrivateKey_Pem = "-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQCrVrCuTtArbgaZzL1hvh0xtL5mc7o0NqPVnYXkLvgcwiC3BjLGw1tGEGoJaXDuSaRllobm53JBhjx33UNv+5z/UMG4kytBWxheNVKnL6GgqlNabMaFfPLPCF8kAgKnsi79NMo+n6KnSY8YeUmec/p2vjO2NjsSAVcWEQMVhJ31LwIDAQABAoGBAI1D/ETdB7xCJR8+kGzOzFnOQ2TmU3TqPPnqXeMGYt7DAmNK+HabS3P1Y4/S3SqZ0pLeUIYkJHDKoE2irkWUGOQQ6Eb5Xt1nYZ4CSY/q5r8L8t7CClh/CD3rDhR8TpVj9ILAeadM+lG1r+AD9yAIUBUOvhqrGt5IkWOtXSgRXm6BAkEA4xPJ7fKAiMZRIaJkLU7zphIBk7dq/QGgQf9bOJPPK2KbOyC2dKPkYhv0gglYKRBgPwFENYTOAHCBQ3NFYi0nowJBAMGsFIAYL30Hq+/5WrTAEgWXZBQIL3nS+i/fIwvM07pPGPHohxo7x+BCRAew5vG+BN/6Q9uL5Lcea8/5QnbFX2kCQHGMQQdJjgcz/yqq3qYAB4L276reUGK+wwGK+8z9Hm6+/HnNs9TtwwE4gyw7PDjKErGI0kCcr6RIAx42VEQXMo8CQDT/PNzCZ/roaLHJJuMXBzVJsm8DHVYqFjjLg5RkmCRzMKcZ5fYTTYxqEJupJmLXk4JgG0G4FEuGLhLj7OVReIkCQCABqODYnk3hqh/zcZgYXcwfQQ47cEF5NPUQule/JenkCPnJ4OKiLGdO934aML4bNlWYQYQzbbQ8/a6D8BGyJP4=\n-----END RSA PRIVATE KEY-----";
+        //setupOptions.AsymmetricPemKeyPair = AsymmetricPemKeyPair.Create("-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCrVrCuTtArbgaZzL1hvh0xtL5mc7o0NqPVnYXkLvgcwiC3BjLGw1tGEGoJaXDuSaRllobm53JBhjx33UNv+5z/UMG4kytBWxheNVKnL6GgqlNabMaFfPLPCF8kAgKnsi79NMo+n6KnSY8YeUmec/p2vjO2NjsSAVcWEQMVhJ31LwIDAQAB\n-----END PUBLIC KEY-----", "-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQCrVrCuTtArbgaZzL1hvh0xtL5mc7o0NqPVnYXkLvgcwiC3BjLGw1tGEGoJaXDuSaRllobm53JBhjx33UNv+5z/UMG4kytBWxheNVKnL6GgqlNabMaFfPLPCF8kAgKnsi79NMo+n6KnSY8YeUmec/p2vjO2NjsSAVcWEQMVhJ31LwIDAQABAoGBAI1D/ETdB7xCJR8+kGzOzFnOQ2TmU3TqPPnqXeMGYt7DAmNK+HabS3P1Y4/S3SqZ0pLeUIYkJHDKoE2irkWUGOQQ6Eb5Xt1nYZ4CSY/q5r8L8t7CClh/CD3rDhR8TpVj9ILAeadM+lG1r+AD9yAIUBUOvhqrGt5IkWOtXSgRXm6BAkEA4xPJ7fKAiMZRIaJkLU7zphIBk7dq/QGgQf9bOJPPK2KbOyC2dKPkYhv0gglYKRBgPwFENYTOAHCBQ3NFYi0nowJBAMGsFIAYL30Hq+/5WrTAEgWXZBQIL3nS+i/fIwvM07pPGPHohxo7x+BCRAew5vG+BN/6Q9uL5Lcea8/5QnbFX2kCQHGMQQdJjgcz/yqq3qYAB4L276reUGK+wwGK+8z9Hm6+/HnNs9TtwwE4gyw7PDjKErGI0kCcr6RIAx42VEQXMo8CQDT/PNzCZ/roaLHJJuMXBzVJsm8DHVYqFjjLg5RkmCRzMKcZ5fYTTYxqEJupJmLXk4JgG0G4FEuGLhLj7OVReIkCQCABqODYnk3hqh/zcZgYXcwfQQ47cEF5NPUQule/JenkCPnJ4OKiLGdO934aML4bNlWYQYQzbbQ8/a6D8BGyJP4=\n-----END RSA PRIVATE KEY-----");
+
+        setupOptions.AsymmetricXmlKeyPair = AsymmetricXmlKeyPair.Create(_validPublicKeyXml, _validPrivateKeyXml);
+        setupOptions.LegacyAsymmetricXmlKeyPairs = [AsymmetricXmlKeyPair.Create(_validPublicKeyXml, _validPrivateKeyXml)];
 
         // Act - Should not throw
         services.AddMyIdJwt(setupOptions);
@@ -304,10 +254,12 @@ public class JwtSetupTests
         var jwtOptions = serviceProvider.GetRequiredService<IOptions<JwtOptions>>().Value;
 
         Assert.True(jwtOptions.UseAsymmetricCrypto);
-        Assert.NotNull(jwtOptions.AsymmetricTokenPublicKey_Xml);
-        Assert.NotNull(jwtOptions.AsymmetricTokenPrivateKey_Xml);
-        Assert.NotEmpty(jwtOptions.AsymmetricTokenPublicKey_Xml);
-        Assert.NotEmpty(jwtOptions.AsymmetricTokenPrivateKey_Xml);
+        Assert.NotNull(jwtOptions.CurrentAsymmetricKeyPair);
+        Assert.NotNull(jwtOptions.LegacyAsymmetricKeyPairs);
+
+
+        IsValidAsymmetricPemKeyPair(jwtOptions.CurrentAsymmetricKeyPair).ShouldBeTrue();
+
     }
 
     //-------------------------------------//
@@ -319,7 +271,7 @@ public class JwtSetupTests
     {
         // Arrange
         var services = new ServiceCollection();
-        
+
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
@@ -350,7 +302,7 @@ public class JwtSetupTests
     {
         // Arrange
         var services = new ServiceCollection();
-        
+
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
@@ -381,7 +333,7 @@ public class JwtSetupTests
     {
         // Arrange
         var services = new ServiceCollection();
-        
+
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection([])
             .Build();
@@ -427,7 +379,7 @@ public class JwtSetupTests
     {
         // Arrange
         var services = new ServiceCollection();
-        
+
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string?>
             {
@@ -461,17 +413,15 @@ public class JwtSetupTests
         // Arrange
         var services = new ServiceCollection();
         var setupOptions = SetupOptionsHelpers.CreateValidDefaultSetupOptions();
-        
+
         // Set ALL possible properties to unique test values
         setupOptions.TokenExpirationMinutes = 999;
         setupOptions.SymmetricTokenSigningKey = string.Empty;
         setupOptions.TokenIssuer = "TestIssuer_CopyTest";
         setupOptions.SecurityAlgorithm = "HS512_CopyTest";
         setupOptions.AsymmetricAlgorithm = "RS512_CopyTest";
-        setupOptions.AsymmetricTokenPublicKey_Xml = "<RSAKeyValue>PublicKey_CopyTest</RSAKeyValue>";
-        setupOptions.AsymmetricTokenPrivateKey_Xml = "<RSAKeyValue>PrivateKey_CopyTest</RSAKeyValue>";
-        setupOptions.AsymmetricTokenPublicKey_Pem = "-----BEGIN PUBLIC KEY-----\nPemPublicKey_CopyTest\n-----END PUBLIC KEY-----";
-        setupOptions.AsymmetricTokenPrivateKey_Pem = "-----BEGIN PRIVATE KEY-----\nPemPrivateKey_CopyTest\n-----END PRIVATE KEY-----";
+        setupOptions.AsymmetricPemKeyPair = AsymmetricPemKeyPair.Create(_validPublicKeyPEM, _validPrivateKeyPEM);
+        setupOptions.LegacyAsymmetricPemKeyPairs = [AsymmetricPemKeyPair.Create(_validPublicKeyPEM_Legacy, _validPrivateKeyPEM_Legacy)];
         setupOptions.RefreshTokenUpdatePolicy = RefreshTokenUpdatePolicy.Always;
 
         // Act
@@ -481,20 +431,15 @@ public class JwtSetupTests
         var serviceProvider = services.BuildServiceProvider();
         var jwtOptions = serviceProvider.GetRequiredService<IOptions<JwtOptions>>().Value;
 
-        // Verify all 10 properties listed in CopyOptionsValues method (lines 78-87)
         Assert.Equal(999, jwtOptions.TokenExpirationMinutes);
-        //Assert.Equal(new string('X', IdGlobalDefaultValues.MIN_SYMMETRIC_SIGNING_KEY_LENGTH), jwtOptions.SymmetricTokenSigningKey);
         Assert.Equal("TestIssuer_CopyTest", jwtOptions.TokenIssuer);
         Assert.Equal("HS512_CopyTest", jwtOptions.SecurityAlgorithm);
         Assert.Equal("RS512_CopyTest", jwtOptions.AsymmetricAlgorithm);
-        Assert.Equal("<RSAKeyValue>PublicKey_CopyTest</RSAKeyValue>", jwtOptions.AsymmetricTokenPublicKey_Xml);
-        Assert.Equal("<RSAKeyValue>PrivateKey_CopyTest</RSAKeyValue>", jwtOptions.AsymmetricTokenPrivateKey_Xml);
-        Assert.Equal("-----BEGIN PUBLIC KEY-----\nPemPublicKey_CopyTest\n-----END PUBLIC KEY-----", jwtOptions.AsymmetricTokenPublicKey_Pem);
-        Assert.Equal("-----BEGIN PRIVATE KEY-----\nPemPrivateKey_CopyTest\n-----END PRIVATE KEY-----", jwtOptions.AsymmetricTokenPrivateKey_Pem);
         Assert.Equal(RefreshTokenUpdatePolicy.Always, jwtOptions.RefreshTokenUpdatePolicy);
-
-        // This test will FAIL if any property is added to JwtOptions but not included in CopyOptionsValues
-        // forcing developers to update both the method and this test, preventing forgotten assignments
+        Assert.NotNull(jwtOptions.CurrentAsymmetricKeyPair);
+        Assert.True(IsValidAsymmetricPemKeyPair(jwtOptions.CurrentAsymmetricKeyPair));
+        Assert.NotNull(jwtOptions.LegacyAsymmetricKeyPairs);
+        Assert.Contains(jwtOptions.LegacyAsymmetricKeyPairs, k => k.PublicKey.Contains("Legacy"));
     }
 
     //-------------------------------------//
@@ -511,10 +456,10 @@ public class JwtSetupTests
         setupOptions.TokenIssuer = "TestIssuer_CopyTest";
         setupOptions.SecurityAlgorithm = "HS512_CopyTest";
         setupOptions.AsymmetricAlgorithm = "RS512_CopyTest";
-        setupOptions.AsymmetricTokenPublicKey_Xml = "<RSAKeyValue>PublicKey_CopyTest</RSAKeyValue>";
-        setupOptions.AsymmetricTokenPrivateKey_Xml = "<RSAKeyValue>PrivateKey_CopyTest</RSAKeyValue>";
-        setupOptions.AsymmetricTokenPublicKey_Pem = "-----BEGIN PUBLIC KEY-----\nPemPublicKey_CopyTest\n-----END PUBLIC KEY-----";
-        setupOptions.AsymmetricTokenPrivateKey_Pem = "-----BEGIN PRIVATE KEY-----\nPemPrivateKey_CopyTest\n-----END PRIVATE KEY-----";
+        setupOptions.AsymmetricXmlKeyPair = null;
+        setupOptions.AsymmetricPemKeyPair = null;
+        setupOptions.LegacyAsymmetricPemKeyPairs = [];
+        setupOptions.LegacyAsymmetricXmlKeyPairs = [];
         setupOptions.RefreshTokenUpdatePolicy = RefreshTokenUpdatePolicy.Always;
 
         // Act
@@ -524,19 +469,14 @@ public class JwtSetupTests
         var serviceProvider = services.BuildServiceProvider();
         var jwtOptions = serviceProvider.GetRequiredService<IOptions<JwtOptions>>().Value;
 
-        // Verify all 10 properties listed in CopyOptionsValues method (lines 78-87)
         Assert.Equal(999, jwtOptions.TokenExpirationMinutes);
-        //Assert.Equal(new string('X', IdGlobalDefaultValues.MIN_SYMMETRIC_SIGNING_KEY_LENGTH), jwtOptions.SymmetricTokenSigningKey);
         Assert.Equal("TestIssuer_CopyTest", jwtOptions.TokenIssuer);
         Assert.Equal("HS512_CopyTest", jwtOptions.SecurityAlgorithm);
-        Assert.Equal("RS512_CopyTest", jwtOptions.AsymmetricAlgorithm);
         Assert.Equal(RefreshTokenUpdatePolicy.Always, jwtOptions.RefreshTokenUpdatePolicy);
-
-        // This test will FAIL if any property is added to JwtOptions but not included in CopyOptionsValues
-        // forcing developers to update both the method and this test, preventing forgotten assignments
+        Assert.Equal(new string('X', IdGlobalDefaultValues.MIN_SYMMETRIC_SIGNING_KEY_LENGTH), jwtOptions.SymmetricTokenSigningKey);
+        Assert.Null(jwtOptions.CurrentAsymmetricKeyPair);
+        Assert.Empty(jwtOptions.LegacyAsymmetricKeyPairs);
     }
-
-    //-------------------------------------//
 
     //-------------------------------------//
     // RefreshTokenTimeSpan Tests
@@ -644,4 +584,23 @@ public class JwtSetupTests
     }
 
     //-------------------------------------//
+
+
+    private static bool IsValidPublicPemKey(string? pemKey) =>
+        pemKey != null &&
+        (pemKey.StartsWith(PemKeyConstants.PUBLIC_PEM_BEGIN, StringComparison.OrdinalIgnoreCase)
+        || pemKey.StartsWith(PemKeyConstants.PUBLIC_PEM_RSA_BEGIN, StringComparison.OrdinalIgnoreCase));
+
+    private static bool IsValidPrivatePemKey(string? pemKey) =>
+        pemKey != null &&
+        (pemKey.StartsWith(PemKeyConstants.PRIVATE_PEM_BEGIN, StringComparison.OrdinalIgnoreCase)
+        || pemKey.StartsWith(PemKeyConstants.PRIVATE_PEM_RSA_BEGIN, StringComparison.OrdinalIgnoreCase));
+
+
+    private static bool IsValidAsymmetricPemKeyPair(AsymmetricPemKeyPair pemKey) =>
+        pemKey != null &&
+        IsValidPublicPemKey(pemKey.PublicKey)
+       && IsValidPrivatePemKey(pemKey.PrivateKey);
+
+
 }

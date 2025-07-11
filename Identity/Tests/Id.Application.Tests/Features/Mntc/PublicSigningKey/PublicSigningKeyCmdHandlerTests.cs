@@ -1,20 +1,17 @@
-using ID.Application.Features.Mntc.Qry.EmailRoutes;
-using ID.Application.Features.Mntc.Qry.PublicSigningKey;
-using ID.Domain.Utility.Messages;
-using Moq;
-using Shouldly;
+using ID.Application.Features.System.Qry.PublicSigningKey;
 using ID.Application.JWT;
+using ID.Domain.Utility.Messages;
 
 namespace ID.Application.Tests.Features.Mntc.PublicSigningKey;
 
 public class PublicSigningKeyCmdHandlerTests
 {
-    private readonly Mock<IJwtKeyService> _mockKeyService;
+    private readonly Mock<IJwtCurrentKeyService> _mockKeyService;
     private readonly GetPublicSigningKeyCmdHandler _handler;
 
     public PublicSigningKeyCmdHandlerTests()
     {
-        _mockKeyService = new Mock<IJwtKeyService>();
+        _mockKeyService = new Mock<IJwtCurrentKeyService>();
         _handler = new GetPublicSigningKeyCmdHandler(_mockKeyService.Object);
     }
 

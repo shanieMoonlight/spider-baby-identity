@@ -55,7 +55,7 @@ public class ConstantExpressionProviderTests
     public void TryCreateNumericListConstantExpression_ValidValues_ShouldCreateCorrectList()
     {
         // Arrange
-        string[] values = { "1", "2", "3", "4", "5" };
+        string[] values = ["1", "2", "3", "4", "5"];
         var type = typeof(int);
 
         // Act
@@ -68,14 +68,14 @@ public class ConstantExpressionProviderTests
         var list = result.Value.Value as List<int>;
         list.ShouldNotBeNull();
         list.Count.ShouldBe(5);
-        list.ShouldBe(new List<int> { 1, 2, 3, 4, 5 });
+        list.ShouldBe([1, 2, 3, 4, 5]);
     }
 
     [Fact]
     public void TryCreateNumericListConstantExpression_InvalidValue_ShouldReturnFailureResult()
     {
         // Arrange
-        string[] values = { "1", "2", "not-a-number", "4", "5" };
+        string[] values = ["1", "2", "not-a-number", "4", "5"];
         var type = typeof(int);
 
         // Act
@@ -91,7 +91,7 @@ public class ConstantExpressionProviderTests
     public void CreateNumericListConstantExpression_NullableType_ShouldHandleCorrectly()
     {
         // Arrange
-        string[] values = { "1", "2", "3" };
+        string[] values = ["1", "2", "3"];
         var type = typeof(int?);
 
         // Act
@@ -105,7 +105,7 @@ public class ConstantExpressionProviderTests
         var list = result.Value.Value as List<int>;
         list.ShouldNotBeNull();
         list.Count.ShouldBe(3);
-        list.ShouldBe(new List<int> { 1, 2, 3 });
+        list.ShouldBe([1, 2, 3]);
     }
 
     [Fact]
@@ -143,7 +143,7 @@ public class ConstantExpressionProviderTests
         // Assert
         result.Succeeded.ShouldBeTrue();
 
-        var list = result.Value.Value as List<int>;
+        var list = result.Value?.Value as List<int>;
         list.ShouldNotBeNull();
         list.Count.ShouldBe(count);
 

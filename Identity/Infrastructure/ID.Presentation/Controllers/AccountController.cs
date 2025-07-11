@@ -99,7 +99,7 @@ public class AccountController(ISender sender) : ControllerBase
     [HttpPost("[action]")]
     [AllowAnonymous]
     public async Task<ActionResult<MessageResponseDto>> LoginRefresh([FromBody]  LoginRefreshDto dto ) =>
-           this.ProcessResult(await sender.Send(new LoginRefreshCmd(dto.ResetToken, dto.DeviceId)));
+           this.ProcessResult(await sender.Send(new LoginRefreshCmd(dto.RefreshToken, dto.DeviceId)));
 
     //------------------------//
 

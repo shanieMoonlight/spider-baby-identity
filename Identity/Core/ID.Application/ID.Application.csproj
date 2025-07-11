@@ -69,4 +69,10 @@
       <ProjectReference Include="..\ID.IntegrationEvents\ID.IntegrationEvents.csproj" />
     </ItemGroup>
 
+
+
+    <ItemGroup>
+      <Folder Include="Features\Mntc\" />
+    </ItemGroup>
+
 </Project>

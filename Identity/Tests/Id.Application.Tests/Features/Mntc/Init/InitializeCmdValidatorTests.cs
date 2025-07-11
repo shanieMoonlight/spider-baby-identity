@@ -1,5 +1,5 @@
 ﻿using FluentValidation.TestHelper;
-using ID.Application.Features.Mntc.Cmd.Init;
+using ID.Application.Features.System.Cmd.Init;
 using ID.Application.Mediatr.Validation;
 using Shouldly;
 

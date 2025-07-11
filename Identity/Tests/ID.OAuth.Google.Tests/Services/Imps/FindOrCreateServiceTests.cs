@@ -95,7 +95,7 @@ public class FindOrCreateServiceTests
 
         _mockFindUserService
             .Setup(s => s.FindUserWithTeamDetailsAsync(email, null, null))
-            .ReturnsAsync((AppUser)null);
+            .ReturnsAsync((AppUser)null!);
 
         _mockSignupService
             .Setup(s => s.RegisterOAuthAsync(
@@ -148,7 +148,7 @@ public class FindOrCreateServiceTests
 
         _mockFindUserService
             .Setup(s => s.FindUserWithTeamDetailsAsync(email, null, null))
-            .ReturnsAsync((AppUser)null);
+            .ReturnsAsync((AppUser)null!);
 
         _mockSignupService
             .Setup(s => s.RegisterOAuthAsync(
@@ -180,10 +180,10 @@ public class FindOrCreateServiceTests
         var payload = new GoogleVerifiedPayload(new GoogleJsonWebSignature.Payload())
         {
             Email = email,
-            GivenName = null,
-            FamilyName = null,
-            Issuer = null,
-            Picture = null,
+            GivenName = null!,
+            FamilyName = null!,
+            Issuer = null!,
+            Picture = null!,
             EmailVerified = false
         };
         var dto = new GoogleSignInDto();
@@ -191,7 +191,7 @@ public class FindOrCreateServiceTests
 
         _mockFindUserService
             .Setup(s => s.FindUserWithTeamDetailsAsync(email, null, null))
-            .ReturnsAsync((AppUser)null);
+            .ReturnsAsync((AppUser)null!);
 
         _mockSignupService
             .Setup(s => s.RegisterOAuthAsync(
@@ -246,7 +246,7 @@ public class FindOrCreateServiceTests
 
         _mockFindUserService
             .Setup(s => s.FindUserWithTeamDetailsAsync(email, null, null))
-            .ReturnsAsync((AppUser)null);
+            .ReturnsAsync((AppUser)null!);
 
         _mockSignupService
             .Setup(s => s.RegisterOAuthAsync(

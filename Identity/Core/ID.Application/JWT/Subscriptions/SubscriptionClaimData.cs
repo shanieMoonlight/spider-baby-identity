@@ -43,7 +43,7 @@ public class SubscriptionClaimData
         var data = new SubscriptionClaimData
         {
             Trial = sub.TrialEndDate > DateTime.Now,
-            Name = sub.SubscriptionPlan!.Name.ToLower(),
+            Name = sub.SubscriptionPlan!.Name,
             Status = sub.SubscriptionStatus.ToString().ToLower(),
             Expiry = new DateTimeOffset(sub.EndDate ?? DateTime.MaxValue).ToUnixTimeSeconds().ToString().ToLower()
         };

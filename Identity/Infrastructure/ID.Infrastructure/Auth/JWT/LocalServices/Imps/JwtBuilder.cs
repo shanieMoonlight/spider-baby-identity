@@ -23,7 +23,7 @@ namespace ID.Infrastructure.Auth.JWT.LocalServices.Imps;
 public class JwtBuilder(
     IClaimsBuilderService _claimsBuilder,
     IJwtClaimsService _jwtClaims,
-    IKeyHelper _keyHelper,
+    IKeyProvider _keyHelper,
     IOptions<JwtOptions> _jwtOptions,
     IOptions<IdGlobalOptions> _globalOptionsProvider) : IJwtBuilder
 {
@@ -105,7 +105,8 @@ public class JwtBuilder(
     /// <returns>Asymmetric signing credentials</returns>
     private SigningCredentials CreateAsymmetricSigningCredentials()
     {
-        SecurityKey key = _keyHelper.BuildRsaSigningKey(_jwt.AsymmetricTokenPrivateKey_Xml);
+        //SecurityKey key = _keyHelper.BuildRsaSigningKeyFromXml(_jwt.AsymmetricTokenPrivateKey_Xml);
+        SecurityKey key = _keyHelper.GetPrivateRsaSigningKey();
         return new SigningCredentials(key, _jwt.AsymmetricAlgorithm);
     }
 

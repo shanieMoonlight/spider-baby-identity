@@ -15,7 +15,7 @@ public class JwtKeyBuilderConstants
 
 
     public const string PRIVATE_PEM_BEGIN = "-----BEGIN PRIVATE KEY-----";
-    public const string PRIVATE_PEM_END = "-----BEGIN PRIVATE KEY-----";
+    public const string PRIVATE_PEM_END = "-----END PRIVATE KEY-----";
 
     public const string PRIVATE_PEM_RSA_BEGIN = "-----BEGIN RSA PRIVATE KEY-----";
     public const string PRIVATE_PEM_RSA_END = "-----END RSA PRIVATE KEY-----";

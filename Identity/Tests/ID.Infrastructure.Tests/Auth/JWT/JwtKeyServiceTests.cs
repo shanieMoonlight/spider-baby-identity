@@ -14,7 +14,7 @@ public class JwtKeyServiceTests
     public async Task GetPublicSigningKeyAsync_ShouldReturnKey_WhenAsymmetricCryptoIsUsed()
     {
         // Arrange
-        var keyHelperMock = new Mock<IKeyHelper>();
+        var keyHelperMock = new Mock<IKeyProvider>();
         keyHelperMock.Setup(x => x.ExportPublicKey()).Returns(_samplePublicKey);
         
         var jwtOptions = new JwtOptions
@@ -44,7 +44,7 @@ public class JwtKeyServiceTests
     public async Task GetPublicSigningKeyAsync_ShouldReturnNull_WhenSymmetricCryptoIsUsed()
     {
         // Arrange
-        var keyHelperMock = new Mock<IKeyHelper>();
+        var keyHelperMock = new Mock<IKeyProvider>();
         keyHelperMock.Setup(x => x.ExportPublicKey()).Returns(_samplePublicKey);
         
         var jwtOptions = new JwtOptions
@@ -76,7 +76,7 @@ public class JwtKeyServiceTests
     public async Task GetPublicSigningKeyAsync_ShouldReturnKey_WhenSymmetricKeyIsNullOrWhitespace(string symmetricKey)
     {
         // Arrange
-        var keyHelperMock = new Mock<IKeyHelper>();
+        var keyHelperMock = new Mock<IKeyProvider>();
         keyHelperMock.Setup(x => x.ExportPublicKey()).Returns(_samplePublicKey);
         
         var jwtOptions = new JwtOptions
@@ -105,7 +105,7 @@ public class JwtKeyServiceTests
     {
         // Arrange
         var dynamicKey = $"dynamic-key-{Guid.NewGuid()}";
-        var keyHelperMock = new Mock<IKeyHelper>();
+        var keyHelperMock = new Mock<IKeyProvider>();
         keyHelperMock.Setup(x => x.ExportPublicKey()).Returns(dynamicKey);
         
         var jwtOptions = new JwtOptions

@@ -112,6 +112,7 @@ public partial class IDMsgs
             //public const string MISSING_APP_NAME = "You must supply a name for the application that is using MyIdentity";
             public const string MISSING_ASSYMETRIC_PRIVATE_KEY = "You must supply a private key when using asymmetrically signed JWTs";
             public const string MISSING_ASSYMETRIC_PUBLIC_KEY = "You must supply a public key when using asymmetrically signed JWTs";
+            public const string MISSING_ASSYMETRIC_KEY_PAIR = "You must supply a public and private key when using asymmetrically signed JWTs";
             public const string MISSING_BRAND_COLORS = "You must supply a brand color for your email templates. (Hex format)";
             public const string MISSING_CONFIGURATION = "You must supply a configuration";
             public const string MISSING_CONNECTION_STRING = "You must supply a Connection String";

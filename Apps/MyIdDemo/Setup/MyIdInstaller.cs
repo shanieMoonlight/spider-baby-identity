@@ -1,5 +1,4 @@
 ﻿using ID.API.Setup;
-using ID.API.Setup.ExtraSetup;
 using ID.Application.Customers.Setup;
 using ID.Demo.TestControllers.Setup;
 using ID.Email.SG.Setup;
@@ -38,10 +37,23 @@ public class MyIdInstaller : IServiceInstaller
            {
                config.ApplicationName = startupData.APP_NAME;
                config.ConnectionString = startupData.ConnectionStringsSection.GetSqlDb();
-               //config.TokenSigningKey = startupData.IdentitySection.GetSymetricKey();
-               config.JwtAsymmetricPrivateKey_Xml = startupData.GetAsymmetricPrivateKeyXmlString();
-               config.JwtAsymmetricPublicKey_Xml = startupData.GetAsymmetricPublicKeyXmlString();
+               //config.JwtTokenSigningKey = startupData.IdentitySection.GetSymetricKey();
+               //config.JwtAsymmetricPrivateKey_Xml = startupData.GetAsymmetricPrivateKeyXmlString();
+               //config.JwtAsymmetricPublicKey_Xml = startupData.GetAsymmetricPublicKeyXmlString();
                config.JwtTokenExpirationMinutes = startupData.IdentitySection.GetJwtExpirationMinutes();
+               //config.JwtAsymmetricPemKeyPair = AsymmetricPemKeyPair.Create(
+               //    startupData.GetAsymmetricPublicKeyPemString(),
+               //    startupData.GetAsymmetricPrivateKeyPemString()
+               // );
+
+
+               config.JwtAsymmetricXmlKeyPair = AsymmetricXmlKeyPair.Create(
+                   startupData.GetAsymmetricPublicKeyXmlString(),
+                   startupData.GetAsymmetricPrivateKeyXmlString()
+                );
+
+
+               //config.JwtTokenExpirationMinutes = 2;
                config.JwtRefreshTokensEnabled = true;
                config.JwtRefreshTokenUpdatePolicy = RefreshTokenUpdatePolicy.HalfLife;
                config.MntcAccountsUrl = startupData.IdentitySection.GetMntcRoute();

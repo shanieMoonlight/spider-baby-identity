@@ -19,7 +19,7 @@ public static class ValidDeviceAuthenticator
         /// </summary>
         /// <param name="context">The HTTP context containing the user information.</param>
         /// <returns>True if the user is authorized; otherwise, false.</returns>
-        public bool IsAuthorized(HttpContext context, string subscriptionName)
+        public static bool IsAuthorized(HttpContext context, string subscriptionName)
         {
             var deviceId = context.GetDeviceId(subscriptionName);
             return !deviceId.IsNullOrWhiteSpace();
@@ -42,7 +42,7 @@ public static class ValidDeviceAuthenticator
         {
             if (!context.HttpContext.IsAuthenticated())
                 context.Result = new UnauthorizedResult();
-            else if (new AuthHandler().IsAuthorized(context.HttpContext, subscriptionName))
+            else if (AuthHandler.IsAuthorized(context.HttpContext, subscriptionName))
                 await next();
             else
                 context.Result = new ForbidResult();
@@ -63,7 +63,7 @@ public static class ValidDeviceAuthenticator
         {
             if (!context.HttpContext.IsAuthenticated())
                 context.Result = new UnauthorizedResult();
-            else if (new AuthHandler().IsAuthorized(context.HttpContext, subscriptionName))
+            else if (AuthHandler.IsAuthorized(context.HttpContext, subscriptionName))
                 base.OnActionExecuting(context);
             else
                 context.Result = new ForbidResult();
@@ -91,7 +91,7 @@ public static class ValidDeviceAuthenticator
             protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, Requirement requirement)
             {
                 var httpContext = _httpContextAccessor.HttpContext;
-                if (httpContext == null || !new AuthHandler().IsAuthorized(httpContext, requirement.SubscriptionName))
+                if (httpContext == null || !AuthHandler.IsAuthorized(httpContext, requirement.SubscriptionName))
                     context.Fail();
                 else
                     context.Succeed(requirement);

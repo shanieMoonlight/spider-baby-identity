@@ -54,6 +54,10 @@ public static class ClaimsPrincipalExtensions
                     subscriptionClaimDatas.Add(deserializedData);
             }
 
+            var what = subscriptionClaimDatas?
+                .FirstOrDefault(s => s.Name == subscritionPlanName)?
+                .DeviceId;
+
             return subscriptionClaimDatas?
                 .FirstOrDefault(s => s.Name == subscritionPlanName)?
                 .DeviceId;

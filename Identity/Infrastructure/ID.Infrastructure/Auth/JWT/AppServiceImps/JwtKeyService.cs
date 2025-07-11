@@ -4,8 +4,8 @@ using ID.Infrastructure.Auth.JWT.Setup;
 using Microsoft.Extensions.Options;
 
 namespace ID.Infrastructure.Auth.JWT.AppServiceImps;
-internal class JwtKeyService(IKeyHelper _keyHelper, IOptions<JwtOptions> _jwtOptions)
-    : IJwtKeyService
+internal class JwtKeyService(IKeyProvider _keyHelper, IOptions<JwtOptions> _jwtOptions)
+    : IJwtCurrentKeyService
 {
     private readonly JwtOptions _jwt = _jwtOptions.Value;
 

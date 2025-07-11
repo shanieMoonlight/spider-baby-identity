@@ -31,10 +31,14 @@ internal class SetupOptionsHelpers
                 RequireConfirmedEmail = false,
                 RequireConfirmedPhoneNumber = false
             },
-            AsymmetricTokenPublicKey_Xml = "<RSAKeyValue><Modulus>...</Modulus><Exponent>...</Exponent></RSAKeyValue>",
-            AsymmetricTokenPrivateKey_Xml = "<RSAKeyValue><Modulus>...</Modulus><Exponent>...</Exponent><P>...</P><Q>...</Q><DP>...</DP><DQ>...</DQ><InverseQ>...</InverseQ><D>...</D></RSAKeyValue>",
-            AsymmetricTokenPrivateKey_Pem = null,
-            AsymmetricTokenPublicKey_Pem = null,
+            //AsymmetricTokenPublicKey_Xml = "<RSAKeyValue><Modulus>...</Modulus><Exponent>...</Exponent></RSAKeyValue>",
+            //AsymmetricTokenPrivateKey_Xml = "<RSAKeyValue><Modulus>...</Modulus><Exponent>...</Exponent><P>...</P><Q>...</Q><DP>...</DP><DQ>...</DQ><InverseQ>...</InverseQ><D>...</D></RSAKeyValue>",
+            //AsymmetricTokenPrivateKey_Pem = null,
+            //AsymmetricTokenPublicKey_Pem = null,
+            AsymmetricPemKeyPair = null,
+            LegacyAsymmetricPemKeyPairs = [],
+            AsymmetricXmlKeyPair = null,
+            LegacyAsymmetricXmlKeyPairs = [],
             AsymmetricAlgorithm = IdGlobalDefaultValues.ASYMETRIC_ALGORITHM,
             SymmetricTokenSigningKey = new string('a', IdGlobalDefaultValues.MIN_SYMMETRIC_SIGNING_KEY_LENGTH),
             TokenExpirationMinutes = IdGlobalDefaultValues.TOKEN_EXPIRATION_MINUTES,
@@ -67,10 +71,10 @@ internal class SetupOptionsHelpers
         {
             PasswordOptions = null,
             SignInOptions = null,
-            AsymmetricTokenPublicKey_Xml = null,
-            AsymmetricTokenPrivateKey_Xml = null,
-            AsymmetricTokenPrivateKey_Pem = null,
-            AsymmetricTokenPublicKey_Pem = null,
+            //AsymmetricTokenPublicKey_Xml = null,
+            //AsymmetricTokenPrivateKey_Xml = null,
+            //AsymmetricTokenPrivateKey_Pem = null,
+            //AsymmetricTokenPublicKey_Pem = null,
             AsymmetricAlgorithm = null,
             SymmetricTokenSigningKey = null,
             TokenExpirationMinutes = -1,
@@ -88,7 +92,11 @@ internal class SetupOptionsHelpers
             CookieSlidingExpiration = true,
             CookieExpireTimeSpan = null,
             AllowExternalPagesDevModeAccess = true,
-            RefreshTokenUpdatePolicy = null
+            RefreshTokenUpdatePolicy = null,
+            AsymmetricPemKeyPair = null,
+            LegacyAsymmetricPemKeyPairs = [],
+            AsymmetricXmlKeyPair = null,
+            LegacyAsymmetricXmlKeyPairs = [],
         };
     }
 }

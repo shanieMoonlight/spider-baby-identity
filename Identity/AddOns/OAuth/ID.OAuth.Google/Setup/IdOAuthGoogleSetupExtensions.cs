@@ -76,7 +76,7 @@ public static class IdOAuthGoogleSetupExtensions
     /// <summary>
     /// Adds the necessary services (Controllers, Handlers etc.) for Google OAuth authentication to the service collection.
     /// </summary>
-    /// <param name="builder">The service collection.</param>
+    /// <param name="services">The service collection.</param>
     /// <param name="setupOptions">The setup options for Google OAuth.</param>
     /// <returns>The updated service collection.</returns>
     public static IServiceCollection AddMyIdOAuthGoogle(

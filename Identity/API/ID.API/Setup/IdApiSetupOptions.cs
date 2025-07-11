@@ -100,7 +100,7 @@ public class IdApiSetupOptions
     #endregion
 
     //#########################################################//
-    //###################   INFASTRUCTURE   ###################//
+    //###################   INFRASTRUCTURE   ###################//
     //#########################################################//
 
     #region Infrastructure
@@ -153,25 +153,26 @@ public class IdApiSetupOptions
 
 
     /// <summary>
-    /// <inheritdoc cref="IdInfrastructureSetupOptions.AsymmetricTokenPublicKey_Xml"/>
+    /// <inheritdoc cref="IdInfrastructureSetupOptions.AsymmetricPemKeyPair"/>
     /// </summary>
-    public string? JwtAsymmetricPublicKey_Xml { get; set; }
+    public AsymmetricPemKeyPair? JwtAsymmetricPemKeyPair { get; set; }
 
     /// <summary>
-    /// <inheritdoc cref="IdInfrastructureSetupOptions.AsymmetricTokenPrivateKey_Xml"/>
+    /// <inheritdoc cref="IdInfrastructureSetupOptions.LegacyAsymmetricPemKeyPairs"/>
     /// </summary>
-    public string? JwtAsymmetricPrivateKey_Xml { get; set; }
+    public IEnumerable<AsymmetricPemKeyPair> JwtLegacyAsymmetricPemKeyPairs { get; set; } = [];
 
 
     /// <summary>
-    /// <inheritdoc cref="IdInfrastructureSetupOptions.AsymmetricTokenPublicKey_Pem"/>
+    /// <inheritdoc cref="IdInfrastructureSetupOptions.AsymmetricXmlKeyPair"/>
     /// </summary>
-    public string? JwtAsymmetricPublicKey_Pem { get; set; }
+    public AsymmetricXmlKeyPair? JwtAsymmetricXmlKeyPair { get; set; }
 
     /// <summary>
-    /// <inheritdoc cref="IdInfrastructureSetupOptions.AsymmetricTokenPrivateKey_Pem"/>
+    /// <inheritdoc cref="IdInfrastructureSetupOptions.LegacyAsymmetricXmlKeyPairs"/>
     /// </summary>
-    public string? JwtAsymmetricPrivateKey_Pem { get; set; }
+    public IEnumerable<AsymmetricXmlKeyPair> JwtLegacyAsymmetricXmlKeyPairs { get; set; } = [];
+
 
     /// <summary>
     /// <inheritdoc cref="IdInfrastructureSetupOptions.AsymmetricAlgorithm"/>
@@ -265,10 +266,6 @@ public class IdApiSetupOptions
     internal IdInfrastructureSetupOptions GetInfrastructureSetupOptions() => new()
     {
         ConnectionString = ConnectionString,
-        AsymmetricTokenPrivateKey_Xml = JwtAsymmetricPrivateKey_Xml,
-        AsymmetricTokenPublicKey_Xml = JwtAsymmetricPublicKey_Xml,
-        AsymmetricTokenPrivateKey_Pem = JwtAsymmetricPrivateKey_Pem,
-        AsymmetricTokenPublicKey_Pem = JwtAsymmetricPublicKey_Pem,
         AsymmetricAlgorithm = JwtAsymmetricAlgorithm,
         PasswordOptions = PasswordOptions,
         SignInOptions = SignInOptions,
@@ -286,7 +283,11 @@ public class IdApiSetupOptions
         CookieExpireTimeSpan = CookieExpireTimeSpan,
         CookieSlidingExpiration = CookieSlidingExpiration,
         RefreshTokenUpdatePolicy = JwtRefreshTokenUpdatePolicy,
-        RefreshTokenTimeSpan = JwtRefreshTokenTimeSpan
+        RefreshTokenTimeSpan = JwtRefreshTokenTimeSpan,
+        AsymmetricPemKeyPair = JwtAsymmetricPemKeyPair,
+        LegacyAsymmetricPemKeyPairs = JwtLegacyAsymmetricPemKeyPairs,
+        AsymmetricXmlKeyPair = JwtAsymmetricXmlKeyPair,
+        LegacyAsymmetricXmlKeyPairs = JwtLegacyAsymmetricXmlKeyPairs,
     };
 
 

@@ -4,6 +4,7 @@ using ID.GlobalSettings.Setup.Defaults;
 using ID.Infrastructure.Auth.JWT.AppServiceImps;
 using ID.Infrastructure.Auth.JWT.LocalServices.Abs;
 using ID.Infrastructure.Auth.JWT.LocalServices.Imps;
+using ID.Infrastructure.Auth.JWT.Utils;
 using ID.Infrastructure.Setup;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -59,14 +60,18 @@ internal static class JwtSetup
                 // Service resolution happens WHEN OPTIONS ARE REQUESTED, not during config
                 // Will be called once then the result wil  be cached
                 var jwtOptions = serviceProvider.GetRequiredService<IOptions<JwtOptions>>().Value;
-                var keyHelper = serviceProvider.GetRequiredService<IKeyHelper>();
+                var keyHelper = serviceProvider.GetRequiredService<IKeyProvider>();
+
+                List<SecurityKey> validationKeys = keyHelper.GetValidationSigningKeys();
+                var resolver = new KidIssuerSigningKeyResolver(validationKeys);
 
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    IssuerSigningKey = keyHelper.BuildValidationSigningKey(),
+                    IssuerSigningKeys = validationKeys,
+                    IssuerSigningKeyResolver = resolver.ResolveSigningKey,
                     ValidIssuer = jwtOptions.TokenIssuer ?? IdGlobalDefaultValues.TOKEN_ISSUER,
                     ValidateIssuerSigningKey = true,
-                    ValidateIssuer = false,
+                    ValidateIssuer = true,
                     ValidateAudience = false,
                     NameClaimType = MyIdClaimTypes.NAME,
                     RoleClaimType = MyIdClaimTypes.ROLE
@@ -86,18 +91,18 @@ internal static class JwtSetup
     private static IServiceCollection AddJwtServices(this IServiceCollection services)
     {
         services.TryAddTransient<IJwtPackageProvider, JwtPackageProvider>();
-        services.TryAddTransient<IJwtKeyService, JwtKeyService>();
+        services.TryAddTransient<IJwtCurrentKeyService, JwtKeyService>();
 
         services.TryAddTransient<IJwtBuilder, JwtBuilder>();
         services.TryAddTransient<IJwtUtils, JwtUtils>();
         services.TryAddTransient<IJwtClaimsService, JwtClaimsService>();
-        services.TryAddTransient<IKeyHelper, KeyHelper>();
+        services.TryAddTransient<IKeyProvider, KeyProvider>();
+        services.TryAddTransient<IJsonWebKeyProvider, JsonWebKeyProvider>();
+        services.TryAddTransient<IKeyIdBuilder, KeyIdBuilder>();
 
         return services;
     }
 
-
-    //-------------------------------------//    
 
 
 }//Cls

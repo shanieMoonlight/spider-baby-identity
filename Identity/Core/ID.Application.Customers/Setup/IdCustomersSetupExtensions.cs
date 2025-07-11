@@ -1,11 +1,8 @@
 ﻿using FluentValidation;
 using ID.Application.Customers.Abstractions;
 using ID.Application.Customers.ApplicationImps;
-using ID.Application.Mediatr;
-using ID.Application.Mediatr.Behaviours.Validation;
 using ID.GlobalSettings.Setup;
 using ID.GlobalSettings.Setup.Options;
-using MediatR;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -19,6 +16,7 @@ public static class IdCustomersSetupExtensions
     /// Setup IdDomain
     /// </summary>
     /// <param name="services"></param>
+    /// <param name="setupOptions"></param>
     /// <returns>The same services</returns>
     public static IServiceCollection AddMyIdCustomers(this IServiceCollection services, IdGlobalSetupOptions_CUSTOMER setupOptions)
     {
@@ -50,6 +48,7 @@ public static class IdCustomersSetupExtensions
     /// Setup Customer auth (Customer Accounts url is required)
     /// </summary>
     /// <param name="services"></param>
+    /// <param name="config"></param>
     /// <returns>The same services</returns>
     public static IServiceCollection AddMyIdCustomers(this IServiceCollection services, Action<IdGlobalSetupOptions_CUSTOMER> config)
     {

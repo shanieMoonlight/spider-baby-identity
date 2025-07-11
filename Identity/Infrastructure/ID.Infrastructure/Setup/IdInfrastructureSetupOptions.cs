@@ -1,8 +1,6 @@
 ﻿using ID.GlobalSettings.Setup.Defaults;
-using ID.GlobalSettings.Utility;
 using ID.Infrastructure.Auth.Cookies;
 using ID.Infrastructure.Auth.JWT.Setup;
-using ID.Infrastructure.Persistance.EF.Setup.Options;
 using ID.Infrastructure.Setup.Options;
 using ID.Infrastructure.Setup.Passwords;
 using ID.Infrastructure.Setup.SignIn;
@@ -36,24 +34,33 @@ public class IdInfrastructureSetupOptions
     //- - - - - - - - - - - - - -//
 
     /// <summary>
-    /// Asymmetric public key in xml format
+    /// Asymmetric public/private key pair in PEM format.
     /// </summary>
-    public required string? AsymmetricTokenPublicKey_Xml { get; set; }
+    public required AsymmetricPemKeyPair? AsymmetricPemKeyPair { get; set; }
 
     /// <summary>
-    /// Asymmetric private key in xml format
+    /// List of legacy asymmetric public/private key pairs in PEM format.
     /// </summary>
-    public required string? AsymmetricTokenPrivateKey_Xml { get; set; }
+    public required IEnumerable<AsymmetricPemKeyPair> LegacyAsymmetricPemKeyPairs { get; set; } = [];
 
     /// <summary>
-    /// Asymmetric public key in PEM format
+    /// Asymmetric public/private key pair in XML format.
+    /// <para></para>
+    /// <remarks>PEM format is preferred for new deployments. Use XML only for legacy compatibility.</remarks>
     /// </summary>
-    public required string? AsymmetricTokenPublicKey_Pem { get; set; }
+    //[Obsolete("PEM format is preferred. Use AsymmetricPemKeyPair instead.")]
+    public required AsymmetricXmlKeyPair? AsymmetricXmlKeyPair { get; set; }
+
 
     /// <summary>
-    /// Asymmetric private key in PEM format
+    /// List of legacy asymmetric public/private key pairs in XML format.
+    /// <para></para>
+    /// <remarks>PEM format is preferred for new deployments. Use XML only for legacy compatibility.</remarks>
     /// </summary>
-    public required string? AsymmetricTokenPrivateKey_Pem { get; set; }
+    //[Obsolete("PEM format is preferred. Use LegacyAsymmetricPemKeyPairs instead.")]
+    public required IEnumerable<AsymmetricXmlKeyPair> LegacyAsymmetricXmlKeyPairs { get; set; } = [];
+
+
 
     /// <summary>
     /// Algorithm for asymmetric encryption.

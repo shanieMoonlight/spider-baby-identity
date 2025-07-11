@@ -1,9 +1,8 @@
 ﻿using ID.Domain.Utility.Exceptions;
 using ID.Domain.Utility.Messages;
 using ID.GlobalSettings.Setup.Defaults;
-using ID.GlobalSettings.Utility;
+using ID.Infrastructure.Auth.JWT.Utils;
 using ID.Infrastructure.Setup;
-using ID.Jwt.KeyBuilder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -51,7 +50,7 @@ internal static class JwtOptionsSetup
     }
 
 
-    //--------------------------//      
+    //--------------------------//        
 
 
     /// <summary>
@@ -86,11 +85,11 @@ internal static class JwtOptionsSetup
         target.SymmetricTokenSigningKey = source.SymmetricTokenSigningKey;
         target.TokenIssuer = source.TokenIssuer;
         target.SecurityAlgorithm = source.SecurityAlgorithm;
+        
         target.AsymmetricAlgorithm = source.AsymmetricAlgorithm;
-        target.AsymmetricTokenPublicKey_Xml = source.AsymmetricTokenPublicKey_Xml;
-        target.AsymmetricTokenPrivateKey_Xml = source.AsymmetricTokenPrivateKey_Xml;
-        target.AsymmetricTokenPublicKey_Pem = source.AsymmetricTokenPublicKey_Pem;
-        target.AsymmetricTokenPrivateKey_Pem = source.AsymmetricTokenPrivateKey_Pem;
+        target.CurrentAsymmetricKeyPair = source.CurrentAsymmetricKeyPair;
+        target.LegacyAsymmetricKeyPairs = source.LegacyAsymmetricKeyPairs;
+       
         target.RefreshTokenUpdatePolicy = source.RefreshTokenUpdatePolicy;
         target.RefreshTokenTimeSpan = source.RefreshTokenTimeSpan;
     }
@@ -123,34 +122,17 @@ internal static class JwtOptionsSetup
 
     private static JwtOptions ConfigureAsymmetricCrypto(IdInfrastructureSetupOptions setupOptions, JwtOptions jwtOptions)
     {
-        if (!string.IsNullOrWhiteSpace(setupOptions.AsymmetricAlgorithm))
-            jwtOptions.AsymmetricAlgorithm = setupOptions.AsymmetricAlgorithm;
 
         //Use symmetric when available and don't bother setting or validating asymmetric keys
         if (!string.IsNullOrWhiteSpace(setupOptions.SymmetricTokenSigningKey))
             return jwtOptions;
 
+        if (!string.IsNullOrWhiteSpace(setupOptions.AsymmetricAlgorithm))
+            jwtOptions.AsymmetricAlgorithm = setupOptions.AsymmetricAlgorithm;
 
-        var assymetricPublicKey = GetAsymmetricPublicKeyXml(setupOptions);
-        if (string.IsNullOrWhiteSpace(assymetricPublicKey))
-            throw new SetupDataException(IDMsgs.Error.Setup.MISSING_ASSYMETRIC_PUBLIC_KEY);
-        else
-            jwtOptions.AsymmetricTokenPublicKey_Xml = assymetricPublicKey;
+        jwtOptions.CurrentAsymmetricKeyPair = GetCurrentAsymmetricPemKeyPair(setupOptions);
 
-
-        var assymetricPrivateKey = GetAsymmetricPrivateKeyXml(setupOptions);
-        if (string.IsNullOrWhiteSpace(assymetricPrivateKey))
-            throw new SetupDataException(IDMsgs.Error.Setup.MISSING_ASSYMETRIC_PRIVATE_KEY);
-        else
-            jwtOptions.AsymmetricTokenPrivateKey_Xml = assymetricPrivateKey;
-
-
-        // Copy PEM versions as well for completeness
-        if (!string.IsNullOrWhiteSpace(setupOptions.AsymmetricTokenPublicKey_Pem))
-            jwtOptions.AsymmetricTokenPublicKey_Pem = setupOptions.AsymmetricTokenPublicKey_Pem;
-
-        if (!string.IsNullOrWhiteSpace(setupOptions.AsymmetricTokenPrivateKey_Pem))
-            jwtOptions.AsymmetricTokenPrivateKey_Pem = setupOptions.AsymmetricTokenPrivateKey_Pem;
+        jwtOptions.LegacyAsymmetricKeyPairs = GetLegacyAsymmetricPemKeyPairs(setupOptions);
 
 
         return jwtOptions;
@@ -161,52 +143,37 @@ internal static class JwtOptionsSetup
 
 
     /// <summary>
-    /// Gets the asymmetric public key in XML format, with fallback conversion from PEM.
+    /// Gets the asymmetric public key in PEM format, with fallback conversion from XML.
     /// </summary>
-    private static string GetAsymmetricPublicKeyXml(IdInfrastructureSetupOptions options)
+    private static AsymmetricPemKeyPair GetCurrentAsymmetricPemKeyPair(IdInfrastructureSetupOptions options)
     {
-        try
-        {
-            if (!string.IsNullOrWhiteSpace(options.AsymmetricTokenPublicKey_Xml))
-                return options.AsymmetricTokenPublicKey_Xml;
+        if (options.AsymmetricPemKeyPair is not null)
+            return options.AsymmetricPemKeyPair;
 
-            if (!string.IsNullOrWhiteSpace(options.AsymmetricTokenPublicKey_Pem))
-                return PemToXml.ConvertKeyContent(options.AsymmetricTokenPublicKey_Pem);
+        if (options.AsymmetricXmlKeyPair is not null)
+            return options.AsymmetricXmlKeyPair.ToPemPair();
 
-            return string.Empty;
-        }
-        catch (Exception ex)
-        {
-            throw new SetupJwtDataException(ex); //Throw because this is critical problem. 
-        }
+        throw new SetupDataException(IDMsgs.Error.Setup.MISSING_ASSYMETRIC_KEY_PAIR);
     }
 
 
     //--------------------------//
-
 
     /// <summary>
-    /// Gets the asymmetric private key in XML format, with fallback conversion from PEM.
+    /// Gets the asymmetric public key in PEM format, with fallback conversion from XML.
     /// </summary>
-    private static string GetAsymmetricPrivateKeyXml(IdInfrastructureSetupOptions options)
+    private static List<AsymmetricPemKeyPair> GetLegacyAsymmetricPemKeyPairs(IdInfrastructureSetupOptions options)
     {
-        try
-        {
-            if (!string.IsNullOrWhiteSpace(options.AsymmetricTokenPrivateKey_Xml))
-                return options.AsymmetricTokenPrivateKey_Xml;
+        if (options.LegacyAsymmetricPemKeyPairs?.Any() == true)
+            return [.. options.LegacyAsymmetricPemKeyPairs];
 
-            if (!string.IsNullOrWhiteSpace(options.AsymmetricTokenPrivateKey_Pem))
-                return PemToXml.ConvertKeyContent(options.AsymmetricTokenPrivateKey_Pem);
 
-            return string.Empty;
-        }
-        catch (Exception ex)
-        {
+        if (options.LegacyAsymmetricXmlKeyPairs?.Any() == true)
+            return [.. options.LegacyAsymmetricXmlKeyPairs.Select(p => p.ToPemPair())];
 
-            throw new SetupJwtDataException(ex);//Throw because this is critical problem.
-        }
+
+        return [];
     }
 
 
-    //--------------------------//
 }//Cls

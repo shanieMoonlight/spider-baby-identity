@@ -1,6 +1,5 @@
 ﻿using ID.GlobalSettings.Constants;
 using ID.GlobalSettings.Setup.Defaults;
-using ID.GlobalSettings.Utility;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -52,24 +51,19 @@ public class JwtOptions
     }
 
     /// <summary>
-    /// Asymmetric public key in XML format.
+    /// Current asymmetric key pair for signing tokens. Will be used for Jwt Signing and Validation.
     /// </summary>
-    public string AsymmetricTokenPublicKey_Xml { get; set; } = string.Empty;
+
+    public AsymmetricPemKeyPair? CurrentAsymmetricKeyPair { get; set; }
 
     /// <summary>
-    /// Asymmetric public key in PEM format.
+    /// Gets or sets the collection of legacy asymmetric key pairs.
+    /// <para></para>
+    /// This collection is used to support older tokens that may have been signed with previous key pairs. (Key Rotation)
     /// </summary>
-    public string AsymmetricTokenPublicKey_Pem { get; set; } = string.Empty;
+    /// use.</remarks>
 
-    /// <summary>
-    /// Asymmetric private key in XML format.
-    /// </summary>
-    public string AsymmetricTokenPrivateKey_Xml { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Asymmetric private key in PEM format.
-    /// </summary>
-    public string AsymmetricTokenPrivateKey_Pem { get; set; } = string.Empty;
+    public List<AsymmetricPemKeyPair> LegacyAsymmetricKeyPairs { get; set; } = [];
 
 
     private string _asymmetricAlgorithm = IdGlobalDefaultValues.ASYMETRIC_ALGORITHM;
@@ -82,6 +76,7 @@ public class JwtOptions
             ? IdGlobalDefaultValues.ASYMETRIC_ALGORITHM
             : value;
     }
+
 
     /// <summary>
     /// Policy for determining when refresh tokens should be updated during refresh operations.
@@ -109,14 +104,13 @@ public class JwtOptions
     }
 
 
-
-
     //- - - - - - - - - - - - - - - - - - //
 
 
     // Computed properties
     public SymmetricSecurityKey SecurityKey =>
         new(Encoding.UTF8.GetBytes(SymmetricTokenSigningKey));
+
 
     public static string TokenHeaderKey =>
         IdGlobalConstants.Authentication.TOKEN_HEADER_KEY;
@@ -127,4 +121,4 @@ public class JwtOptions
     public bool UseAsymmetricCrypto =>
         string.IsNullOrWhiteSpace(SymmetricTokenSigningKey);
 
-}
+}//Cls

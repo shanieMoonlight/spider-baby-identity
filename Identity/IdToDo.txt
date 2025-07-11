@@ -64,3 +64,8 @@ CookieSignInService Testing (Integration)
 
 
  userName  -> username
+
+
+ IssuerSigningKeys Plural in JwtSetup
+ JwtSetupTests
+ Remove kid property form AsymmetricPemKeyPair

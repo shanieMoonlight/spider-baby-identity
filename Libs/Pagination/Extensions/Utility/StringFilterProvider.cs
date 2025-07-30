@@ -20,7 +20,10 @@ internal class StringFilterProvider
         if (propertyExp.Type.IsEnum)
             return HandleStringEnum(propertyExp, filterRequest);
 
-        //Sometimes Id's can be strings on the client and ints on the server
+        //Sometimes Id's can be strings on the client and ints/guids on the server
+        if (propertyExp.Type == typeof(Guid))
+            return GuidFilterProvider.CreateGuidFilter<T>(param, filterRequest, getPropertySelectorLambda);
+
         if (propertyExp.Type != typeof(string))
             return NumericFilterProvider.CreateNumericFilter<T>(param, filterRequest, getPropertySelectorLambda);
 

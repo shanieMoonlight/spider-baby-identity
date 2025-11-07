@@ -1,5 +1,5 @@
 ﻿using ID.Infrastructure.Auth.JWT.Setup;
-using TestingHelpers;
+using TestingHelpers.RandomData;
 
 namespace ID.Infrastructure.Tests.Auth.JWT.Utils;
 public class JwtOptionsUtils

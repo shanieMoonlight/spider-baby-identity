@@ -5,7 +5,6 @@ using Lamar;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
-using MyResults;
 
 namespace ID.Application.Tests.Mediatr.Pipeline.Exceptions;
 

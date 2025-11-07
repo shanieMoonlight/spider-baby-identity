@@ -20,13 +20,18 @@ internal class StringFilterProvider
         if (propertyExp.Type.IsEnum)
             return HandleStringEnum(propertyExp, filterRequest);
 
-        //Sometimes Id's can be strings on the client and ints on the server
+        //Sometimes Id's can be strings on the client and ints/guids on the server
+        if (propertyExp.Type == typeof(Guid))
+            return GuidFilterProvider.CreateGuidFilter<T>(param, filterRequest, getPropertySelectorLambda);
+
         if (propertyExp.Type != typeof(string))
             return NumericFilterProvider.CreateNumericFilter<T>(param, filterRequest, getPropertySelectorLambda);
 
 
-        var lowerExp = Expression.Call(propertyExp, StringMethodInfos.ToLower);//x.Description.ToLower()
-        var constant = Expression.Constant(filterRequest.FilterValue.ToLower());//What to compare with
+        // Coalesce null property to empty string before ToLower to avoid NullReferenceException
+        var safePropertyExp = Expression.Coalesce(propertyExp, Expression.Constant(string.Empty, typeof(string))); // x.Description ?? ""
+        var lowerExp = Expression.Call(safePropertyExp, StringMethodInfos.ToLower); // (x.Description ?? "").ToLower()
+        var constant = Expression.Constant(filterRequest.FilterValue.Trim().ToLower());//What to compare with
 
         if (filterRequest.FilterType == FilterTypes.EQUALS)
             return new PgResult<Expression>(Expression.MakeBinary(ExpressionType.Equal, lowerExp, constant));
@@ -47,15 +52,11 @@ internal class StringFilterProvider
              lowerExp,
              methodInfo!, //Succeeded Value is always non-null
              constant
-         ); //x.Description.ToLower().StringMethod(constant)
+         ); // (x.Description ?? "").ToLower().StringMethod(constant)
 
 
-        //Nulls will cause LINQ to crash so we need to (i.e. null.Contains(filterValue) )
-        var nullCheck = Expression.NotEqual(propertyExp, Expression.Constant(null, typeof(string))); //x != null
-
-        var nonNullStringExp = Expression.AndAlso(nullCheck, stringMethodExp); //x.Description != null && x.Description.ToLower().Contains(filterValue)
-
-        return new PgResult<Expression>(nonNullStringExp);
+        // With coalescing above we no longer need an explicit null-check; null is treated as empty string
+        return new PgResult<Expression>(stringMethodExp);
     }
 
     //-----------------------------------//
@@ -67,6 +68,7 @@ internal class StringFilterProvider
         ConstantExpression listExp;
         MethodInfo methodInfo;
 
+        //Sometimes Id's can be strings on the client and ints/guids on the server
         if (property.Type != typeof(string))
         {
             //Let this throw an exception. It means the client entered the wrong type.
@@ -94,19 +96,24 @@ internal class StringFilterProvider
     private static IList TryConvertStringList(string[] strList, Type newType)
     {
 
-        Type t = typeof(List<>).MakeGenericType(newType);
+        // Support nullable types by using underlying type when present
+        var targetType = Nullable.GetUnderlyingType(newType) ?? newType;
+
+        Type t = typeof(List<>).MakeGenericType(targetType);
         IList convertedList = (IList)Activator.CreateInstance(t)!;
 
 
         foreach (var str in strList)
         {
-            if (str.IsNullOrWhiteSpace())
+            if (string.IsNullOrWhiteSpace(str))
                 continue;
 
-            if (newType.IsEnum)
-                convertedList.Add(Enum.Parse(newType, str));
+            if (targetType.IsEnum)
+                convertedList.Add(Enum.Parse(targetType, str));
+            else if (targetType == typeof(Guid))
+                convertedList.Add(Guid.Parse(str));
             else
-                convertedList.Add(Convert.ChangeType(str, newType));
+                convertedList.Add(Convert.ChangeType(str, targetType));
         }
 
         return convertedList;
@@ -137,4 +144,4 @@ internal class StringFilterProvider
 
     }
 
-}
+}//Cls

@@ -13,7 +13,7 @@ public class OAuthInfo : IdDomainEntity
 
     public bool? EmailVerified { get; set; }
 
-    [Column(TypeName = "nvarchar(40)")]
+    //[Column(TypeName = "nvarchar(40)")]
     public OAuthProvider Provider { get; set; }
 
     public Guid AppUserId { get; set; }

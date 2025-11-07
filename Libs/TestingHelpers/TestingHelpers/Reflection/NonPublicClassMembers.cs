@@ -1,10 +1,9 @@
 ﻿using System.Reflection;
 
-namespace TestingHelpers;
+namespace TestingHelpers.Reflection;
 
 public static class NonPublicClassMembers
 {
-    //------------------------------------//
 
     public static FieldType GetField<T, FieldType>(T instance, string fieldName) where FieldType : class =>
         typeof(T).GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(instance) as FieldType
@@ -33,6 +32,5 @@ public static class NonPublicClassMembers
         GetMethod<T>(methodName)
             .Invoke(instance, parameters);
 
-    //------------------------------------//
 
 }//Cls

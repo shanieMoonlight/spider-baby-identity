@@ -1,16 +1,9 @@
 using ClArch.ValueObjects;
-using ID.Application.AppAbs.Permissions;
 using ID.Application.Features.Account.Cmd.AddMntcMember;
 using ID.Application.Features.Common.Dtos.User;
 using ID.Application.Mediatr.CqrsAbs;
-using ID.Domain.Abstractions.Services.Teams;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Entities.Teams;
-using ID.Tests.Data.Factories;
-using Moq;
-using MyResults;
-using Shouldly;
 using ID.Domain.Entities.AppUsers.ValueObjects;
+using System.Security.Claims;
 
 namespace ID.Application.Tests.Features.Account.Cmd.AddMntc;
 
@@ -119,7 +112,7 @@ public class AddMntcMemberCmdHandlerTests
         var request = new AddMntcMemberCmd(dto)
         {
             IsAuthenticated = true,
-            Principal = new System.Security.Claims.ClaimsPrincipal(),
+            Principal = new ClaimsPrincipal(),
             //PrincipalTeam = team,
             PrincipalTeamPosition = newCustomerPosition + 1 //Greater than newCustomerPosition
         };
@@ -177,7 +170,7 @@ public class AddMntcMemberCmdHandlerTests
         var request = new AddMntcMemberCmd(dto)
         {
 
-            Principal = new System.Security.Claims.ClaimsPrincipal(),
+            Principal = new ClaimsPrincipal(),
             //PrincipalTeam = TeamDataFactory.Create(),
             PrincipalTeamPosition = newCustomerPosition + 1 //Greater than newCustomerPosition
         };

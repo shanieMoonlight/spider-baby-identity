@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace TestingHelpers;
+namespace TestingHelpers.RandomData;
 
 public static class MyRandomDataGenerator
 {

@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Reflection.Metadata;
 
-namespace TestingHelpers;
+namespace TestingHelpers.Reflection;
 
 //##########################################################################//
 

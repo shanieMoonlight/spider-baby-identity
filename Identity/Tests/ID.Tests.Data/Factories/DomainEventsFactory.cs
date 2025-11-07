@@ -3,7 +3,7 @@ using ID.Domain.Abstractions.Events;
 using ID.Domain.Entities.Devices;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Entities.Teams.ValueObjects;
-using TestingHelpers;
+using TestingHelpers.RandomData;
 
 namespace ID.Tests.Data.Factories;
 

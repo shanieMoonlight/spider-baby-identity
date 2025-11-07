@@ -10,7 +10,7 @@ using ID.Infrastructure.Auth.JWT.Setup;
 using ID.Tests.Data.GlobalOptions;
 using Microsoft.Extensions.Options;
 using Moq;
-using TestingHelpers;
+using TestingHelpers.RandomData;
 using Xunit.Abstractions;
 
 namespace ID.Infrastructure.Tests.Auth.JWT;

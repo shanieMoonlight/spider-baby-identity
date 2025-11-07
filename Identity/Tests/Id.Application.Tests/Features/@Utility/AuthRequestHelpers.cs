@@ -1,4 +1,5 @@
 ﻿using ID.Application.Mediatr.Cqrslmps;
+using System.Security.Claims;
 
 namespace ID.Application.Tests.Features.Utility;
 internal static class AuthRequestHelpersExtensions
@@ -14,7 +15,7 @@ internal static class AuthRequestHelpersExtensions
         request.IsCustomer = false;
         request.IsMntc = true;
         request.IsSuper = false;
-        request.Principal = new System.Security.Claims.ClaimsPrincipal();
+        request.Principal = new ClaimsPrincipal();
         request.PrincipalEmail = "a@b.cd";
         request.PrincipalTeamId = Guid.NewGuid();
         request.PrincipalTeamPosition = 500;
@@ -37,7 +38,7 @@ internal static class AuthRequestHelpersExtensions
         request.IsMntc = false;
         request.IsSuper = true;
         request.IsSuper = true;
-        request.Principal = new System.Security.Claims.ClaimsPrincipal();
+        request.Principal = new ClaimsPrincipal();
         request.PrincipalEmail = "a@b.cd";
         request.PrincipalTeamId = Guid.NewGuid();
         request.PrincipalTeamPosition = 500;
@@ -59,7 +60,7 @@ internal static class AuthRequestHelpersExtensions
         request.IsCustomer = true;
         request.IsMntc = false;
         request.IsSuper = false;
-        request.Principal = new System.Security.Claims.ClaimsPrincipal();
+        request.Principal = new ClaimsPrincipal();
         request.PrincipalEmail = "a@b.cd";
         request.PrincipalTeamId = Guid.NewGuid();
         request.PrincipalTeamPosition = 500;

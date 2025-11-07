@@ -2,7 +2,7 @@
 using ID.Domain.Entities.Teams;
 using ID.Tests.Data.Factories;
 using ID.Tests.Data.Factories.Dtos;
-using TestingHelpers;
+using TestingHelpers.RandomData;
 using static ID.Domain.Utility.Messages.IDMsgs.Error;
 
 namespace ID.Tests.Data.Initializers;

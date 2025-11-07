@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TestingHelpers;
+namespace TestingHelpers.RandomData;
 public class RandomJsonGenerator
 {
     private static readonly Random _random = new();

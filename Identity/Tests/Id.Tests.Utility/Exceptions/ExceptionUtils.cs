@@ -18,6 +18,9 @@ public class ExceptionUtils
             Times.Once);
     }
 
+    //------------------------//
+
+
     public static void VerifyExceptionLogging<TClass, TException>(Mock<ILogger<TClass>> _mockLogger, int eventId) where TException : Exception
         where TClass : class
     {
@@ -30,6 +33,8 @@ public class ExceptionUtils
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
             Times.Once);
     }
+
+    //------------------------//
 
 
     public static void VerifyExceptionLogging<TClass>(Mock<ILogger<TClass>> _mockLogger, int eventId)
@@ -45,6 +50,8 @@ public class ExceptionUtils
             Times.Once);
     }
 
+    //------------------------//
+
     public static void VerifyExceptionLogging<TClass>(Mock<ILogger<TClass>> _mockLogger)
         where TClass : class
     {
@@ -57,6 +64,9 @@ public class ExceptionUtils
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
             Times.Once);
     }
+
+    //------------------------//
+
 
     public static void VerifyBasicResultLogging<TClass>(Mock<ILogger<TClass>> _mockLogger, int eventId, BasicResult result)
         where TClass : class
@@ -71,6 +81,9 @@ public class ExceptionUtils
             Times.Once);
     }
 
+    //------------------------//
+
+
     public static void VerifyGenResultLogging<TClass, T>(Mock<ILogger<TClass>> _mockLogger, int eventId, GenResult<T> result)
         where TClass : class
     {
@@ -84,4 +97,4 @@ public class ExceptionUtils
             Times.Once);
     }
 
-}
+}//Cls

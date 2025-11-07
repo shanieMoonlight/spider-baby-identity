@@ -2,7 +2,7 @@
 using ID.Domain.Entities.AppUsers;
 using Moq;
 using Shouldly;
-using TestingHelpers;
+using TestingHelpers.Reflection;
 
 namespace ID.Domain.Tests.Entities.AppUsers;
 

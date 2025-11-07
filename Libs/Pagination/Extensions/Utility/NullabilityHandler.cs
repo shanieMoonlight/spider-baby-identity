@@ -13,7 +13,7 @@ internal class NullabilityHandler
     internal static MemberExpression HandleNullability<T>(MemberExpression exp) where T : struct =>
         !exp.IsNullable() ? exp : Expression.PropertyOrField(exp, "Value");
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// If Expression is of nullable type adds Hasvalue check expression before it.

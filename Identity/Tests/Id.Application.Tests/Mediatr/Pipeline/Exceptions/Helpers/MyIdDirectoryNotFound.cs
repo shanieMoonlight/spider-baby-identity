@@ -1,8 +1,6 @@
 ﻿using ID.Application.Tests.Mediatr.Pipeline.Exceptions.Logger;
 using ID.Domain.Utility.Exceptions;
 using MediatR;
-using MyResults;
-using Shouldly;
 
 namespace ID.Application.Tests.Mediatr.Pipeline.Exceptions.Helpers;
 

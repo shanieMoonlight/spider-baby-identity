@@ -1,7 +1,7 @@
 ﻿using RandomDataGenerator.FieldOptions;
 using RandomDataGenerator.Randomizers;
 
-namespace TestingHelpers;
+namespace TestingHelpers.RandomData;
 public static class RandomStringGenerator
 {
     private static readonly Random _random = new();

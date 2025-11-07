@@ -12,6 +12,7 @@ using Moq;
 using MyResults;
 using Shouldly;
 using ID.Domain.Entities.AppUsers.ValueObjects;
+using System.Security.Claims;
 
 namespace ID.Application.Tests.Features.Account.Cmd.AddSpr;
 
@@ -91,7 +92,7 @@ public class AddSprMemberCmdHandlerTests
                 TeamPosition = 1
             },
             IsAuthenticated = true,
-            Principal = new System.Security.Claims.ClaimsPrincipal(),
+            Principal = new ClaimsPrincipal(),
             PrincipalTeam = team,
             PrincipalTeamPosition = newCustomerPosition + 1 //Greater than newCustomerPosition
         };
@@ -146,7 +147,7 @@ public class AddSprMemberCmdHandlerTests
         var request = new AddSprMemberCmd(dto)
         {
 
-            Principal = new System.Security.Claims.ClaimsPrincipal(),
+            Principal = new ClaimsPrincipal(),
             PrincipalTeam = TeamDataFactory.Create(),
             PrincipalTeamPosition = newCustomerPosition + 1 //Greater than newCustomerPosition
         };

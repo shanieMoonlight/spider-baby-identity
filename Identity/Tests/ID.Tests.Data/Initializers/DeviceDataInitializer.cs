@@ -1,6 +1,6 @@
 ﻿using ID.Domain.Entities.Teams;
 using ID.Tests.Data.Factories;
-using TestingHelpers;
+using TestingHelpers.RandomData;
 
 namespace ID.Tests.Data.Initializers;
 public class DeviceDataInitializer

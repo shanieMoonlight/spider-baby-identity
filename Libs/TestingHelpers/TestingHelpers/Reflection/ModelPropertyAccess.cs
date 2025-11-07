@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace TestingHelpers;
+namespace TestingHelpers.Reflection;
 
 public static class ModelPropertyAccess
 {

@@ -1,8 +1,4 @@
-﻿
-using System;
-
-
-namespace TestingHelpers;
+﻿namespace TestingHelpers.RandomData;
 
 public static class MyRandomNumberGenerator
 {
@@ -25,7 +21,7 @@ public static class MyRandomNumberGenerator
     {
         lock (_random)
         {
-            return min + (_random.NextDouble() * (max - min));
+            return min + _random.NextDouble() * (max - min);
         }
     }
     public static double Double(double max) => Double(0, max);
@@ -41,7 +37,7 @@ public static class MyRandomNumberGenerator
             _random.NextBytes(buf);
             long longRand = BitConverter.ToInt64(buf, 0);
 
-            return (Math.Abs(longRand % (max - min + 1)) + min);
+            return Math.Abs(longRand % (max - min + 1)) + min;
         }
     }
 
@@ -54,7 +50,7 @@ public static class MyRandomNumberGenerator
         lock (_random)
         {
             // Random.Next only works with int, so we need to scale and cast
-            return (short)(min + (_random.Next(max - min + 1)));
+            return (short)(min + _random.Next(max - min + 1));
         }
     }
 

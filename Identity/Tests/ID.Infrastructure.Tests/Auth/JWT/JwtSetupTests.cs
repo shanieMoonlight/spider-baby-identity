@@ -8,7 +8,7 @@ using ID.Infrastructure.Tests.Utility;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using TestingHelpers;
+using TestingHelpers.RandomData;
 
 namespace ID.Infrastructure.Tests.Auth.JWT;
 

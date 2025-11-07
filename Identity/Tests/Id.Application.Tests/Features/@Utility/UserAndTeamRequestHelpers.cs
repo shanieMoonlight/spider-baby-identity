@@ -1,6 +1,7 @@
 ﻿using ID.Application.Mediatr.CqrsAbs;
 using ID.Domain.Entities.AppUsers;
 using ID.Tests.Data.Factories;
+using System.Security.Claims;
 
 namespace ID.Application.Tests.Features.Utility;
 internal static class UserAndTeamRequestHelpers
@@ -22,7 +23,7 @@ internal static class UserAndTeamRequestHelpers
         request.IsMntc = true;
         request.IsSuper = false;
         request.IsSuper = false;
-        request.Principal = new System.Security.Claims.ClaimsPrincipal();
+        request.Principal = new ClaimsPrincipal();
         request.PrincipalEmail = "a@b.cd";
         request.PrincipalTeamId = Guid.NewGuid();
         request.PrincipalTeamPosition = 500;
@@ -50,7 +51,7 @@ internal static class UserAndTeamRequestHelpers
         request.IsMntc = false;
         request.IsSuper = true;
         request.IsSuper = true;
-        request.Principal = new System.Security.Claims.ClaimsPrincipal();
+        request.Principal = new ClaimsPrincipal();
         request.PrincipalEmail = "a@b.cd";
         request.PrincipalTeamId = Guid.NewGuid();
         request.PrincipalTeamPosition = 500;
@@ -79,7 +80,7 @@ internal static class UserAndTeamRequestHelpers
         request.IsMntc = false;
         request.IsSuper = false;
         request.IsSuper = false;
-        request.Principal = new System.Security.Claims.ClaimsPrincipal();
+        request.Principal = new ClaimsPrincipal();
         request.PrincipalEmail = "a@b.cd";
         request.PrincipalTeamId = Guid.NewGuid();
         request.PrincipalTeamPosition = 500;

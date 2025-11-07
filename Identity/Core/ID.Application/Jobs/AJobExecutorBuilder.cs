@@ -68,7 +68,7 @@ internal class JobStarter<Handler>(IServiceProvider provider, Handler handler) w
         if (_env.IsDevelopment())
             return this;
 
-        _jobService.StartRecurringJob(handler.JobId, jobLambda, cronFrequencyExpression);
+        _jobService.StartRecurringJob(handler.JobId, jobLambda, cronFrequencyExpression).Wait();
         return this;
     }
 
@@ -87,7 +87,7 @@ internal class JobStarter<Handler>(IServiceProvider provider, Handler handler) w
         if (!_env.IsDevelopment())
             return this;
 
-        _jobService.StartRecurringJob(handler.JobId, jobLambda, cronFrequencyExpression);
+        _jobService.StartRecurringJob(handler.JobId, jobLambda, cronFrequencyExpression).Wait();
         return this;
     }
 }

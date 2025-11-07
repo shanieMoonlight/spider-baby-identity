@@ -6,7 +6,7 @@ using ID.Infrastructure.Persistance.Abstractions.Repos;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.RefreshTokens;
 using Microsoft.Extensions.Options;
 using Moq;
-using TestingHelpers;
+using TestingHelpers.RandomData;
 
 namespace ID.Infrastructure.Tests.Auth.JWT.Refreshing;
 

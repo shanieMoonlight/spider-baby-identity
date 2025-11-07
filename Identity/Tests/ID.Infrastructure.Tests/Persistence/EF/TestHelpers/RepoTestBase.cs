@@ -75,6 +75,4 @@ public abstract class RepoTestBase : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    //-----------------------------//
-
 }//Cls

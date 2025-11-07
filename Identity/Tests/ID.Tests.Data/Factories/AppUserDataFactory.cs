@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
 using TestingHelpers;
+using TestingHelpers.RandomData;
+using TestingHelpers.Reflection;
 
 namespace ID.Tests.Data.Factories;
 
@@ -148,7 +150,6 @@ public static class AppUserDataFactory
       bool? lockoutEnabled = null,
       int? accessFailedCount = null,
       string? passwordHash = null,
-      string? freindlyName = null,
       string? administratorUsername = null,
       string? administratorId = null
       )

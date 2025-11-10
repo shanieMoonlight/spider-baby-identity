@@ -119,7 +119,7 @@ public class TeamAddAsyncTests : RepoTestBase, IAsyncLifetime
         var leader = AppUserDataFactory.Create();
         var member1 = AppUserDataFactory.Create();
         var member2 = AppUserDataFactory.Create();
-        var members = new HashSet<ID.Domain.Entities.AppUsers.AppUser> { leader, member1, member2 };
+        var members = new HashSet<AppUser> { leader, member1, member2 };
         
         var team = TeamDataFactory.Create(
             name: "Team with Multiple Members",

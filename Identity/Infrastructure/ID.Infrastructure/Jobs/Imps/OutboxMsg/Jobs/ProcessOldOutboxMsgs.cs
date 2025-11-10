@@ -1,7 +1,7 @@
 ﻿using Hangfire;
 using ID.Application.Jobs.OutboxMsgs;
 using ID.Application.Utility;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
+using ID.Domain.Repos;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.OutboxMsgs;
 using LoggingHelpers;
 using Microsoft.Extensions.DependencyInjection;

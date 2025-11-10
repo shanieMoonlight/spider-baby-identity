@@ -24,6 +24,7 @@
         <ProjectReference Include="..\..\..\HelperLibs\HangfireHelpers\HangfireHelpers.csproj" />-->
         <!--<ProjectReference Include="..\..\..\Messaging\MessagingStructure\MessagingStructure.csproj" />-->
         <!--<ProjectReference Include="..\..\..\Messaging\TwilioMessaging\TwilioMessaging.csproj" />-->
+        <ProjectReference Include="..\..\..\ID.Domain.Repos\ID.Domain.Repos.csproj" />
         <ProjectReference Include="..\..\..\Libs\ClArch.SimpleSpecification\ClArch.SimpleSpecification.csproj" />
         <ProjectReference Include="..\..\Core\ID.Application\ID.Application.csproj" />
         <ProjectReference Include="..\..\Core\ID.Domain\ID.Domain.csproj" />
@@ -57,6 +58,12 @@
       <PackageReference Include="Hangfire" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <Folder Include="Persistance\Abstractions\Repos\" />
     </ItemGroup>
     
 </Project>

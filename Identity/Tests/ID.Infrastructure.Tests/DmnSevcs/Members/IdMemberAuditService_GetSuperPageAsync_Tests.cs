@@ -1,17 +1,15 @@
 namespace ID.Infrastructure.Tests.DmnSevcs.Members;
 
-using System.Threading.Tasks;
-using Moq;
-using Shouldly;
-using Pagination;
-using ID.Infrastructure.DomainServices.Members;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using ID.Tests.Data.Factories;
 using ID.Domain.Entities.AppUsers;
+using ID.Infrastructure.DomainServices.Members;
+using ID.Tests.Data.Factories;
+using Moq;
+using Pagination;
+using Shouldly;
+using System.Threading.Tasks;
 
 public class IdMemberAuditService_GetSuperPageAsync_Tests
 {
-    //------------------------------------//
 
     [Fact]
     public async Task GetSuperPageAsync_WithPagedRequest_ShouldReturnPageOfSuperMembers()
@@ -66,5 +64,4 @@ public class IdMemberAuditService_GetSuperPageAsync_Tests
         result.ShouldBe(expectedPage);
     }
 
-    //------------------------------------//
 }

@@ -1,7 +1,7 @@
 ﻿using ID.Domain.Abstractions.Services.Teams.Subs;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Utility.Messages;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
+using ID.Domain.Repos;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
 using MyResults;
 

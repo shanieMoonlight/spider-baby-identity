@@ -1,5 +1,5 @@
 ﻿using ID.Domain.Entities.Common;
-using ID.Infrastructure.Persistance.Abstractions.Repos.GenRepo;
+using ID.Domain.Repos.GenRepo;
 using Microsoft.EntityFrameworkCore;
 
 namespace ID.Infrastructure.Persistance.EF.Repos.Abstractions;

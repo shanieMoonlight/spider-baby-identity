@@ -1,7 +1,7 @@
 ﻿using ClArch.SimpleSpecification;
-using ID.Domain.Utility.Exceptions;
 using ID.Domain.Entities.Common;
-using ID.Infrastructure.Persistance.Abstractions.Repos.GenRepo;
+using ID.Domain.Repos.GenRepo;
+using ID.Domain.Utility.Exceptions;
 using MyResults;
 
 namespace ID.Infrastructure.Persistance.EF.Repos.Abstractions;

@@ -1,5 +1,5 @@
 ﻿using ID.Domain.Entities.Teams;
-using ID.Infrastructure.Persistance.Abstractions.Repos.Specs;
+using ID.Domain.Repos.Specs;
 using Microsoft.EntityFrameworkCore;
 
 namespace ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;

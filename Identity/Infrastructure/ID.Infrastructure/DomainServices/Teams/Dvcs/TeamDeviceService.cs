@@ -4,7 +4,7 @@ using ID.Domain.Entities.Devices;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Utility.Exceptions;
 using ID.Domain.Utility.Messages;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
+using ID.Domain.Repos;
 using MyResults;
 
 namespace ID.Infrastructure.DomainServices.Teams.Dvcs;

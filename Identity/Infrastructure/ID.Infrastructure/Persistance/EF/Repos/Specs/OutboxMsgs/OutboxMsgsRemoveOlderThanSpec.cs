@@ -1,5 +1,5 @@
 ﻿using ID.Domain.Entities.OutboxMessages;
-using ID.Infrastructure.Persistance.Abstractions.Repos.Specs;
+using ID.Domain.Repos.Specs;
 
 namespace ID.Infrastructure.Persistance.EF.Repos.Specs.OutboxMsgs;
 

@@ -1,6 +1,6 @@
 ﻿using ID.Domain.Entities.Common;
 
-namespace ID.Infrastructure.Persistance.Abstractions.Repos.GenRepo;
+namespace ID.Domain.Repos.GenRepo;
 
 /// <summary>
 /// Create, Read, Update, Delete repo

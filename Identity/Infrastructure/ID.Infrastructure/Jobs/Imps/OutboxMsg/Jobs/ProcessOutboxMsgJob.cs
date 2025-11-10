@@ -2,11 +2,11 @@
 using ID.Application.Jobs.OutboxMsgs;
 using ID.Domain.Abstractions.Events;
 using ID.Domain.Entities.OutboxMessages;
+using ID.Domain.Repos;
+using ID.Domain.Repos.Specs;
 using ID.Domain.Utility.Json;
 using ID.Domain.Utility.Messages;
 using ID.GlobalSettings.Errors;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using ID.Infrastructure.Persistance.Abstractions.Repos.Specs;
 using LoggingHelpers;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
@@ -19,7 +19,6 @@ namespace ID.Infrastructure.Jobs.Imps.OutboxMsg.Jobs;
 internal sealed class ProcessOutboxMsgJob(IServiceProvider _serviceProvider, ILogger<ProcessOutboxMsgJob> logger)
     : AProcessMyIdOutboxMsgJob
 {
-    //---------------------------------------------//
 
     [DisableConcurrentExecution(timeoutInSeconds: 300)]
     [DisplayName("MyId - Process Outbox Msgs")]
@@ -50,7 +49,7 @@ internal sealed class ProcessOutboxMsgJob(IServiceProvider _serviceProvider, ILo
         }
     }
 
-    //---------------------------------------------//
+    //--------------------------------//
 
     private async Task ProcessAsync(IdOutboxMessage msg, IPublisher publisher, IIdUnitOfWork uow)
     {
@@ -85,7 +84,5 @@ internal sealed class ProcessOutboxMsgJob(IServiceProvider _serviceProvider, ILo
             logger.LogException(e, $"Domain Event: {domainEv?.GetType()}", IdErrorEvents.OutboxProcessing);
         }
     }
-
-    //---------------------------------------------//
 
 }//Cls

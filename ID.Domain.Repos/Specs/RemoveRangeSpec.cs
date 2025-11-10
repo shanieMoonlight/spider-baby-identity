@@ -2,7 +2,7 @@
 using ID.Domain.Entities.Common;
 using System.Linq.Expressions;
 
-namespace ID.Infrastructure.Persistance.Abstractions.Repos.Specs;
+namespace ID.Domain.Repos.Specs;
 
 /// <summary>
 /// Specification for removing a range of entities based on a criteria.

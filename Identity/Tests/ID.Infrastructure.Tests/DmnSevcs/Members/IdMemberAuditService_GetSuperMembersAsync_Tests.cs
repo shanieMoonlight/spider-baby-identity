@@ -1,17 +1,9 @@
-namespace ID.Infrastructure.Tests.DmnSevcs.Members;
-
-using System.Threading.Tasks;
-using Moq;
-using Shouldly;
-using System.Collections.Generic;
 using ID.Infrastructure.DomainServices.Members;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using ID.Tests.Data.Factories;
-using ID.Domain.Entities.AppUsers;
+
+namespace ID.Infrastructure.Tests.DmnSevcs.Members;
 
 public class IdMemberAuditService_GetSuperMembersAsync_Tests
 {
-    //------------------------------------//
 
     [Fact]
     public async Task GetSuperMembersAsync_ShouldReturnListOfSuperMembers()
@@ -34,5 +26,4 @@ public class IdMemberAuditService_GetSuperMembersAsync_Tests
         result.ShouldBe(expectedMembers);
     }
 
-    //------------------------------------//
 }

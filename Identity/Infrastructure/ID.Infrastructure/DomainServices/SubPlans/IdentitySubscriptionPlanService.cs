@@ -2,7 +2,7 @@ using CollectionHelpers;
 using ID.Domain.Abstractions.Services.SubPlans;
 using ID.Domain.Entities.SubscriptionPlans;
 using ID.Domain.Entities.SubscriptionPlans.FeatureFlags;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
+using ID.Domain.Repos;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.SubPlans;
 using Pagination;
 
@@ -187,7 +187,5 @@ internal class IdentitySubscriptionPlanService(IIdUnitOfWork _uow)
 
         return plan;
     }
-
-    //-----------------------//
 
 }//Cls

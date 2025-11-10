@@ -2,7 +2,7 @@
 using ID.Application.Utility;
 using ID.Domain.Entities.Teams.Validators;
 using ID.GlobalSettings.Jobs.DbMntc;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
+using ID.Domain.Repos;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
 using LoggingHelpers;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,5 +1,5 @@
 ﻿using ID.Domain.Entities.Refreshing;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
+using ID.Domain.Repos;
 using ID.Infrastructure.Persistance.EF.Repos.Abstractions;
 using Microsoft.EntityFrameworkCore;
 

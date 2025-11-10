@@ -1,7 +1,7 @@
 ﻿using ID.Domain.Abstractions.Services.Transactions;
 using ID.Domain.Entities.AppUsers;
 
-namespace ID.Infrastructure.Persistance.Abstractions.Repos;
+namespace ID.Domain.Repos;
 internal interface IIdUnitOfWork : IDisposable
 {
     IIdentityTeamRepo TeamRepo { get; }

@@ -1,9 +1,9 @@
 ﻿using ClArch.SimpleSpecification;
 using ID.Domain.Entities.Common;
-using ID.Infrastructure.Persistance.Abstractions.Repos.Specs;
+using ID.Domain.Repos.Specs;
 using Pagination;
 
-namespace ID.Infrastructure.Persistance.Abstractions.Repos.GenRepo;
+namespace ID.Domain.Repos.GenRepo;
 
 /// <summary>
 /// Interface for a generic read repository.

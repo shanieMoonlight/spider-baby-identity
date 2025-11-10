@@ -1,10 +1,8 @@
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Refreshing;
-using ID.GlobalSettings.Setup.Options;
+using ID.Domain.Repos;
 using ID.Infrastructure.Auth.JWT.AppServiceImps;
 using ID.Infrastructure.Auth.JWT.Setup;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.RefreshTokens;
 using ID.Infrastructure.Tests.Auth.JWT.Utils;
 using Microsoft.Extensions.Options;
 using Moq;

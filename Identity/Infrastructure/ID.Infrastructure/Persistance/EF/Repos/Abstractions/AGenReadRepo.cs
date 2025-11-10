@@ -1,9 +1,8 @@
 ﻿using ClArch.SimpleSpecification;
 using CollectionHelpers;
 using ID.Domain.Entities.Common;
-using ID.Infrastructure.Persistance.Abstractions.Repos.GenRepo;
-using ID.Infrastructure.Persistance.Abstractions.Repos.Specs;
-using ID.Infrastructure.Persistance.EF;
+using ID.Domain.Repos.GenRepo;
+using ID.Domain.Repos.Specs;
 using Microsoft.EntityFrameworkCore;
 using Pagination;
 using Pagination.Extensions;

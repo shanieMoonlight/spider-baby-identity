@@ -1,8 +1,7 @@
 ﻿using ClArch.SimpleSpecification;
 using ID.Domain.Entities.Common;
-using ID.Infrastructure.Persistance.Abstractions.Repos.Specs;
 
-namespace ID.Infrastructure.Persistance.Abstractions.Repos.GenRepo;
+namespace ID.Domain.Repos.GenRepo;
 
 /// <summary>
 ///  Delete repo

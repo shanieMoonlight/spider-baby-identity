@@ -1,5 +1,5 @@
 ﻿using ID.Domain.Entities.Common;
-using ID.Infrastructure.Persistance.Abstractions.Repos.GenRepo;
+using ID.Domain.Repos.GenRepo;
 
 namespace ID.Infrastructure.Persistance.EF.Repos.Abstractions;
 internal abstract class AGenCrudRepo<T>(IdDbContext db)

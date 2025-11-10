@@ -1,19 +1,14 @@
-namespace ID.Infrastructure.Tests.DmnSevcs.Members;
 
 using ID.Domain.Abstractions.Services.Members;
-using ID.Domain.Entities.AppUsers;
 using ID.Infrastructure.DomainServices.Members;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.Members.WithEverything;
-using ID.Tests.Data.Factories;
-using Moq;
-using Shouldly;
-using System.Threading.Tasks;
+
+namespace ID.Infrastructure.Tests.DmnSevcs.Members;
 
 public class IdMemberAuditService_FirstByEmailAsync_Tests
 {
     private readonly Mock<IIdentityMemberAuditRepo<AppUser>> _repoMock;
-    private readonly IIdentityMemberAuditService<AppUser> _service;
+    private readonly IdMemberAuditService<AppUser> _service;
 
     public IdMemberAuditService_FirstByEmailAsync_Tests()
     {

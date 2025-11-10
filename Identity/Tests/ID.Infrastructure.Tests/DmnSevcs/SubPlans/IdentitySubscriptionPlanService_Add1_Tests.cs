@@ -1,7 +1,4 @@
-using ID.Domain.Abstractions.Services.SubPlans;
 using ID.Infrastructure.DomainServices.SubPlans;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using Moq;
 
 namespace ID.Infrastructure.Tests.DmnSevcs.SubPlans;
 
@@ -10,7 +7,7 @@ public class IdentitySubscriptionPlanService_Add1_Tests
     private readonly Mock<IIdUnitOfWork> _mockUnitOfWork;
     private readonly Mock<IIdentitySubscriptionPlanRepo> _mockSubscriptionPlanRepo;
     private readonly Mock<IIdentityFeatureFlagRepo> _mockFeatureFlagRepo;
-    private readonly IIdentitySubscriptionPlanService _service;
+    private readonly IdentitySubscriptionPlanService _service;
 
     public IdentitySubscriptionPlanService_Add1_Tests()
     {
@@ -49,6 +46,5 @@ public class IdentitySubscriptionPlanService_Add1_Tests
         _mockUnitOfWork.Verify(uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
     }
 
-    //------------------------------------//
 
 }//Cls

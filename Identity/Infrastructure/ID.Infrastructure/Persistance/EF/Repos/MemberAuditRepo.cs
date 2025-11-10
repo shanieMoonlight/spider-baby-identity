@@ -1,7 +1,7 @@
 ﻿using ClArch.SimpleSpecification;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
+using ID.Domain.Repos;
 using Microsoft.EntityFrameworkCore;
 using Pagination;
 using Pagination.Extensions;

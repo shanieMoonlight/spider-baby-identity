@@ -1,6 +1,6 @@
 ﻿using ID.Domain.Abstractions.Services.Members;
 using ID.Domain.Entities.AppUsers;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
+using ID.Domain.Repos;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.Members;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.Members.WithEverything;
 using Pagination;

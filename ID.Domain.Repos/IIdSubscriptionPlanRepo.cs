@@ -1,7 +1,7 @@
 using ID.Domain.Entities.SubscriptionPlans;
-using ID.Infrastructure.Persistance.Abstractions.Repos.GenRepo;
+using ID.Domain.Repos.GenRepo;
 
-namespace ID.Infrastructure.Persistance.Abstractions.Repos;
+namespace ID.Domain.Repos;
 internal interface IIdentitySubscriptionPlanRepo : IGenCrudRepo<SubscriptionPlan> { }
 
 

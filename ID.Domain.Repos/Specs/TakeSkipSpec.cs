@@ -2,7 +2,7 @@
 using ID.Domain.Entities.Common;
 using System.Linq.Expressions;
 
-namespace ID.Infrastructure.Persistance.Abstractions.Repos.Specs;
+namespace ID.Domain.Repos.Specs;
 
 /// <summary>
 /// Specification for querying an entity with optional criteria.

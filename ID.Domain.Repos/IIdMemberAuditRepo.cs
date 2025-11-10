@@ -2,7 +2,7 @@
 using ID.Domain.Entities.AppUsers;
 using Pagination;
 
-namespace ID.Infrastructure.Persistance.Abstractions.Repos;
+namespace ID.Domain.Repos;
 /// <summary>
 /// Repository for managing members in the identity system.
 /// </summary>

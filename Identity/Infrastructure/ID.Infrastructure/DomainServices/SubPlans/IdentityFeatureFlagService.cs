@@ -1,7 +1,7 @@
 using ID.Domain.Abstractions.Services.SubPlans;
 using ID.Domain.Entities.SubscriptionPlans.FeatureFlags;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using ID.Infrastructure.Persistance.Abstractions.Repos.Specs;
+using ID.Domain.Repos;
+using ID.Domain.Repos.Specs;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.FeatureFlags;
 using Pagination;
 

@@ -1,7 +1,7 @@
 ﻿using ClArch.SimpleSpecification;
 using ID.Domain.Entities.Common;
 
-namespace ID.Infrastructure.Persistance.Abstractions.Repos.Specs;
+namespace ID.Domain.Repos.Specs;
 
 /// <summary>
 /// Specification for querying an entity by its ID, with no noavigation properties.

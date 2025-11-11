@@ -46,7 +46,8 @@ _services.AddEndpointsApiExplorer();
 _builder
     .InstallSwagger(_startupData)
     .InstallHangfire(_startupData)
-    .InstallMyId(_startupData)
+    .InstallMyId_Sql(_startupData)
+    //.InstallMyId_Pg(_startupData)
     .InstallLogging(_startupData)
     ;
 

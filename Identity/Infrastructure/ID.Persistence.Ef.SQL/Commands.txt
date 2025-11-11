@@ -1,12 +1,12 @@
 # set one-off env vars for SQL Server migration
 $env:ASPNETCORE_ENVIRONMENT = 'Development'
-$env:ConnectionStrings__SqlDb = 'Data Source=DESKTOP-A0SH758;Initial Catalog=PnaDb;Integrated Security=True;TrustServerCertificate=True;Connection Timeout=30;'
+$env:ConnectionStrings__SqlDb = 'Data Source=DESKTOP-A0SH758;Initial Catalog=MyIdDemo;Integrated Security=True;TrustServerCertificate=True;Connection Timeout=30;'
 
 # add migration into the SQL provider project
-Add-Migration MyId_Initial   -Context IdSqlMigrationsContext   -Project "Id.Persistence.Ef.SQL"   -StartupProject "PNA.Api"
+Add-Migration MyId_Initial   -Context IdSqlMigrationsContext   -Project "Id.Persistence.Ef.SQL"   -StartupProject "MyIdDemo"
 
 # apply the migration to the SQL Server DB
-Update-Database   -Context IdSqlMigrationsContext   -Project "Id.Persistence.Ef.SQL"   -StartupProject "PNA.Api"
+Update-Database   -Context IdSqlMigrationsContext   -Project "Id.Persistence.Ef.SQL"   -StartupProject "MyIdDemo"
 
 # cleanup (optional)
 Remove-Item Env:\ConnectionStrings__SqlDb
@@ -18,6 +18,6 @@ Remove-Item Env:\ASPNETCORE_ENVIRONMENT
 
 # Postgres
 $env:ConnectionStrings__PostgresDb='Host=localhost;Port=5432;Database=Pna;Username=postgres;Password=password'
-dotnet ef migrations add Initial_Postgres --context IdSqlMigrationsContext --project Id.Persistence.Ef.SQL --startup-project Apps/PNA/PNA.Api -o Migrations/Postgres
-dotnet ef database update --context IdSqlMigrationsContext --project Id.Persistence.Ef.SQL --startup-project Apps/PNA/PNA.Api
-Remove-Item Env:\ConnectionStrings__PostgresDb
+dotnet ef migrations add Initial_Postgres --context IdSqlMigrationsContext --project Id.Persistence.Ef.SQL --startup-project AppsMyIdDemo -o Migrations/Postgres
+dotnet ef database update --context IdSqlMigrationsContext --project Id.Persistence.Ef.SQL --startup-project Apps/MyIdDemo
+Remove-Item Env:\ConnectionStrings__SqlDb

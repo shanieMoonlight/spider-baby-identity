@@ -8,11 +8,12 @@
   <ItemGroup>
     <PackageVersion Include="BouncyCastle.Cryptography" Version="2.6.1" />
     <PackageVersion Include="EFCore.NamingConventions" Version="8.0.3" />
-    <PackageVersion Include="FluentAssertions" Version="8.3.0" />
+    <PackageVersion Include="FluentAssertions" Version="8.8.0" />
     <PackageVersion Include="Google.Apis.Auth" Version="1.70.0" />
     <PackageVersion Include="GoogleAuthenticator" Version="3.2.0" />
-    <PackageVersion Include="Hangfire" Version="1.8.20" />
+    <PackageVersion Include="Hangfire" Version="1.8.22" />
     <PackageVersion Include="Hangfire.Core" Version="1.8.20" />
+    <PackageVersion Include="Hangfire.PostgreSql" Version="1.20.12" />
     <PackageVersion Include="Lamar" Version="15.0.0" />
     <PackageVersion Include="libphonenumber-csharp" Version="9.0.5" />
     <PackageVersion Include="MailKit" Version="4.12.1" />

@@ -33,6 +33,7 @@ internal class UserAndRoleDataInitializer(
 
     private async Task<string> SeedUsersAsync(string superLeaderPassword, string superLeaderEmail)
     {
+        
         try
         {
             var superTeam = await _teamMgr.GetSuperTeamWithMembersAsync();

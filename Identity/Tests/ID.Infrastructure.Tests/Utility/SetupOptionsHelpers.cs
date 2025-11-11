@@ -1,8 +1,5 @@
 ﻿using ID.GlobalSettings.Setup.Defaults;
-using ID.GlobalSettings.Utility;
-using ID.Infrastructure.Persistance.EF.Setup.Options;
 using ID.Infrastructure.Setup;
-using ID.Infrastructure.Setup.Options;
 using ID.Infrastructure.Setup.Passwords;
 using ID.Infrastructure.Setup.SignIn;
 

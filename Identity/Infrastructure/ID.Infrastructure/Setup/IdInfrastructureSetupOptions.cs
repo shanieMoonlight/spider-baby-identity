@@ -187,7 +187,7 @@ public class IdInfrastructureSetupOptions
     /// <summary>
     /// How to contact the Identity Database
     /// </summary>
-    public required string? ConnectionString { get; set; }
+    public required string ConnectionString { get; set; } = string.Empty;
 
 
 }//Cls

@@ -1,6 +1,6 @@
 ﻿using ID.Application.AppAbs.Setup;
 using ID.GlobalSettings.Constants;
-using ID.Infrastructure.Persistance.EF.Setup;
+using ID.Persistence.Ef.Setup;
 using ID.Persistence.Ef.SQL.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

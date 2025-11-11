@@ -4,6 +4,7 @@ using ID.Application.AppAbs.Messaging;
 using ID.Application.AppAbs.MFA.AuthenticatorApps;
 using ID.Application.AppAbs.Setup;
 using ID.Application.MFA;
+using ID.Application.Models;
 using ID.Domain.Abstractions.PasswordValidation;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
@@ -13,7 +14,7 @@ using ID.Infrastructure.Auth.JWT.Setup;
 using ID.Infrastructure.Claims.Services;
 using ID.Infrastructure.DomainServices;
 using ID.Infrastructure.Jobs;
-using ID.Infrastructure.Persistance.EF.Setup;
+using ID.Infrastructure.Models;
 using ID.Infrastructure.Services.FromApp;
 using ID.Infrastructure.Services.Google;
 using ID.Infrastructure.Services.Initialization;
@@ -41,9 +42,12 @@ public static class IdInfrastructureSetupExtensions
     /// <summary>
     /// Setup MyIdentity
     /// </summary>
-    public static AuthenticationBuilder AddIdInfrastructure<TExtraClaimsGenerator>(this IServiceCollection services, IdInfrastructureSetupOptions setupOptions)
+    public static MyIdBuilders AddIdInfrastructure<TExtraClaimsGenerator>(
+        this IServiceCollection services,
+        DatabaseType databaseType,
+        IdInfrastructureSetupOptions setupOptions)
         where TExtraClaimsGenerator : class, IExtraClaimsGenerator
-        => services.Configure<TExtraClaimsGenerator>(setupOptions);
+        => services.Configure<TExtraClaimsGenerator>(databaseType, setupOptions);
 
     //-----------------------//
 
@@ -59,8 +63,10 @@ public static class IdInfrastructureSetupExtensions
     //-----------------------//
 
 
-    private static AuthenticationBuilder Configure<TExtraClaimsGenerator>(
-        this IServiceCollection services, IdInfrastructureSetupOptions setupOptions)
+    private static MyIdBuilders Configure<TExtraClaimsGenerator>(
+        this IServiceCollection services,
+        DatabaseType databaseType,
+        IdInfrastructureSetupOptions setupOptions)
         where TExtraClaimsGenerator : class, IExtraClaimsGenerator
     {
         ArgumentNullException.ThrowIfNull(setupOptions.ConnectionString);  //This is fatal we must throw
@@ -72,16 +78,16 @@ public static class IdInfrastructureSetupExtensions
 
         var authBuilder = services.AddAuth(setupOptions);
 
-        services.ConfigureDependencyInjection<AppUser>(setupOptions)
-            .AddPersistenceEf(setupOptions, idBuilder);
+        services.ConfigureDependencyInjection<AppUser>(setupOptions);
+        //    .AddPersistenceEf(setupOptions, idBuilder);
 
-        services.SetupJobs(setupOptions);
+        services.SetupJobs(databaseType, setupOptions);
 
         services.SetupAuthChallengers(setupOptions);
 
         services.TryAddTransient<IExtraClaimsGenerator, TExtraClaimsGenerator>();
 
-        return authBuilder;
+        return new(idBuilder, authBuilder);
 
     }
 

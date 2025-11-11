@@ -2,13 +2,14 @@
 using Hangfire.Dashboard;
 using Hangfire.SqlServer;
 using ID.Application.Jobs.Abstractions;
+using ID.Application.Models;
 using ID.Domain.Entities.Teams;
 using ID.Infrastructure.Jobs.Service.HangFire.Auth;
 using ID.Infrastructure.Jobs.Service.HangFire.Background;
+using ID.Infrastructure.Jobs.Service.HangFire.Filters;
 using ID.Infrastructure.Jobs.Service.HangFire.Instance.Abs;
 using ID.Infrastructure.Jobs.Service.HangFire.Instance.Imps;
 using ID.Infrastructure.Jobs.Service.HangFire.Recurring;
-using ID.Infrastructure.Jobs.Service.HangFire.Filters;
 using ID.Infrastructure.Setup;
 using ID.Infrastructure.Utility;
 using Microsoft.AspNetCore.Builder;
@@ -19,7 +20,7 @@ namespace ID.Infrastructure.Jobs.Service.HangFire;
 
 internal static class HangfireJobsSetup
 {
-    internal static IServiceCollection AddMyIdHangfireJobs(this IServiceCollection services, IdInfrastructureSetupOptions options)
+    internal static IServiceCollection AddMyIdHangfireJobs(this IServiceCollection services, DatabaseType databaseType, IdInfrastructureSetupOptions options)
     {
         var storageOptions = new SqlServerStorageOptions
         {
@@ -57,7 +58,10 @@ internal static class HangfireJobsSetup
         // Register our global filter to respect application-level MyIdDisableConcurrentExecutionAttribute
         GlobalJobFilters.Filters.Add(new MyIdDisableConcurrentExecutionFilter());
 
-        services.AddScoped<IMyIdJobService, HangFireJobService>(); 
+        services.AddScoped<IMyIdJobService, HangFireJobService>();
+
+
+        //services.AddHangfire(x=> { });
         return services;
     }
 

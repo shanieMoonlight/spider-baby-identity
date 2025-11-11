@@ -1,6 +1,5 @@
 ﻿using ID.Infrastructure.Jobs.Service.HangFire.Recurring.Mgrs.Abs;
 using ID.Infrastructure.Jobs.Service.HangFire.Recurring.Mgrs.Imps;
-using ID.Infrastructure.Setup;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ID.Infrastructure.Jobs.Service.HangFire.Recurring;

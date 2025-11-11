@@ -114,7 +114,7 @@ public class IdApiSetupOptions
     /// <summary>
     /// How to contact the Identity Database
     /// </summary>
-    public string? ConnectionString { get; set; }
+    public string ConnectionString { get; set; } = string.Empty;
 
     /// <summary>
     ///<inheritdoc cref="IdInfrastructureSetupOptions.CookieLoginPath"/>

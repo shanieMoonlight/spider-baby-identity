@@ -1,7 +1,7 @@
 ﻿using ID.Application.AppAbs.Setup;
 using ID.GlobalSettings.Constants;
-using ID.Infrastructure.Persistance.EF.Setup;
 using ID.Persistence.Ef.Postgres.Services;
+using ID.Persistence.Ef.Setup;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;

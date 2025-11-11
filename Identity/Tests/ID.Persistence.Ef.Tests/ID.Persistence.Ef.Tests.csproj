@@ -10,7 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector"/>
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="FluentAssertions" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio" />
@@ -18,6 +19,16 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Persistence\Repos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\ID.Domain.Repos\ID.Domain.Repos.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ID.Persistence.Ef\ID.Persistence.Ef.csproj" />
+    <ProjectReference Include="..\ID.Tests.Data\ID.Tests.Data.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,4 @@
 using ID.Infrastructure.Auth.AppAbs;
-using ID.Infrastructure.Persistance.EF.Setup.Options;
 using ID.Infrastructure.Setup.Options;
 using ID.Infrastructure.Utility;
 using ID.Infrastructure.Utility.ExtensionMethods;

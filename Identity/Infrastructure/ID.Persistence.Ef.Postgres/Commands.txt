@@ -3,10 +3,10 @@ $env:ASPNETCORE_ENVIRONMENT = 'Development'
 $env:ConnectionStrings__PostgresDb = 'Host=localhost;Port=5432;Database=ID_Database;Username=postgres;Password=password'
 
 # add migration into the Postgres provider project
-Add-Migration MyId_Initial   -Context IDPostgresMigrationsContext   -Project "ID.Persistence.Ef.Postgres"   -StartupProject "PNA.Api"
+Add-Migration MyId_Initial   -Context IDPostgresMigrationsContext   -Project "ID.Persistence.Ef.Postgres"   -StartupProject "MyIdDemo"
 
 # apply the migration to the Postgres DB
-Update-Database   -Context IDPostgresMigrationsContext   -Project "ID.Persistence.Ef.Postgres"   -StartupProject "PNA.Api"
+Update-Database   -Context IDPostgresMigrationsContext   -Project "ID.Persistence.Ef.Postgres"   -StartupProject "MyIdDemo"
 
 # cleanup (optional)
 Remove-Item Env:\ConnectionStrings__PostgresDb

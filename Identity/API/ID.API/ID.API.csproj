@@ -14,6 +14,8 @@
 		<ProjectReference Include="..\..\AddOns\Msgs\ID.Msg.Twilio\ID.Msg.Twilio.csproj" />
 		<ProjectReference Include="..\..\Core\ID.Application\ID.Application.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\ID.Infrastructure\ID.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\ID.Persistence.Ef.Postgres\ID.Persistence.Ef.Postgres.csproj" />
+		<ProjectReference Include="..\..\Infrastructure\ID.Persistence.Ef.SQL\ID.Persistence.Ef.SQL.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\ID.Presentation\ID.Presentation.csproj" />
 	</ItemGroup>
 

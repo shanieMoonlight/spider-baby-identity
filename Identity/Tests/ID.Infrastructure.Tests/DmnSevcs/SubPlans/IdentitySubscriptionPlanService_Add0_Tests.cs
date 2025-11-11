@@ -1,7 +1,5 @@
 using ID.Domain.Abstractions.Services.SubPlans;
 using ID.Infrastructure.DomainServices.SubPlans;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using Moq;
 
 namespace ID.Infrastructure.Tests.DmnSevcs.SubPlans;
 
@@ -10,7 +8,7 @@ public class IdentitySubscriptionPlanService_Add0_Tests
     private readonly Mock<IIdUnitOfWork> _mockUnitOfWork;
     private readonly Mock<IIdentitySubscriptionPlanRepo> _mockSubscriptionPlanRepo;
     private readonly Mock<IIdentityFeatureFlagRepo> _mockFeatureFlagRepo;
-    private readonly IIdentitySubscriptionPlanService _service;
+    private readonly IdentitySubscriptionPlanService _service;
 
     public IdentitySubscriptionPlanService_Add0_Tests()
     {
@@ -74,6 +72,5 @@ public class IdentitySubscriptionPlanService_Add0_Tests
         _mockFeatureFlagRepo.Verify(repo => repo.ListByIdsAsync(It.Is<IEnumerable<Guid>>(ids => ids.Distinct().Count() == ids.Count())), Times.Once);
     }
 
-    //------------------------------------//
 
 }//Cls

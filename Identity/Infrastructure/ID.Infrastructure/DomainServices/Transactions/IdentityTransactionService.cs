@@ -1,5 +1,5 @@
 ﻿using ID.Domain.Abstractions.Services.Transactions;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
+using ID.Domain.Repos;
 
 namespace ID.Infrastructure.DomainServices.Transactions;
 internal class IdentityTransactionService(IIdUnitOfWork uow) : IIdentityTransactionService

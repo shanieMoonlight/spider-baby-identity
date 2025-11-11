@@ -6,7 +6,7 @@ using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Utility.Exceptions;
 using ID.GlobalSettings.Constants;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
+using ID.Domain.Repos;
 using LoggingHelpers;
 using Microsoft.Extensions.Logging;
 using ID.Domain.AppServices.Abs;

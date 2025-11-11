@@ -1,21 +1,21 @@
-using ID.Application.Features.OutboxMessages.Qry.GetAll;
-using ID.Tests.Data.Factories;
-using MyResults;
-using NSubstitute;
-using Shouldly;
 using ID.Application.Features.OutboxMessages;
+using ID.Application.Features.OutboxMessages.Qry.GetAll;
 using ID.Domain.Abstractions.Services.Outbox;
+using ID.Domain.Entities.OutboxMessages;
+using Moq;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ID.Application.Tests.Features.OutboxMsgs.Qry.GetAll;
 
 public class GetAllOutboxMessagesQryHandlerTests
 {
-    private readonly IIdentityOutboxMsgsService _repoMock;
+    private readonly Mock<IIdentityOutboxMsgsService> _repoMock;
 
     //------------------------------------//
 
     public GetAllOutboxMessagesQryHandlerTests() => 
-        _repoMock = Substitute.For<IIdentityOutboxMsgsService>();
+        _repoMock = new Mock<IIdentityOutboxMsgsService>();
 
     //------------------------------------//
 
@@ -23,10 +23,10 @@ public class GetAllOutboxMessagesQryHandlerTests
     public async Task Handle_ShouldReturnAllOutboxMessages_WhenSuccessful()
     {
         // Arrange
-        var mdls = OutboxMessageDataFactory.CreateMany();
-        _repoMock.GetAllAsync().Returns(mdls);
+        var mdls = IdOutboxMessageDataFactory.CreateMany();
+        _repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync(mdls);
 
-        var handler = new GetAllOutboxMessagesQryHandler(_repoMock);
+        var handler = new GetAllOutboxMessagesQryHandler(_repoMock.Object);
         var request = new GetAllOutboxMessagesQry();
         var cancellationToken = CancellationToken.None;
 
@@ -36,7 +36,7 @@ public class GetAllOutboxMessagesQryHandlerTests
         // Assert
         result.ShouldBeOfType<GenResult<IEnumerable<IdOutboxMessageDto>>>();
         result.Value?.Count().ShouldBe(mdls.Count);
-        await _repoMock.Received().GetAllAsync();
+        _repoMock.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
     //------------------------------------//
@@ -45,9 +45,9 @@ public class GetAllOutboxMessagesQryHandlerTests
     public async Task Handle_ShouldReturnEmptyList_WhenNoOutboxMessagesExist()
     {
         // Arrange
-        _repoMock.GetAllAsync().Returns([]);
+        _repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync((IReadOnlyList<IdOutboxMessage>)[]);
 
-        var handler = new GetAllOutboxMessagesQryHandler(_repoMock);
+        var handler = new GetAllOutboxMessagesQryHandler(_repoMock.Object);
         var request = new GetAllOutboxMessagesQry();
         var cancellationToken = CancellationToken.None;
 
@@ -57,7 +57,7 @@ public class GetAllOutboxMessagesQryHandlerTests
         // Assert
         result.ShouldBeOfType<GenResult<IEnumerable<IdOutboxMessageDto>>>();
         result.Value.ShouldBeEmpty();
-        await _repoMock.Received().GetAllAsync();
+        _repoMock.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
     //------------------------------------//

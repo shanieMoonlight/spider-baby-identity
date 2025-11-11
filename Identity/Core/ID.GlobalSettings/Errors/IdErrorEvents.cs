@@ -1,7 +1,13 @@
 ﻿namespace ID.GlobalSettings.Errors;
 public class IdErrorEvents
 {
-    public const int OutboxProcessing = 38701;
+
+    public static class Jobs
+    {
+        public const int OutboxProcessing = 38701;
+        public const int OldOutboxProcessing = OutboxProcessing + 1;
+        public const int DbMntc = OldOutboxProcessing + 1;
+    }
 
     public static class Email
     {

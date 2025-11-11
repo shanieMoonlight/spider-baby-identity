@@ -1,17 +1,10 @@
-namespace ID.Infrastructure.Tests.DmnSevcs.Members;
-
-using System.Threading.Tasks;
-using Moq;
-using Shouldly;
-using Pagination;
 using ID.Infrastructure.DomainServices.Members;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using ID.Tests.Data.Factories;
-using ID.Domain.Entities.AppUsers;
+
+
+namespace ID.Infrastructure.Tests.DmnSevcs.Members;
 
 public class IdMemberAuditService_GetMntcPageAsync_Tests
 {
-    //------------------------------------//
 
     [Fact]
     public async Task GetMntcPageAsync_WithPagedRequest_ShouldReturnPageOfMembers()
@@ -66,5 +59,4 @@ public class IdMemberAuditService_GetMntcPageAsync_Tests
         result.ShouldBe(expectedPage);
     }
 
-    //------------------------------------//
 }

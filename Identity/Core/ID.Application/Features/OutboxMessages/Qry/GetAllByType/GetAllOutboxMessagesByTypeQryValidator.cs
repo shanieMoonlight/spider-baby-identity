@@ -1,6 +1,5 @@
 using FluentValidation;
 using ID.Application.Mediatr.Validation;
-using ID.Application.Features.OutboxMessages.Qry.GetById;
 using ID.Domain.Utility.Messages;
 
 namespace ID.Application.Features.OutboxMessages.Qry.GetAllByType;

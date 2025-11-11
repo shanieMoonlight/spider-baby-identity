@@ -1,5 +1,4 @@
-﻿using Hangfire.Common;
-using Hangfire.Storage;
+﻿using Hangfire.Storage;
 using ID.Application.Jobs.Models;
 using ID.Infrastructure.Jobs.Service.HangFire.Utility;
 
@@ -11,7 +10,7 @@ internal static class HfRecurringExtensions
     internal static List<IdRecurringJob> ToIdRecurringJobs(this IEnumerable<RecurringJobDto> recJob) =>
         [.. recJob.Select(rj => rj.ToIdRecurringJob())];
 
-    //- - - - - - - - - - - - - - - - - //
+    //- - - - - - - - - - - - //
 
     internal static IdRecurringJob ToIdRecurringJob(this RecurringJobDto recJob) => new()
     {

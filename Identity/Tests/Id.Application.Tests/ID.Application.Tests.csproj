@@ -16,6 +16,7 @@
       <ProjectReference Include="..\..\Core\ID.Application\ID.Application.csproj" />
       <ProjectReference Include="..\..\Core\ID.Domain\ID.Domain.csproj" />
       <ProjectReference Include="..\ID.Tests.Data\ID.Tests.Data.csproj" />
+      <ProjectReference Include="..\Id.Tests.Utility\ID.Tests.Utility.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -26,7 +27,6 @@
       <Folder Include="ApplicationImps\SignIn\" />
       <Folder Include="ApplicationImps\TwoFactor\" />
       <Folder Include="Features\MemberMgmt\Cmd\UpdateAddress\" />
-      <Folder Include="Jobs\" />
       <Folder Include="Services\Permissions\" />
     </ItemGroup>
 
@@ -42,7 +42,6 @@
 		</PackageReference>
 		<PackageReference Include="Lamar" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
-		<PackageReference Include="NSubstitute" />
 		<PackageReference Include="FluentValidation" />
 		<PackageReference Include="Moq" />
 		<PackageReference Include="Shouldly" />

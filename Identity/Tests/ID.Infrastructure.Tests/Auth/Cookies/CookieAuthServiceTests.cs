@@ -1,14 +1,7 @@
 ﻿using ID.Application.MFA;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Entities.Teams;
 using ID.Infrastructure.Auth.Cookies;
 using ID.Infrastructure.Auth.Cookies.Services;
 using ID.Infrastructure.Claims.Services.Abs;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
-using Moq;
-using System.Security.Claims;
 
 namespace ID.Infrastructure.Tests.Auth.Cookies;
 

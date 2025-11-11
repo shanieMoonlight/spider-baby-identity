@@ -8,6 +8,7 @@ using ID.Infrastructure.Jobs.Service.HangFire.Background;
 using ID.Infrastructure.Jobs.Service.HangFire.Instance.Abs;
 using ID.Infrastructure.Jobs.Service.HangFire.Instance.Imps;
 using ID.Infrastructure.Jobs.Service.HangFire.Recurring;
+using ID.Infrastructure.Jobs.Service.HangFire.Filters;
 using ID.Infrastructure.Setup;
 using ID.Infrastructure.Utility;
 using Microsoft.AspNetCore.Builder;
@@ -52,6 +53,9 @@ internal static class HangfireJobsSetup
 
         services.AddMyIdHangfireRecurringJobs();
         services.AddMyIdHangfireBackgroundJobs();
+
+        // Register our global filter to respect application-level MyIdDisableConcurrentExecutionAttribute
+        GlobalJobFilters.Filters.Add(new MyIdDisableConcurrentExecutionFilter());
 
         services.AddScoped<IMyIdJobService, HangFireJobService>(); 
         return services;

@@ -1,8 +1,4 @@
 using ID.Domain.Entities.SubscriptionPlans.FeatureFlags;
-using MassTransit;
-using TestingHelpers;
-using TestingHelpers.RandomData;
-using TestingHelpers.Reflection;
 
 namespace ID.Tests.Data.Factories;
 
@@ -27,7 +23,7 @@ public static class FeatureFlagDataFactory
 
         name ??= $"{RandomStringGenerator.Word()}";
         description ??= $"{RandomStringGenerator.Sentence()})";
-        id ??= NewId.NextSequentialGuid();
+        id ??= Guid.NewGuid();
         administratorUsername ??= $"{RandomStringGenerator.Generate(20)}{id}";
         administratorId ??= $"{RandomStringGenerator.Generate(20)}{id}";
 

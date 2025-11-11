@@ -2,7 +2,7 @@
 using ID.Domain.Abstractions.Services.Transactions;
 using ID.Domain.Entities.AppUsers;
 using ID.Infrastructure.DomainServices.Transactions;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
+using ID.Domain.Repos;
 
 namespace ID.Infrastructure.Persistance.EF.Repos;
 internal class MyIdUnitOfWork(

@@ -1,15 +1,8 @@
-using ID.Application.AppAbs.TokenVerificationServices;
 using ID.Domain.Abstractions.Services.Teams;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Entities.Teams;
 using ID.Domain.Utility.Messages;
 using ID.GlobalSettings.Setup.Options;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using ID.Infrastructure.Tests.Auth.JWT.Utils;
 using ID.Infrastructure.TokenServices.Phone;
 using ID.Tests.Data.GlobalOptions;
-using Microsoft.Extensions.Options;
-using Moq;
 
 namespace ID.Infrastructure.Tests.TokenServices.Phone;
 

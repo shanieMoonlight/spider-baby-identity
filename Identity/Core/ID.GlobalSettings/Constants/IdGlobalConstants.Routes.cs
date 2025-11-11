@@ -27,5 +27,6 @@ internal partial class IdGlobalConstants
             internal const string ConfirmationToken = "confirmationtoken";
         }
 
-    }//Cls
-}
+    }
+
+}//Cls

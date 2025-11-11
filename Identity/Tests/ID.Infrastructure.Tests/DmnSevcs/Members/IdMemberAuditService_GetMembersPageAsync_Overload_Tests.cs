@@ -1,14 +1,6 @@
-namespace ID.Infrastructure.Tests.DmnSevcs.Members;
-
-using ID.Domain.Entities.AppUsers;
 using ID.Infrastructure.DomainServices.Members;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using ID.Tests.Data.Factories;
-using Moq;
-using Pagination;
-using Shouldly;
-using System;
-using System.Threading.Tasks;
+
+namespace ID.Infrastructure.Tests.DmnSevcs.Members;
 
 public class IdMemberAuditService_GetMembersPageAsync_Overload_Tests
 {
@@ -39,5 +31,4 @@ public class IdMemberAuditService_GetMembersPageAsync_Overload_Tests
         result.ShouldBe(expectedPage);
     }
 
-    //------------------------------------//
 }

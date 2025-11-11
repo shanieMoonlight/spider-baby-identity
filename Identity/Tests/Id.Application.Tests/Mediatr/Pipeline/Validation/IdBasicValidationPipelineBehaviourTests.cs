@@ -2,9 +2,6 @@ using FluentValidation;
 using FluentValidation.Results;
 using ID.Application.Mediatr.Behaviours.Validation;
 using MediatR;
-using Moq;
-using MyResults;
-using Shouldly;
 
 namespace ID.Application.Tests.Mediatr.Pipeline.Validation;
 
@@ -35,7 +32,7 @@ public class IdBasicValidationPipelineBehaviourTests
         next.Setup(n => n(It.IsAny<CancellationToken>())).ReturnsAsync(BasicResult.Success());
 
         _validatorMock.Setup(v => v.Validate(It.IsAny<ValidationContext<TestBasicRequest>>()))
-                      .Returns(new ValidationResult());
+                      .Returns(new FluentValidation.Results.ValidationResult());
 
         // Act
         var result = await _pipelineBehaviour.Handle(request, next.Object, CancellationToken.None);

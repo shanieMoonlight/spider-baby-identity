@@ -1,5 +1,4 @@
 using ID.OAuth.Google.Features.SignIn;
-using MassTransit;
 using TestingHelpers;
 using TestingHelpers.RandomData;
 using TestingHelpers.Reflection;
@@ -24,7 +23,7 @@ public static class GoogleSignInDtoFactory
       string? deviceId = null)
     {
         idToken ??= RandomStringGenerator.Generate(40);
-        subscriptionId ??= NewId.NextSequentialGuid();
+        subscriptionId ??= Guid.NewGuid();
         deviceId ??= RandomStringGenerator.Generate(20);
 
         var parameters = new[]

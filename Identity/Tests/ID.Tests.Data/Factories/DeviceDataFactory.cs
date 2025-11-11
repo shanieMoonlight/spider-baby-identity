@@ -1,5 +1,4 @@
 using ID.Domain.Entities.Teams;
-using MassTransit;
 using TestingHelpers;
 using TestingHelpers.RandomData;
 using TestingHelpers.Reflection;
@@ -30,8 +29,8 @@ public static class DeviceDataFactory
         name ??= $"{RandomStringGenerator.Generate(20)}{id}";
         description ??= $"{RandomStringGenerator.Generate(20)}{id}";
         uniqueId ??= $"{RandomStringGenerator.Generate(20)}{id}";
-        subscriptionId ??= NewId.NextSequentialGuid();
-        id ??= NewId.NextSequentialGuid();
+        subscriptionId ??= Guid.NewGuid();
+        id ??= Guid.NewGuid();
         administratorUsername ??= $"{RandomStringGenerator.Generate(20)}{id}";
         administratorId ??= $"{RandomStringGenerator.Generate(20)}{id}";
 

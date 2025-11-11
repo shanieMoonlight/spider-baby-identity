@@ -1,6 +1,4 @@
-﻿using Shouldly;
-using FluentValidation.TestHelper;
-using ID.Application.Mediatr.Validation;
+﻿
 using ID.Application.Features.OutboxMessages.Qry.GetById;
 
 namespace ID.Application.Tests.Features.OutboxMsgs.Qry.GetById;
@@ -36,6 +34,5 @@ public class GetOutboxMessageByIdQryValidatorTests
         _validator.ShouldBeAssignableTo<AMntcMinimumValidator<GetOutboxMessageByIdQry>>();
     }
 
-    //------------------------------------//
 
 }//Cls

@@ -1,6 +1,6 @@
 ﻿using ID.Domain.Abstractions.Services.Outbox;
 using ID.Domain.Entities.OutboxMessages;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
+using ID.Domain.Repos;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.OutboxMsgs;
 using Pagination;
 

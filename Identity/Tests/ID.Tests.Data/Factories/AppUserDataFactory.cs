@@ -1,15 +1,9 @@
 using ClArch.ValueObjects;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Entities.AppUsers.ValueObjects;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Models;
-using MassTransit;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
-using TestingHelpers;
-using TestingHelpers.RandomData;
-using TestingHelpers.Reflection;
 
 namespace ID.Tests.Data.Factories;
 
@@ -75,7 +69,7 @@ public static class AppUserDataFactory
         tkn ??= $"{RandomStringGenerator.Generate(20)}{id}";
         twoFactorKey ??= $"{RandomStringGenerator.Generate(20)}{id}";
         //freindlyName ??= $"{RandomStringGenerator.Generate(20)}{id}";
-        id ??= NewId.NextSequentialGuid();
+        id ??= Guid.NewGuid();
         userName ??= $"{MyRandomDataGenerator.Username()}{id}";
         normalizedUserName ??= $"{RandomStringGenerator.Generate(20)}{id}";
         email ??= $"{MyRandomDataGenerator.Email().ToLower()}";
@@ -164,7 +158,7 @@ public static class AppUserDataFactory
         tkn ??= $"{RandomStringGenerator.Generate(20)}{id}";
         twoFactorKey ??= $"{RandomStringGenerator.Generate(20)}{id}";
         //freindlyName ??= $"{RandomStringGenerator.Generate(20)}{id}";
-        id ??= NewId.NextSequentialGuid();
+        id ??= Guid.NewGuid();
         userName ??= $"{MyRandomDataGenerator.Username()}{id}";
         normalizedUserName ??= $"{RandomStringGenerator.Generate(20)}{id}";
         email ??= $"{MyRandomDataGenerator.Email()}{id}";

@@ -1,8 +1,4 @@
-using ID.Domain.Entities.SubscriptionPlans;
-using ID.Domain.Entities.SubscriptionPlans.FeatureFlags;
 using ID.Infrastructure.DomainServices.SubPlans;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using Moq;
 
 namespace ID.Infrastructure.Tests.DmnSevcs.SubPlans;
 
@@ -96,7 +92,6 @@ public class IdentitySubscriptionPlanService_AddFlagIdsToPlan_Tests
         _uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once); // Verify SaveChangesAsync was called once
     }
 
-    //------------------------------------//
 
 
 }//Cls

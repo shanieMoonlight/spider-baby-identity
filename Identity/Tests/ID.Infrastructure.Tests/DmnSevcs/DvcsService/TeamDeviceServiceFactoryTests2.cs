@@ -1,7 +1,4 @@
-using ID.Domain.Entities.Teams;
 using ID.Infrastructure.DomainServices.Teams.Dvcs;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using Moq;
 
 namespace ID.Infrastructure.Tests.DmnSevcs.DvcsService;
 

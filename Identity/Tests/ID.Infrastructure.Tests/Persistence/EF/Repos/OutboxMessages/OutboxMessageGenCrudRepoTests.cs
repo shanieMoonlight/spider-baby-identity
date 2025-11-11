@@ -27,7 +27,7 @@ public class OutboxMessageGenCrudRepoTests : RepoTestBase
     public async Task AddAsync_WithValidEntity_ShouldAddToContext()
     {
         // Arrange
-        var entity = OutboxMessageDataFactory.Create(type: "TestMessage");
+        var entity = IdOutboxMessageDataFactory.Create(type: "TestMessage");
 
         // Act
         var result = await _repo.AddAsync(entity);
@@ -50,9 +50,9 @@ public class OutboxMessageGenCrudRepoTests : RepoTestBase
         // Arrange
         var entities = new[]
         {
-            OutboxMessageDataFactory.Create(type: "Message1"),
-            OutboxMessageDataFactory.Create(type: "Message2"),
-            OutboxMessageDataFactory.Create(type: "Message3")
+            IdOutboxMessageDataFactory.Create(type: "Message1"),
+            IdOutboxMessageDataFactory.Create(type: "Message2"),
+            IdOutboxMessageDataFactory.Create(type: "Message3")
         };
 
         // Act
@@ -86,7 +86,7 @@ public class OutboxMessageGenCrudRepoTests : RepoTestBase
     public async Task FullCrudWorkflow_ShouldWorkCorrectly()
     {
         // Create
-        var entity = OutboxMessageDataFactory.Create(type: "WorkflowTest");
+        var entity = IdOutboxMessageDataFactory.Create(type: "WorkflowTest");
         var added = await _repo.AddAsync(entity);
         await SaveAndDetachAllAsync();
 

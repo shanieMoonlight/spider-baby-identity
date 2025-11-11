@@ -1,16 +1,12 @@
 using ID.Domain.Abstractions.Events;
 using ID.Domain.Entities.OutboxMessages;
 using ID.Domain.Utility.Json;
-using MassTransit;
 using Newtonsoft.Json;
-using TestingHelpers;
-using TestingHelpers.RandomData;
-using TestingHelpers.Reflection;
 
 namespace ID.Tests.Data.Factories;
 
 
-public static class OutboxMessageDataFactory
+public static class IdOutboxMessageDataFactory
 {
     private static bool _isProcessed = false;
 
@@ -36,7 +32,7 @@ public static class OutboxMessageDataFactory
         )
     {
 
-        id ??= NewId.NextSequentialGuid();
+        id ??= Guid.NewGuid();
         type ??= $"{RandomStringGenerator.Generate(20)}{id}";
         error ??= $"{RandomStringGenerator.Generate(20)}{id}";
         ev ??= DomainEventsFactory.CreateRandom();

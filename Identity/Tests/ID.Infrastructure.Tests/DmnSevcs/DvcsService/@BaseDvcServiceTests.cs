@@ -1,7 +1,4 @@
-﻿using ID.Infrastructure.Persistance.Abstractions.Repos;
-using Moq;
-
-namespace ID.Infrastructure.Tests.DmnSevcs.DvcsService;
+﻿namespace ID.Infrastructure.Tests.DmnSevcs.DvcsService;
 public abstract class BaseDvcServiceTests
 {
     internal readonly Mock<IIdentityTeamRepo> _teamRepoMock;
@@ -20,5 +17,4 @@ public abstract class BaseDvcServiceTests
         _uowMock.Setup(uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>())).Verifiable();
     }
 
-    //------------------------------------//
 }

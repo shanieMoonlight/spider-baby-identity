@@ -273,7 +273,7 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
     public async Task PageAsync_WithValidPageRequest_ShouldReturnCorrectPage()
     {
         // Arrange
-        var pageRequest = new Pagination.PagedRequest { PageNumber = 1, PageSize = 1 };
+        var pageRequest = new PagedRequest { PageNumber = 1, PageSize = 1 };
 
         // Act
         var result = await _repo.PageAsync(pageRequest);
@@ -291,7 +291,7 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
     public async Task PageAsync_WithLargePage_ShouldReturnAllItems()
     {
         // Arrange
-        var pageRequest = new Pagination.PagedRequest { PageNumber = 1, PageSize = 10 };
+        var pageRequest = new PagedRequest { PageNumber = 1, PageSize = 10 };
 
         // Act
         var result = await _repo.PageAsync(pageRequest);
@@ -309,7 +309,7 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
     public async Task PageAsync_WithSecondPage_ShouldReturnRemainingItems()
     {
         // Arrange
-        var pageRequest = new Pagination.PagedRequest { PageNumber = 2, PageSize = 1 };
+        var pageRequest = new PagedRequest { PageNumber = 2, PageSize = 1 };
 
         // Act
         var result = await _repo.PageAsync(pageRequest);
@@ -326,7 +326,7 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
     public async Task PageAsync_WithEmptyPage_ShouldReturnEmptyResult()
     {
         // Arrange
-        var pageRequest = new Pagination.PagedRequest { PageNumber = 10, PageSize = 1 };
+        var pageRequest = new PagedRequest { PageNumber = 10, PageSize = 1 };
 
         // Act
         var result = await _repo.PageAsync(pageRequest);

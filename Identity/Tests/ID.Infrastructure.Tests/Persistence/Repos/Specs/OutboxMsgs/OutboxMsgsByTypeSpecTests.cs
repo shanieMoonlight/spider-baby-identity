@@ -6,7 +6,7 @@ public class OutboxMsgsByTypeSpecTests
     public void Constructor_SetsCriteriaCorrectly()
     {
         // Arrange
-        var msg = OutboxMessageDataFactory.Create(type: "TestType");
+        var msg = IdOutboxMessageDataFactory.Create(type: "TestType");
 
         // Act
         var spec = new OutboxMsgsByTypeSpec(msg.Type);
@@ -22,7 +22,7 @@ public class OutboxMsgsByTypeSpecTests
     public void Constructor_SetsCriteriaCorrectly_FALSE_IfWrongType()
     {
         // Arrange
-        var msg = OutboxMessageDataFactory.Create(type: "TestType");
+        var msg = IdOutboxMessageDataFactory.Create(type: "TestType");
         var differentType = "DifferentType";
 
         // Act

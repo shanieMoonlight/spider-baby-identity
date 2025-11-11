@@ -1,10 +1,10 @@
-﻿using ID.IntegrationEvents.Abstractions;
+﻿using ID.Application.AppAbs.ApplicationServices;
+using ID.Application.AppAbs.TokenVerificationServices;
+using ID.Domain.Entities.AppUsers;
+using ID.Domain.Entities.Teams;
+using ID.IntegrationEvents.Abstractions;
 using ID.IntegrationEvents.Events.Account.EmailConfirmation;
 using StringHelpers;
-using ID.Application.AppAbs.ApplicationServices;
-using ID.Application.AppAbs.TokenVerificationServices;
-using ID.Domain.Entities.Teams;
-using ID.Domain.Entities.AppUsers;
 
 namespace ID.Application.AppImps;
 
@@ -13,7 +13,6 @@ namespace ID.Application.AppImps;
 /// </summary>
 internal class EmailConfirmationBus(IEmailConfirmationService<AppUser> _emailConfService, IEventBus bus) : IEmailConfirmationBus
 {
-    //------------------------------------//
 
     /// <summary>
     /// Generates an email confirmation token and publishes the appropriate event.

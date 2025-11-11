@@ -152,7 +152,7 @@ public static class IdApiSetupExtensions
             app.UseMyIdApplication();
             app.UseMyIdInfrastructure(minTypeDashboardAccess);
             var cancellationTokenSource = new CancellationTokenSource();
-            app.ApplicationServices.StartRecurringMyIdJobs(cancellationTokenSource.Token);
+            //app.ApplicationServices.StartRecurringMyIdJobs(cancellationTokenSource.Token);
         }
         catch (Exception e)
         {

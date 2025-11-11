@@ -1,8 +1,6 @@
 ﻿using ID.Domain.Entities.Teams;
 using ID.Domain.Utility.Messages;
 using ID.Infrastructure.DomainServices.Teams.Subs;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using Moq;
 
 namespace ID.Infrastructure.Tests.DmnSevcs.SubsService;
 
@@ -60,6 +58,5 @@ public class TeamSubscriptionServiceFactoryTests
         result.Info.ShouldBe(IDMsgs.Error.NotFound<Team>(nonExistantTeamId));
     }
 
-    //------------------------------------//
 
 }//Cls

@@ -1,17 +1,10 @@
+using ID.Infrastructure.DomainServices.Members;
+
 namespace ID.Infrastructure.Tests.DmnSevcs.Members;
 
-using System.Threading.Tasks;
-using Moq;
-using Shouldly;
-using Pagination;
-using ID.Infrastructure.DomainServices.Members;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using ID.Tests.Data.Factories;
-using ID.Domain.Entities.AppUsers;
 
 public class IdMemberAuditService_GetCustomerPageAsync_Tests
 {
-    //------------------------------------//
 
     [Fact]
     public async Task GetCustomerPageAsync_WithPagedRequest_ShouldReturnPageOfCustomers()
@@ -35,6 +28,5 @@ public class IdMemberAuditService_GetCustomerPageAsync_Tests
         result.ShouldBe(expectedPage);
     }
 
-    //------------------------------------//
 
 }//Cls

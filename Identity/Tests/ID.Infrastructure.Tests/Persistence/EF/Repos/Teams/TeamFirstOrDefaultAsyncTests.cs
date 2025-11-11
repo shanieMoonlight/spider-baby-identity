@@ -1,10 +1,4 @@
-using ID.Domain.Entities.Teams;
-using ID.Infrastructure.Persistance.Abstractions.Repos.Specs;
-using ID.Infrastructure.Persistance.EF.Repos;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
-using ID.Tests.Data.Factories;
-using Microsoft.EntityFrameworkCore;
-using Shouldly;
+
 
 namespace ID.Infrastructure.Tests.Persistence.EF.Repos.Teams;
 
@@ -116,7 +110,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
             teamType: TeamType.customer,
             members: [member]);
 
-        await DbContext.Set<ID.Domain.Entities.AppUsers.AppUser>().AddAsync(member);
+        await DbContext.Set<AppUser>().AddAsync(member);
         await DbContext.SaveChangesAsync();
 
         var spec = new TeamByIdWithMemberSpec(_customerTeam.Id, member.Id);
@@ -159,12 +153,12 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
         // Arrange
         var member1 = AppUserDataFactory.Create(teamId: _customerTeam.Id, teamPosition: 1);
         var member2 = AppUserDataFactory.Create(teamId: _customerTeam.Id, teamPosition: 3);
-        var teamWithMembers = TeamDataFactory.Create(
-            id: _customerTeam.Id,
-            teamType: TeamType.customer,
-            members: [member1, member2]);
+        //var teamWithMembers = TeamDataFactory.Create(
+        //    id: _customerTeam.Id,
+        //    teamType: TeamType.customer,
+        //    members: [member1, member2]);
 
-        await DbContext.Set<ID.Domain.Entities.AppUsers.AppUser>().AddRangeAsync(member1, member2);
+        await DbContext.Set<AppUser>().AddRangeAsync(member1, member2);
         await DbContext.SaveChangesAsync();
 
         var spec = new TeamByIdWithMembersSpec(_customerTeam.Id, maxPosition: 1000);
@@ -184,12 +178,12 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
         // Arrange
         var member1 = AppUserDataFactory.Create(teamId: _customerTeam.Id, teamPosition: 1);
         var member2 = AppUserDataFactory.Create(teamId: _customerTeam.Id, teamPosition: 5);
-        var teamWithMembers = TeamDataFactory.Create(
-            id: _customerTeam.Id,
-            teamType: TeamType.customer,
-            members: [member1, member2]);
+        //var teamWithMembers = TeamDataFactory.Create(
+        //    id: _customerTeam.Id,
+        //    teamType: TeamType.customer,
+        //    members: [member1, member2]);
 
-        await DbContext.Set<ID.Domain.Entities.AppUsers.AppUser>().AddRangeAsync(member1, member2);
+        await DbContext.Set<AppUser>().AddRangeAsync(member1, member2);
         await DbContext.SaveChangesAsync();
 
         var spec = new TeamByIdWithMembersSpec(_customerTeam.Id, maxPosition: 2);
@@ -231,7 +225,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
     {
         // Arrange
         var member = AppUserDataFactory.Create(teamId: _superTeam.Id, teamPosition: 1);
-        await DbContext.Set<ID.Domain.Entities.AppUsers.AppUser>().AddAsync(member);
+        await DbContext.Set<AppUser>().AddAsync(member);
         await DbContext.SaveChangesAsync();
 
         var spec = new SuperTeamWithMemberSpec(member.Id, maxPosition: 1000);
@@ -287,7 +281,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
     {
         // Arrange
         var member = AppUserDataFactory.Create(teamId: _maintenanceTeam.Id, teamPosition: 1);
-        await DbContext.Set<ID.Domain.Entities.AppUsers.AppUser>().AddAsync(member);
+        await DbContext.Set<AppUser>().AddAsync(member);
         await DbContext.SaveChangesAsync();
 
         var spec = new MntcTeamWithMemberSpec(member.Id, maxPosition: 1000);
@@ -373,7 +367,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
         var subscription = SubscriptionDataFactory.Create(teamId: _customerTeam.Id);
         var device = DeviceDataFactory.Create(subscriptionId: subscription.Id);
 
-        await DbContext.Set<ID.Domain.Entities.AppUsers.AppUser>().AddAsync(member);
+        await DbContext.Set<AppUser>().AddAsync(member);
         await DbContext.Set<TeamSubscription>().AddAsync(subscription);
         await DbContext.Set<TeamDevice>().AddAsync(device);
         await DbContext.SaveChangesAsync();
@@ -456,7 +450,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
         var member = AppUserDataFactory.Create(teamId: _customerTeam.Id);
         var subscription = SubscriptionDataFactory.Create(teamId: _customerTeam.Id);
         
-        await DbContext.Set<ID.Domain.Entities.AppUsers.AppUser>().AddAsync(member);
+        await DbContext.Set<AppUser>().AddAsync(member);
         await DbContext.Set<TeamSubscription>().AddAsync(subscription);
         await DbContext.SaveChangesAsync();
 

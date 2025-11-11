@@ -1,22 +1,3 @@
-using ID.Domain.Claims.Utils;
-using ID.GlobalSettings.Constants;
-using ID.Infrastructure.Auth.AppAbs;
-using ID.Infrastructure.Auth.AppImps;
-using ID.Infrastructure.Auth.JWT.Setup;
-using ID.Infrastructure.Persistance.EF.Setup.Options;
-using ID.Infrastructure.Setup;
-using ID.Infrastructure.Setup.Options;
-using MassTransit.Configuration;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Moq;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-
 namespace ID.Infrastructure.Tests.Auth.Implementations;
 
 #pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
@@ -80,7 +61,7 @@ public class ExternalPagesAuthenticationServiceTests
 
         // Mock extension methods
         _httpContext.Request.Headers["CacheControl"] = "";
-        _httpContext.Request.Headers["Pragma"] = "";
+        _httpContext.Request.Headers.Pragma = "";
 
         // Add this line to fix the error:
         _httpContext.RequestServices = new TestAuthServiceProvider(AuthenticateResult.NoResult());

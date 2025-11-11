@@ -58,5 +58,11 @@
       <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     </ItemGroup>
+
+
+
+    <ItemGroup>
+      <Folder Include="Persistance\Abstractions\Repos\" />
+    </ItemGroup>
     
 </Project>

@@ -70,8 +70,6 @@ CookieSignInService Testing (Integration)
 
 
 
- Create Domain.Repos (internal lib)
- Update transaction service
 
 
 
@@ -105,3 +103,12 @@ Stop using : InvariantStringDictionary
 
 
 remove FromAppMiddleware
+
+rename any GetByIdAsync to FirstByIdAsync for clarity and similar in all domain-services
+
+
+ Update transaction service
+ remove MyIdLoggingEvents (or merge with IdErrorEvents)
+
+
+ Merge ExceptionUtils with LoggingUtils

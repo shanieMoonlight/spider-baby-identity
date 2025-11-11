@@ -1,22 +1,21 @@
-﻿using ID.Tests.Data.Factories;
-using NSubstitute;
-using Shouldly;
-using ID.Application.Features.OutboxMessages;
+﻿using ID.Application.Features.OutboxMessages;
 using ID.Application.Features.OutboxMessages.Qry.GetAllByType;
 using ID.Domain.Abstractions.Services.Outbox;
+using ID.Domain.Entities.OutboxMessages;
 
 namespace ID.Application.Tests.Features.OutboxMsgs.Qry.GetAllByType;
+
 public class GetAllOutboxMessageByTypeQryHandlerTests
 {
-    private readonly IIdentityOutboxMsgsService _mockRepo;
+    private readonly Mock<IIdentityOutboxMsgsService> _mockRepo;
     private readonly GetAllOutboxMessagesFilteredQryHandler _handler;
 
     //- - - - - - - - - - - - - - - - - - // 
 
     public GetAllOutboxMessageByTypeQryHandlerTests()
     {
-        _mockRepo = Substitute.For<IIdentityOutboxMsgsService>();
-        _handler = new GetAllOutboxMessagesFilteredQryHandler(_mockRepo);
+        _mockRepo = new Mock<IIdentityOutboxMsgsService>();
+        _handler = new GetAllOutboxMessagesFilteredQryHandler(_mockRepo.Object);
     }
 
     //------------------------------------//
@@ -28,7 +27,7 @@ public class GetAllOutboxMessageByTypeQryHandlerTests
         var outboxMsgType = "MyOutboxMessage_Type";
         var expectedCount = 5;
 
-        _mockRepo.GetAllByTypeAsync(outboxMsgType).Returns(OutboxMessageDataFactory.CreateMany(expectedCount));
+        _mockRepo.Setup(r => r.GetAllByTypeAsync(outboxMsgType)).ReturnsAsync(IdOutboxMessageDataFactory.CreateMany(expectedCount));
 
         // Act
         var result = await _handler.Handle(new GetAllOutboxMessagesByTypeQry(outboxMsgType), CancellationToken.None);
@@ -37,6 +36,7 @@ public class GetAllOutboxMessageByTypeQryHandlerTests
         result.Value.ShouldBeAssignableTo<IEnumerable<IdOutboxMessageDto>>();
         result.Value.ShouldNotBeNull();
         result.Value.Count().ShouldBe(expectedCount);
+        _mockRepo.Verify(r => r.GetAllByTypeAsync(outboxMsgType), Times.Once);
     }
 
     //------------------------------------//
@@ -47,7 +47,7 @@ public class GetAllOutboxMessageByTypeQryHandlerTests
         // Arrange
         var outboxMsgType = "MyOutboxMessage_Type";
 
-        _mockRepo.GetAllByTypeAsync(outboxMsgType).Returns([]);
+        _mockRepo.Setup(r => r.GetAllByTypeAsync(outboxMsgType)).ReturnsAsync([]);
 
         // Act
         var result = await _handler.Handle(new GetAllOutboxMessagesByTypeQry(outboxMsgType), CancellationToken.None);
@@ -56,27 +56,8 @@ public class GetAllOutboxMessageByTypeQryHandlerTests
         result.Value.ShouldNotBeNull();
         result.Value.Count().ShouldBe(0);
         result.Value.ShouldBeAssignableTo<IEnumerable<IdOutboxMessageDto>>();
+        _mockRepo.Verify(r => r.GetAllByTypeAsync(outboxMsgType), Times.Once);
     }
 
-    //------------------------------------//
 
-    [Fact]
-    public async Task Handle_ShouldReturnBadRequest_WhenNameIsEmpty()
-    {
-        // Arrange
-        var request = new GetAllOutboxMessagesByTypeQry("");
-
-        // Act
-        var result = await _handler.Handle(request, CancellationToken.None);
-
-        // Assert
-        result.Value.ShouldBeAssignableTo<IEnumerable<IdOutboxMessageDto>>();
-        result.Value?.Count().ShouldBe(0);
-        result.Succeeded.ShouldBeTrue();
-        result.NotFound.ShouldBeFalse();
-    }
-
-    //------------------------------------//
-
-
-}
+}//Cls

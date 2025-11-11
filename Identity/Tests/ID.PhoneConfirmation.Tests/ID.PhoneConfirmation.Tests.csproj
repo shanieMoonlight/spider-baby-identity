@@ -12,10 +12,10 @@
     <ItemGroup>
         <PackageReference Include="coverlet.collector" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" />
-        <PackageReference Include="NSubstitute" />
         <PackageReference Include="FluentValidation" />
         <PackageReference Include="Moq" />
         <PackageReference Include="Shouldly" />
+        <PackageReference Include="MassTransit.Abstractions" />
         <PackageReference Include="xunit" />
         <PackageReference Include="xunit.runner.visualstudio" />
     </ItemGroup>
@@ -23,6 +23,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\AddOns\ID.PhoneConfirmation\ID.PhoneConfirmation.csproj" />
       <ProjectReference Include="..\ID.Tests.Data\ID.Tests.Data.csproj" />
+      <ProjectReference Include="..\Id.Tests.Utility\ID.Tests.Utility.csproj" />
     </ItemGroup>
 
     <ItemGroup>

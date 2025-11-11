@@ -2,23 +2,20 @@
 using ID.Application.Features.FeatureFlags.Qry.GetPage;
 using ID.Domain.Abstractions.Services.SubPlans;
 using ID.Domain.Entities.SubscriptionPlans.FeatureFlags;
-using ID.Tests.Data.Factories;
-using MyResults;
-using NSubstitute;
+using Moq;
 using Pagination;
-using Shouldly;
 
 namespace ID.Application.Tests.Features.FeatureFlags.Qry.GetByPage;
 
 public class GetFeatureFlagsPageQryHandlerTests
 {
-    private readonly IIdentityFeatureFlagService _mockRepo;
+    private readonly Mock<IIdentityFeatureFlagService> _mockRepo;
     private readonly GetFeatureFlagsPageQryHandler _handler;
 
     public GetFeatureFlagsPageQryHandlerTests()
     {
-        _mockRepo = Substitute.For<IIdentityFeatureFlagService>();
-        _handler = new GetFeatureFlagsPageQryHandler(_mockRepo);
+        _mockRepo = new Mock<IIdentityFeatureFlagService>();
+        _handler = new GetFeatureFlagsPageQryHandler(_mockRepo.Object);
     }
 
     //- - - - - - - - - - - - - - - - - - //
@@ -36,8 +33,8 @@ public class GetFeatureFlagsPageQryHandlerTests
 
         PagedResponse<FeatureFlagDto> pagedResponse = new(dtosPage, pgReq);
 
-        _mockRepo.GetPageAsync(pgReq.PageNumber, pgReq.PageSize, pgReq.SortList, pgReq.FilterList)
-            .Returns(mdlsPage);
+        _mockRepo.Setup(r => r.GetPageAsync(pgReq.PageNumber, pgReq.PageSize, pgReq.SortList, pgReq.FilterList))
+            .ReturnsAsync(mdlsPage);
 
         // Act
         var result = await _handler.Handle(new GetFeatureFlagsPageQry(pgReq), CancellationToken.None);
@@ -59,8 +56,8 @@ public class GetFeatureFlagsPageQryHandlerTests
         var mdlsEmptyPage = new Page<FeatureFlag>([], pagedRequest.PageNumber, pagedRequest.PageSize);
         
 
-        _mockRepo.GetPageAsync(pagedRequest.PageNumber, pagedRequest.PageSize, pagedRequest.SortList, pagedRequest.FilterList)
-            .Returns(mdlsEmptyPage);
+        _mockRepo.Setup(r => r.GetPageAsync(pagedRequest.PageNumber, pagedRequest.PageSize, pagedRequest.SortList, pagedRequest.FilterList))
+            .ReturnsAsync(mdlsEmptyPage);
 
         // Act
         var result = await _handler.Handle(new GetFeatureFlagsPageQry(pagedRequest), CancellationToken.None);
@@ -84,8 +81,8 @@ public class GetFeatureFlagsPageQryHandlerTests
         var mdls = FeatureFlagDataFactory.CreateMany(defaultPagedRequest.PageSize);
         var mdlsPage = new Page<FeatureFlag>(mdls, defaultPagedRequest.PageNumber, defaultPagedRequest.PageSize);
 
-        _mockRepo.GetPageAsync(defaultPagedRequest.PageNumber, defaultPagedRequest.PageSize, defaultPagedRequest.SortList, defaultPagedRequest.FilterList)
-            .Returns(mdlsPage);
+        _mockRepo.Setup(r => r.GetPageAsync(defaultPagedRequest.PageNumber, defaultPagedRequest.PageSize, defaultPagedRequest.SortList, defaultPagedRequest.FilterList))
+            .ReturnsAsync(mdlsPage);
 
         // Act
         var result = await _handler.Handle(new GetFeatureFlagsPageQry(null), CancellationToken.None);

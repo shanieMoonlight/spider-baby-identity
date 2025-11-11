@@ -1,25 +1,41 @@
-﻿using Hangfire;
-using ID.GlobalSettings.Jobs.DbMntc;
+﻿using ID.Application.Jobs.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace ID.Application.Jobs.DbMntc;
 
 public static class DbMntcJobsStarterExtensions
 {
+    public static IServiceCollection AddDbMntcJobs(this IServiceCollection services)
+    {
+        services.TryAddScoped<TeamSubscriptionCheckJob>();
+        services.TryAddScoped<TeamLeaderMntcJob>();
+        services.TryAddScoped<OldRefreshTokensJob>();
+        return services;
+    }
+
+
+    //---------------------//
+
 
     public static IServiceProvider StartDbMntcJobs(this IServiceProvider provider, CancellationToken cancellationToken)
     {
-        provider.BuildJobStarter<ATeamSubscriptionCheckJob>()
-            .SetupRecurringProduction(handler => handler.HandleAsync(cancellationToken), Cron.Daily())
-            .SetupRecurringDevelopment(handler => handler.HandleAsync(cancellationToken), Cron.Daily());
+
+        ICronBuilder cron = provider.GetRequiredService<ICronBuilder>();
 
 
-        provider.BuildJobStarter<ATeamLeaderMntcJob>()
-            .SetupRecurringProduction(handler => handler.HandleAsync(cancellationToken), Cron.Daily())
-            .SetupRecurringDevelopment(handler => handler.HandleAsync(cancellationToken), Cron.Daily());
+        provider.BuildJobStarter<TeamSubscriptionCheckJob>()
+            .SetupRecurringProduction(handler => handler.HandleAsync(cancellationToken), cron.Daily())
+            .SetupRecurringDevelopment(handler => handler.HandleAsync(cancellationToken), cron.Weekly());
 
-        provider.BuildJobStarter<AOldRefreshTokensJob>()
-            .SetupRecurringProduction(handler => handler.HandleAsync(cancellationToken), Cron.Weekly())
-            .SetupRecurringDevelopment(handler => handler.HandleAsync(cancellationToken), Cron.Daily());
+
+        provider.BuildJobStarter<TeamLeaderMntcJob>()
+            .SetupRecurringProduction(handler => handler.HandleAsync(cancellationToken), cron.Daily())
+            .SetupRecurringDevelopment(handler => handler.HandleAsync(cancellationToken), cron.Weekly());
+
+        provider.BuildJobStarter<OldRefreshTokensJob>()
+            .SetupRecurringProduction(handler => handler.HandleAsync(cancellationToken), cron.Weekly())
+            .SetupRecurringDevelopment(handler => handler.HandleAsync(cancellationToken), cron.Monthly());
 
         return provider;
     }

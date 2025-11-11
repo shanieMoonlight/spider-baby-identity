@@ -1,8 +1,4 @@
 using ID.Domain.Entities.AppUsers.OAuth;
-using MassTransit;
-using TestingHelpers;
-using TestingHelpers.RandomData;
-using TestingHelpers.Reflection;
 
 namespace ID.Tests.Data.Factories;
 
@@ -29,8 +25,8 @@ public static class OAuthInfoDataFactory
 
         issuer ??= $"{RandomStringGenerator.Generate(20)}{id}";
         imageUrl ??= $"{RandomStringGenerator.Generate(20)}{id}";
-        appUserId ??= NewId.NextSequentialGuid();
-        id ??= NewId.NextSequentialGuid();
+        appUserId ??= Guid.NewGuid();
+        id ??= Guid.NewGuid();
         administratorUsername ??= $"{RandomStringGenerator.Generate(20)}{id}";
         administratorId ??= $"{RandomStringGenerator.Generate(20)}{id}";
 

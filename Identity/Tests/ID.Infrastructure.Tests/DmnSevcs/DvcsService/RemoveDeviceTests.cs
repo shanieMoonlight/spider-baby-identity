@@ -1,10 +1,6 @@
 ﻿using ID.Domain.Entities.Teams;
 using ID.Domain.Utility.Messages;
 using ID.Infrastructure.DomainServices.Teams.Dvcs;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using ID.Tests.Data.Factories;
-using Moq;
-using Shouldly;
 
 namespace ID.Infrastructure.Tests.DmnSevcs.DvcsService;
 public class RemoveDeviceTests : BaseDvcServiceTests
@@ -25,7 +21,7 @@ public class RemoveDeviceTests : BaseDvcServiceTests
         var teamDeviceService = new TeamDeviceService(_uowMock.Object, team, subscription.Id);
 
         var alreadyRemovedDeviceId = Guid.NewGuid();
-        var alreadyRemovedDevice = DeviceDataFactory.Create(alreadyRemovedDeviceId);
+        //var alreadyRemovedDevice = DeviceDataFactory.Create(alreadyRemovedDeviceId);
 
         // Act
         var result = await teamDeviceService.RemoveDeviceAsync(alreadyRemovedDeviceId);

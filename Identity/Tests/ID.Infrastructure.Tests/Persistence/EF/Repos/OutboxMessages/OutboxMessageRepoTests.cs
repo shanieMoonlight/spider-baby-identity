@@ -6,8 +6,8 @@ public class OutboxMessageRepoTests : RepoTestBase, IAsyncLifetime
 {
     private OutboxMessageRepo _repo = null!;
 
-    private readonly IdOutboxMessage _unprocessedMessage = OutboxMessageDataFactory.Create(type: "UnprocessedEvent", processedOn: null);
-    private readonly IdOutboxMessage _processedMessage = OutboxMessageDataFactory.Create(type: "ProcessedEvent");
+    private readonly IdOutboxMessage _unprocessedMessage = IdOutboxMessageDataFactory.Create(type: "UnprocessedEvent", processedOn: null);
+    private readonly IdOutboxMessage _processedMessage = IdOutboxMessageDataFactory.Create(type: "ProcessedEvent");
 
     private readonly List<IdOutboxMessage> _idOutboxMessages;
 
@@ -48,7 +48,7 @@ public class OutboxMessageRepoTests : RepoTestBase, IAsyncLifetime
     public async Task AddAsync_ShouldAddOutboxMessage()
     {
         // Arrange
-        var newMessage = OutboxMessageDataFactory.Create(type: "NewTestEvent");
+        var newMessage = IdOutboxMessageDataFactory.Create(type: "NewTestEvent");
 
         // Act
         var result = await _repo.AddAsync(newMessage);
@@ -321,7 +321,7 @@ public class OutboxMessageRepoTests : RepoTestBase, IAsyncLifetime
     public async Task CreateFromDomainEvent_ShouldCreateMessageCorrectly()
     {
         // Arrange - Create a simple test message
-        var testMessage = OutboxMessageDataFactory.Create(type: "TestDomainEvent");
+        var testMessage = IdOutboxMessageDataFactory.Create(type: "TestDomainEvent");
 
         // Act
         var result = await _repo.AddAsync(testMessage);
@@ -340,7 +340,7 @@ public class OutboxMessageRepoTests : RepoTestBase, IAsyncLifetime
     public async Task SetProcessed_ShouldUpdateProcessedOnUtc()
     {
         // Arrange
-        var message = OutboxMessageDataFactory.Create(type: "TestProcessing", processedOn: null);
+        var message = IdOutboxMessageDataFactory.Create(type: "TestProcessing", processedOn: null);
         await _repo.AddAsync(message);
         await SaveAndDetachAllAsync();
 
@@ -360,7 +360,7 @@ public class OutboxMessageRepoTests : RepoTestBase, IAsyncLifetime
     public async Task OutboxMessage_WithError_ShouldStoreErrorCorrectly()
     {
         // Arrange
-        var message = OutboxMessageDataFactory.Create(
+        var message = IdOutboxMessageDataFactory.Create(
             type: "ErrorEvent", 
             error: "Test error occurred during processing");
 

@@ -1,6 +1,5 @@
 using ID.Application.Features.Common.Dtos.User;
 using ID.Domain.Entities.AppUsers.ValueObjects;
-using MassTransit;
 using TestingHelpers.RandomData;
 using TestingHelpers.Reflection;
 
@@ -32,7 +31,7 @@ public static class IdentityAddressDataFactoryDto
         line5 ??= $"{RandomStringGenerator.Generate(20)}{id}";
         eirCode ??= $"{RandomStringGenerator.Generate(AreaCodeNullable.MaxLength)}{id}";
 
-        id ??= NewId.NextSequentialGuid();
+        id ??= Guid.NewGuid();
         administratorUsername ??= $"{RandomStringGenerator.Generate(20)}{id}";
         administratorId ??= $"{RandomStringGenerator.Generate(20)}{id}";
 

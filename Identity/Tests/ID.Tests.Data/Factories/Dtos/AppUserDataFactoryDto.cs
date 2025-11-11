@@ -1,9 +1,4 @@
 using ID.Application.Features.Common.Dtos.User;
-using ID.Domain.Entities.AppUsers;
-using MassTransit;
-using TestingHelpers;
-using TestingHelpers.RandomData;
-using TestingHelpers.Reflection;
 
 namespace ID.Tests.Data.Factories.Dtos;
 
@@ -47,11 +42,11 @@ public static class AppUserDtoDataFactory
         administratorId ??= $"{RandomStringGenerator.Generate(20)}{id}";
         firstName ??= $"{RandomStringGenerator.Generate(20)}{id}";
         lastName ??= $"{RandomStringGenerator.Generate(20)}{id}";
-        teamId ??= NewId.NextSequentialGuid();
+        teamId ??= Guid.NewGuid();
         tkn ??= $"{RandomStringGenerator.Generate(20)}{id}";
         twoFactorKey ??= $"{RandomStringGenerator.Generate(20)}{id}";
         freindlyName ??= $"{RandomStringGenerator.Generate(20)}{id}";
-        id ??= NewId.NextSequentialGuid();
+        id ??= Guid.NewGuid();
         userName ??= $"{RandomStringGenerator.Generate(20)}{id}";
         normalizedUserName ??= $"{RandomStringGenerator.Generate(20)}{id}";
         email ??= $"{RandomStringGenerator.Generate(20)}{id}";

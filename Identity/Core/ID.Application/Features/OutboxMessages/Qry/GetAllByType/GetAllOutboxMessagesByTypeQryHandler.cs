@@ -1,7 +1,6 @@
-using MyResults;
-using ID.Application.Features.OutboxMessages;
 using ID.Application.Mediatr.CqrsAbs;
 using ID.Domain.Abstractions.Services.Outbox;
+using MyResults;
 
 namespace ID.Application.Features.OutboxMessages.Qry.GetAllByType;
 internal class GetAllOutboxMessagesFilteredQryHandler(IIdentityOutboxMsgsService _repo)

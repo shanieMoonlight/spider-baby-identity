@@ -14,7 +14,7 @@ public abstract class ASimpleSpecification<TEntity>(Expression<Func<TEntity, boo
     /// <summary>  
     /// Gets or sets the criteria expression for the specification.  
     /// </summary>  
-    private Expression<Func<TEntity, bool>> Criteria { get; set; } = criteria ??= (TEntity x) => true;
+    private Expression<Func<TEntity, bool>> Criteria { get; set; } = criteria ??= x => true;
 
     /// <summary>  
     /// Gets the list of include expressions for the specification.  

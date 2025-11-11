@@ -1,24 +1,21 @@
-﻿using ID.Tests.Data.Factories;
-using MyResults;
-using NSubstitute;
-using Pagination;
-using Shouldly;
-using ID.Application.Features.OutboxMessages;
+﻿using ID.Application.Features.OutboxMessages;
 using ID.Application.Features.OutboxMessages.Qry.GetPage;
-using ID.Domain.Entities.OutboxMessages;
 using ID.Domain.Abstractions.Services.Outbox;
+using ID.Domain.Entities.OutboxMessages;
+using Moq;
+using Pagination;
 
 namespace ID.Application.Tests.Features.OutboxMsgs.Qry.GetByPage;
 
 public class GetOutboxMessagesPageQryHandlerTests
 {
-    private readonly IIdentityOutboxMsgsService _mockSvc;
+    private readonly Mock<IIdentityOutboxMsgsService> _mockSvc;
     private readonly GetOutboxMessagePageQryHandler _handler;
 
     public GetOutboxMessagesPageQryHandlerTests()
     {
-        _mockSvc = Substitute.For<IIdentityOutboxMsgsService>();
-        _handler = new GetOutboxMessagePageQryHandler(_mockSvc);
+        _mockSvc = new Mock<IIdentityOutboxMsgsService>();
+        _handler = new GetOutboxMessagePageQryHandler(_mockSvc.Object);
     }
 
     //- - - - - - - - - - - - - - - - - - //
@@ -28,7 +25,7 @@ public class GetOutboxMessagesPageQryHandlerTests
     {
         // Arrange
         var pgReq = PagedRequest.Empty();
-        var mdls = OutboxMessageDataFactory.CreateMany(pgReq.PageSize);
+        var mdls = IdOutboxMessageDataFactory.CreateMany(pgReq.PageSize);
         var mdlsPage = new Page<IdOutboxMessage>(mdls, pgReq.PageNumber, pgReq.PageSize);
         var dtosPage = mdlsPage.Transform((d) => d.ToDto());
 
@@ -36,8 +33,8 @@ public class GetOutboxMessagesPageQryHandlerTests
 
         PagedResponse<IdOutboxMessageDto> pagedResponse = new(dtosPage, pgReq);
 
-        _mockSvc.GetPageAsync(pgReq.PageNumber, pgReq.PageSize, pgReq.SortList, pgReq.FilterList)
-            .Returns(mdlsPage);
+        _mockSvc.Setup(s => s.GetPageAsync(pgReq.PageNumber, pgReq.PageSize, pgReq.SortList, pgReq.FilterList))
+            .ReturnsAsync(mdlsPage);
 
         // Act
         var result = await _handler.Handle(new GetOutboxMessagePageQry(pgReq), CancellationToken.None);
@@ -59,8 +56,8 @@ public class GetOutboxMessagesPageQryHandlerTests
         var mdlsEmptyPage = new Page<IdOutboxMessage>([], pagedRequest.PageNumber, pagedRequest.PageSize);
         var qry = new GetOutboxMessagePageQry(pagedRequest);
 
-        _mockSvc.GetPageAsync(pagedRequest.PageNumber, pagedRequest.PageSize, pagedRequest.SortList, pagedRequest.FilterList)
-            .Returns(mdlsEmptyPage);
+        _mockSvc.Setup(s => s.GetPageAsync(pagedRequest.PageNumber, pagedRequest.PageSize, pagedRequest.SortList, pagedRequest.FilterList))
+            .ReturnsAsync(mdlsEmptyPage);
 
         // Act
         var result = await _handler.Handle(new GetOutboxMessagePageQry(pagedRequest), CancellationToken.None);
@@ -81,12 +78,11 @@ public class GetOutboxMessagesPageQryHandlerTests
     {
         // Arrange
         var defaultPagedRequest = PagedRequest.Empty();
-        var mdls = OutboxMessageDataFactory.CreateMany(defaultPagedRequest.PageSize);
+        var mdls = IdOutboxMessageDataFactory.CreateMany(defaultPagedRequest.PageSize);
         var mdlsPage = new Page<IdOutboxMessage>(mdls, defaultPagedRequest.PageNumber, defaultPagedRequest.PageSize);
 
-        _mockSvc.GetPageAsync(defaultPagedRequest.PageNumber, defaultPagedRequest.PageSize, defaultPagedRequest.SortList, defaultPagedRequest.FilterList)
-            .Returns(mdlsPage);
-
+        _mockSvc.Setup(s => s.GetPageAsync(defaultPagedRequest.PageNumber, defaultPagedRequest.PageSize, defaultPagedRequest.SortList, defaultPagedRequest.FilterList))
+            .ReturnsAsync(mdlsPage);
 
         // Act
         var result = await _handler.Handle(new GetOutboxMessagePageQry(null), CancellationToken.None);
@@ -101,6 +97,5 @@ public class GetOutboxMessagesPageQryHandlerTests
         result.Value?.PageSize.ShouldBe(defaultPagedRequest.PageSize);
     }
 
-    //------------------------------------//
 
-}//Cls
+}

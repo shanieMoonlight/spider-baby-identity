@@ -1,6 +1,6 @@
 ﻿using ID.Application.AppAbs.Setup;
 using ID.Domain.Entities.AppUsers;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
+using ID.Domain.Repos;
 using ID.Infrastructure.Persistance.EF.Interceptors;
 using ID.Infrastructure.Persistance.EF.Repos;
 using ID.Infrastructure.Persistance.EF.Services;

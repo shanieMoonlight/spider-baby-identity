@@ -4,8 +4,6 @@ using Pagination;
 namespace ID.Domain.Abstractions.Services.Outbox;
 public interface IIdentityOutboxMsgsService
 {
-    //- - - - - - - - - - - - //
-
     /// <summary>
     /// Get all IdOutboxMessages.
     /// </summary>
@@ -46,6 +44,5 @@ public interface IIdentityOutboxMsgsService
     /// <returns>A task that represents the asynchronous operation. The task result contains a paginated list of IdOutboxMessages.</returns>
     Task<Page<IdOutboxMessage>> GetPageAsync(int pageNumber, int pageSize, IEnumerable<SortRequest> sortList, IEnumerable<FilterRequest>? filterList = null);
 
-    //- - - - - - - - - - - - //
 
 }//Int

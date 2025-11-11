@@ -1,16 +1,9 @@
-namespace ID.Infrastructure.Tests.DmnSevcs.Members;
-
-using ID.Domain.Entities.AppUsers;
 using ID.Infrastructure.DomainServices.Members;
-using ID.Infrastructure.Persistance.Abstractions.Repos;
-using ID.Tests.Data.Factories;
-using Moq;
-using Shouldly;
-using System.Threading.Tasks;
+
+namespace ID.Infrastructure.Tests.DmnSevcs.Members;
 
 public class IdMemberAuditService_GetMntcMembersAsync_Tests
 {
-    //------------------------------------//
 
     [Fact]
     public async Task GetMntcMembersAsync_ShouldReturnListOfMntcMembers()
@@ -33,6 +26,5 @@ public class IdMemberAuditService_GetMntcMembersAsync_Tests
         result.ShouldBe(expectedMembers);
     }
 
-    //------------------------------------//
 
 }

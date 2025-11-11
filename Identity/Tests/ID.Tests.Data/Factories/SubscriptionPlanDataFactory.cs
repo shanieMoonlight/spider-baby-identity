@@ -1,9 +1,5 @@
 using ID.Domain.Entities.SubscriptionPlans;
 using ID.Domain.Entities.SubscriptionPlans.FeatureFlags;
-using MassTransit;
-using TestingHelpers;
-using TestingHelpers.RandomData;
-using TestingHelpers.Reflection;
 
 namespace ID.Tests.Data.Factories;
 
@@ -38,7 +34,7 @@ public static class SubscriptionPlanDataFactory
         deviceLimit ??= MyRandomNumberGenerator.Integer(0, 50);
         trialMonths ??= MyRandomNumberGenerator.Integer(0, 12);
         price ??= MyRandomNumberGenerator.Double(0, 500);
-        id ??= NewId.NextSequentialGuid();
+        id ??= Guid.NewGuid();
         administratorUsername ??= $"{RandomStringGenerator.Generate(20)}{id}";
         administratorId ??= $"{RandomStringGenerator.Generate(20)}{id}";
         renewalType ??= MyRandomDataGenerator.Enum<SubscriptionRenewalTypes>();

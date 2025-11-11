@@ -1,9 +1,5 @@
-using MassTransit;
-using TestingHelpers;
 using ID.Application.Features.FeatureFlags;
 using ID.Domain.Entities.SubscriptionPlans.FeatureFlags;
-using TestingHelpers.RandomData;
-using TestingHelpers.Reflection;
 
 namespace ID.Tests.Data.Factories.Dtos;
 
@@ -28,7 +24,7 @@ public static class FeatureFlagDtoDataFactory
 
         name ??= $"{RandomStringGenerator.Generate(20)}{id}";
         description ??= $"{RandomStringGenerator.Generate(20)}{id}";
-        id ??= NewId.NextSequentialGuid();
+        id ??= Guid.NewGuid();
         administratorUsername ??= $"{RandomStringGenerator.Generate(20)}{id}";
         administratorId ??= $"{RandomStringGenerator.Generate(20)}{id}";
 

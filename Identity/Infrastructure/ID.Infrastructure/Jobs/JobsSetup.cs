@@ -1,4 +1,6 @@
-﻿using ID.Domain.Entities.Teams;
+﻿using ID.Application.Jobs.Abstractions;
+using ID.Domain.Entities.Teams;
+using ID.Infrastructure.Jobs.Imps;
 using ID.Infrastructure.Jobs.Service.HangFire;
 using ID.Infrastructure.Setup;
 using Microsoft.AspNetCore.Builder;
@@ -17,8 +19,12 @@ internal static class JobsSetup
     /// <param name="services">The service collection to configure.</param>
     /// <param name="options">Configuration options for the identity infrastructure.</param>
     /// <returns>The service collection with job services configured.</returns>
-    public static IServiceCollection SetupJobs(this IServiceCollection services, IdInfrastructureSetupOptions options) =>
+    public static IServiceCollection SetupJobs(this IServiceCollection services, IdInfrastructureSetupOptions options)
+    {
+        services.AddScoped<ICronBuilder, HfCronBuilder>();
         services.AddMyIdHangfireJobs(options);
+        return services;
+    }
 
 
     //-------------------------//

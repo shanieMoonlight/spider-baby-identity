@@ -1,9 +1,9 @@
 ﻿using Hangfire;
+using ID.Application.Jobs.Abstractions;
 using ID.Application.Utility;
 using ID.Domain.Entities.Teams.Validators;
 using ID.Domain.Repos;
 using ID.GlobalSettings.Errors;
-using ID.GlobalSettings.Jobs.DbMntc;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
 using LoggingHelpers;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,11 +12,12 @@ using System.ComponentModel;
 
 
 namespace ID.Application.Jobs.DbMntc;
-internal class TeamLeaderMntcJob(IServiceProvider _serviceProvider, ILogger<TeamLeaderMntcJob> logger) : ATeamLeaderMntcJob
+internal sealed class TeamLeaderMntcJob(IServiceProvider _serviceProvider, ILogger<TeamLeaderMntcJob> logger)
+    : AMyIdJobHandler("TEAM_LEADER_MNTC_JOB")
 {
     [DisableConcurrentExecution(timeoutInSeconds: 300)]
     [DisplayName("MyId - Missing team leader job")]
-    public override async Task HandleAsync(CancellationToken cancellationToken)
+    public async Task HandleAsync(CancellationToken cancellationToken)
     {
         try
         {
@@ -34,7 +35,8 @@ internal class TeamLeaderMntcJob(IServiceProvider _serviceProvider, ILogger<Team
                 if (highestPositionMember != null)
                 {
                     var validationResult = TeamValidators.LeaderUpdate.Validate(team, highestPositionMember);
-                    if (!validationResult.Succeeded){
+                    if (!validationResult.Succeeded)
+                    {
                         logger.LogGenResultFailure(validationResult, IdErrorEvents.Jobs.DbMntc);
                         continue; // Skip this team if validation fails
                     }

@@ -75,4 +75,10 @@
       <ProjectReference Include="..\ID.IntegrationEvents\ID.IntegrationEvents.csproj" />
     </ItemGroup>
 
+
+
+    <ItemGroup>
+      <Folder Include="Jobs\Utils\" />
+    </ItemGroup>
+
 </Project>

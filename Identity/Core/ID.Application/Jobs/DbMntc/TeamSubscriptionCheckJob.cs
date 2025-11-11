@@ -1,5 +1,5 @@
 ﻿using Hangfire;
-using ID.Application.Jobs.DbMntc;
+using ID.Application.Jobs.Abstractions;
 using ID.Application.Utility;
 using ID.Domain.Abstractions.Services.Teams;
 using ID.Domain.Abstractions.Services.Transactions;
@@ -11,13 +11,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 
 
-namespace ID.Infrastructure.Jobs.Imps.DbMntc.Jobs;
+namespace ID.Application.Jobs.DbMntc;
 internal class TeamSubscriptionCheckJob(IServiceProvider _serviceProvider, ILogger<TeamSubscriptionCheckJob> logger)
-    : ATeamSubscriptionCheckJob
+    : AMyIdJobHandler("TEAM_SUBSCRIPTIONS_CHECK_JOB")
 {
     [DisableConcurrentExecution(timeoutInSeconds: 300)]
     [DisplayName("MyId - Check Expired Subscriptions")]
-    public override async Task HandleAsync(CancellationToken cancellationToken)
+    public async Task HandleAsync(CancellationToken cancellationToken)
     {
 
         using var scope = _serviceProvider.CreateScope();

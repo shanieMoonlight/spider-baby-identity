@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using ID.Application.AppImps;
 using ID.Application.Authenticators;
+using ID.Application.Jobs;
 using ID.Application.Mediatr;
 using ID.Application.Middleware;
 using ID.Application.Middleware.Exceptions;
@@ -9,6 +10,7 @@ using ID.GlobalSettings.Testing.Wrappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System.Threading;
 
 namespace ID.Application.Setup;
 
@@ -37,7 +39,8 @@ public static class IdApplicationSetupExtensions
             .AddIdentityPolicies()            
             .AddWrappers()
             .AddHttpContextAccessor()
-            .AddMyIdMediatr(assembly);
+            .AddMyIdMediatr(assembly)
+            .AddRecurringMyIdJobs();
 
 
         // Configure options for dependency injection
@@ -72,6 +75,10 @@ public static class IdApplicationSetupExtensions
             app.UseFromAppMiddleware();
 
         app.UseCustomExceptionHandler(new MyIdExceptionConverter());
+
+
+        var cancellationTokenSource = new CancellationTokenSource();
+        app.ApplicationServices.StartRecurringMyIdJobs(cancellationTokenSource.Token);
 
         return app;
     }

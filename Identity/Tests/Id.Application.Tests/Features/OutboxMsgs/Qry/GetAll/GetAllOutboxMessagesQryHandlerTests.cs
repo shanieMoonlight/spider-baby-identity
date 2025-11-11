@@ -23,7 +23,7 @@ public class GetAllOutboxMessagesQryHandlerTests
     public async Task Handle_ShouldReturnAllOutboxMessages_WhenSuccessful()
     {
         // Arrange
-        var mdls = OutboxMessageDataFactory.CreateMany();
+        var mdls = IdOutboxMessageDataFactory.CreateMany();
         _repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync(mdls);
 
         var handler = new GetAllOutboxMessagesQryHandler(_repoMock.Object);

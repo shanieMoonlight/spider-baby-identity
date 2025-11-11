@@ -1,3 +1,4 @@
+using ID.Domain.Repos.Specs.NewFolder.OutboxMsgs;
 using Xunit.Abstractions;
 
 namespace ID.Infrastructure.Tests.Persistence.Repos.Specs.OutboxMsgs;
@@ -11,7 +12,7 @@ public class OutboxMsgsCompletedOlderThanSpecTests(ITestOutputHelper output)
         var daysAgo = 1;
         var date = DateTime.UtcNow.AddDays(-daysAgo - 5);
         //processedOn => nonnull, Created => before daysago
-        var msg = OutboxMessageDataFactory.Create(createdOn: date, processedOn: date.AddHours(-1), error: string.Empty);
+        var msg = IdOutboxMessageDataFactory.Create(createdOn: date, processedOn: date.AddHours(-1), error: string.Empty);
 
         // Act
         var spec = new OutboxMsgsCompletedOlderThanSpec(daysAgo);
@@ -45,7 +46,7 @@ public class OutboxMsgsCompletedOlderThanSpecTests(ITestOutputHelper output)
         var daysAgo = 1;
         var date = DateTime.UtcNow.AddDays(1);
         //processedOn => nonnull, Created => before daysago
-        var om = OutboxMessageDataFactory.Create(createdOn: DateTime.Now, processedOn: date, error: string.Empty);
+        var om = IdOutboxMessageDataFactory.Create(createdOn: DateTime.Now, processedOn: date, error: string.Empty);
 
         // Act
         var spec = new OutboxMsgsCompletedOlderThanSpec(daysAgo);
@@ -83,5 +84,4 @@ public class OutboxMsgsCompletedOlderThanSpecTests(ITestOutputHelper output)
         result.ShouldBeTrue();
     }
 
-    //------------------------------------//
 }

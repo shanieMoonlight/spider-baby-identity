@@ -26,13 +26,6 @@
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
 			<_Parameter1>ID.Infrastructure.Tests</_Parameter1>
 		</AssemblyAttribute>
-		<!--
-		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-			<_Parameter1>ID.Persistence.Ef.SQL</_Parameter1>
-		</AssemblyAttribute>
-		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-			<_Parameter1>ID.API</_Parameter1>
-		</AssemblyAttribute> 
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
 			<_Parameter1>ID.Application</_Parameter1>
 		</AssemblyAttribute>
@@ -45,6 +38,13 @@
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
 			<_Parameter1>ID.Application.Tests</_Parameter1>
 		</AssemblyAttribute>
+		<!--
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>ID.Persistence.Ef.SQL</_Parameter1>
+		</AssemblyAttribute>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>ID.API</_Parameter1>
+		</AssemblyAttribute> 
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
 			<_Parameter1>ID.Email.Base</_Parameter1>
 		</AssemblyAttribute>

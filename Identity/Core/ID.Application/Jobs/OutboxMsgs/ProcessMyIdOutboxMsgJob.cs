@@ -1,9 +1,10 @@
 ﻿using Hangfire;
-using ID.Application.Jobs.OutboxMsgs;
+using ID.Application.Jobs.Abstractions;
 using ID.Domain.Abstractions.Events;
 using ID.Domain.Entities.OutboxMessages;
 using ID.Domain.Repos;
 using ID.Domain.Repos.Specs;
+using ID.Domain.Repos.Specs.NewFolder.OutboxMsgs;
 using ID.Domain.Utility.Json;
 using ID.Domain.Utility.Messages;
 using ID.GlobalSettings.Errors;
@@ -15,14 +16,19 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.ComponentModel;
 
-namespace ID.Infrastructure.Jobs.Imps.OutboxMsg.Jobs;
-internal sealed class ProcessOutboxMsgJob(IServiceProvider _serviceProvider, ILogger<ProcessOutboxMsgJob> logger)
-    : AProcessMyIdOutboxMsgJob
+
+
+
+namespace ID.Application.Jobs.OutboxMsgs;
+
+
+internal sealed class ProcessMyIdOutboxMsgJob(IServiceProvider _serviceProvider, ILogger<ProcessMyIdOutboxMsgJob> logger)
+    : AMyIdJobHandler("OUTBOX_HANDLER")
 {
 
     [DisableConcurrentExecution(timeoutInSeconds: 300)]
     [DisplayName("MyId - Process Outbox Msgs")]
-    public override async Task HandleAsync()
+    public async Task HandleAsync()
     {
         try
         {
@@ -32,10 +38,11 @@ internal sealed class ProcessOutboxMsgJob(IServiceProvider _serviceProvider, ILo
             var publisher = scope.ServiceProvider.GetRequiredService<IPublisher>();
             var repo = uow.OutboxMessageRepo;
 
-            var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
-     
-            var takeSpec = new TakeSkipSpec<IdOutboxMessage>(50, 0, m => m.ProcessedOnUtc == null);
-            var msgs = await repo.TakeAsync(takeSpec);
+
+            var spec = UnprocessedOutboxMsgsSpec.Create(25);
+            var msgs = await repo.ListAllAsync(spec);
+            //var takeSpec = new TakeSkipSpec<IdOutboxMessage>(50, 0, m => m.ProcessedOnUtc == null);
+            //var msgs = await repo.TakeAsync(takeSpec);
             if (!msgs.Any())
                 return;
 
@@ -45,7 +52,7 @@ internal sealed class ProcessOutboxMsgJob(IServiceProvider _serviceProvider, ILo
         }
         catch (Exception e)
         {
-            logger.LogException(e, IdErrorEvents.OutboxProcessing);
+            logger.LogException(e, IdErrorEvents.Jobs.OutboxProcessing);
         }
     }
 
@@ -69,7 +76,7 @@ internal sealed class ProcessOutboxMsgJob(IServiceProvider _serviceProvider, ILo
 
             if (domainEv == null)
             {
-                logger.LogError(IdErrorEvents.OutboxProcessing, "{msg}", IDMsgs.Error.Jobs.MISSING_OUTBOX_CONTENT(msg));
+                logger.LogError(IdErrorEvents.Jobs.OutboxProcessing, "{msg}", IDMsgs.Error.Jobs.MISSING_OUTBOX_CONTENT(msg));
                 return;
             }
 
@@ -81,7 +88,7 @@ internal sealed class ProcessOutboxMsgJob(IServiceProvider _serviceProvider, ILo
         }
         catch (Exception e)
         {
-            logger.LogException(e, $"Domain Event: {domainEv?.GetType()}", IdErrorEvents.OutboxProcessing);
+            logger.LogException(e, $"Domain Event: {domainEv?.GetType()}", IdErrorEvents.Jobs.OutboxProcessing);
         }
     }
 

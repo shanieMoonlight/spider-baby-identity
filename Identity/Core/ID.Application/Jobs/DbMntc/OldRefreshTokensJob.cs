@@ -1,13 +1,12 @@
 ﻿using Hangfire;
-using ID.Application.Jobs.DbMntc;
-using ID.Application.Utility;
 using ID.Domain.Repos;
+using ID.GlobalSettings.Errors;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.RefreshTokens;
 using LoggingHelpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace ID.Infrastructure.Jobs.Imps.DbMntc.Jobs;
+namespace ID.Application.Jobs.DbMntc;
 internal class OldRefreshTokensJob(IServiceProvider _serviceProvider, ILogger<OldRefreshTokensJob> logger) : AOldRefreshTokensJob
 {
     [DisableConcurrentExecution(timeoutInSeconds: 300)]
@@ -24,7 +23,7 @@ internal class OldRefreshTokensJob(IServiceProvider _serviceProvider, ILogger<Ol
         }
         catch (Exception e)
         {
-            logger.LogException(e, MyIdLoggingEvents.JOBS.DB_MNTC);
+            logger.LogException(e, IdErrorEvents.Jobs.DbMntc);
         }
     }
 

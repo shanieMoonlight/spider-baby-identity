@@ -8,6 +8,16 @@ namespace ID.Application.Jobs;
 public static class MyIdJobSetupExtensions
 {
 
+    public static IServiceCollection AddRecurringMyIdJobs(this IServiceCollection services)
+    {
+
+        return services
+            .AddOutboxMsgJobs()
+            .AddDbMntcJobs();
+    }
+
+    //---------------------//
+
     public static void StartRecurringMyIdJobs(this IServiceProvider provider, CancellationToken cancellationToken)
     {
         using var scope = provider.CreateScope();

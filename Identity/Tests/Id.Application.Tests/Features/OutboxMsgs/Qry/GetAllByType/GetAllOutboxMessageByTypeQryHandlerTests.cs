@@ -27,7 +27,7 @@ public class GetAllOutboxMessageByTypeQryHandlerTests
         var outboxMsgType = "MyOutboxMessage_Type";
         var expectedCount = 5;
 
-        _mockRepo.Setup(r => r.GetAllByTypeAsync(outboxMsgType)).ReturnsAsync(OutboxMessageDataFactory.CreateMany(expectedCount));
+        _mockRepo.Setup(r => r.GetAllByTypeAsync(outboxMsgType)).ReturnsAsync(IdOutboxMessageDataFactory.CreateMany(expectedCount));
 
         // Act
         var result = await _handler.Handle(new GetAllOutboxMessagesByTypeQry(outboxMsgType), CancellationToken.None);

@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Xunit;
+
+namespace ID.Tests.Utility.ServiceProvider;
 
 public abstract class ServiceProviderTestBase
 {
@@ -14,8 +15,11 @@ public abstract class ServiceProviderTestBase
         MockServiceScopeFactory = new Mock<IServiceScopeFactory>();
         MockServiceScope = new Mock<IServiceScope>();
 
-        MockServiceProvider.Setup(sp => sp.GetService(typeof(IServiceScopeFactory))).Returns(MockServiceScopeFactory.Object);
-        MockServiceScopeFactory.Setup(f => f.CreateScope()).Returns(MockServiceScope.Object);
-        MockServiceScope.Setup(s => s.ServiceProvider).Returns(MockServiceProvider.Object);
+        MockServiceProvider.Setup(sp => sp.GetService(typeof(IServiceScopeFactory)))
+            .Returns(MockServiceScopeFactory.Object);
+        MockServiceScopeFactory.Setup(f => f.CreateScope())
+            .Returns(MockServiceScope.Object);
+        MockServiceScope.Setup(s => s.ServiceProvider)
+            .Returns(MockServiceProvider.Object);
     }
 }

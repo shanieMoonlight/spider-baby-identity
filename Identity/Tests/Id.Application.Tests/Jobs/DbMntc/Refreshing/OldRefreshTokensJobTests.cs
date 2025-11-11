@@ -1,14 +1,10 @@
 using Hangfire;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.RefreshTokens;
-using Microsoft.Extensions.DependencyInjection;
+using ID.Tests.Utility.ServiceProvider;
 
-namespace ID.Infrastructure.Tests.Jobs.DbMntc.Refreshing;
+namespace ID.Application.Tests.Jobs.DbMntc.Refreshing;
 
-public class OldRefreshTokensJobTests
+public class OldRefreshTokensJobTests : ServiceProviderTestBase
 {
-    private readonly Mock<IServiceProvider> _mockServiceProvider;
-    private readonly Mock<IServiceScope> _mockServiceScope;
-    private readonly Mock<IServiceScopeFactory> _mockServiceScopeFactory;
     private readonly Mock<IIdUnitOfWork> _mockUnitOfWork;
     private readonly Mock<IIdentityRefreshTokenRepo> _mockRefreshTokenRepo;
     private readonly Mock<ILogger<OldRefreshTokensJob>> _mockLogger;
@@ -16,25 +12,16 @@ public class OldRefreshTokensJobTests
 
     public OldRefreshTokensJobTests()
     {
-        _mockServiceProvider = new Mock<IServiceProvider>();
-        _mockServiceScope = new Mock<IServiceScope>();
-        _mockServiceScopeFactory = new Mock<IServiceScopeFactory>();
         _mockUnitOfWork = new Mock<IIdUnitOfWork>();
         _mockRefreshTokenRepo = new Mock<IIdentityRefreshTokenRepo>();
         _mockLogger = new Mock<ILogger<OldRefreshTokensJob>>();
 
-        _mockServiceProvider.Setup(sp => sp.GetService(typeof(IServiceScopeFactory)))
-            .Returns(_mockServiceScopeFactory.Object);
-        _mockServiceScopeFactory.Setup(f => f.CreateScope())
-            .Returns(_mockServiceScope.Object);
-        _mockServiceScope.Setup(s => s.ServiceProvider)
-            .Returns(_mockServiceProvider.Object);
-        _mockServiceProvider.Setup(sp => sp.GetService(typeof(IIdUnitOfWork)))
+        MockServiceProvider.Setup(sp => sp.GetService(typeof(IIdUnitOfWork)))
             .Returns(_mockUnitOfWork.Object);
         _mockUnitOfWork.Setup(uow => uow.RefreshTokenRepo)
             .Returns(_mockRefreshTokenRepo.Object);
 
-        _sut = new OldRefreshTokensJob(_mockServiceProvider.Object, _mockLogger.Object);
+        _sut = new OldRefreshTokensJob(MockServiceProvider.Object, _mockLogger.Object);
     }
 
     //------------------------------//
@@ -71,7 +58,7 @@ public class OldRefreshTokensJobTests
         await _sut.HandleAsync(CancellationToken.None);
 
         // Assert
-        ExceptionUtils.VerifyExceptionLogging(_mockLogger, MyIdLoggingEvents.JOBS.DB_MNTC, expectedException);
+        ExceptionUtils.VerifyExceptionLogging(_mockLogger, IdErrorEvents.Jobs.DbMntc, expectedException);
 
     }
 
@@ -106,5 +93,4 @@ public class OldRefreshTokensJobTests
         attribute.TimeoutSec.ShouldBe(300);
     }
 
-    //------------------------------//
 }

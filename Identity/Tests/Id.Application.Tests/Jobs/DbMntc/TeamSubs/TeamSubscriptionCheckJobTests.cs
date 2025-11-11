@@ -1,11 +1,7 @@
-using ID.Domain.Abstractions.Services.Teams;
 using ID.Domain.Abstractions.Services.Transactions;
-using ID.Domain.Entities.AppUsers;
-using ID.Infrastructure.Jobs.Imps.DbMntc.Jobs;
-using Microsoft.Extensions.Logging;
-using Moq;
+using ID.Tests.Utility.ServiceProvider;
 
-namespace ID.Infrastructure.Tests.Jobs.DbMntc.TeamSubs;
+namespace ID.Application.Tests.Jobs.DbMntc.TeamSubs;
 
 public class TeamSubscriptionCheckJobTests : ServiceProviderTestBase
 {

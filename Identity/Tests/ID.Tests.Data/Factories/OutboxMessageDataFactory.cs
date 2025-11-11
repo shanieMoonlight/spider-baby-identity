@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 namespace ID.Tests.Data.Factories;
 
 
-public static class OutboxMessageDataFactory
+public static class IdOutboxMessageDataFactory
 {
     private static bool _isProcessed = false;
 

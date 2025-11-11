@@ -8,7 +8,7 @@ public class OutboxDataInitializer
 
     public static List<IdOutboxMessage> GenerateData()
     {
-        return OutboxMessageDataFactory.CreateMany(50);
+        return IdOutboxMessageDataFactory.CreateMany(50);
     }
 
     //------------------------------------//

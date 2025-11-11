@@ -1,10 +1,7 @@
-using ID.Tests.Data.Factories;
-using Newtonsoft.Json;
-using Shouldly;
-using System.IdentityModel.Tokens.Jwt;
-using ID.Domain.Entities.Teams;
-using ID.Domain.Claims.Utils;
 using ID.Application.JWT.Subscriptions;
+using ID.Domain.Claims.Utils;
+using Newtonsoft.Json;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace ID.Application.Tests.Jwt;
 
@@ -103,5 +100,4 @@ public class SubscriptionClaimDataExtensionsTests
         claims.Count.ShouldBe(2);
     }
 
-    //------------------------------------//
 }

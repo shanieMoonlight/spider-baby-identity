@@ -67,6 +67,7 @@
 
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\ID.Domain.Repos\ID.Domain.Repos.csproj" />
       <ProjectReference Include="..\..\..\Libs\Logging\LoggingHelpers\LoggingHelpers\LoggingHelpers.csproj" />
       <ProjectReference Include="..\..\..\Libs\MyResults\MyResults.csproj" />
       <ProjectReference Include="..\..\..\Libs\Pagination\Pagination.csproj" />

@@ -1,8 +1,9 @@
 ﻿using Hangfire;
 using ID.Application.Utility;
 using ID.Domain.Entities.Teams.Validators;
-using ID.GlobalSettings.Jobs.DbMntc;
 using ID.Domain.Repos;
+using ID.GlobalSettings.Errors;
+using ID.GlobalSettings.Jobs.DbMntc;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
 using LoggingHelpers;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 
 
-namespace ID.Infrastructure.Jobs.Imps.DbMntc.Jobs;
+namespace ID.Application.Jobs.DbMntc;
 internal class TeamLeaderMntcJob(IServiceProvider _serviceProvider, ILogger<TeamLeaderMntcJob> logger) : ATeamLeaderMntcJob
 {
     [DisableConcurrentExecution(timeoutInSeconds: 300)]
@@ -34,7 +35,7 @@ internal class TeamLeaderMntcJob(IServiceProvider _serviceProvider, ILogger<Team
                 {
                     var validationResult = TeamValidators.LeaderUpdate.Validate(team, highestPositionMember);
                     if (!validationResult.Succeeded){
-                        logger.LogGenResultFailure(validationResult, MyIdLoggingEvents.JOBS.DB_MNTC);
+                        logger.LogGenResultFailure(validationResult, IdErrorEvents.Jobs.DbMntc);
                         continue; // Skip this team if validation fails
                     }
 

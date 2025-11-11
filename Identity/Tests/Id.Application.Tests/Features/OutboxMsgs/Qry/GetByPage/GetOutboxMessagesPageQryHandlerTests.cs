@@ -25,7 +25,7 @@ public class GetOutboxMessagesPageQryHandlerTests
     {
         // Arrange
         var pgReq = PagedRequest.Empty();
-        var mdls = OutboxMessageDataFactory.CreateMany(pgReq.PageSize);
+        var mdls = IdOutboxMessageDataFactory.CreateMany(pgReq.PageSize);
         var mdlsPage = new Page<IdOutboxMessage>(mdls, pgReq.PageNumber, pgReq.PageSize);
         var dtosPage = mdlsPage.Transform((d) => d.ToDto());
 
@@ -78,7 +78,7 @@ public class GetOutboxMessagesPageQryHandlerTests
     {
         // Arrange
         var defaultPagedRequest = PagedRequest.Empty();
-        var mdls = OutboxMessageDataFactory.CreateMany(defaultPagedRequest.PageSize);
+        var mdls = IdOutboxMessageDataFactory.CreateMany(defaultPagedRequest.PageSize);
         var mdlsPage = new Page<IdOutboxMessage>(mdls, defaultPagedRequest.PageNumber, defaultPagedRequest.PageSize);
 
         _mockSvc.Setup(s => s.GetPageAsync(defaultPagedRequest.PageNumber, defaultPagedRequest.PageSize, defaultPagedRequest.SortList, defaultPagedRequest.FilterList))

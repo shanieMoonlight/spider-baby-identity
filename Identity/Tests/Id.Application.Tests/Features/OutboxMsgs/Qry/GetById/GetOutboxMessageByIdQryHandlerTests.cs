@@ -23,7 +23,7 @@ public class GetOutboxMessageByIdQryHandlerTests
     {
         // Arrange
         var outboxMsgId = Guid.NewGuid();
-        var expectedOutboxMessage = OutboxMessageDataFactory.Create(id: outboxMsgId);
+        var expectedOutboxMessage = IdOutboxMessageDataFactory.Create(id: outboxMsgId);
 
         _mockRepo.Setup(x => x.GetByIdAsync(outboxMsgId))
           .ReturnsAsync(expectedOutboxMessage);
@@ -45,7 +45,7 @@ public class GetOutboxMessageByIdQryHandlerTests
     public async Task Handle_ShouldReturnNotFound_WhenOutboxMessageDoesNotExist()
     {
         // Arrange
-        var expectedOutboxMessage = OutboxMessageDataFactory.Create();
+        var expectedOutboxMessage = IdOutboxMessageDataFactory.Create();
         var outboxMsgId = expectedOutboxMessage.Id;
         _mockRepo.Setup(x => x.GetByIdAsync(outboxMsgId))
           .ReturnsAsync((IdOutboxMessage?)null);

@@ -1,4 +1,7 @@
-namespace ID.Infrastructure.Tests.Jobs.DbMntc.TeamLeader;
+using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
+using ID.Tests.Utility.ServiceProvider;
+
+namespace ID.Application.Tests.Jobs.DbMntc.TeamLeader;
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
 #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
@@ -115,13 +118,12 @@ public class TeamLeaderMntcJobTests : ServiceProviderTestBase
         await _job.HandleAsync(CancellationToken.None);
 
         // Assert
-        ExceptionUtils.VerifyExceptionLogging(_mockLogger, MyIdLoggingEvents.JOBS.DB_MNTC);
+        ExceptionUtils.VerifyExceptionLogging(_mockLogger, IdErrorEvents.Jobs.DbMntc);
 
 
         // Verify team leader was NOT set
         team1.Leader.ShouldBeNull();
     }
 
-    //------------------------------------//
 
 }//Cls

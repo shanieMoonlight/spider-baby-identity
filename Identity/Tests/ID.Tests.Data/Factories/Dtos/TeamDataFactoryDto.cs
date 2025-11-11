@@ -1,6 +1,5 @@
 using ID.Application.Features.Teams;
 using ID.Domain.Entities.Teams;
-using MassTransit;
 using TestingHelpers;
 using TestingHelpers.RandomData;
 using TestingHelpers.Reflection;
@@ -30,7 +29,7 @@ public static class TeamDtoDataFactory
 
         name ??= $"{RandomStringGenerator.Generate(20)}{id}";
         description ??= $"{RandomStringGenerator.Generate(20)}{id}";
-        id ??= NewId.NextSequentialGuid();
+        id ??= Guid.NewGuid();
         administratorUsername ??= $"{RandomStringGenerator.Generate(20)}{id}";
         administratorId ??= $"{RandomStringGenerator.Generate(20)}{id}";
 

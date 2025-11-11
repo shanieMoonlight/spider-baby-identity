@@ -2,29 +2,18 @@ using ID.Application.Features.FeatureFlags;
 using ID.Application.Features.FeatureFlags.Qry.GetById;
 using ID.Domain.Abstractions.Services.SubPlans;
 using ID.Domain.Entities.SubscriptionPlans.FeatureFlags;
-using ID.Domain.Utility.Messages;
-using ID.Tests.Data.Factories;
-using MassTransit;
-using MediatR;
-using Moq;
-using MyResults;
-using NSubstitute;
 
 namespace ID.Application.Tests.Features.FeatureFlags.Qry.GetById;
 
 public class GetFeatureFlagByIdQryHandlerTests
 {
-    private readonly IIdentityFeatureFlagService _mockRepo;
-    private readonly IMediator _mockMediator;
-    private readonly GetFeatureFlagByIdQryHandler _handler;
+    private readonly Mock<IIdentityFeatureFlagService> _mockRepo;
 
     //- - - - - - - - - - - - - - - - - - //
 
     public GetFeatureFlagByIdQryHandlerTests()
     {
-        _mockRepo = Substitute.For<IIdentityFeatureFlagService>();
-        _mockMediator = Substitute.For<IMediator>();
-        _handler = new GetFeatureFlagByIdQryHandler(_mockRepo);
+        _mockRepo = new Mock<IIdentityFeatureFlagService>();
     }
 
     //------------------------------------//
@@ -33,10 +22,10 @@ public class GetFeatureFlagByIdQryHandlerTests
     public async Task Handle_ShouldReturnFeatureFlagDto_WhenExists()
     {
         // Arrange
-        var featureFlagId = NewId.NextSequentialGuid();
+        var featureFlagId = Guid.NewGuid();
         var expectedFeatureFlag = FeatureFlagDataFactory.Create(featureFlagId);
-        _mockRepo.GetByIdAsync(featureFlagId, It.IsAny<CancellationToken>()).Returns(expectedFeatureFlag);
-        var handler = new GetFeatureFlagByIdQryHandler(_mockRepo);
+        _mockRepo.Setup(x => x.GetByIdAsync(featureFlagId, It.IsAny<CancellationToken>())).ReturnsAsync(expectedFeatureFlag);
+        var handler = new GetFeatureFlagByIdQryHandler(_mockRepo.Object);
 
         // Act
         var result = await handler.Handle(new GetFeatureFlagByIdQry(featureFlagId), CancellationToken.None);
@@ -55,8 +44,8 @@ public class GetFeatureFlagByIdQryHandlerTests
         // Arrange
         var expectedFeatureFlag = FeatureFlagDataFactory.Create();
         var featureFlagId = expectedFeatureFlag.Id;
-        _mockRepo.GetByIdAsync(featureFlagId).Returns((FeatureFlag?)null);
-        var handler = new GetFeatureFlagByIdQryHandler(_mockRepo);
+        _mockRepo.Setup(x => x.GetByIdAsync(featureFlagId, It.IsAny<CancellationToken>())).ReturnsAsync((FeatureFlag?)null);
+        var handler = new GetFeatureFlagByIdQryHandler(_mockRepo.Object);
 
 
         // Act
@@ -68,7 +57,5 @@ public class GetFeatureFlagByIdQryHandlerTests
         Assert.True(result.NotFound);
         Assert.Equal(IDMsgs.Error.NotFound<FeatureFlag>(featureFlagId), result.Info);
     }
-
-    //------------------------------------//
 
 }//Cls

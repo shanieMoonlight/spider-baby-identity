@@ -1,7 +1,3 @@
-using ClArch.ValueObjects;
-using ID.Domain.Entities.Devices;
-using ID.Domain.Entities.Teams;
-
 namespace ID.Infrastructure.Tests.Persistence.EF.Repos.Teams;
 
 /// <summary>

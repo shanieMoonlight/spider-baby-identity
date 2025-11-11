@@ -7,6 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Features\Mntc\**" />
+      <EmbeddedResource Remove="Features\Mntc\**" />
+      <None Remove="Features\Mntc\**" />
+    </ItemGroup>
+
+    <ItemGroup>
       <None Remove="Features\Images\Qry\FallbackLogo\fallback_logo.png" />
       <None Remove="Features\Images\Qry\PhoneConfirmed\phone_confirmed.jpg" />
       <None Remove="Features\Images\Qry\welcome.jpeg" />
@@ -53,7 +59,6 @@
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
       <PackageReference Include="GoogleAuthenticator" />
       <PackageReference Include="Hangfire.Core" />
-      <PackageReference Include="MassTransit" />
       <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" />
       <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc" />
@@ -67,12 +72,6 @@
       <ProjectReference Include="..\..\..\Libs\Pagination\Pagination.csproj" />
       <ProjectReference Include="..\ID.Domain\ID.Domain.csproj" />
       <ProjectReference Include="..\ID.IntegrationEvents\ID.IntegrationEvents.csproj" />
-    </ItemGroup>
-
-
-
-    <ItemGroup>
-      <Folder Include="Features\Mntc\" />
     </ItemGroup>
 
 </Project>

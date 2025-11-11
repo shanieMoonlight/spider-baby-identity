@@ -1,22 +1,21 @@
-using ID.Application.Features.SubscriptionPlans.Qry.GetAll;
-using ID.Tests.Data.Factories;
-using MyResults;
-using NSubstitute;
-using Shouldly;
 using ID.Application.Features.SubscriptionPlans;
+using ID.Application.Features.SubscriptionPlans.Qry.GetAll;
 using ID.Domain.Abstractions.Services.SubPlans;
+using ID.Domain.Entities.SubscriptionPlans;
+using Moq;
+using System.Collections.Generic;
 
 namespace ID.Application.Tests.Features.SubscriptionPlans.Qry.GetAll;
 
 public class GetAllSubscriptionPlansQryHandlerTests
 {
-    private readonly IIdentitySubscriptionPlanService _repoMock;
+    private readonly Mock<IIdentitySubscriptionPlanService> _repoMock;
 
     //- - - - - - - - - - - - - - - - - - //
 
     public GetAllSubscriptionPlansQryHandlerTests()
     {
-        _repoMock = Substitute.For<IIdentitySubscriptionPlanService>();
+        _repoMock = new Mock<IIdentitySubscriptionPlanService>();
     }
 
     //------------------------------------//
@@ -26,9 +25,9 @@ public class GetAllSubscriptionPlansQryHandlerTests
     {
         // Arrange
         var mdls = SubscriptionPlanDataFactory.CreateMany();
-        _repoMock.GetAllAsync().Returns(mdls);
+        _repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync((IReadOnlyList<SubscriptionPlan>)mdls);
 
-        var handler = new GetAllSubscriptionPlansQryHandler(_repoMock);
+        var handler = new GetAllSubscriptionPlansQryHandler(_repoMock.Object);
         var request = new GetAllSubscriptionPlansQry();
         var cancellationToken = CancellationToken.None;
 
@@ -38,7 +37,7 @@ public class GetAllSubscriptionPlansQryHandlerTests
         // Assert
         result.ShouldBeOfType<GenResult<IEnumerable<SubscriptionPlanDto>>>();
         result.Value?.Count().ShouldBe(mdls.Count);
-        await _repoMock.Received().GetAllAsync();
+        _repoMock.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
     //------------------------------------//
@@ -47,9 +46,9 @@ public class GetAllSubscriptionPlansQryHandlerTests
     public async Task Handle_ShouldReturnEmptyList_WhenNoSubscriptionPlansExist()
     {
         // Arrange
-        _repoMock.GetAllAsync().Returns([]);
+        _repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync((IReadOnlyList<SubscriptionPlan>)[]);
 
-        var handler = new GetAllSubscriptionPlansQryHandler(_repoMock);
+        var handler = new GetAllSubscriptionPlansQryHandler(_repoMock.Object);
         var request = new GetAllSubscriptionPlansQry();
         var cancellationToken = CancellationToken.None;
 
@@ -59,7 +58,7 @@ public class GetAllSubscriptionPlansQryHandlerTests
         // Assert
         result.ShouldBeOfType<GenResult<IEnumerable<SubscriptionPlanDto>>>();
         result.Value.ShouldBeEmpty();
-        await _repoMock.Received().GetAllAsync();
+        _repoMock.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
     //------------------------------------//

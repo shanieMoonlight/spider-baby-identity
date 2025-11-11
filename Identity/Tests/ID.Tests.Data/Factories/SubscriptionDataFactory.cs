@@ -1,9 +1,5 @@
 using ID.Domain.Entities.SubscriptionPlans;
 using ID.Domain.Entities.Teams;
-using MassTransit;
-using TestingHelpers;
-using TestingHelpers.RandomData;
-using TestingHelpers.Reflection;
 
 namespace ID.Tests.Data.Factories;
 
@@ -39,12 +35,12 @@ public static class SubscriptionDataFactory
 
         discount ??= 0;
         lastPaymenAmount ??= 0;
-        teamId ??= NewId.NextSequentialGuid();
-        subscriptionPlanId ??= NewId.NextSequentialGuid();
+        teamId ??= Guid.NewGuid();
+        subscriptionPlanId ??= Guid.NewGuid();
         trial ??= false;
         name ??= $"{RandomStringGenerator.Generate(20)}{id}";
         description ??= $"{RandomStringGenerator.Generate(20)}{id}";
-        id ??= NewId.NextSequentialGuid();
+        id ??= Guid.NewGuid();
         administratorUsername ??= $"{RandomStringGenerator.Generate(20)}{id}";
         administratorId ??= $"{RandomStringGenerator.Generate(20)}{id}";
         deviceLimit ??= 0;

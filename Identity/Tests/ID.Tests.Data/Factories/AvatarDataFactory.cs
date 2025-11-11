@@ -1,8 +1,4 @@
 using ID.Domain.Entities.Avatars;
-using MassTransit;
-using TestingHelpers;
-using TestingHelpers.RandomData;
-using TestingHelpers.Reflection;
 
 namespace ID.Tests.Data.Factories;
 
@@ -27,7 +23,7 @@ public static class AvatarDataFactory
 
         b64 ??= $"{RandomStringGenerator.Generate(20)}{id}";
         url ??= $"{RandomStringGenerator.Generate(20)}{id}";
-        id ??= NewId.NextSequentialGuid();
+        id ??= Guid.NewGuid();
         administratorUsername ??= $"{RandomStringGenerator.Generate(20)}{id}";
         administratorId ??= $"{RandomStringGenerator.Generate(20)}{id}";
 

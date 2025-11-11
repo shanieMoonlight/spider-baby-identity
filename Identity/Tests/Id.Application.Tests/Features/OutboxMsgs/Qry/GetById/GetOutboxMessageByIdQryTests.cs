@@ -1,6 +1,5 @@
-﻿using Shouldly;
-using ID.Application.Features.OutboxMessages.Qry.GetById;
-using ID.Application.Mediatr.CqrsAbs;
+﻿using ID.Application.Features.OutboxMessages.Qry.GetById;
+
 
 namespace ID.Application.Tests.Features.OutboxMsgs.Qry.GetById;
 

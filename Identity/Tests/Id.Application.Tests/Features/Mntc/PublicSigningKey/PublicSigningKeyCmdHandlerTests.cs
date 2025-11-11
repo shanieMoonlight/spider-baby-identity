@@ -1,6 +1,5 @@
 using ID.Application.Features.System.Qry.PublicSigningKey;
 using ID.Application.JWT;
-using ID.Domain.Utility.Messages;
 
 namespace ID.Application.Tests.Features.Mntc.PublicSigningKey;
 

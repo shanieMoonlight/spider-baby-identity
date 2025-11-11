@@ -9,7 +9,8 @@ using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 
 namespace ID.Infrastructure.Jobs.Imps.OutboxMsg.Jobs;
-internal class ProcessOldOutboxMsgs(IServiceProvider _serviceProvider, ILogger<ProcessOldOutboxMsgs> logger) : AProcess_Old_MyIdOutboxMsgs
+internal class ProcessOldOutboxMsgs(IServiceProvider _serviceProvider, ILogger<ProcessOldOutboxMsgs> logger) 
+    : AProcess_Old_MyIdOutboxMsgs
 {
 
     [DisableConcurrentExecution(timeoutInSeconds: 300)]

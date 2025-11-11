@@ -15,8 +15,8 @@
     <PackageVersion Include="Lamar" Version="15.0.0" />
     <PackageVersion Include="libphonenumber-csharp" Version="9.0.5" />
     <PackageVersion Include="MailKit" Version="4.12.1" />
-    <PackageVersion Include="MassTransit" Version="8.4.1" />
-    <PackageVersion Include="MassTransit.Abstractions" Version="8.5.0" />
+    <PackageVersion Include="MassTransit" Version="8.5.5" />
+    <PackageVersion Include="MassTransit.Abstractions" Version="8.5.5" />
     <PackageVersion Include="MediatR" Version="12.5.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.3.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.16" />
@@ -60,8 +60,8 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageVersion Include="MimeKit" Version="4.12.0" />
     <PackageVersion Include="Mono.Cecil" Version="0.11.6" />
+    <PackageVersion Include="NewId" Version="4.0.1" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageVersion Include="NSubstitute" Version="5.3.0" />
     <PackageVersion Include="Polly" Version="8.6.0" />
     <PackageVersion Include="Polly.Core" Version="8.6.0" />
     <PackageVersion Include="Polly.Extensions" Version="8.6.0" />

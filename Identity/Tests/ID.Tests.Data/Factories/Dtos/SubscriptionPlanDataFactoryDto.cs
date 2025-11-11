@@ -1,6 +1,5 @@
 using ID.Application.Features.FeatureFlags;
 using ID.Application.Features.SubscriptionPlans;
-using MassTransit;
 using TestingHelpers;
 using TestingHelpers.RandomData;
 using TestingHelpers.Reflection;
@@ -37,7 +36,7 @@ public static class SubscriptionPlanDtoDataFactory
         deviceLimit ??= 0;
         trialMonths ??= 0;
         price ??= 0;
-        id ??= NewId.NextSequentialGuid();
+        id ??= Guid.NewGuid();
 
 
         var paramaters = new[]

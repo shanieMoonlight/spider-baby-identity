@@ -1,8 +1,7 @@
 using ID.Application;
 using ID.Application.Jobs.Abstractions;
-using ID.Infrastructure;
 
-namespace ID.Application.Tests.Jobs;
+namespace ID.Infrastructure.Tests.Jobs;
 
 public class JobHandlerImplementationTests
 {

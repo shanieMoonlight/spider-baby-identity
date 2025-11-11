@@ -2,28 +2,24 @@ using ID.Application.Features.SubscriptionPlans;
 using ID.Application.Features.SubscriptionPlans.Qry.GetById;
 using ID.Domain.Abstractions.Services.SubPlans;
 using ID.Domain.Entities.SubscriptionPlans;
-using ID.Domain.Utility.Messages;
-using ID.Tests.Data.Factories;
-using MassTransit;
+using Moq;
 using MediatR;
-using MyResults;
-using NSubstitute;
 
 namespace ID.Application.Tests.Features.SubscriptionPlans.Qry.GetById;
 
 public class GetSubscriptionPlanByIdQryHandlerTests
 {
-    private readonly IIdentitySubscriptionPlanService _mockRepo;
-    private readonly IMediator _mockMediator;
+    private readonly Mock<IIdentitySubscriptionPlanService> _mockRepo;
+    private readonly Mock<IMediator> _mockMediator;
     private readonly GetSubscriptionPlanByIdQryHandler _handler;
 
     //- - - - - - - - - - - - - - - - - - //
 
     public GetSubscriptionPlanByIdQryHandlerTests()
     {
-        _mockRepo = Substitute.For<IIdentitySubscriptionPlanService>();
-        _mockMediator = Substitute.For<IMediator>();
-        _handler = new GetSubscriptionPlanByIdQryHandler(_mockRepo);
+        _mockRepo = new Mock<IIdentitySubscriptionPlanService>();
+        _mockMediator = new Mock<IMediator>();
+        _handler = new GetSubscriptionPlanByIdQryHandler(_mockRepo.Object);
     }
 
     //------------------------------------//
@@ -32,10 +28,10 @@ public class GetSubscriptionPlanByIdQryHandlerTests
     public async Task Handle_ShouldReturnSubscriptionPlanDto_WhenExists()
     {
         // Arrange
-        var subscriptionPlanId = NewId.NextSequentialGuid();
+        var subscriptionPlanId = Guid.NewGuid();
         var expectedSubscriptionPlan = SubscriptionPlanDataFactory.Create(subscriptionPlanId);
-        _mockRepo.GetByIdWithFeatureFlagsAsync(subscriptionPlanId).Returns(expectedSubscriptionPlan);
-        var handler = new GetSubscriptionPlanByIdQryHandler(_mockRepo);
+        _mockRepo.Setup(r => r.GetByIdWithFeatureFlagsAsync(subscriptionPlanId)).ReturnsAsync(expectedSubscriptionPlan);
+        var handler = new GetSubscriptionPlanByIdQryHandler(_mockRepo.Object);
 
         // Act
         var result = await handler.Handle(new GetSubscriptionPlanByIdQry(subscriptionPlanId), CancellationToken.None);
@@ -54,8 +50,8 @@ public class GetSubscriptionPlanByIdQryHandlerTests
         // Arrange
         var expectedSubscriptionPlan = SubscriptionPlanDataFactory.Create();
         var subscriptionPlanId = expectedSubscriptionPlan.Id;
-        _mockRepo.GetByIdWithFeatureFlagsAsync(subscriptionPlanId).Returns((SubscriptionPlan?)null);
-        var handler = new GetSubscriptionPlanByIdQryHandler(_mockRepo);
+        _mockRepo.Setup(r => r.GetByIdWithFeatureFlagsAsync(subscriptionPlanId)).ReturnsAsync((SubscriptionPlan?)null);
+        var handler = new GetSubscriptionPlanByIdQryHandler(_mockRepo.Object);
 
 
         // Act

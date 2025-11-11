@@ -21,7 +21,6 @@
         <PackageReference Include="coverlet.collector" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" />
         <PackageReference Include="Lamar" />
-        <PackageReference Include="NSubstitute" />
         <PackageReference Include="FluentValidation" />
         <PackageReference Include="Moq" />
         <PackageReference Include="Shouldly" />
@@ -31,10 +30,8 @@
 
 
     <ItemGroup>
-        <!--<ProjectReference Include="..\..\..\Libs\HelperLibs\TestingHelpers\TestingHelpers.csproj" />-->
         <ProjectReference Include="..\..\API\ID.API\ID.API.csproj" />
         <ProjectReference Include="..\..\Core\ID.GlobalSettings\ID.GlobalSettings.csproj" />
-        <!--<ProjectReference Include="..\..\ID.API\ID.API.csproj" />-->
         <ProjectReference Include="..\ID.Tests.Data\ID.Tests.Data.csproj" />
         <ProjectReference Include="..\Id.Tests.Utility\ID.Tests.Utility.csproj" />
     </ItemGroup>

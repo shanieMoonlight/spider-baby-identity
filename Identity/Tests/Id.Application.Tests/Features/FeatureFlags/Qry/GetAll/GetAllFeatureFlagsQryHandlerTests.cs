@@ -1,25 +1,25 @@
 using ID.Application.Features.FeatureFlags;
 using ID.Application.Features.FeatureFlags.Qry.GetAll;
 using ID.Domain.Abstractions.Services.SubPlans;
-using ID.Tests.Data.Factories;
+using ID.Domain.Entities.SubscriptionPlans.FeatureFlags;
+using Moq;
+using System.Collections.Generic;
+using System.Linq;
 using MediatR;
-using MyResults;
-using NSubstitute;
-using Shouldly;
 
 namespace ID.Application.Tests.Features.FeatureFlags.Qry.GetAll;
 
 public class GetAllFeatureFlagsQryHandlerTests
 {
-    private readonly IIdentityFeatureFlagService _repoMock;
-    private readonly IMediator _mediatorMock;
+    private readonly Mock<IIdentityFeatureFlagService> _repoMock;
+    private readonly Mock<IMediator> _mediatorMock;
 
     //------------------------------------//
 
     public GetAllFeatureFlagsQryHandlerTests()
     {
-        _repoMock = Substitute.For<IIdentityFeatureFlagService>();
-        _mediatorMock = Substitute.For<IMediator>();
+        _repoMock = new Mock<IIdentityFeatureFlagService>();
+        _mediatorMock = new Mock<IMediator>();
     }
 
     //------------------------------------//
@@ -29,9 +29,9 @@ public class GetAllFeatureFlagsQryHandlerTests
     {
         // Arrange
         var mdls = FeatureFlagDataFactory.CreateMany();
-        _repoMock.GetAllAsync().Returns(mdls);
+        _repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync((IReadOnlyList<FeatureFlag>)mdls);
 
-        var handler = new GetAllFeatureFlagsQryHandler(_repoMock);
+        var handler = new GetAllFeatureFlagsQryHandler(_repoMock.Object);
         var request = new GetAllFeatureFlagsQry();
         var cancellationToken = CancellationToken.None;
 
@@ -41,7 +41,7 @@ public class GetAllFeatureFlagsQryHandlerTests
         // Assert
         result.ShouldBeOfType<GenResult<IEnumerable<FeatureFlagDto>>>();
         result.Value?.Count().ShouldBe(mdls.Count);
-        await _repoMock.Received().GetAllAsync();
+        _repoMock.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
     //------------------------------------//
@@ -50,9 +50,9 @@ public class GetAllFeatureFlagsQryHandlerTests
     public async Task Handle_ShouldReturnEmptyList_WhenNoFeatureFlagsExist()
     {
         // Arrange
-        _repoMock.GetAllAsync().Returns([]);
+        _repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync((IReadOnlyList<FeatureFlag>)[]);
 
-        var handler = new GetAllFeatureFlagsQryHandler(_repoMock);
+        var handler = new GetAllFeatureFlagsQryHandler(_repoMock.Object);
         var request = new GetAllFeatureFlagsQry();
         var cancellationToken = CancellationToken.None;
 
@@ -62,7 +62,7 @@ public class GetAllFeatureFlagsQryHandlerTests
         // Assert
         result.ShouldBeOfType<GenResult<IEnumerable<FeatureFlagDto>>>();
         result.Value.ShouldBeEmpty();
-        await _repoMock.Received().GetAllAsync();
+        _repoMock.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
     //------------------------------------//

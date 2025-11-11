@@ -26,7 +26,6 @@
       <Folder Include="ApplicationImps\SignIn\" />
       <Folder Include="ApplicationImps\TwoFactor\" />
       <Folder Include="Features\MemberMgmt\Cmd\UpdateAddress\" />
-      <Folder Include="Jobs\" />
       <Folder Include="Services\Permissions\" />
     </ItemGroup>
 
@@ -42,7 +41,6 @@
 		</PackageReference>
 		<PackageReference Include="Lamar" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
-		<PackageReference Include="NSubstitute" />
 		<PackageReference Include="FluentValidation" />
 		<PackageReference Include="Moq" />
 		<PackageReference Include="Shouldly" />

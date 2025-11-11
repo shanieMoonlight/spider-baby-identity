@@ -3,7 +3,6 @@ using ID.Application.Features.OutboxMessages.Qry.GetById;
 using ID.Domain.Abstractions.Services.Outbox;
 using ID.Domain.Entities.OutboxMessages;
 using ID.Domain.Utility.Messages;
-using MassTransit;
 
 
 namespace ID.Application.Tests.Features.OutboxMsgs.Qry.GetById;
@@ -23,13 +22,12 @@ public class GetOutboxMessageByIdQryHandlerTests
     public async Task Handle_ShouldReturnOutboxMessageDto_WhenExists()
     {
         // Arrange
-        var outboxMsgId = NewId.NextGuid();
+        var outboxMsgId = Guid.NewGuid();
         var expectedOutboxMessage = OutboxMessageDataFactory.Create(id: outboxMsgId);
 
         _mockRepo.Setup(x => x.GetByIdAsync(outboxMsgId))
           .ReturnsAsync(expectedOutboxMessage);
 
-        //_mockRepo.GetByIdAsync(outboxMsgId).Returns(expectedOutboxMessage);
         var handler = new GetOutboxMessageByIdQryHandler(_mockRepo.Object);
 
         // Act

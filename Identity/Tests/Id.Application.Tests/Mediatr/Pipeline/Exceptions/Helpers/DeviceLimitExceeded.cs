@@ -1,12 +1,9 @@
-﻿using ClArch.ValueObjects;
-using ID.Domain.Entities.SubscriptionPlans;
+﻿using ID.Domain.Entities.SubscriptionPlans;
 using ID.Domain.Entities.SubscriptionPlans.ValueObjects;
 using ID.Domain.Utility.Exceptions;
-using MediatR;
 
 namespace ID.Application.Tests.Mediatr.Pipeline.Exceptions.Helpers;
 
-//- - - - - - - - - - - - - - - - - - //
 
 public class DeviceLimitExceededHandler : IRequestHandler<TestExceptionsRequest, BasicResult>
 {
@@ -42,6 +39,5 @@ public class DeviceLimitExceededExceptionTestHelper
 
 }
 
-//- - - - - - - - - - - - - - - - - - //
 
 

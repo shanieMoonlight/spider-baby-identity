@@ -1,9 +1,6 @@
-
-using System;
-using MassTransit;
-using TestingHelpers;
 using ID.Application.Features.OutboxMessages;
 using ID.Domain.Entities.OutboxMessages;
+using TestingHelpers;
 using TestingHelpers.RandomData;
 using TestingHelpers.Reflection;
 

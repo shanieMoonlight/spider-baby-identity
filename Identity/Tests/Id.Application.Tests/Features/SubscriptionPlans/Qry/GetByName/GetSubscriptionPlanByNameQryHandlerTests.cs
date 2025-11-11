@@ -1,25 +1,22 @@
-using ID.Tests.Data.Factories;
-using MassTransit;
-using MyResults;
-using NSubstitute;
 using ID.Application.Features.SubscriptionPlans;
 using ID.Application.Features.SubscriptionPlans.Qry.GetByName;
-using ID.Domain.Utility.Messages;
-using ID.Domain.Entities.SubscriptionPlans;
 using ID.Domain.Abstractions.Services.SubPlans;
+using ID.Domain.Entities.SubscriptionPlans;
+using Moq;
 
 namespace ID.Application.Tests.Features.SubscriptionPlans.Qry.GetByName;
+
 public class GetSubscriptionPlanByNameQryHandlerTests
 {
-    private readonly IIdentitySubscriptionPlanService _mockRepo;
+    private readonly Mock<IIdentitySubscriptionPlanService> _mockRepo;
     private readonly GetSubscriptionPlanByNameQryHandler _handler;
 
     //- - - - - - - - - - - - - - - - - - //
 
     public GetSubscriptionPlanByNameQryHandlerTests()
     {
-        _mockRepo = Substitute.For<IIdentitySubscriptionPlanService>();
-        _handler = new GetSubscriptionPlanByNameQryHandler(_mockRepo);
+        _mockRepo = new Mock<IIdentitySubscriptionPlanService>();
+        _handler = new GetSubscriptionPlanByNameQryHandler(_mockRepo.Object);
     }
 
     //------------------------------------//
@@ -28,7 +25,7 @@ public class GetSubscriptionPlanByNameQryHandlerTests
     public async Task Handle_ShouldReturnSubscriptionPlanDto_WhenExists()
     {
         // Arrange
-        var subscriptionPlanId = NewId.NextSequentialGuid();
+        var subscriptionPlanId = Guid.NewGuid();
         var subscriptionPlanName = "MySubscriptionPlan";
         var subscriptionPlanNameDescription = "MySubscriptionPlan_Description";
         var expectedSubscriptionPlan = SubscriptionPlanDataFactory.Create(
@@ -36,7 +33,7 @@ public class GetSubscriptionPlanByNameQryHandlerTests
             subscriptionPlanName,
             subscriptionPlanNameDescription);
 
-        _mockRepo.FirstByNameAsync(subscriptionPlanName).Returns(expectedSubscriptionPlan);
+        _mockRepo.Setup(r => r.FirstByNameAsync(subscriptionPlanName)).ReturnsAsync(expectedSubscriptionPlan);
 
         // Act
         var result = await _handler.Handle(new GetSubscriptionPlanByNameQry(subscriptionPlanName), CancellationToken.None);
@@ -55,7 +52,7 @@ public class GetSubscriptionPlanByNameQryHandlerTests
     {
         // Arrange
         var subscriptionPlanName = "NonExistentFeature";
-        _mockRepo.FirstByNameAsync(subscriptionPlanName).Returns((SubscriptionPlan?)null);
+        _mockRepo.Setup(r => r.FirstByNameAsync(subscriptionPlanName)).ReturnsAsync((SubscriptionPlan?)null);
 
         // Act
         var result = await _handler.Handle(new GetSubscriptionPlanByNameQry(subscriptionPlanName), CancellationToken.None);
@@ -83,8 +80,4 @@ public class GetSubscriptionPlanByNameQryHandlerTests
         Assert.False(result.Succeeded);
         Assert.True(result.NotFound);
     }
-
-    //------------------------------------//
-
-
 }

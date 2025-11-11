@@ -1,9 +1,4 @@
-using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Refreshing;
-using MassTransit;
-using TestingHelpers;
-using TestingHelpers.RandomData;
-using TestingHelpers.Reflection;
 
 namespace ID.Tests.Data.Factories;
 
@@ -28,14 +23,14 @@ public static class RefreshTokenDataFactory
         string? administratorId = null)
     {
 
-        id ??= NewId.NextSequentialGuid();
+        id ??= Guid.NewGuid();
         payload ??= $"{RandomStringGenerator.Generate(20)}{id}";
         expiresOnUtc ??= RandomDateGenerator.Generate(DateTime.Now.AddDays(5));
 
         if (user is not null)
             userId ??= user.Id;
         else
-            userId ??= NewId.NextSequentialGuid();
+            userId ??= Guid.NewGuid();
 
         administratorUsername ??= $"{RandomStringGenerator.Generate(20)}{id}";
         administratorId ??= $"{RandomStringGenerator.Generate(20)}{id}";

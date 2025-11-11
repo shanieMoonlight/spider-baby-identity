@@ -31,3 +31,29 @@ global using ID.Domain.Entities.Teams;
 global using ID.Infrastructure.Jobs.Imps.DbMntc.Jobs;
 global using Microsoft.Extensions.Logging;
 global using ID.Domain.Repos.Specs;
+
+global using ID.Domain.Claims.Utils;
+global using ID.GlobalSettings.Constants;
+global using ID.Infrastructure.Auth.AppAbs;
+global using ID.Infrastructure.Auth.AppImps;
+global using ID.Infrastructure.Setup.Options;
+global using Microsoft.AspNetCore.Authentication;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.Extensions.Hosting;
+global using Microsoft.IdentityModel.Tokens;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+
+global using ClArch.ValueObjects;
+global using ID.Domain.Utility.Messages;
+global using ID.Infrastructure.Auth.Cookies;
+global using ID.Infrastructure.Auth.Cookies.Services;
+global using ID.Infrastructure.Tests.Utility;
+global using Microsoft.AspNetCore.Authentication.Cookies;
+global using Microsoft.AspNetCore.Hosting;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.FileProviders;
+global using CookieOptions = ID.Infrastructure.Auth.Cookies.CookieOptions;
+
+global using UniqueId = ID.Domain.Entities.Devices.UniqueId;

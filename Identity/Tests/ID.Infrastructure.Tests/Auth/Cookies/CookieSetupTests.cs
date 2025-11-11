@@ -1,15 +1,4 @@
 using ID.Application.AppAbs.SignIn;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Utility.Messages;
-using ID.Infrastructure.Auth.Cookies;
-using ID.Infrastructure.Auth.Cookies.Services;
-using ID.Infrastructure.Tests.Utility;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Options;
 
 namespace ID.Infrastructure.Tests.Auth.Cookies;
 

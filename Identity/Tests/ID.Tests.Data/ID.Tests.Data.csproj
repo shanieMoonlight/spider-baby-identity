@@ -16,7 +16,7 @@
       <ProjectReference Include="..\..\AddOns\OAuth\ID.OAuth.Google\ID.OAuth.Google.csproj" />
       <ProjectReference Include="..\..\Core\ID.Domain\ID.Domain.csproj" />
       <ProjectReference Include="..\..\Core\ID.GlobalSettings\ID.GlobalSettings.csproj" />
-      <ProjectReference Include="..\..\Infrastructure\ID.Infrastructure\ID.Infrastructure.csproj" />
+      <!--<ProjectReference Include="..\..\Infrastructure\ID.Infrastructure\ID.Infrastructure.csproj" />-->
     </ItemGroup>
 
     <!--<ItemGroup>

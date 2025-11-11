@@ -3,8 +3,8 @@ using ID.GlobalSettings.Errors;
 using ID.GlobalSettings.Setup.Options;
 using ID.IntegrationEvents.Events.Account.PhoneConfirmation;
 using ID.PhoneConfirmation.Events.Integration;
-using ID.PhoneConfirmation.Tests.Utils;
 using ID.Tests.Data.GlobalOptions;
+using ID.Tests.Utility.Logging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -202,7 +202,7 @@ public class PhoneConfirmationConsumerTests_New
         await _consumer.HandleEventAsync(phoneConfirmationEvent);
 
         // Assert
-        ExceptionUtils.VerifyBasicResultLogging(_loggerMock, IdErrorEvents.Email.PhoneConfirmation, failureResult);
+        LoggingUtils.VerifyBasicResultLogging(_loggerMock, IdErrorEvents.Email.PhoneConfirmation, failureResult);
     }
 
     [Fact]
@@ -226,7 +226,7 @@ public class PhoneConfirmationConsumerTests_New
         await _consumer.HandleEventAsync(phoneConfirmationEvent);
 
         // Assert
-        ExceptionUtils.VerifyExceptionLogging(_loggerMock, IdErrorEvents.Email.PhoneConfirmation, exception);
+        LoggingUtils.VerifyExceptionLogging(_loggerMock, IdErrorEvents.Email.PhoneConfirmation, exception);
     }
 
     [Theory]

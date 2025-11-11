@@ -174,7 +174,7 @@ public static class LoggingUtils
             times ?? Times.Once);
     }
 
-    //------------------------//
+    //- - - - - - - - - - - - //
 
 
     public static void VerifyBasicResultLogging<TClass>(
@@ -193,6 +193,23 @@ public static class LoggingUtils
                 It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
             times ?? Times.Once);
     }
+
+    //- - - - - - - - - - - - //
+
+
+    public static void VerifyBasicResultLogging<TClass>(Mock<ILogger<TClass>> mockLogger, int eventId, BasicResult result)
+        where TClass : class
+    {
+        mockLogger.Verify(
+            l => l.Log(
+                LogLevel.Error,
+                eventId,
+                It.Is<It.IsAnyType>((v, t) => true),
+                result.Exception,
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+            Times.Once);
+    }
+
 
     //------------------------//
 

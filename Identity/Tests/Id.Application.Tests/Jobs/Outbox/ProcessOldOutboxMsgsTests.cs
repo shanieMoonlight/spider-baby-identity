@@ -1,3 +1,4 @@
+using ID.Application.Jobs.Abstractions;
 using ID.Application.Jobs.OutboxMsgs;
 using ID.Domain.Repos.Specs.NewFolder.OutboxMsgs;
 using ID.Tests.Utility.Logging;
@@ -78,4 +79,21 @@ public class ProcessOldOutboxMsgsTests : ServiceProviderTestBase
         // Assert
         _loggerMock.VerifyErrorLogging(times: () => Times.Never());
     }
-}
+
+    //------------------------------//
+
+    [Fact]
+    public void OldRefreshTokensJob_ShouldHaveDisableConcurrentExecutionAttribute()
+    {
+        // Arrange & Act
+        var methodInfo = typeof(Process_Old_MyIdOutboxMsgs).GetMethod("HandleAsync");
+        var attribute = methodInfo?.GetCustomAttributes(typeof(MyIdDisableConcurrentExecutionAttribute), false).FirstOrDefault() as MyIdDisableConcurrentExecutionAttribute;
+
+        // Assert
+        attribute.ShouldNotBeNull();
+        attribute.TimeoutSec.ShouldBe(300);
+    }
+
+
+
+}//Cls

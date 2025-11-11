@@ -1,6 +1,6 @@
 using System;
 
-namespace ID.Application.Jobs.@Abstractions;
+namespace ID.Application.Jobs.Abstractions;
 
 /// <summary>
 /// Abstraction for producing cron schedule expressions so the application

@@ -1,3 +1,4 @@
+using ID.Application.Jobs.Abstractions;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
 using ID.Tests.Utility.ServiceProvider;
 
@@ -124,6 +125,21 @@ public class TeamLeaderMntcJobTests : ServiceProviderTestBase
         // Verify team leader was NOT set
         team1.Leader.ShouldBeNull();
     }
+
+    //------------------------------//
+
+    [Fact]
+    public void OldRefreshTokensJob_ShouldHaveDisableConcurrentExecutionAttribute()
+    {
+        // Arrange & Act
+        var methodInfo = typeof(TeamLeaderMntcJob).GetMethod("HandleAsync");
+        var attribute = methodInfo?.GetCustomAttributes(typeof(MyIdDisableConcurrentExecutionAttribute), false).FirstOrDefault() as MyIdDisableConcurrentExecutionAttribute;
+
+        // Assert
+        attribute.ShouldNotBeNull();
+        attribute.TimeoutSec.ShouldBe(300);
+    }
+
 
 
 }//Cls

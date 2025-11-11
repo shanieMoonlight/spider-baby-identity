@@ -26,13 +26,16 @@ public class OutboxMsgsUnprocessedSpecTests
     {
         // Arrange
         var msg = IdOutboxMessageDataFactory.Create(
-            processedOn: DateTime.UtcNow
+            processedOn: DateTime.UtcNow.AddDays(-1)
         );
 
         var spec = UnprocessedOutboxMsgsSpec.Create();
         var criteria = spec.TESTING_GetCriteria().Compile();
 
         // Assert
+        Console.WriteLine($" criteria(msg): {criteria(msg)}");
+        Console.WriteLine($" msg: {msg}");
+
         criteria(msg).ShouldBeFalse();
     }
 

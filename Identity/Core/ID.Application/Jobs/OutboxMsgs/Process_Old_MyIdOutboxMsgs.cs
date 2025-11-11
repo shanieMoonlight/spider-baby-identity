@@ -1,5 +1,4 @@
-﻿using Hangfire;
-using ID.Application.Jobs.Abstractions;
+﻿using ID.Application.Jobs.Abstractions;
 using ID.Domain.Repos;
 using ID.Domain.Repos.Specs.NewFolder.OutboxMsgs;
 using ID.GlobalSettings.Errors;
@@ -18,7 +17,7 @@ internal sealed class Process_Old_MyIdOutboxMsgs(
     : AMyIdJobHandler("OLD_OUTBOX_MSGS")
 {
 
-    [DisableConcurrentExecution(timeoutInSeconds: 300)]
+    [MyIdDisableConcurrentExecution(timeoutInSeconds: 300)]
     [DisplayName("MyId - Remove Old Outbox Msgs")]
     public async Task HandleAsync()
     {

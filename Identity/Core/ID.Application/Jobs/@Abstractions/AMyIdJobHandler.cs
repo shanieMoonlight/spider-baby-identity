@@ -1,4 +1,4 @@
-﻿namespace ID.Application.Jobs.@Abstractions;
+﻿namespace ID.Application.Jobs.Abstractions;
 
 /// <summary>
 /// All Jobs need a JobId. 

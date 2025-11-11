@@ -1,4 +1,4 @@
-using Hangfire;
+using ID.Application.Jobs.Abstractions;
 using ID.Tests.Utility.ServiceProvider;
 
 namespace ID.Application.Tests.Jobs.DbMntc.Refreshing;
@@ -86,7 +86,7 @@ public class OldRefreshTokensJobTests : ServiceProviderTestBase
     {
         // Arrange & Act
         var methodInfo = typeof(OldRefreshTokensJob).GetMethod("HandleAsync");
-        var attribute = methodInfo?.GetCustomAttributes(typeof(DisableConcurrentExecutionAttribute), false).FirstOrDefault() as DisableConcurrentExecutionAttribute;
+        var attribute = methodInfo?.GetCustomAttributes(typeof(MyIdDisableConcurrentExecutionAttribute), false).FirstOrDefault() as MyIdDisableConcurrentExecutionAttribute;
 
         // Assert
         attribute.ShouldNotBeNull();

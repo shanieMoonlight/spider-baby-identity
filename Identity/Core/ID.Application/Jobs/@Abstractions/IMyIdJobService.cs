@@ -1,7 +1,7 @@
 ﻿using ID.Application.Jobs.Models;
 using System.Linq.Expressions;
 
-namespace ID.Application.Jobs.@Abstractions;
+namespace ID.Application.Jobs.Abstractions;
 
 /// <summary>
 /// Interface providing methods to manage background and recurring jobs in the Identity system.

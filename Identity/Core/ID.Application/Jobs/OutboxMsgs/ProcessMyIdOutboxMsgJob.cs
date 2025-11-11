@@ -1,16 +1,13 @@
-﻿using Hangfire;
-using ID.Application.Jobs.Abstractions;
+﻿using ID.Application.Jobs.Abstractions;
 using ID.Domain.Abstractions.Events;
 using ID.Domain.Entities.OutboxMessages;
 using ID.Domain.Repos;
-using ID.Domain.Repos.Specs;
 using ID.Domain.Repos.Specs.NewFolder.OutboxMsgs;
 using ID.Domain.Utility.Json;
 using ID.Domain.Utility.Messages;
 using ID.GlobalSettings.Errors;
 using LoggingHelpers;
 using MediatR;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -26,7 +23,7 @@ internal sealed class ProcessMyIdOutboxMsgJob(IServiceProvider _serviceProvider,
     : AMyIdJobHandler("OUTBOX_HANDLER")
 {
 
-    [DisableConcurrentExecution(timeoutInSeconds: 300)]
+    [MyIdDisableConcurrentExecution(timeoutInSeconds: 300)]
     [DisplayName("MyId - Process Outbox Msgs")]
     public async Task HandleAsync()
     {

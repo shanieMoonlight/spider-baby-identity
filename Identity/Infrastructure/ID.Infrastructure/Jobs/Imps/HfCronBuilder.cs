@@ -1,5 +1,5 @@
 ﻿using Hangfire;
-using ID.Application.Jobs.@Abstractions;
+using ID.Application.Jobs.Abstractions;
 
 namespace ID.Infrastructure.Jobs.Imps;
 

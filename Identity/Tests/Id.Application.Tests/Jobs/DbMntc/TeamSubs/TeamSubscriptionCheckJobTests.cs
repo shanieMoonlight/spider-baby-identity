@@ -1,3 +1,4 @@
+using ID.Application.Jobs.Abstractions;
 using ID.Domain.Abstractions.Services.Transactions;
 using ID.Tests.Utility.ServiceProvider;
 
@@ -71,6 +72,20 @@ public class TeamSubscriptionCheckJobTests : ServiceProviderTestBase
             It.Is<Func<It.IsAnyType, Exception?, string>>((v, t) => true)), Times.Once);
     }
 
-    //------------------------------------//
+    //------------------------------//
+
+    [Fact]
+    public void OldRefreshTokensJob_ShouldHaveDisableConcurrentExecutionAttribute()
+    {
+        // Arrange & Act
+        var methodInfo = typeof(TeamSubscriptionCheckJob).GetMethod("HandleAsync");
+        var attribute = methodInfo?.GetCustomAttributes(typeof(MyIdDisableConcurrentExecutionAttribute), false).FirstOrDefault() as MyIdDisableConcurrentExecutionAttribute;
+
+        // Assert
+        attribute.ShouldNotBeNull();
+        attribute.TimeoutSec.ShouldBe(300);
+    }
+
+
 
 }

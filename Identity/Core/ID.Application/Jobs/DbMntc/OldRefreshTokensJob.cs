@@ -1,5 +1,4 @@
-﻿using Hangfire;
-using ID.Application.Jobs.Abstractions;
+﻿using ID.Application.Jobs.Abstractions;
 using ID.Domain.Repos;
 using ID.GlobalSettings.Errors;
 using ID.Infrastructure.Persistance.EF.Repos.Specs.RefreshTokens;
@@ -9,9 +8,9 @@ using Microsoft.Extensions.Logging;
 
 namespace ID.Application.Jobs.DbMntc;
 internal sealed class OldRefreshTokensJob(IServiceProvider _serviceProvider, ILogger<OldRefreshTokensJob> logger)
-     : AMyIdJobHandler("OLD_REFRESH_TOKENS_JOB")
+ : AMyIdJobHandler("OLD_REFRESH_TOKENS_JOB")
 {
-    [DisableConcurrentExecution(timeoutInSeconds: 300)]
+    [MyIdDisableConcurrentExecution(300)]
     public async Task HandleAsync(CancellationToken cancellationToken)
     {
         try

@@ -1,5 +1,4 @@
-﻿using Hangfire;
-using ID.Application.Jobs.Abstractions;
+﻿using ID.Application.Jobs.Abstractions;
 using ID.Application.Utility;
 using ID.Domain.Entities.Teams.Validators;
 using ID.Domain.Repos;
@@ -15,7 +14,7 @@ namespace ID.Application.Jobs.DbMntc;
 internal sealed class TeamLeaderMntcJob(IServiceProvider _serviceProvider, ILogger<TeamLeaderMntcJob> logger)
     : AMyIdJobHandler("TEAM_LEADER_MNTC_JOB")
 {
-    [DisableConcurrentExecution(timeoutInSeconds: 300)]
+    [MyIdDisableConcurrentExecution(timeoutInSeconds: 300)]
     [DisplayName("MyId - Missing team leader job")]
     public async Task HandleAsync(CancellationToken cancellationToken)
     {

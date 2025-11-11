@@ -110,8 +110,8 @@
 
 
 	<ItemGroup>
-		<ProjectReference Include="..\Identity\Core\ID.Domain\ID.Domain.csproj" />
-		<ProjectReference Include="..\Libs\ClArch.SimpleSpecification\ClArch.SimpleSpecification.csproj" />
+	  <ProjectReference Include="..\..\..\Libs\ClArch.SimpleSpecification\ClArch.SimpleSpecification.csproj" />
+	  <ProjectReference Include="..\ID.Domain\ID.Domain.csproj" />
 	</ItemGroup>
 
 </Project>

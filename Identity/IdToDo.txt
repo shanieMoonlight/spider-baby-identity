@@ -113,7 +113,7 @@ rename any GetByIdAsync to FirstByIdAsync for clarity and similar in all domain-
  remove MyIdLoggingEvents (or merge with IdErrorEvents)
 
 
- MOve Spec tests to domain tests
+ 
 
 
  Merge ExceptionUtils with LoggingUtils

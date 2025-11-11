@@ -1,6 +1,4 @@
 ﻿using ID.Application.AppAbs.ExtraClaims;
-using ID.Application.AppAbs.RequestInfo;
-using ID.Application.Jobs;
 using ID.Application.Setup;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
@@ -14,7 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Diagnostics;
 
 
@@ -151,8 +148,7 @@ public static class IdApiSetupExtensions
         {
             app.UseMyIdApplication();
             app.UseMyIdInfrastructure(minTypeDashboardAccess);
-            var cancellationTokenSource = new CancellationTokenSource();
-            //app.ApplicationServices.StartRecurringMyIdJobs(cancellationTokenSource.Token);
+
         }
         catch (Exception e)
         {

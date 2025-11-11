@@ -1,5 +1,5 @@
-﻿using ID.Domain.Abstractions.Services.Transactions;
-using ID.Domain.Entities.AppUsers;
+﻿using ID.Domain.Entities.AppUsers;
+using ID.Domain.Repos.Transactions;
 
 namespace ID.Domain.Repos;
 internal interface IIdUnitOfWork : IDisposable
@@ -11,9 +11,11 @@ internal interface IIdUnitOfWork : IDisposable
     IIdentityOutboxMessageRepo OutboxMessageRepo { get; }
     IIdentityMemberAuditRepo<AppUser> MemberRepo { get; }
 
+    Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
+    Task<IIdExecutionStrategy> CreateExecutionStrategy();
     Task<IIdTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default);
 
-    Task SaveChangesAsync(CancellationToken cancellationToken = default);
+
 
 }//int

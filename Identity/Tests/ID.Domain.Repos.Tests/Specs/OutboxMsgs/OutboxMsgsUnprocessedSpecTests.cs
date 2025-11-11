@@ -1,8 +1,9 @@
 using ID.Domain.Repos.Specs.NewFolder.OutboxMsgs;
+using Xunit.Abstractions;
 
 namespace ID.Domain.Repos.Tests.Specs.OutboxMsgs;
 
-public class OutboxMsgsUnprocessedSpecTests
+public class OutboxMsgsUnprocessedSpecTests(ITestOutputHelper _output)
 {
     [Fact]
     public void Criteria_ReturnsTrue_If_NotProcessed()
@@ -26,11 +27,14 @@ public class OutboxMsgsUnprocessedSpecTests
     {
         // Arrange
         var msg = IdOutboxMessageDataFactory.Create(
-            processedOn: DateTime.UtcNow
+            processedOn: DateTime.UtcNow.AddDays(-1)
         );
 
         var spec = UnprocessedOutboxMsgsSpec.Create();
         var criteria = spec.TESTING_GetCriteria().Compile();
+
+        _output.WriteLine($"msg: {msg}");
+        _output.WriteLine($"ProcessedOn: {msg.ProcessedOnUtc}");
 
         // Assert
         criteria(msg).ShouldBeFalse();

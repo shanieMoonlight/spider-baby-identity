@@ -6,6 +6,12 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Compile Remove="Persistance\Abstractions\**" />
+      <EmbeddedResource Remove="Persistance\Abstractions\**" />
+      <None Remove="Persistance\Abstractions\**" />
+    </ItemGroup>
+
     <!--<ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
@@ -57,12 +63,6 @@
       <PackageReference Include="Hangfire" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
-    </ItemGroup>
-
-
-
-    <ItemGroup>
-      <Folder Include="Persistance\Abstractions\Repos\" />
     </ItemGroup>
     
 </Project>

@@ -1,13 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-
-namespace ID.Domain.Abstractions.Services.Transactions;
+﻿namespace ID.Domain.Repos.Transactions;
 
 /// <summary>
 /// Interface for handling identity transactions.
 /// </summary>
 public interface IIdentityTransactionService
 {
-    //- - - - - - - - - - - - //
+    /// <summary>
+    ///     Creates an instance of the configured <see cref="IIdExecutionStrategy" />.
+    /// </summary>
+    /// <returns>An <see cref="IIdExecutionStrategy" /> instance.</returns>
+    Task<IIdExecutionStrategy> CreateExecutionStrategyAsync();
+
+    //- - - - - - - - - - - - - //
+
 
     /// <summary>
     /// Begins a new transaction asynchronously.
@@ -26,5 +31,4 @@ public interface IIdentityTransactionService
     /// <returns>A task that represents the asynchronous save operation.</returns>
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 
-    //- - - - - - - - - - - - //
-}
+}//Int

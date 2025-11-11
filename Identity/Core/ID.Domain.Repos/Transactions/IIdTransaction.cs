@@ -1,4 +1,4 @@
-﻿namespace ID.Domain.Abstractions.Services.Transactions;
+﻿namespace ID.Domain.Repos.Transactions;
 
 public interface IIdTransaction : IDisposable
 {
@@ -18,4 +18,5 @@ public interface IIdTransaction : IDisposable
     /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
     /// <exception cref="OperationCanceledException">If the <see cref="CancellationToken" /> is canceled.</exception>
     Task RollbackAsync(CancellationToken cancellationToken = default);
-}
+
+}//Int

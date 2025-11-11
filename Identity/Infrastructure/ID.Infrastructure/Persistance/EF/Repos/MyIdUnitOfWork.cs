@@ -1,8 +1,8 @@
 ﻿using ID.Application.AppAbs.RequestInfo;
-using ID.Domain.Abstractions.Services.Transactions;
 using ID.Domain.Entities.AppUsers;
 using ID.Infrastructure.DomainServices.Transactions;
 using ID.Domain.Repos;
+using ID.Domain.Repos.Transactions;
 
 namespace ID.Infrastructure.Persistance.EF.Repos;
 internal class MyIdUnitOfWork(
@@ -41,12 +41,19 @@ internal class MyIdUnitOfWork(
 
     //-----------------------//
 
+    public Task<IIdExecutionStrategy> CreateExecutionStrategy()
+    {
+        var dbContextExecutionStrategy = db.Database.CreateExecutionStrategy();
+        var adapter = new EfCoreExecutionStrategyAdapter(dbContextExecutionStrategy);
+        return Task.FromResult<IIdExecutionStrategy>(adapter);
+    }
+    
+    //- - - - - - - - - - - -//
+
     public async Task<IIdTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
     {
         var dbContextTransaction = await db.Database.BeginTransactionAsync(cancellationToken);
         return new IdTransaction(dbContextTransaction);
     }
-
-    //-----------------------//
 
 }//Cls

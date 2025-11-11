@@ -1,9 +1,15 @@
-﻿using ID.Domain.Abstractions.Services.Transactions;
-using ID.Domain.Repos;
+﻿using ID.Domain.Repos;
+using ID.Domain.Repos.Transactions;
 
 namespace ID.Infrastructure.DomainServices.Transactions;
-internal class IdentityTransactionService(IIdUnitOfWork uow) : IIdentityTransactionService
+internal class IdEfTransactionService(IIdUnitOfWork uow) : IIdentityTransactionService
 {
+
+    public Task<IIdExecutionStrategy> CreateExecutionStrategyAsync() =>
+        uow.CreateExecutionStrategy();
+
+    //------------------------//
+
     public async Task<IIdTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default) =>
         await uow.BeginTransactionAsync(cancellationToken);
 
@@ -12,6 +18,5 @@ internal class IdentityTransactionService(IIdUnitOfWork uow) : IIdentityTransact
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default) =>
         await uow.SaveChangesAsync(cancellationToken);
 
-    //---------------------------------//
 
 }//Cls

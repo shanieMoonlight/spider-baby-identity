@@ -110,5 +110,3 @@ rename any GetByIdAsync to FirstByIdAsync for clarity and similar in all domain-
  Update transaction service
  remove MyIdLoggingEvents (or merge with IdErrorEvents)
 
-
- Merge ExceptionUtils with LoggingUtils

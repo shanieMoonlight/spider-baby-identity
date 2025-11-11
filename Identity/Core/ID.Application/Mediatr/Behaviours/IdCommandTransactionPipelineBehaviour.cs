@@ -1,6 +1,6 @@
 ﻿using ID.Application.Features.Account.Cmd.Login;
 using ID.Application.Mediatr.CqrsAbs;
-using ID.Domain.Abstractions.Services.Transactions;
+using ID.Domain.Repos.Transactions;
 using MediatR;
 using MyResults;
 
@@ -10,30 +10,37 @@ public sealed class IdCommandTransactionPipelineBehaviour<TRequest, TResponse>(I
     where TRequest : IBaseIdCommand
     where TResponse : BasicResult
 {
-    
+
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        using var transaction = await transactionService.BeginTransactionAsync(cancellationToken);
-        try
-        {
-            var response = await next(cancellationToken);
-            if (IdCommandTransactionPipelineBehaviour<TRequest, TResponse>.IsSuccessful(request, response))
-            {
-                await transactionService.SaveChangesAsync(cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
-            }
-            else
-            {
-                await transaction.RollbackAsync(cancellationToken);
-            }
+        // Get the execution strategy from the transaction service and run the transactional unit inside it.
+        var strategy = await transactionService.CreateExecutionStrategyAsync();
 
-            return response;
-        }
-        catch (Exception)
+        return await strategy.ExecuteAsync(async ct =>
         {
-            await transaction.RollbackAsync(cancellationToken);
-            throw;
-        }
+            using var transaction = await transactionService.BeginTransactionAsync(ct);
+            try
+            {
+                // Pass the token downstream if the RequestHandlerDelegate accepts it.
+                var response = await next(ct);
+                if (IdCommandTransactionPipelineBehaviour<TRequest, TResponse>.IsSuccessful(request, response))
+                {
+                    await transactionService.SaveChangesAsync(ct);
+                    await transaction.CommitAsync(ct);
+                }
+                else
+                {
+                    await transaction.RollbackAsync(ct);
+                }
+
+                return response;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync(ct);
+                throw;
+            }
+        }, cancellationToken);
     }
 
     //---------------------------------//
@@ -45,6 +52,5 @@ public sealed class IdCommandTransactionPipelineBehaviour<TRequest, TResponse>(I
         ||
         request is LoginCmd && response.PreconditionRequired;
 
-    //---------------------------------//
 
 }//Cls

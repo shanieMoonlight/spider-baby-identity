@@ -15,10 +15,5 @@ public abstract class AMyIdJobHandler(string jobId)
     /// </summary>
     public abstract Task HandleAsync();
 
-    ///// <summary>
-    ///// Optional overload that accepts a CancellationToken. Default implementation delegates to the parameterless HandleAsync.
-    ///// Implement this overload in handlers that need cancellation support.
-    ///// </summary>
-    //public virtual Task HandleAsync(CancellationToken cancellationToken) => HandleAsync();
 
 }//Int

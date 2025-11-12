@@ -7,7 +7,8 @@ using System.Reflection;
 namespace ID.Jobs.Quartz;
 
 [DisallowConcurrentExecution]
-internal sealed class HandlerAdapter<THandler>(IServiceProvider _provider, ILogger<HandlerAdapter<THandler>> _logger) : IJob where THandler : class
+internal sealed class HandlerAdapter<THandler>(IServiceProvider _provider, ILogger<HandlerAdapter<THandler>> _logger) 
+    : IJob where THandler : class
 {
 
     // cache delegates per method name for this handler type

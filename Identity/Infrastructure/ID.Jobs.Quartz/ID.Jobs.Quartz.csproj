@@ -23,9 +23,9 @@
 	</ItemGroup>
 
 
-	<ItemGroup>
-	  <Folder Include="Persistence\Entities\" />
-	  <Folder Include="Persistence\Config\" />
-	</ItemGroup>
+  <!-- Embedded SQL script for optional DB initialization -->
+  <ItemGroup>
+    <EmbeddedResource Include="Persistence\Initializers\SQL\QUARTZ_INIT_SQL.sql" />
+  </ItemGroup>
 
 </Project>

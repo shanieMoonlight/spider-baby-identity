@@ -1,5 +1,6 @@
 using ID.Application.Jobs.Abstractions;
 using ID.Application.Jobs.Models;
+using ID.Jobs.Quartz.Imps.JobService;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using Quartz.Impl.Matchers;
@@ -7,7 +8,7 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace ID.Jobs.Quartz;
+namespace ID.Jobs.Quartz.Imps;
 
 internal sealed class QuartzMyIdJobService(ISchedulerFactory _schedulerFactory, ILogger<QuartzMyIdJobService> _logger)
     : IMyIdJobService
@@ -81,6 +82,8 @@ internal sealed class QuartzMyIdJobService(ISchedulerFactory _schedulerFactory, 
             Debug.WriteLine($"cronFrequencyExpression:{cronFrequencyExpression}");
             Debug.WriteLine(e.Message);
             Debug.WriteLine(e.StackTrace);
+            _logger.LogError("Failed to schedule job {JobId}. (cron={CronFrequencyExpression}) (error={Error}.  trace={StackTrace})", 
+                jobId, cronFrequencyExpression, e.Message, e.StackTrace);
             throw;
         }
     }

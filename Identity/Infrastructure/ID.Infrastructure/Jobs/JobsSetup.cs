@@ -4,6 +4,7 @@ using ID.Jobs.Quartz; // switched to Quartz implementation
 using ID.Infrastructure.Setup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using ID.Jobs.Quartz.Imps;
 
 namespace ID.Infrastructure.Jobs;
 

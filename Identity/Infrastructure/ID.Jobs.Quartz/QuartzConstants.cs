@@ -4,6 +4,13 @@ internal class QuartzConstants
     public const string HandlerTypeKey = "HandlerType";
     public const string MethodNameKey = "MethodName";
     public const string JobGroup = "MyIdJobs";
-    public const string SCHEMA = "myid_qtz";
+    public const string Schema = "myid_qtz";
+    public const string TablePrefix = "QRTZ_";
 
+
+    public static class DbUp
+    {
+        public const string JournalTable = "SchemaVersions";
+        public const string JournalSchema = Schema;
+    }
 }

@@ -1,8 +1,8 @@
-﻿using ID.Application.Jobs.Abstractions;
-using ID.Application.Models;
-using ID.Jobs.Quartz.Persistence.Initializers.SQL;
+﻿using ID.Application.Models;
+using ID.Jobs.Quartz.Imps;
+using ID.Jobs.Quartz.Persistence.Initializers;
+using ID.Jobs.Quartz.Servers;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace ID.Jobs.Quartz;
 public static class Setup
@@ -14,22 +14,20 @@ public static class Setup
         string connectionString,
         bool ensureDb = true)
     {
-        if (string.IsNullOrWhiteSpace(connectionString)) throw new ArgumentNullException(nameof(connectionString));
+        ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
 
         // Optionally ensure DB objects exist (opt-in)
         if (ensureDb)
-        {
-            // default embedded resource name from initializer
-            QuartzDbInitializer_SQL.EnsureQuartzSchemaAsyncFromEmbeddedResource(connectionString)
-                .GetAwaiter().GetResult();
-        }   
+            QuartzDbMigrator.EnsureSchema(databaseType, connectionString);
 
-        services.AddScoped<ICronBuilder, QuartzCronBuilder>();
+        services.AddMyIdQuartzJobs();
 
-        services.AddMyIdIsolatedQuartz(connectionString, schema: QuartzConstants.SCHEMA);
-
-        // ensure handler adapter open-generic is registered
-        services.AddTransient(typeof(HandlerAdapter<>));
+        services.AddIsolatedQuartz(
+            databaseType: databaseType,
+            connectionString: connectionString, 
+            schema: QuartzConstants.Schema,
+            tablePrefix: QuartzConstants.TablePrefix
+        );
 
         return services;
     }

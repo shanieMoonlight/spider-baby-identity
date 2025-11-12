@@ -118,3 +118,14 @@ rename any GetByIdAsync to FirstByIdAsync for clarity and similar in all domain-
 
         Stop using magic strings:      var handlerTypeName = data.GetString("HandlerType");
         var methodName = data.GetString("MethodName");
+
+
+
+HandlerAdapter  decide on throw or not:  
+                if (func == null)
+                {
+                    _logger.LogError("Unsupported handler signature for {Handler}.{Method}", typeof(THandler).FullName, methodName);
+                    func = (h, ct) => Task.CompletedTask; // sentinel: no-op (or throw)
+                    _methodCache.TryAdd(methodName, func);
+                    return; // optionally return so job doesn't call sentinel
+                }

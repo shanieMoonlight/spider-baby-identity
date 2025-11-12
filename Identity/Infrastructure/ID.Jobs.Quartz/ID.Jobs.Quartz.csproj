@@ -6,6 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Persistence\Initializers\Postgres\Migrations\001-create-quartz-3_15-1.sql" />
+    <None Remove="Persistence\Initializers\SqlServer\Migrations\001-create-quartz-3_15-1.sql" />
+    <None Remove="Persistence\Initializers\SqlServer\Migrations\002-add-myid-test-column.sql" />
+  </ItemGroup>
+
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Libs\ClArch.SimpleSpecification\ClArch.SimpleSpecification.csproj" />
@@ -15,8 +21,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Data.SqlClient" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+		<PackageReference Include="dbup" />
+		<PackageReference Include="dbup-postgresql" />
+		<PackageReference Include="dbup-sqlserver" />
 		<PackageReference Include="Quartz" />
 		<PackageReference Include="Quartz.Extensions.Hosting" />
 		<PackageReference Include="Quartz.Serialization.Json" />
@@ -25,7 +32,10 @@
 
   <!-- Embedded SQL script for optional DB initialization -->
   <ItemGroup>
-    <EmbeddedResource Include="Persistence\Initializers\SQL\QUARTZ_INIT_SQL.sql" />
+	  <!-- embed all SQL migrations for SQL Server -->
+	  <EmbeddedResource Include="Persistence\Initializers\SqlServer\Migrations\*.sql" />
+	  <!-- embed Postgres migrations similarly -->
+	  <EmbeddedResource Include="Persistence\Initializers\Postgres\Migrations\*.sql" />
   </ItemGroup>
 
 </Project>

@@ -3,14 +3,17 @@ using Microsoft.Extensions.Logging;
 using Quartz;
 using System.Collections.Concurrent;
 using System.Reflection;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Runtime.ExceptionServices;
 
-namespace ID.Jobs.Quartz;
+namespace ID.Jobs.Quartz.Imps.JobService;
 
 [DisallowConcurrentExecution]
-internal sealed class HandlerAdapter<THandler>(IServiceProvider _provider, ILogger<HandlerAdapter<THandler>> _logger) 
+internal sealed class HandlerAdapter<THandler>(IServiceProvider _provider, ILogger<HandlerAdapter<THandler>> _logger)
     : IJob where THandler : class
 {
-
     // cache delegates per method name for this handler type
     private static readonly ConcurrentDictionary<string, Func<THandler, CancellationToken, Task>> _methodCache = new();
 
@@ -35,11 +38,24 @@ internal sealed class HandlerAdapter<THandler>(IServiceProvider _provider, ILogg
 
         try
         {
-            var func = _methodCache.GetOrAdd(methodName, CreateDelegateForMethod);
-            if (func == null)
+            if (!_methodCache.TryGetValue(methodName, out var func))
             {
-                _logger.LogError("Unable to create delegate for method '{Method}' on handler {Handler}.", methodName, typeof(THandler).FullName);
-                return;
+                var created = CreateDelegateForMethod(methodName);
+                if (created == null)
+                {
+                    var ex = new InvalidOperationException($"Unsupported handler signature for {typeof(THandler).FullName}.{methodName}");
+                    _logger.LogError(ex, "Unsupported handler signature for {Handler}.{Method}", typeof(THandler).FullName, methodName);
+
+                    // cache a sentinel that throws for subsequent calls
+                    Task throwing(THandler h, CancellationToken ct) => throw ex;
+                    _methodCache.TryAdd(methodName, throwing);
+
+                    // throw now so Quartz records a failure
+                    throw ex;
+                }
+
+                _methodCache.TryAdd(methodName, created);
+                func = created;
             }
 
             await func(handler, context.CancellationToken).ConfigureAwait(false);
@@ -47,7 +63,8 @@ internal sealed class HandlerAdapter<THandler>(IServiceProvider _provider, ILogg
         catch (TargetInvocationException tie) when (tie.InnerException != null)
         {
             _logger.LogError(tie.InnerException, "Unhandled exception in handler '{Handler}.{Method}'", typeof(THandler).FullName, methodName);
-            throw tie.InnerException;
+            // rethrow preserving stack if desired
+            ExceptionDispatchInfo.Capture(tie.InnerException).Throw();
         }
         catch (Exception ex)
         {
@@ -58,17 +75,17 @@ internal sealed class HandlerAdapter<THandler>(IServiceProvider _provider, ILogg
 
     //-----------------------//
 
-    private static Func<THandler, CancellationToken, Task> CreateDelegateForMethod(string methodName)
+    private static Func<THandler, CancellationToken, Task>? CreateDelegateForMethod(string methodName)
     {
         var method = typeof(THandler).GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
         if (method == null)
-            return null!;
+            return null;
 
         var parameters = method.GetParameters();
 
         // parameterless Task-returning method
         if (parameters.Length == 0 && method.ReturnType == typeof(Task))
-            return (handler, ct) => (Task)method.Invoke(handler, [])!;
+            return (handler, ct) => (Task)method.Invoke(handler, Array.Empty<object?>())!;
 
         // single CancellationToken parameter and Task return
         if (parameters.Length == 1 && parameters[0].ParameterType == typeof(CancellationToken) && method.ReturnType == typeof(Task))
@@ -82,17 +99,17 @@ internal sealed class HandlerAdapter<THandler>(IServiceProvider _provider, ILogg
             catch
             {
                 // fallback to reflection wrapper
-                return (handler, ct) => (Task)method.Invoke(handler, new object[] { ct })!;
+                return (handler, ct) => (Task)method.Invoke(handler, new object?[] { ct })!;
             }
         }
 
         // void returning parameterless method
-        if (parameters.Length != 0 || method.ReturnType != typeof(void))           
-            return null!; // unsupported signature
+        if (parameters.Length != 0 || method.ReturnType != typeof(void))
+            return null; // unsupported signature
 
         return (handler, ct) =>
         {
-            method.Invoke(handler, []);
+            method.Invoke(handler, Array.Empty<object?>());
             return Task.CompletedTask;
         };
     }

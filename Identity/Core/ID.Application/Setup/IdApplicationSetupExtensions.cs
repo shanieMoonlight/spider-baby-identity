@@ -10,7 +10,6 @@ using ID.GlobalSettings.Testing.Wrappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System.Threading;
 
 namespace ID.Application.Setup;
 
@@ -77,8 +76,7 @@ public static class IdApplicationSetupExtensions
         app.UseCustomExceptionHandler(new MyIdExceptionConverter());
 
 
-        var cancellationTokenSource = new CancellationTokenSource();
-        app.ApplicationServices.StartRecurringMyIdJobs(cancellationTokenSource.Token);
+        app.ApplicationServices.StartRecurringMyIdJobs();
 
         return app;
     }

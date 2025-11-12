@@ -1,4 +1,5 @@
-﻿using ID.Infrastructure.Jobs.Service.HangFire;
+﻿using ID.Application.Models;
+using ID.Infrastructure.Jobs.Service.HangFire;
 using ID.Infrastructure.Jobs.Service.HangFire.Background.Mgrs.Abs;
 using ID.Infrastructure.Jobs.Service.HangFire.Instance.Abs;
 using ID.Infrastructure.Jobs.Service.HangFire.Recurring.Mgrs.Abs;
@@ -21,7 +22,7 @@ public class HangfireJobsSetupTests
         // Act
         try
         {
-            HangfireJobsSetup.AddMyIdHangfireJobs(services, options);
+            HangfireJobsSetup.AddMyIdHangfireJobs(services, DatabaseType.SqlServer,  options);
         }
         catch (Exception)
         {

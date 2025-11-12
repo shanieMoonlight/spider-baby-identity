@@ -1,7 +1,7 @@
 ﻿using Hangfire;
 using ID.Application.Jobs.Abstractions;
 
-namespace ID.Infrastructure.Jobs.Imps;
+namespace ID.Infrastructure.Jobs.Service.HangFire.Imps;
 
 internal class HfCronBuilder : ICronBuilder
 {

@@ -20,7 +20,7 @@ public class DemoHangfireInstaller : IServiceInstaller
     {
         var services = builder.Services;
         services.AddHangfire(x => x
-            .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+            .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
             .UseSimpleAssemblyNameTypeSerializer()
             .UseRecommendedSerializerSettings()
             .UseSqlServerStorage(

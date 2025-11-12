@@ -17,13 +17,14 @@ public static class OutboxJobsStarterExtensions
     //---------------------//
 
 
-    public static IServiceProvider StartOutboxJobs(this IServiceProvider provider, CancellationToken cancellationToken)
+    public static IServiceProvider StartOutboxJobs(this IServiceProvider provider)
     {
         ICronBuilder cron = provider.GetRequiredService<ICronBuilder>();
 
         provider.BuildJobStarter<ProcessMyIdOutboxMsgJob>()
            .SetupRecurringProduction(handler => handler.HandleAsync(), cron.MinuteInterval(2))
-           .SetupRecurringDevelopment(handler => handler.HandleAsync(), cron.MinuteInterval(5));
+           .SetupRecurringDevelopment(handler => handler.HandleAsync(), cron.MinuteInterval(1))
+           ;
 
 
         provider.BuildJobStarter<Process_Old_MyIdOutboxMsgs>()

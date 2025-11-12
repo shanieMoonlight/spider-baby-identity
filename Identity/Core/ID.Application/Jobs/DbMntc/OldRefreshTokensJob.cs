@@ -11,7 +11,7 @@ internal sealed class OldRefreshTokensJob(IServiceProvider _serviceProvider, ILo
  : AMyIdJobHandler("OLD_REFRESH_TOKENS_JOB")
 {
     [MyIdDisableConcurrentExecution(300)]
-    public async Task HandleAsync(CancellationToken cancellationToken)
+    public override async Task HandleAsync()
     {
         try
         {
@@ -20,7 +20,7 @@ internal sealed class OldRefreshTokensJob(IServiceProvider _serviceProvider, ILo
             IIdentityRefreshTokenRepo _repo = uow.RefreshTokenRepo;
 
             await _repo.RemoveRangeAsync(RefreshTokenExpiredSpec.Create());
-            await uow.SaveChangesAsync(cancellationToken);
+            await uow.SaveChangesAsync();
         }
         catch (Exception e)
         {

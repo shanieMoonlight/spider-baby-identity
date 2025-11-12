@@ -15,7 +15,7 @@ internal class TeamSubscriptionCheckJob(IServiceProvider _serviceProvider, ILogg
 {
     [MyIdDisableConcurrentExecution(timeoutInSeconds: 300)]
     [DisplayName("MyId - Check Expired Subscriptions")]
-    public async Task HandleAsync(CancellationToken cancellationToken)
+    public override async Task HandleAsync()
     {
 
         using var scope = _serviceProvider.CreateScope();
@@ -30,7 +30,7 @@ internal class TeamSubscriptionCheckJob(IServiceProvider _serviceProvider, ILogg
             using var transaction = await transactionService.BeginTransactionAsync(ct);
             try
             {
-                var teams = await _teamMgr.GetAllTeamsWithExpiredSubscriptions(cancellationToken);
+                var teams = await _teamMgr.GetAllTeamsWithExpiredSubscriptions(ct);
 
                 foreach (var team in teams)
                 {
@@ -42,15 +42,15 @@ internal class TeamSubscriptionCheckJob(IServiceProvider _serviceProvider, ILogg
                     await _teamMgr.UpdateAsync(team);
                 }
 
-                await transactionService.SaveChangesAsync(cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
+                await transactionService.SaveChangesAsync(ct);
+                await transaction.CommitAsync(ct);
             }
             catch (Exception e)
             {
                 logger.LogException(e, MyIdLoggingEvents.JOBS.DB_MNTC);
-                await transaction.RollbackAsync(cancellationToken);
+                await transaction.RollbackAsync(ct);
             }
-        }, cancellationToken);
+        }, default);
 
 
 

@@ -57,7 +57,7 @@ public class TeamLeaderMntcJobTests : ServiceProviderTestBase
 
 
         // Act
-        await _job.HandleAsync(CancellationToken.None);
+        await _job.HandleAsync();
 
         // Assert
         foreach (var team in teams)
@@ -81,7 +81,7 @@ public class TeamLeaderMntcJobTests : ServiceProviderTestBase
         var cancellationToken = CancellationToken.None;
 
         // Act
-        await _job.HandleAsync(cancellationToken);
+        await _job.HandleAsync();
 
         // Assert
         _mockLogger.Verify(
@@ -116,7 +116,7 @@ public class TeamLeaderMntcJobTests : ServiceProviderTestBase
             .ReturnsAsync(teams);
 
         // Act
-        await _job.HandleAsync(CancellationToken.None);
+        await _job.HandleAsync();
 
         // Assert
         ExceptionUtils.VerifyExceptionLogging(_mockLogger, IdErrorEvents.Jobs.DbMntc);

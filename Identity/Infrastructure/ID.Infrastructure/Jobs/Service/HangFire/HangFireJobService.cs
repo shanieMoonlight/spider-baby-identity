@@ -6,7 +6,8 @@ using System.Linq.Expressions;
 
 namespace ID.Infrastructure.Jobs.Service.HangFire;
 
-internal class HangFireJobService(IHfDefaultRecurringJobMgr recurringMgr, IHfDefaultBackgroundJobMgr backgroundMgr) : IMyIdJobService
+internal class HangFireJobService(IHfDefaultRecurringJobMgr recurringMgr, IHfDefaultBackgroundJobMgr backgroundMgr) 
+    : IMyIdJobService
 {
 
     public Task<bool> StartRecurringJob<Handler>(string jobId, Expression<Func<Handler, Task>> jobLambda, string cronFrequencyExpression)

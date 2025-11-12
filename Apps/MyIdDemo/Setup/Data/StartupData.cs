@@ -5,7 +5,7 @@ namespace MyIdDemo.Setup.Data;
 /// <summary>
 /// Class with config data for this app and it's libraries
 /// </summary>
-public class StartupData(IConfiguration config, IWebHostEnvironment Environment) : AppSettingsAccessor(config)
+public class StartupData(IConfiguration config) : AppSettingsAccessor(config)
 {
 
     /// <summary>

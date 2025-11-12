@@ -6,23 +6,12 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <!--<ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" />
-        <PackageReference Include="Microsoft.Extensions.Identity.Core" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
-        <PackageReference Include="Microsoft.Data.SqlClient" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
-        <PackageReference Include="QRCoder" />>
-        <PackageReference Include="Twilio" />
-    </ItemGroup>-->
-
     <ItemGroup>
         <ProjectReference Include="..\..\..\Libs\ClArch.SimpleSpecification\ClArch.SimpleSpecification.csproj" />
         <ProjectReference Include="..\..\Core\ID.Application\ID.Application.csproj" />
         <ProjectReference Include="..\..\Core\ID.Domain\ID.Domain.csproj" />
         <ProjectReference Include="..\..\Extras\JwtKeyBuilder\ID.Jwt.Builder.KeyBuilder\ID.Jwt.KeyBuilder.csproj" />
+        <ProjectReference Include="..\ID.Jobs.Quartz\ID.Jobs.Quartz.csproj" />
     </ItemGroup>
 
 
@@ -53,6 +42,9 @@
       <PackageReference Include="Hangfire.PostgreSql" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+      <PackageReference Include="Quartz" />
+      <PackageReference Include="Quartz.Extensions.Hosting" />
+      <PackageReference Include="Quartz.Serialization.Json" />
     </ItemGroup>
     
 </Project>

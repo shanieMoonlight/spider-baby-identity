@@ -1,8 +1,6 @@
-﻿using ID.Application.Jobs.Abstractions;
-using ID.Application.Models;
+﻿using ID.Application.Models;
 using ID.Domain.Entities.Teams;
-using ID.Infrastructure.Jobs.Imps;
-using ID.Infrastructure.Jobs.Service.HangFire;
+using ID.Jobs.Quartz; // switched to Quartz implementation
 using ID.Infrastructure.Setup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,8 +20,7 @@ internal static class JobsSetup
     /// <returns>The service collection with job services configured.</returns>
     public static IServiceCollection SetupJobs(this IServiceCollection services, DatabaseType databaseType, IdInfrastructureSetupOptions options)
     {
-        services.AddScoped<ICronBuilder, HfCronBuilder>();
-        services.AddMyIdHangfireJobs(databaseType, options);
+        services.AddMyIdQuartzJobs(databaseType, options.ConnectionString);
         return services;
     }
 
@@ -38,6 +35,7 @@ internal static class JobsSetup
     /// <param name="minTeamTypeDashboardAccess">The minimum team type required to access the job dashboard.</param>
     /// <returns>The application builder with job middleware configured.</returns>
     public static IApplicationBuilder UseMyIdJobs(this IApplicationBuilder app, TeamType minTeamTypeDashboardAccess) =>
-        app.UseMyIdHangfireJobs(minTeamTypeDashboardAccess);
+        // no dashboard mapping at this time; host can opt-in for a dashboard UI later
+        app;
 
 }//Cls

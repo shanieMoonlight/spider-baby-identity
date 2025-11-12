@@ -34,7 +34,7 @@ public class OldRefreshTokensJobTests : ServiceProviderTestBase
                 It.IsAny<RefreshTokenExpiredSpec>()));
 
         // Act
-        await _sut.HandleAsync(CancellationToken.None);
+        await _sut.HandleAsync();
 
         // Assert
         _mockRefreshTokenRepo.Verify(repo => repo.RemoveRangeAsync(
@@ -55,7 +55,7 @@ public class OldRefreshTokensJobTests : ServiceProviderTestBase
             .ThrowsAsync(expectedException);
 
         // Act
-        await _sut.HandleAsync(CancellationToken.None);
+        await _sut.HandleAsync();
 
         // Assert
         ExceptionUtils.VerifyExceptionLogging(_mockLogger, IdErrorEvents.Jobs.DbMntc, expectedException);
@@ -73,7 +73,7 @@ public class OldRefreshTokensJobTests : ServiceProviderTestBase
             .ThrowsAsync(new Exception("Test exception"));
 
         // Act
-        await _sut.HandleAsync(CancellationToken.None);
+        await _sut.HandleAsync();
 
         // Assert
         _mockUnitOfWork.Verify(uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);

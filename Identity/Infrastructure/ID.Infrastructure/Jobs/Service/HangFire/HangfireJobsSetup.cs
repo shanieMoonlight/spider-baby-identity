@@ -6,7 +6,7 @@ using ID.Application.Models;
 using ID.Domain.Entities.Teams;
 using ID.Infrastructure.Jobs.Service.HangFire.Auth;
 using ID.Infrastructure.Jobs.Service.HangFire.Background;
-using ID.Infrastructure.Jobs.Service.HangFire.Filters;
+using ID.Infrastructure.Jobs.Service.HangFire.Imps;
 using ID.Infrastructure.Jobs.Service.HangFire.Instance.Abs;
 using ID.Infrastructure.Jobs.Service.HangFire.Instance.Imps;
 using ID.Infrastructure.Jobs.Service.HangFire.Recurring;
@@ -22,6 +22,9 @@ internal static class HangfireJobsSetup
 {
     internal static IServiceCollection AddMyIdHangfireJobs(this IServiceCollection services, DatabaseType databaseType, IdInfrastructureSetupOptions options)
     {
+        services.AddScoped<ICronBuilder, HfCronBuilder>();
+
+
         var storageOptions = new SqlServerStorageOptions
         {
             CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
@@ -32,6 +35,7 @@ internal static class HangfireJobsSetup
             SchemaName = IdInfrastructureConstants.Jobs.Schema // MyId's dedicated schema
         };
 
+
         // Create the SqlServerStorage instance for MyId's jobs
         // Use JobStorage instead of var for proper DI
         JobStorage myIdHfStorage = new SqlServerStorage(options.ConnectionString, storageOptions);
@@ -40,13 +44,12 @@ internal static class HangfireJobsSetup
         // This makes it available for specific resolution via [FromKeyedServices].
         services.AddKeyedSingleton(IdInfrastructureConstants.Jobs.DI_StorageKey, myIdHfStorage);
 
-        // Configure MyId's server explicitly using MyId's storage
-        // This server will only process jobs from MyId's schema and queues.
-        services.AddHangfireServer((provider, config) =>
-        {
-            config.ServerName = IdInfrastructureConstants.Jobs.Server;
-            config.Queues = IdInfrastructureConstants.Jobs.Queues.All; // Queues specific to MyId
-        }, myIdHfStorage); // Explicitly use myIdHfStorage for this server
+        // Expose the keyed JobStorage via a non-keyed alias so hosted services can consume it directly.
+        services.AddSingleton(sp => sp.GetKeyedService<JobStorage>(IdInfrastructureConstants.Jobs.DI_StorageKey)!);
+
+        // Register a hosted service that will create a BackgroundJobServer bound to the keyed storage.
+        // This avoids calling services.AddHangfire(...) from the library and removes ordering fragility.
+        services.AddHostedService<IsolatedHangfireServer>();
 
 
         // Register the storage provider so that it can be injected into job managers
@@ -55,8 +58,6 @@ internal static class HangfireJobsSetup
         services.AddMyIdHangfireRecurringJobs();
         services.AddMyIdHangfireBackgroundJobs();
 
-        // Register our global filter to respect application-level MyIdDisableConcurrentExecutionAttribute
-        GlobalJobFilters.Filters.Add(new MyIdDisableConcurrentExecutionFilter());
 
         services.AddScoped<IMyIdJobService, HangFireJobService>();
 

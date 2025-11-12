@@ -58,7 +58,7 @@ public abstract class AHfBackgroundJobMgrTests
     public void Enqueue_Should_UseCorrectQueue()
     {
         // Arrange
-        Expression<Func<TestJobHandler, Task>> jobExpression = j => j.DoWorkAsync();
+        Expression<Func<TestJobHandler, Task>> jobExpression = j => j.HandleAsync();
         var expectedJobId = "job123";
 
         MockBackgroundJobClient
@@ -81,7 +81,7 @@ public abstract class AHfBackgroundJobMgrTests
     public void Schedule_Should_UseCorrectQueue()
     {
         // Arrange
-        Expression<Func<TestJobHandler, Task>> jobExpression = j => j.DoWorkAsync();
+        Expression<Func<TestJobHandler, Task>> jobExpression = j => j.HandleAsync();
         var delay = TimeSpan.FromMinutes(5);
         var expectedJobId = "job456";
 
@@ -162,7 +162,7 @@ public abstract class AHfBackgroundJobMgrTests
     // Helper test job handler class
     protected class TestJobHandler(string jobId = "test-job") : AMyIdJobHandler(jobId)
     {
-        public Task DoWorkAsync()
+        public override Task HandleAsync()
         {
             return Task.CompletedTask;
         }

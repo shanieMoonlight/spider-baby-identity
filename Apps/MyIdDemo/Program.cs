@@ -5,7 +5,6 @@ using MyIdDemo.Setup;
 using MyIdDemo.Setup.Data;
 using MyIdDemo.Setup.Events;
 using MyIdDemo.Setup.Swagger;
-using MyIdDemo.Setup.Utils;
 using MyIdDemo.Utils;
 using PrerenderedSpa.PrerenderedBuilder;
 
@@ -18,7 +17,7 @@ var _services = _builder.Services;
 var _host = _builder.Host;
 var _configuration = _builder.Configuration;
 var _logging = _builder.Logging;
-var _startupData = new StartupData(_configuration, _env);
+var _startupData = new StartupData(_configuration);
 
 
 //-------------------------- Configure Services --------------------------//

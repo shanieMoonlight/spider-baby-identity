@@ -55,7 +55,7 @@ public class TeamSubscriptionCheckJobTests : ServiceProviderTestBase
             .ReturnsAsync([]);
 
         // Act
-        await _job.HandleAsync(cancellationToken);
+        await _job.HandleAsync();
 
         // Assert
         _teamMgrMock.Verify(m => m.GetAllTeamsWithExpiredSubscriptions(cancellationToken), Times.Once);
@@ -84,7 +84,7 @@ public class TeamSubscriptionCheckJobTests : ServiceProviderTestBase
             .ThrowsAsync(new Exception("Test exception"));
 
         // Act
-        await _job.HandleAsync(cancellationToken);
+        await _job.HandleAsync();
 
         // Assert
         transactionMock.Verify(t => t.RollbackAsync(cancellationToken), Times.Once);

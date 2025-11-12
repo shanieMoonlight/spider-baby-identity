@@ -64,7 +64,7 @@ public abstract class AHfRecurringJobMgrTests
         // Arrange
         var recurringJobId = "recurring-job-123";
         var cronExpression = "0 0 * * *"; // Daily at midnight
-        Expression<Func<TestJobHandler, Task>> jobExpression = j => j.DoWorkAsync();
+        Expression<Func<TestJobHandler, Task>> jobExpression = j => j.HandleAsync();
         var options = new HfRecurringJobOptions();
         RecurringJobOptions recurringJobOptions = null;
 
@@ -159,7 +159,7 @@ public abstract class AHfRecurringJobMgrTests
     // Helper test job handler class
     protected class TestJobHandler(string jobId = "test-job") : AMyIdJobHandler(jobId)
     {
-        public Task DoWorkAsync()
+        public override Task HandleAsync()
         {
             return Task.CompletedTask;
         }

@@ -110,3 +110,11 @@ rename any GetByIdAsync to FirstByIdAsync for clarity and similar in all domain-
  Update transaction service
  remove MyIdLoggingEvents (or merge with IdErrorEvents)
 
+
+
+ Remove this:     public async Task<IReadOnlyList<Team>> GetAllTeamsWithExpiredSubscriptions(CancellationToken cancellationToken = default) =>
+        await _teamRepo.ListAllAsync(new TeamsWithExpiredSubscriptionsSpec(), cancellationToken);????????????
+
+
+        Stop using magic strings:      var handlerTypeName = data.GetString("HandlerType");
+        var methodName = data.GetString("MethodName");

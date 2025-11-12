@@ -34,8 +34,8 @@ public  static partial class IdApiSetupExtensions
         catch (Exception e)
         {
             // This can be caused if the DB has not been initialized yet
-            Debug.WriteLine(e);
-            Console.WriteLine(e);
+            Debug.WriteLine($"{e.Message} - {e.StackTrace}");
+            Console.WriteLine($"{e.Message} - {e.StackTrace}");
         }
 
         return app;

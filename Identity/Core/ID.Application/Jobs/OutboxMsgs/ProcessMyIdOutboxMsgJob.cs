@@ -25,7 +25,7 @@ internal sealed class ProcessMyIdOutboxMsgJob(IServiceProvider _serviceProvider,
 
     [MyIdDisableConcurrentExecution(timeoutInSeconds: 300)]
     [DisplayName("MyId - Process Outbox Msgs")]
-    public async Task HandleAsync()
+    public override async Task HandleAsync()
     {
         try
         {

@@ -179,7 +179,7 @@ public class HangFireJobServiceTests
 
     private class TestJobHandler(string jobId) : AMyIdJobHandler(jobId)
     {
-        public Task HandleAsync()
+        public override Task HandleAsync()
         {
             return Task.CompletedTask;
         }

@@ -6,12 +6,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Persistence\Initializers\Postgres\Migrations\001-create-quartz-3_15-1.sql" />
-    <None Remove="Persistence\Initializers\SqlServer\Migrations\001-create-quartz-3_15-1.sql" />
-    <None Remove="Persistence\Initializers\SqlServer\Migrations\002-add-myid-test-column.sql" />
-  </ItemGroup>
-
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Libs\ClArch.SimpleSpecification\ClArch.SimpleSpecification.csproj" />
@@ -33,9 +27,19 @@
   <!-- Embedded SQL script for optional DB initialization -->
   <ItemGroup>
 	  <!-- embed all SQL migrations for SQL Server -->
-	  <EmbeddedResource Include="Persistence\Initializers\SqlServer\Migrations\*.sql" />
+	  <EmbeddedResource Include="Persistence\Initializers\SqlServer\Migrations\*.sql.template" />
 	  <!-- embed Postgres migrations similarly -->
-	  <EmbeddedResource Include="Persistence\Initializers\Postgres\Migrations\*.sql" />
+	  <EmbeddedResource Include="Persistence\Initializers\Postgres\Migrations\*.sql.template" />
   </ItemGroup>
+
+
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>ID.Jobs.Quartz.Tests</_Parameter1>
+		</AssemblyAttribute>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
 
 </Project>

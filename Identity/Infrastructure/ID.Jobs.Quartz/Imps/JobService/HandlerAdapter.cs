@@ -3,9 +3,6 @@ using Microsoft.Extensions.Logging;
 using Quartz;
 using System.Collections.Concurrent;
 using System.Reflection;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Runtime.ExceptionServices;
 
 namespace ID.Jobs.Quartz.Imps.JobService;

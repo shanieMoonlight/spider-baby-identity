@@ -26,10 +26,12 @@ This file summarizes recommended fixes, improvements and follow-ups from the rev
 - [ ] Recommend running migrations in CI/CD or a single admin process rather than every instance at startup; document runbook.
 - [ ] Add an optional configuration switch to let consumers choose sentinel behavior (throw vs no-op) — default to `throw`.
 
+> Note: For now the project retains `ensureDb = true` by default in `AddMyIdQuartzJobs(...)`. This is intentional for development convenience but must be reviewed before production deployment. Recommended production practice: run DbUp migrations explicitly in CI/CD or a designated admin step and keep runtime automatic schema changes disabled unless explicitly approved.
+
 ## Logging & diagnostics
-- [ ] Capture DbUp output via `ILogger` (not only console) so migration activity appears in application logs.
-- [ ] Add a startup diagnostic mode (dev) that lists embedded resource names and which scripts match the migrations filter.
-- [ ] Log which scripts were applied/skipped and journal entries for easier debugging.
+- [x] Capture DbUp output via `ILogger` (not only console) so migration activity appears in application logs.
+- [x] Add a startup diagnostic mode (dev) that lists embedded resource names and which scripts match the migrations filter.
+- [x] Log which scripts were applied/skipped and journal entries for easier debugging.
 
 ## Tests & CI
 - [ ] Add integration tests that run migrations against disposable containers (SQL Server + Postgres) and verify schema creation.
@@ -57,4 +59,3 @@ This file summarizes recommended fixes, improvements and follow-ups from the rev
 
 ---
 
-If you want, I can apply any of the unchecked items now. Which should I implement first? (recommended: add README + bind DbUp logging to ILogger, or add the Postgres DDL script).

@@ -3,6 +3,7 @@ using ID.Jobs.Quartz.Imps;
 using ID.Jobs.Quartz.Persistence.Initializers;
 using ID.Jobs.Quartz.Servers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace ID.Jobs.Quartz;
 public static class Setup
@@ -18,7 +19,12 @@ public static class Setup
 
         // Optionally ensure DB objects exist (opt-in)
         if (ensureDb)
-            QuartzDbMigrator.EnsureSchema(databaseType, connectionString);
+        {
+            // Build a temporary provider to get an ILogger instance for migration logging.
+            using var sp = services.BuildServiceProvider();
+            var logger = sp.GetService<ILogger<QuartzDbMigrator>>();
+            QuartzDbMigrator.EnsureSchema(databaseType, connectionString, logger);
+        }
 
         services.AddMyIdQuartzJobs();
 
@@ -31,7 +37,6 @@ public static class Setup
 
         return services;
     }
-
 
 
 }//Cls

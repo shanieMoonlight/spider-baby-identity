@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 
-namespace ID.Jobs.Quartz.Imps.JobService;
+namespace ID.Jobs.Quartz.AppImps.JobService;
 
 [DisallowConcurrentExecution]
 internal sealed class HandlerAdapter<THandler>(IServiceProvider _provider, ILogger<HandlerAdapter<THandler>> _logger)

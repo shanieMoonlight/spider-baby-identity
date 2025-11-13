@@ -24,7 +24,7 @@ public class InitializeCmdHandlerTests
         var superEmail = "newemail@yahoo.com";
         var dto = new InitializeDto("testPassword", superEmail);
         var request = new InitializeCmd(dto);
-        _mockIdInitializationService.Setup(x => x.InitializeEverythingAsync(It.IsAny<string>(), It.IsAny<string?>())).ReturnsAsync(superEmail);
+        _mockIdInitializationService.Setup(x => x.InitializeEverythingAsync(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<CancellationToken>())).ReturnsAsync(superEmail);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -32,7 +32,7 @@ public class InitializeCmdHandlerTests
         // Assert
         result.ShouldNotBeNull();
         result.Info.ShouldBe(IDMsgs.Info.INITIALIZED(superEmail));
-        _mockIdInitializationService.Verify(x => x.InitializeEverythingAsync(It.IsAny<string>(), It.IsAny<string?>()), Times.Once);
+        _mockIdInitializationService.Verify(x => x.InitializeEverythingAsync(It.IsAny<string>(), It.IsAny<string?>(), It.IsAny<CancellationToken>()), Times.Once);
         result.Succeeded.ShouldBeTrue();
     }
 

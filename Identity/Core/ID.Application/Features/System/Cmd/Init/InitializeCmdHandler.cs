@@ -11,7 +11,7 @@ public class InitializeCmdHandler(IIdentityInitializationService idInitializatio
     {
         var password = request.Dto.Password;
         var email = request.Dto.Email;
-        var superLeaderEmail = await idInitialization.InitializeEverythingAsync(password, email);
+        var superLeaderEmail = await idInitialization.InitializeEverythingAsync(password, email, cancellationToken);
 
         return BasicResult.Success(IDMsgs.Info.INITIALIZED(superLeaderEmail));
 

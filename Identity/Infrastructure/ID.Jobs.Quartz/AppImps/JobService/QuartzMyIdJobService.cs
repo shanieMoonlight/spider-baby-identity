@@ -1,6 +1,5 @@
 using ID.Application.Jobs.Abstractions;
 using ID.Application.Jobs.Models;
-using ID.Jobs.Quartz.Imps.JobService;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using Quartz.Impl.Matchers;
@@ -8,7 +7,7 @@ using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace ID.Jobs.Quartz.Imps;
+namespace ID.Jobs.Quartz.AppImps.JobService;
 
 internal sealed class QuartzMyIdJobService(ISchedulerFactory _schedulerFactory, ILogger<QuartzMyIdJobService> _logger)
     : IMyIdJobService

@@ -1,3 +1,4 @@
+using ID.Jobs.Quartz.AppImps.JobService;
 using Quartz.Impl;
 
 namespace ID.Jobs.Quartz.Tests;
@@ -19,7 +20,7 @@ public class HandlerAdapterTests
     [Fact]
     public async Task Executes_TaskReturningMethod_NoParameters()
     {
-        var adapter = new Imps.JobService.HandlerAdapter<TestHandler>(_sp, new NullLogger<Imps.JobService.HandlerAdapter<TestHandler>>());
+        var adapter = new HandlerAdapter<TestHandler>(_sp, new NullLogger<HandlerAdapter<TestHandler>>());
         var ctx = new FakeJobExecutionContext("DoWork");
 
         await adapter.Execute(ctx);
@@ -33,7 +34,7 @@ public class HandlerAdapterTests
     public async Task Executes_TaskReturningMethod_WithCancellationToken()
     {
         TestHandler.Worked = false;
-        var adapter = new Imps.JobService.HandlerAdapter<TestHandler>(_sp, new NullLogger<Imps.JobService.HandlerAdapter<TestHandler>>());
+        var adapter = new HandlerAdapter<TestHandler>(_sp, new NullLogger<HandlerAdapter<TestHandler>>());
         var ctx = new FakeJobExecutionContext("DoWorkWithToken");
 
         await adapter.Execute(ctx);
@@ -46,9 +47,21 @@ public class HandlerAdapterTests
     [Fact]
     public async Task UnsupportedSignature_Throws()
     {
-        var adapter = new Imps.JobService.HandlerAdapter<TestHandler>(_sp, new NullLogger<Imps.JobService.HandlerAdapter<TestHandler>>());
+        var adapter = new HandlerAdapter<TestHandler>(_sp, new NullLogger<HandlerAdapter<TestHandler>>());
         var ctx = new FakeJobExecutionContext("UnsupportedMethod");
 
+        await Assert.ThrowsAsync<InvalidOperationException>(() => adapter.Execute(ctx));
+    }
+
+    [Fact]
+    public async Task UnsupportedSignature_CachedThrowsOnSecondCall()
+    {
+        var adapter = new HandlerAdapter<TestHandler>(_sp, new NullLogger<HandlerAdapter<TestHandler>>());
+        var ctx = new FakeJobExecutionContext("UnsupportedMethod");
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() => adapter.Execute(ctx));
+
+        // second call should also throw (cached sentinel)
         await Assert.ThrowsAsync<InvalidOperationException>(() => adapter.Execute(ctx));
     }
 

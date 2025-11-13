@@ -17,7 +17,7 @@ This file summarizes recommended fixes, improvements and follow-ups from the rev
 - [ ] Add support for marking scripts as non-transactional if required by provider.
 
 ## Postgres provider
-- [ ] Populate `Persistence/Initializers/Postgres/Migrations/001-create-quartz-<ver>.sql` with official Quartz PostgreSQL DDL for the version in use.
+- [x] Populate `Persistence/Initializers/Postgres/Migrations/001-create-quartz-<ver>.sql` with official Quartz PostgreSQL DDL for the version in use.
 - [ ] Use `search_path` in Postgres (connection string or script header) so vendor SQL with unqualified names works without rewriting every statement.
 - [ ] Verify Postgres provider method name (`UsePostgres`/`UsePostgreSql`/`UseNpgsql`) and set `TablePrefix`/`Schema` appropriately.
 

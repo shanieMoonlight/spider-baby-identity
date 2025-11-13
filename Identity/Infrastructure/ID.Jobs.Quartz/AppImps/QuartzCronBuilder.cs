@@ -1,6 +1,6 @@
 using ID.Application.Jobs.Abstractions;
 
-namespace ID.Jobs.Quartz.Imps;
+namespace ID.Jobs.Quartz.AppImps;
 
 /// <summary>
 /// Produces Quartz-compatible cron expressions.

@@ -1,10 +1,9 @@
 ﻿using ID.Application.Models;
 using ID.Domain.Entities.Teams;
-using ID.Jobs.Quartz; // switched to Quartz implementation
 using ID.Infrastructure.Setup;
+using ID.Jobs.Quartz; // switched to Quartz implementation
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using ID.Jobs.Quartz.Imps;
 
 namespace ID.Infrastructure.Jobs;
 

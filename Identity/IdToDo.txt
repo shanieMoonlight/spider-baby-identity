@@ -129,3 +129,6 @@ HandlerAdapter  decide on throw or not:
                     _methodCache.TryAdd(methodName, func);
                     return; // optionally return so job doesn't call sentinel
                 }
+
+
+Update InitializationService tests for IJobMigrator

@@ -27,9 +27,9 @@
   <!-- Embedded SQL script for optional DB initialization -->
   <ItemGroup>
 	  <!-- embed all SQL migrations for SQL Server -->
-	  <EmbeddedResource Include="Persistence\Initializers\SqlServer\Migrations\*.sql.template" />
+	  <EmbeddedResource Include="Persistence\DbUp\SqlServer\Migrations\*.sql.template" />
 	  <!-- embed Postgres migrations similarly -->
-	  <EmbeddedResource Include="Persistence\Initializers\Postgres\Migrations\*.sql.template" />
+	  <EmbeddedResource Include="Persistence\DbUp\Postgres\Migrations\*.sql.template" />
   </ItemGroup>
 
 

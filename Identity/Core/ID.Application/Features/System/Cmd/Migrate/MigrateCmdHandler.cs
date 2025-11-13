@@ -8,7 +8,7 @@ public class MigrateCmdHandler(IIdentityInitializationService idInitialization) 
 
     public async Task<BasicResult> Handle(MigrateCmd request, CancellationToken cancellationToken)
     {
-        await idInitialization.MigrateAsync();
+        await idInitialization.MigrateAsync(cancellationToken);
         return BasicResult.Success("Migrated!");
 
     }

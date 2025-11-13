@@ -2,7 +2,7 @@ using DbUp.Engine;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
 
-namespace ID.Jobs.Quartz.Persistence.Initializers;
+namespace ID.Jobs.Quartz.Persistence.DbUp;
 
 internal static class EmbeddedScriptLoader
 {

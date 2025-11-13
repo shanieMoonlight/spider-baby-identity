@@ -1,9 +1,9 @@
 ﻿using ID.Application.Models;
-using ID.Jobs.Quartz.Imps;
-using ID.Jobs.Quartz.Persistence.Initializers;
+using ID.Jobs.Quartz.AppImps;
+using ID.Jobs.Quartz.Persistence;
 using ID.Jobs.Quartz.Servers;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace ID.Jobs.Quartz;
 public static class Setup
@@ -12,25 +12,19 @@ public static class Setup
     public static IServiceCollection AddMyIdQuartzJobs(
         this IServiceCollection services,
         DatabaseType databaseType,
-        string connectionString,
-        bool ensureDb = true)
+        string connectionString)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(connectionString);
 
-        // Optionally ensure DB objects exist (opt-in)
-        if (ensureDb)
-        {
-            // Build a temporary provider to get an ILogger instance for migration logging.
-            using var sp = services.BuildServiceProvider();
-            var logger = sp.GetService<ILogger<QuartzDbMigrator>>();
-            QuartzDbMigrator.EnsureSchema(databaseType, connectionString, logger);
-        }
+        services.AddSingleton(Options.Create(new QuartzConfig(databaseType, connectionString)));
 
-        services.AddMyIdQuartzJobs();
+
+        services.AddQuartzAppImplementations();
+        services.AddQuartzPersistence(databaseType);
 
         services.AddIsolatedQuartz(
             databaseType: databaseType,
-            connectionString: connectionString, 
+            connectionString: connectionString,
             schema: QuartzConstants.Schema,
             tablePrefix: QuartzConstants.TablePrefix
         );

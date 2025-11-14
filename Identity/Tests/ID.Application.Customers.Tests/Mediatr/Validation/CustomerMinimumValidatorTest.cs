@@ -22,7 +22,7 @@ public class CustomerMinimumValidatorTests
         _validatorWithPosition = new CustomerMinimumValidatorTest(2);
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     [Fact]
     public void Should_Have_Error_When_IsCustomerMinimum_Is_False()
@@ -44,7 +44,7 @@ public class CustomerMinimumValidatorTests
               .WithErrorMessage("Forbidden!");
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     [Fact]
     public void Should_Not_Have_Error_When_IsCustomerMinimum_Is_True()
@@ -63,7 +63,7 @@ public class CustomerMinimumValidatorTests
         result.ShouldNotHaveValidationErrorFor(x => x.IsCustomerMinimum);
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     [Fact]
     public void Should_Not_Have_Error_When_IsCustomerMinimum_Is_True_Mntc()
@@ -83,7 +83,7 @@ public class CustomerMinimumValidatorTests
         result.ShouldNotHaveValidationErrorFor(x => x.IsCustomerMinimum);
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     [Fact]
     public void Should_Not_Have_Error_When_IsCustomerMinimum_Is_True_Super()
@@ -104,7 +104,7 @@ public class CustomerMinimumValidatorTests
         result.ShouldNotHaveValidationErrorFor(x => x.IsCustomerMinimum);
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     [Fact]
     public void Should_Not_Have_Error_When_Not_Authenticated()
@@ -125,7 +125,7 @@ public class CustomerMinimumValidatorTests
         result.ShouldNotHaveValidationErrorFor(x => x.IsCustomerMinimum);
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     [Fact]
     public void Should_Have_Error_When_PrincipalTeamPosition_Is_Less_Than_Position()
@@ -146,7 +146,7 @@ public class CustomerMinimumValidatorTests
               .WithErrorMessage("Forbidden!");
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     [Fact]
     public void Should_Not_Have_Error_When_PrincipalTeamPosition_Is_Greater_Than_Or_Equal_To_Position()
@@ -166,5 +166,5 @@ public class CustomerMinimumValidatorTests
         result.ShouldNotHaveValidationErrorFor(x => x.PrincipalTeamPosition);
     }
 
-    //-----------------------------------//
+    //------------------------//
 }

@@ -50,7 +50,7 @@ public static class ControllerExtension
 
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Generates an OK Result or an Internal Server Error Result including the value, depending on success
@@ -97,7 +97,7 @@ public static class ControllerExtension
 
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Generates an OK Result or an Internal Server Error Result including the value, depending on success
@@ -113,7 +113,7 @@ public static class ControllerExtension
             ? controller.ProcessFailedResult(result, logger)
             : controller.Ok(successConversion(result.Value!)); //Success is non-null
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Generates an OK Result or an Internal Server Error Result including the value, depending on success
@@ -128,7 +128,7 @@ public static class ControllerExtension
             ? controller.ProcessFailedResult(result)
             : controller.Ok(successConversion(result.Value!)); //Success is non-null so we can use ! here
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Generates an ErrorResult (Depending on Result Flags)
@@ -154,7 +154,7 @@ public static class ControllerExtension
         return controller.GenerateObjectResult(result);
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Generates an ErrorResult (Depending on Result Flags) 
@@ -183,7 +183,7 @@ public static class ControllerExtension
         return controller.GenerateObjectResult<T>(result);
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     public static ObjectResult GenerateObjectResult<T>(this ControllerBase controller, GenResult<T> result)
     {
@@ -217,7 +217,7 @@ public static class ControllerExtension
 
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     public static ObjectResult GenerateObjectResult(this ControllerBase controller, BasicResult result)
     {
@@ -244,6 +244,6 @@ public static class ControllerExtension
 
     }
 
-    //-----------------------------------//
+    //------------------------//
 
 }//Cls

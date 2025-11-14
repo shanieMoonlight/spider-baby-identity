@@ -9,7 +9,7 @@ namespace ID.Infrastructure.TokenServices.Pwd;
 internal class DefaultPwdResetService<TUser>(IIdUserMgmtService<TUser> userMgr) 
     : IPwdResetService<TUser> where TUser : AppUser
 {
-    //-----------------------------------//  
+    //------------------------//  
 
     public async Task<BasicResult> ChangePasswordAsync(Team team, TUser user, string password)
     {
@@ -35,16 +35,16 @@ internal class DefaultPwdResetService<TUser>(IIdUserMgmtService<TUser> userMgr)
         return HttpUtility.UrlEncode(tkn);
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     public async Task<string> GeneratePasswordResetTokenAsync(Team team, TUser user) =>
       await userMgr.GeneratePasswordResetTokenAsync(user);
 
-    //-----------------------------------//
+    //------------------------//
 
     public async Task<BasicResult> ResetPasswordAsync(Team team, TUser user, string token, string newPassword, CancellationToken cancellationToken = default) => 
         await userMgr.ResetPasswordAsync(user, token, newPassword);
 
-    //-----------------------------------//
+    //------------------------//
 
 }//Cls

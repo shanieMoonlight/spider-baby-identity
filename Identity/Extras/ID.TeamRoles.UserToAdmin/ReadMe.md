@@ -61,7 +61,7 @@ Here is an example of how to use the `***Authenticator.ActionFilter` in your app
     [Route("api/[controller]/[action]")]
     public class IdTesterController : Controller
     {
-        //-----------------------------------//
+        //------------------------//
 
         [HttpGet]
         [CustomerAdminAuthenticator.ActionFilter]
@@ -82,7 +82,7 @@ Here is an example of how to use the `***Authenticator.ActionFilter` in your app
         public ActionResult<MessageResponseDto> CustomerUser() =>
             MessageResponseDto.Generate($"You must be {nameof(CustomerUser)}");
 
-        //-----------------------------------//
+        //------------------------//
 
         [HttpGet]
         [CustomerAdminMinimumAuthenticator.ActionFilter]
@@ -103,7 +103,7 @@ Here is an example of how to use the `***Authenticator.ActionFilter` in your app
         public ActionResult<MessageResponseDto> CustomerUserMinimum() =>
             MessageResponseDto.Generate($"You must be {nameof(CustomerUserMinimum)}");
 
-        //-----------------------------------//
+        //------------------------//
 
         [HttpGet]
         [MntcAdminAuthenticator.ActionFilter]
@@ -124,7 +124,7 @@ Here is an example of how to use the `***Authenticator.ActionFilter` in your app
         public ActionResult<MessageResponseDto> MntcUser() =>
             MessageResponseDto.Generate($"You must be {nameof(MntcUser)}");
 
-        //-----------------------------------//
+        //------------------------//
 
         [HttpGet]
         [MntcAdminMinimumAuthenticator.ActionFilter]
@@ -145,7 +145,7 @@ Here is an example of how to use the `***Authenticator.ActionFilter` in your app
         public ActionResult<MessageResponseDto> MntcUserMinimum() =>
             MessageResponseDto.Generate($"You must be {nameof(MntcUserMinimum)}");
 
-        //-----------------------------------//
+        //------------------------//
 
         [HttpGet]
         [SuperAdminAuthenticator.ActionFilter]
@@ -166,7 +166,7 @@ Here is an example of how to use the `***Authenticator.ActionFilter` in your app
         public ActionResult<MessageResponseDto> SuperUser() =>
             MessageResponseDto.Generate($"You must be {nameof(SuperUser)}");
 
-        //-----------------------------------//
+        //------------------------//
 
         [HttpGet]
         [SuperAdminMinimumAuthenticator.ActionFilter]
@@ -187,6 +187,6 @@ Here is an example of how to use the `***Authenticator.ActionFilter` in your app
         public ActionResult<MessageResponseDto> SuperUserMinimum() =>
             MessageResponseDto.Generate($"You must be {nameof(SuperUserMinimum)}");
 
-        //-----------------------------------//
+        //------------------------//
 
     } //Cls

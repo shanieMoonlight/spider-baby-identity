@@ -17,7 +17,7 @@ internal class NumericEnumerableTypeProvider
         return GetIEnumerableTypeNonNullable(type);
     }
 
-    //-----------------------------------//  
+    //------------------------//  
 
     /// <summary>
     /// Crates a Type of NonNullable Numeric IEnumerable <paramref name="type"/> if <paramref name="type"/> is also numeric
@@ -44,7 +44,7 @@ internal class NumericEnumerableTypeProvider
         };
     }
 
-    //-----------------------------------//  
+    //------------------------//  
 
     /// <summary>
     /// Crates a Type of Nullable Numeric IEnumerable <paramref name="type"/> if <paramref name="type"/> is also numeric

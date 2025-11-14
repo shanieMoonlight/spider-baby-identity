@@ -38,7 +38,7 @@ internal class DbPwdResetService<TUser>(
 
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     public async Task<string> GeneratePasswordResetTokenAsync(Team team, TUser user)
     {
@@ -50,7 +50,7 @@ internal class DbPwdResetService<TUser>(
 
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     public async Task<BasicResult> ResetPasswordAsync(Team team, TUser user, string token, string newPassword, CancellationToken cancellationToken = default)
     {
@@ -75,7 +75,7 @@ internal class DbPwdResetService<TUser>(
         return BasicResult.Success(IDMsgs.Info.Passwords.PASSWORD_CHANGE_SUCCESSFUL);
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     private async Task<BasicResult> UpdatePasswordHash(TUser user, string newPassword, bool validatePassword = true, CancellationToken cancellationToken = default)
     {
@@ -96,7 +96,7 @@ internal class DbPwdResetService<TUser>(
         return BasicResult.Success();
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Called to update the user after validating and updating the normalized email/user name.
@@ -111,7 +111,7 @@ internal class DbPwdResetService<TUser>(
         return await _teamMgr.UpdateMemberAsync(team, user);
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     private async Task AddTokenToUser(Team team, TUser user, string? tkn)
     {

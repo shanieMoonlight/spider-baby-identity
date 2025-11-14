@@ -59,7 +59,7 @@ internal class StringFilterProvider
         return new PgResult<Expression>(stringMethodExp);
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     private static PgResult<Expression> CreateStringInFilter(ParameterExpression param, FilterRequest filterRequest, Func<string, string>? getPropertySelectorLambda = null)
     {
@@ -91,7 +91,7 @@ internal class StringFilterProvider
 
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     private static IList TryConvertStringList(string[] strList, Type newType)
     {
@@ -120,7 +120,7 @@ internal class StringFilterProvider
 
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     private static PgResult<Expression> HandleStringEnum(MemberExpression propertyExp, FilterRequest filterRequest)
     {

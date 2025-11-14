@@ -20,7 +20,7 @@ public static class FilteringExtensions
     public static IEnumerable<T> AddFiltering<T>(this IEnumerable<T> list, IEnumerable<FilterRequest> filterRequestList, ILogger? logger = null) =>
         list.AddFiltering(filterRequestList, null, logger);
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Sorts <paramref name="list"/> according to the details in <paramref name="filterRequestList"/>
@@ -40,7 +40,7 @@ public static class FilteringExtensions
             .AsEnumerable();
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Sorts <paramref name="list"/> according to the details in <paramref name="filterRequestList"/>
@@ -52,7 +52,7 @@ public static class FilteringExtensions
     public static IQueryable<T> AddFiltering<T>(this IQueryable<T> list, IEnumerable<FilterRequest>? filterRequestList, ILogger? logger = null) =>
         list.AddFiltering(filterRequestList, null, logger);
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Sorts <paramref name="list"/> according to the details in <paramref name="filterRequestList"/>
@@ -104,7 +104,7 @@ public static class FilteringExtensions
         return queryableData.Provider.CreateQuery<T>(whereExpression);
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Checks whether this list needs to be filtered <para />
@@ -128,7 +128,7 @@ public static class FilteringExtensions
         return false;
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     private static bool IsFilterRequestInvalid(FilterRequest fr)
     {
@@ -163,7 +163,7 @@ public static class FilteringExtensions
         return false;
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Create a level of filtering for the linq query (Where)

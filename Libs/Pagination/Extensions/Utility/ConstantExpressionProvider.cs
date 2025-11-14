@@ -32,7 +32,7 @@ internal class ConstantExpressionProvider
         };
     }
 
-    //-----------------------------------// 
+    //------------------------// 
 
     internal static PgResult<ConstantExpression> CreateNumericListConstantExpression(Type type, string[] numStrings)
     {
@@ -78,7 +78,7 @@ internal class ConstantExpressionProvider
 
     }
 
-    //-----------------------------------// 
+    //------------------------// 
 
     /// <summary>
     /// Converts a list of strings into a list of O and then turns that into a CnstantExpression
@@ -105,7 +105,7 @@ internal class ConstantExpressionProvider
         return new(Expression.Constant(newList));
     }
 
-    //-----------------------------------//  
+    //------------------------//  
 
     /// <summary>
     /// Converts a list of strings into a list of O and then turns that into a ConstantExpression
@@ -131,7 +131,7 @@ internal class ConstantExpressionProvider
         return new PgResult<ConstantExpression>(Expression.Constant(newList));
     }
 
-    //-----------------------------------//  
+    //------------------------//  
 
     /// <summary>
     /// Try to parse a string into a number and return result wrapped in a PhResult

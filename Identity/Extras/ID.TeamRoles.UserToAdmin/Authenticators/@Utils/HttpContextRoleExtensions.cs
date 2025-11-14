@@ -33,7 +33,7 @@ public static class HttpContextTeamRoleExtensions
     public static bool IsAdminMin(this HttpContext ctx) =>
         ctx.HasClaim(IdTeamRoleClaims.ADMIN);
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Is in a  team of higher trank thean the Customer team

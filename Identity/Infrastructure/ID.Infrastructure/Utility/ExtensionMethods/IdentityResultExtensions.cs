@@ -38,7 +38,7 @@ public static class IdentityResultExtensions
 
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Converts IdentityResult to GenResult

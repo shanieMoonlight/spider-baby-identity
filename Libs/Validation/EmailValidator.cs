@@ -21,7 +21,7 @@ public partial class EmailValidator
     [GeneratedRegex(@"(\.-)|(-\.)|^[-.]|[-.]$")]
     private static partial Regex EmailFinalCheckRegex();
 
-    //-----------------------------------//
+    //------------------------//
 
     public static bool IsValid(string? email, bool allowNulls = true)
     {

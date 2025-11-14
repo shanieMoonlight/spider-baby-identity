@@ -70,22 +70,6 @@ CookieSignInService Testing (Integration)
 
 
 
-
-
-
- PaginationHelpers
-  if (!DateTime.TryParse(
-                filterRequest.FilterValue,
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
-                out var outDate))
-            return new PhResult<Expression>(false, $"Can't convert {filterRequest.FilterValue} to DateTime value");
-
-        // Ensure we compare using the date at UTC midnight
-        var utcDate = DateTime.SpecifyKind(outDate.Date, DateTimeKind.Utc);
-        var value = Expression.Constant(utcDate);
-
-
 Fix file paths for Linux containers (Email Templates)
 EmailSpec
 
@@ -107,13 +91,7 @@ remove FromAppMiddleware
 rename any GetByIdAsync to FirstByIdAsync for clarity and similar in all domain-services
 
 
- remove MyIdLoggingEvents (or merge with IdErrorEvents)
 
+Ensure your handler types are registered in DI (e.g. services.AddTransient<MyHandler>()) — adapter resolves them at job time.
 
-
- Remove this:     public async Task<IReadOnlyList<Team>> GetAllTeamsWithExpiredSubscriptions(CancellationToken cancellationToken = default) =>
-        await _teamRepo.ListAllAsync(new TeamsWithExpiredSubscriptionsSpec(), cancellationToken);????????????
-
-
-
-•	Ensure your handler types are registered in DI (e.g. services.AddTransient<MyHandler>()) — adapter resolves them at job time.
+Replace FromAppService with DeviceAuthService

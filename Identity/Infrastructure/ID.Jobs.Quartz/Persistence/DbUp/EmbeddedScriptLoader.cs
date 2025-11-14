@@ -1,19 +1,20 @@
 using DbUp.Engine;
+using ID.Jobs.Quartz.Persistence.Abs;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
 
 namespace ID.Jobs.Quartz.Persistence.DbUp;
 
-internal static class EmbeddedScriptLoader
+internal class EmbeddedScriptLoader(ILogger<EmbeddedScriptLoader> _logger) : IEmbeddedScriptLoader
 {
-    public static IReadOnlyList<SqlScript> LoadEmbeddedSqlScripts(
-        Assembly assembly, string namespacePrefix, IDictionary<string, string> variables, ILogger? logger = null)
+    public IReadOnlyList<SqlScript> LoadEmbeddedSqlScripts(
+        Assembly assembly, string namespacePrefix, IDictionary<string, string> variables)
     {
         ArgumentNullException.ThrowIfNull(assembly);
         ArgumentException.ThrowIfNullOrWhiteSpace(namespacePrefix);
 
         var resourceNames = assembly.GetManifestResourceNames()
-            .Where(n => n.StartsWith(namespacePrefix, StringComparison.OrdinalIgnoreCase) && n.EndsWith(".sql", StringComparison.OrdinalIgnoreCase))
+            .Where(n => n.StartsWith(namespacePrefix, StringComparison.OrdinalIgnoreCase) && n.EndsWith(".sql.template", StringComparison.OrdinalIgnoreCase))
             .OrderBy(n => n, StringComparer.OrdinalIgnoreCase)
             .ToArray();
 
@@ -36,8 +37,8 @@ internal static class EmbeddedScriptLoader
                          .Replace("$schema$", schema, StringComparison.Ordinal);
             }
 
-            var scriptName = res.Substring(namespacePrefix.Length);
-            logger?.LogDebug("Prepared script: {ScriptName}", scriptName);
+            var scriptName = res[namespacePrefix.Length..];
+            _logger?.LogDebug("Prepared script: {ScriptName}", scriptName);
             scripts.Add(new SqlScript(scriptName, sql));
         }
 

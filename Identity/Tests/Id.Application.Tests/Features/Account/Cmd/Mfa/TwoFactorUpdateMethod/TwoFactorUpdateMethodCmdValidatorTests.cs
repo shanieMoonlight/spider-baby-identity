@@ -19,7 +19,7 @@ public class TwoFactorUpdateMethodCmdValidatorTests
     public void Should_Have_Error_When_DTO_Is_Null()
     {
         // Arrange
-        var command = new UpdateTwoFactorProviderCmd(null);
+        var command = new UpdateTwoFactorProviderCmd(null!);
 
         // Act
         var result = _validator.TestValidate(command);
@@ -34,7 +34,7 @@ public class TwoFactorUpdateMethodCmdValidatorTests
     public void Validate_ShouldReturnValidationFailure_WhenIdIsNull()
     {
         // Arrange
-        var dto = new UpdateTwoFactorProviderDto( (TwoFactorProvider)0);
+        var dto = new UpdateTwoFactorProviderDto(0);
         var command = new UpdateTwoFactorProviderCmd(dto);
 
         // Act

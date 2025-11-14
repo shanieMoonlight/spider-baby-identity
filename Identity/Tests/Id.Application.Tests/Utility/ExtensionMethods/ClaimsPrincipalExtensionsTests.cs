@@ -1,12 +1,11 @@
 using ID.Domain.Claims.Utils;
 using Microsoft.IdentityModel.JsonWebTokens;
-using System.Security.Claims;
 
 namespace Id.Application.Tests.Utility.ExtensionMethods;
 
 public class ClaimsPrincipalExtensionsTests
 {
-    private ClaimsPrincipal CreatePrincipal(params Claim[] claims) => new(new ClaimsIdentity(claims, "mock"));
+    private static ClaimsPrincipal CreatePrincipal(params Claim[] claims) => new(new ClaimsIdentity(claims, "mock"));
 
     [Fact]
     public void GetEmail_Returns_Email_From_JwtRegisteredClaimNames_Email()

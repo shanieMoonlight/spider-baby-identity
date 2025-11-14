@@ -1,5 +1,6 @@
 using ID.Application.Jobs.Abstractions;
 using ID.Application.Jobs.Models;
+using ID.Jobs.Quartz.AppImps.Migration;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using Quartz.Impl.Matchers;
@@ -9,27 +10,12 @@ using System.Reflection;
 
 namespace ID.Jobs.Quartz.AppImps.JobService;
 
-internal sealed class QuartzMyIdJobService(ISchedulerFactory _schedulerFactory, ILogger<QuartzMyIdJobService> _logger)
+internal sealed class QuartzMyIdJobService(
+    ISchedulerFactory _schedulerFactory,
+    IMigrationNotifier _migrationNotifier,
+    ILogger<QuartzMyIdJobService> _logger)
     : IMyIdJobService
 {
-
-    private static MethodInfo ExtractMethodInfo<T>(Expression<Func<T, Task>> expression)
-    {
-        if (expression.Body is not MethodCallExpression mce)
-            throw new NotSupportedException("Only method call expressions are supported (e.g. h => h.HandleAsync()).");
-
-        if (mce.Arguments?.Count > 0)
-            throw new NotSupportedException("Only parameterless handler methods are supported by this initial adapter.");
-
-        return mce.Method;
-    }
-
-    //-----------------------//
-
-    private async Task<IScheduler> GetScheduler() =>
-        await _schedulerFactory.GetScheduler().ConfigureAwait(false);
-
-    //-----------------------//
 
     public async Task<bool> StartRecurringJob<Handler>(
         string jobId, Expression<Func<Handler, Task>> jobLambda, string cronFrequencyExpression)
@@ -81,9 +67,10 @@ internal sealed class QuartzMyIdJobService(ISchedulerFactory _schedulerFactory, 
             Debug.WriteLine($"cronFrequencyExpression:{cronFrequencyExpression}");
             Debug.WriteLine(e.Message);
             Debug.WriteLine(e.StackTrace);
-            _logger.LogError("Failed to schedule job {JobId}. (cron={CronFrequencyExpression}) (error={Error}.  trace={StackTrace})", 
+            _logger.LogError("Failed to schedule job {JobId}. (cron={CronFrequencyExpression}) (error={Error}.  trace={StackTrace})",
                 jobId, cronFrequencyExpression, e.Message, e.StackTrace);
-            throw;
+            //throw;
+            return false;
         }
     }
 
@@ -197,5 +184,22 @@ internal sealed class QuartzMyIdJobService(ISchedulerFactory _schedulerFactory, 
         return handlerType.AssemblyQualifiedName ?? throw new InvalidOperationException($"Cannot determine type name for handler: {handlerType}");
     }
 
+    //- - - - - - - - - - - -//
+
+    private static MethodInfo ExtractMethodInfo<T>(Expression<Func<T, Task>> expression)
+    {
+        if (expression.Body is not MethodCallExpression mce)
+            throw new NotSupportedException("Only method call expressions are supported (e.g. h => h.HandleAsync()).");
+
+        if (mce.Arguments?.Count > 0)
+            throw new NotSupportedException("Only parameterless handler methods are supported by this initial adapter.");
+
+        return mce.Method;
+    }
+
+    //- - - - - - - - - - - -//
+
+    private async Task<IScheduler> GetScheduler() =>
+        await _schedulerFactory.GetScheduler().ConfigureAwait(false);
 
 }//Cls

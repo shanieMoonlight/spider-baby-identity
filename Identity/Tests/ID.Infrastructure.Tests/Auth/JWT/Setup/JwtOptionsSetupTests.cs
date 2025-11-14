@@ -154,7 +154,7 @@ public class JwtOptionsSetupTests
         ExternalPages = [],
         AllowExternalPagesDevModeAccess = null,
         UseDbTokenProvider = null,
-        ConnectionString = null
+        ConnectionString = string.Empty
     };
 
 

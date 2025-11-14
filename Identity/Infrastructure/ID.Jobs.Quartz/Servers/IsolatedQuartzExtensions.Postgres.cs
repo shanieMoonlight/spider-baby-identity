@@ -10,7 +10,7 @@ internal static class IsolatedQuartzExtensionsPostgres
     {
         services.AddQuartz(q =>
         {
-            q.SchedulerName = "MyIdQuartzScheduler";
+            q.SchedulerName = QuartzConstants.Scheduler;
 
             q.UsePersistentStore(storeBuilder =>
             {

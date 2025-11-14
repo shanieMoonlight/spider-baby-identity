@@ -1,5 +1,6 @@
 ﻿using ID.Application.Models;
 using ID.Jobs.Quartz.Persistence.Abs;
+using ID.Jobs.Quartz.Persistence.DbUp;
 using ID.Jobs.Quartz.Persistence.DbUp.Postgres;
 using ID.Jobs.Quartz.Persistence.DbUp.SqlServer;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ internal static class SetupPersistence
     public static IServiceCollection AddQuartzPersistence(this IServiceCollection services, DatabaseType dbType)
     {
 
+        services.AddScoped<IEmbeddedScriptLoader, EmbeddedScriptLoader>();
 
         switch (dbType)
         {

@@ -1,6 +1,4 @@
-﻿using ID.GlobalSettings.Utility;
-
-namespace ID.Infrastructure.Setup.Options;
+﻿namespace ID.Infrastructure.Setup.Options;
 
 /// <summary>
 /// Options for configuring the general infrastructure stuff.

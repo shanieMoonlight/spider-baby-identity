@@ -1,31 +1,26 @@
-using ID.AddOns.Middleware.Swagger;
+using ID.Application.Middleware.ExternalPages;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Text.Encodings.Web;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Security.Claims;
-using ID.Application.Middleware.ExternalPages;
+using System.Text.Encodings.Web;
 
-namespace ID.AddOns.Tests.Middleware.Swagger;
+namespace ID.Application.Tests.Middlleware;
 
-public class SwaggerAuthMiddlewareTests
+public class ExternalPagesAuthIntegrationTests
 {
-
     private const string _apiOkResonse = "api ok";
-    private const string _swaggerOkResonse = "swagger ok";
-    private const string _swaggerPath = "/swagger";
+    private const string _externalOkResonse = "external ok";
+    private const string _externalPath = "/myid-jobs-dashboard";
     private const string _apiPath = "/api";
     private const string _authScheme = "Test";
 
     [Fact]
-    public async Task NonSwaggerRequest_IsNotBlocked()
+    public async Task NonExternalRequest_IsNotBlocked()
     {
         using var server = CreateServer();
         var client = server.CreateClient();
@@ -35,12 +30,14 @@ public class SwaggerAuthMiddlewareTests
         content.ShouldBe(_apiOkResonse);
     }
 
+    //--------------------------//
+
     [Fact]
-    public async Task UnauthenticatedSwaggerRequest_IsBlockedWith401AndJson()
+    public async Task UnauthenticatedExternalRequest_IsBlockedWith401AndJson()
     {
         using var server = CreateServer();
         var client = server.CreateClient();
-        var response = await client.GetAsync(_swaggerPath);
+        var response = await client.GetAsync(_externalPath);
         var content = await response.Content.ReadAsStringAsync();
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
         response.Content.Headers.ContentType?.MediaType.ShouldBe("application/json");
@@ -48,17 +45,7 @@ public class SwaggerAuthMiddlewareTests
         response.Headers.WwwAuthenticate.ToString().ShouldContain("Bearer");
     }
 
-    [Fact]
-    public async Task AuthenticatedSwaggerRequest_IsAllowed()
-    {
-        using var server = CreateServer(addAuth: true);
-        var client = server.CreateClient();
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_authScheme);
-        var response = await client.GetAsync(_swaggerPath);
-        var content = await response.Content.ReadAsStringAsync();
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        content.ShouldBe(_swaggerOkResonse);
-    }
+    //--------------------------//
 
     [Fact]
     public async Task CustomPredicate_BlocksOrAllows()
@@ -68,7 +55,7 @@ public class SwaggerAuthMiddlewareTests
         {
             var client = server.CreateClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_authScheme);
-            var response = await client.GetAsync(_swaggerPath);
+            var response = await client.GetAsync(_externalPath);
             response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
         }
         // Predicate allows all
@@ -76,14 +63,13 @@ public class SwaggerAuthMiddlewareTests
         {
             var client = server.CreateClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_authScheme);
-            var response = await client.GetAsync(_swaggerPath);
+            var response = await client.GetAsync(_externalPath);
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
         }
     }
 
 
     //----------------------------//
-
 
     private static TestServer CreateServer(Predicate<HttpContext>? predicate = null, bool addAuth = false)
     {
@@ -98,14 +84,18 @@ public class SwaggerAuthMiddlewareTests
             })
             .Configure(app =>
             {
-                if (addAuth) //Don't use with addAuth=false so that the request stays with the default Authenticated=false
-                    app.UseAuthentication(); 
+                if (addAuth)
+                    app.UseAuthentication();
 
-                app.UseSwaggerAuth(predicate);
+                // Use the middleware under test
+                if (predicate is null)
+                    app.UseExternalPagesAuth_SuperTeam(_externalPath);
+                else
+                    app.UseExternalPagesAuth_Custom(_externalPath, predicate);
 
-                app.Map(_swaggerPath, b => b.Run(async ctx =>
+                app.Map(_externalPath, b => b.Run(async ctx =>
                 {
-                    await ctx.Response.WriteAsync(_swaggerOkResonse);
+                    await ctx.Response.WriteAsync(_externalOkResonse);
                 }));
 
                 app.Map(_apiPath, b => b.Run(async ctx =>
@@ -118,12 +108,15 @@ public class SwaggerAuthMiddlewareTests
     }
 }
 
+//##########################//
 
-//#####################################################//
-
-public class TestAuthSchemeOptions : AuthenticationSchemeOptions { }
 
 // Minimal test auth handler for simulating authenticated users
+public class TestAuthSchemeOptions : AuthenticationSchemeOptions { }
+
+
+//--------------------------//
+
 public class TestAuthHandler(
     IOptionsMonitor<TestAuthSchemeOptions> options,
     ILoggerFactory logger,
@@ -138,7 +131,5 @@ public class TestAuthHandler(
         var ticket = new AuthenticationTicket(principal, Scheme.Name);
         return Task.FromResult(AuthenticateResult.Success(ticket));
     }
-}
 
-
-//#####################################################//
+}//Cls

@@ -6,6 +6,7 @@ internal class QuartzConstants
     public const string JobGroup = "MyIdJobs";
     public const string Schema = "myid_qtz";
     public const string TablePrefix = "QRTZ_";
+    public const string Scheduler = "MyIdQuartzScheduler";
 
 
     public static class DbUp

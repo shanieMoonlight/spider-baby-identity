@@ -4,14 +4,19 @@ using ID.Jobs.Quartz.Persistence.Abs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ID.Application.Jobs.Abstractions;
+using ID.Jobs.Quartz.AppImps.Migration;
 
 namespace ID.Jobs.Quartz.AppImps;
 
-internal class QuartzDbMigrator(IOptions<QuartzConfig> _configProvider, IDbUpMigrator _dbUpMigrator, ILogger<QuartzDbMigrator> _logger) 
+internal class QuartzDbMigrator(
+    IOptions<QuartzConfig> _configProvider,
+    IDbUpMigrator _dbUpMigrator,
+    ILogger<QuartzDbMigrator> _logger,
+    IMigrationNotifier _migrationNotifier)
     : IJobsDbMigrator
 {
-
     private readonly QuartzConfig _config = _configProvider.Value;
+    private readonly IMigrationNotifier _migrationNotifierLocal = _migrationNotifier;
 
     //----------------------//
 
@@ -36,6 +41,15 @@ internal class QuartzDbMigrator(IOptions<QuartzConfig> _configProvider, IDbUpMig
 
         _logger.LogInformation("Quartz DB migrations completed successfully for {DatabaseType}. See debug logs for prepared script names and DbUp journal for applied scripts. ConnectionString: {ConnectionString}", dbType, connectionString);
 
+        // Notify subscribers that migrations succeeded. Best-effort: don't let notification failures break the call.
+        try
+        {
+            await _migrationNotifierLocal.NotifySucceededAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Migration succeeded but migration notifier failed.");
+        }
     }
 
 }//Cls

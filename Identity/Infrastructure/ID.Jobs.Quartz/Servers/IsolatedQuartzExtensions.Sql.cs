@@ -10,7 +10,7 @@ internal static class IsolatedQuartzExtensionsSql
     {
         services.AddQuartz(q =>
         {
-            q.SchedulerName = "MyIdQuartzScheduler";
+            q.SchedulerName = QuartzConstants.Scheduler;
 
 
 
@@ -18,6 +18,8 @@ internal static class IsolatedQuartzExtensionsSql
             {
                 storeBuilder.UseProperties = true;
                 storeBuilder.RetryInterval = TimeSpan.FromSeconds(15);
+                storeBuilder.PerformSchemaValidation = false;
+
                 // set clustering via storeBuilder.UseClustering() if available
                 storeBuilder.UseNewtonsoftJsonSerializer();
 

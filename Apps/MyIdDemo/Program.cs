@@ -1,5 +1,6 @@
 using ID.AddOns.Middleware.Swagger;
 using ID.API.Setup;
+using ID.Application.Middleware.ExternalPages;
 using MyIdDemo.Middleware.Exceptions;
 using MyIdDemo.Setup;
 using MyIdDemo.Setup.Data;

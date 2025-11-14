@@ -34,8 +34,10 @@ internal static class JobsSetup
     /// <param name="app">The application builder to configure.</param>
     /// <param name="minTeamTypeDashboardAccess">The minimum team type required to access the job dashboard.</param>
     /// <returns>The application builder with job middleware configured.</returns>
-    public static IApplicationBuilder UseMyIdJobs(this IApplicationBuilder app, TeamType minTeamTypeDashboardAccess) =>
+    public static IApplicationBuilder UseMyIdJobs(this IApplicationBuilder app, TeamType minTeamTypeDashboardAccess)
+    {
         // no dashboard mapping at this time; host can opt-in for a dashboard UI later
-        app;
-
+        app.UseMyIdQuartzJobs(minTeamTypeDashboardAccess);
+        return app;
+    }
 }//Cls

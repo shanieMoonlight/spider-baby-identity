@@ -82,7 +82,7 @@ internal sealed class HandlerAdapter<THandler>(IServiceProvider _provider, ILogg
 
         // parameterless Task-returning method
         if (parameters.Length == 0 && method.ReturnType == typeof(Task))
-            return (handler, ct) => (Task)method.Invoke(handler, Array.Empty<object?>())!;
+            return (handler, ct) => (Task)method.Invoke(handler, [])!;
 
         // single CancellationToken parameter and Task return
         if (parameters.Length == 1 && parameters[0].ParameterType == typeof(CancellationToken) && method.ReturnType == typeof(Task))
@@ -96,7 +96,7 @@ internal sealed class HandlerAdapter<THandler>(IServiceProvider _provider, ILogg
             catch
             {
                 // fallback to reflection wrapper
-                return (handler, ct) => (Task)method.Invoke(handler, new object?[] { ct })!;
+                return (handler, ct) => (Task)method.Invoke(handler, [ct])!;
             }
         }
 
@@ -106,7 +106,7 @@ internal sealed class HandlerAdapter<THandler>(IServiceProvider _provider, ILogg
 
         return (handler, ct) =>
         {
-            method.Invoke(handler, Array.Empty<object?>());
+            method.Invoke(handler, []);
             return Task.CompletedTask;
         };
     }

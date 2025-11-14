@@ -10,13 +10,26 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="TestMigrations\Postgres\001_init.sql.template" />
+	  <None Remove="TestMigrations\Postgres\002_tokens.sql.template" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="TestMigrations\Postgres\001_init.sql.template" />
+	  <EmbeddedResource Include="TestMigrations\Postgres\002_tokens.sql.template" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="coverlet.collector" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" />
-		<PackageReference Include="Shouldly" />
-		<PackageReference Include="xunit" />
-		<PackageReference Include="xunit.runner.visualstudio" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" />
+		<PackageReference Include="Shouldly" />
+		<PackageReference Include="Moq" />
+		<PackageReference Include="xunit" />
+		<PackageReference Include="xunit.runner.visualstudio" />
+		<!--<PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />-->
 	</ItemGroup>
 
 	<ItemGroup>

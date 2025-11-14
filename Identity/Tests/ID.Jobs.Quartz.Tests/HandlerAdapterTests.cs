@@ -67,7 +67,14 @@ public class HandlerAdapterTests
 
     //######################//
 
-    private class TestHandler
+    private interface ITestHandler
+    {
+        Task DoWork();
+        Task DoWorkWithToken(CancellationToken ct);
+        int UnsupportedMethod(string input);
+    }
+
+    private class TestHandler : ITestHandler
     {
         public static bool Worked { get; set; }
 
@@ -85,6 +92,7 @@ public class HandlerAdapterTests
 
         public int UnsupportedMethod(string input)
         {
+            Console.WriteLine(input);
             return 42;
         }
     }
@@ -95,11 +103,11 @@ public class HandlerAdapterTests
     private class FakeJobExecutionContext : IJobExecutionContext
     {
         private readonly JobDetailImpl _detail;
-        private readonly JobDataMap _dataMap = new();
+        private readonly JobDataMap _dataMap = [];
 
         public FakeJobExecutionContext(string methodName)
         {
-            _detail = new JobDetailImpl("test", null, typeof(NoOpJob));
+            _detail = new JobDetailImpl("test", null!, typeof(NoOpJob));
             _detail.JobDataMap.Put("MethodName", methodName);
         }
 
@@ -108,7 +116,7 @@ public class HandlerAdapterTests
         public ITrigger Trigger => null!;
         public ICalendar Calendar => null!;
         public IJobDetail JobDetail => _detail;
-        public IJobExecutionContext? PreviousFireTime => null;
+        //public IJobExecutionContext? PreviousFireTime => null;
         public CancellationToken CancellationToken => CancellationToken.None;
         public DateTimeOffset FireTimeUtc => default;
         public DateTimeOffset? ScheduledFireTimeUtc => default;
@@ -131,9 +139,9 @@ public class HandlerAdapterTests
             return _detail.JobDataMap.Get(key.ToString() ?? string.Empty);
         }
 
-        public void Recover() { }
+        //public void Recover() { }
         public void SetResult(object? newResult) { Result = newResult; }
-        public object? Remove(string key) { return null; }
+        //public object? Remove(string key) { return null; }
 
         public bool Recovering => false;
         public TriggerKey? RecoveringTriggerKey => null;

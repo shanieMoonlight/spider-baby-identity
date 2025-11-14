@@ -24,7 +24,7 @@ public class Resend2FactorCookieHandler(
 
         //return BasicResult.Success();
         var token = _cookieSignInService.TryGetTwoFactorToken();
-        var rememberMe = _cookieSignInService.GetRememberMe();
+        //var rememberMe = _cookieSignInService.GetRememberMe();
         if (string.IsNullOrWhiteSpace(token))
             return BasicResult.BadRequestResult(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_TOKEN);
 

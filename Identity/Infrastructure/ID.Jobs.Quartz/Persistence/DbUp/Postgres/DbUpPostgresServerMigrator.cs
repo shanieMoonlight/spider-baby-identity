@@ -8,7 +8,11 @@ using System.Reflection;
 
 namespace ID.Jobs.Quartz.Persistence.DbUp.Postgres;
 
-internal class DbUpPostgresServerMigrator(IOptions<QuartzConfig> _configProvider, ILogger<QuartzDbMigrator> _logger) : IDbUpMigrator
+internal class DbUpPostgresServerMigrator(
+    IOptions<QuartzConfig> _configProvider,
+    IEmbeddedScriptLoader _embeddedScriptLoader, 
+    ILogger<QuartzDbMigrator> _logger)
+    : IDbUpMigrator
 {
     private readonly QuartzConfig _config = _configProvider.Value;
 
@@ -19,20 +23,17 @@ internal class DbUpPostgresServerMigrator(IOptions<QuartzConfig> _configProvider
         string connectionString = _config.ConnectionString;
 
         Assembly assembly = IdJobsQrzAssemblyReference.Assembly;
-        EnsureDatabase.For.PostgresqlDatabase(connectionString);
+        //EnsureDatabase.For.PostgresqlDatabase(connectionString);
 
         const string nsPrefix = "ID.Jobs.Quartz.Persistence.DbUp.Postgres.Migrations.";
 
-        var scripts = EmbeddedScriptLoader.LoadEmbeddedSqlScripts(assembly, nsPrefix, variables, _logger);
+        var scripts = _embeddedScriptLoader.LoadEmbeddedSqlScripts(assembly, nsPrefix, variables);
 
         var builder = DeployChanges.To
             .PostgresqlDatabase(connectionString)
             .JournalToSqlTable(QuartzConstants.DbUp.JournalSchema, QuartzConstants.DbUp.JournalTable)
-            .WithScripts(scripts);
-
-        builder = _logger != null 
-            ? builder.LogTo(_logger) 
-            : builder.LogToConsole();
+            .WithScripts(scripts)
+            .LogTo(_logger);
 
         var upgrader = builder.Build();
         return Task.FromResult(upgrader);

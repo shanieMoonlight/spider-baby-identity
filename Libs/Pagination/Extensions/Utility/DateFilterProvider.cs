@@ -45,7 +45,9 @@ internal class DateFilterProvider
         if (!TryParseDateTimeSafe(filterRequest.FilterValue, out var outDate))
             return new PgResult<Expression>(false, $"Can't convert {filterRequest.FilterValue} to DateTime value");
 
-        var value = Expression.Constant(outDate.Date);//What to compare with
+        // Ensure we compare using the date at UTC midnight (postgres needs UTC)
+        var utcDate = DateTime.SpecifyKind(outDate.Date, DateTimeKind.Utc);
+        var value = Expression.Constant(utcDate);
 
 
         var expTypeResult = FilterTypes.GetDateExpressionType(filterRequest.FilterType);

@@ -1,3 +1,4 @@
+using ID.Application.Jobs.Abstractions;
 using ID.Jobs.Quartz.AppImps.JobService;
 using Quartz.Impl;
 
@@ -12,30 +13,18 @@ public class HandlerAdapterTests
         var services = new ServiceCollection();
         // register a simple handler type for testing
         services.AddTransient<TestHandler>();
+        services.AddTransient<FailingHandler>();
         _sp = services.BuildServiceProvider();
     }
 
     //----------------------//
 
     [Fact]
-    public async Task Executes_TaskReturningMethod_NoParameters()
-    {
-        var adapter = new HandlerAdapter<TestHandler>(_sp, new NullLogger<HandlerAdapter<TestHandler>>());
-        var ctx = new FakeJobExecutionContext("DoWork");
-
-        await adapter.Execute(ctx);
-
-        Assert.True(TestHandler.Worked);
-    }
-
-    //----------------------//
-
-    [Fact]
-    public async Task Executes_TaskReturningMethod_WithCancellationToken()
+    public async Task Execute_Invokes_HandleAsync()
     {
         TestHandler.Worked = false;
         var adapter = new HandlerAdapter<TestHandler>(_sp, new NullLogger<HandlerAdapter<TestHandler>>());
-        var ctx = new FakeJobExecutionContext("DoWorkWithToken");
+        var ctx = new FakeJobExecutionContext();
 
         await adapter.Execute(ctx);
 
@@ -45,56 +34,34 @@ public class HandlerAdapterTests
     //----------------------//
 
     [Fact]
-    public async Task UnsupportedSignature_Throws()
+    public async Task Execute_HandlerThrows_ExceptionPropagates()
     {
-        var adapter = new HandlerAdapter<TestHandler>(_sp, new NullLogger<HandlerAdapter<TestHandler>>());
-        var ctx = new FakeJobExecutionContext("UnsupportedMethod");
+        var adapter = new HandlerAdapter<FailingHandler>(_sp, new NullLogger<HandlerAdapter<FailingHandler>>());
+        var ctx = new FakeJobExecutionContext();
 
-        await Assert.ThrowsAsync<InvalidOperationException>(() => adapter.Execute(ctx));
-    }
-
-    [Fact]
-    public async Task UnsupportedSignature_CachedThrowsOnSecondCall()
-    {
-        var adapter = new HandlerAdapter<TestHandler>(_sp, new NullLogger<HandlerAdapter<TestHandler>>());
-        var ctx = new FakeJobExecutionContext("UnsupportedMethod");
-
-        await Assert.ThrowsAsync<InvalidOperationException>(() => adapter.Execute(ctx));
-
-        // second call should also throw (cached sentinel)
         await Assert.ThrowsAsync<InvalidOperationException>(() => adapter.Execute(ctx));
     }
 
     //######################//
 
-    private interface ITestHandler
-    {
-        Task DoWork();
-        Task DoWorkWithToken(CancellationToken ct);
-        int UnsupportedMethod(string input);
-    }
-
-    private class TestHandler : ITestHandler
+    private class TestHandler : AMyIdJobHandler
     {
         public static bool Worked { get; set; }
 
-        public Task DoWork()
+        public TestHandler() : base("TEST_HANDLER") { }
+
+        public override Task HandleAsync()
         {
             Worked = true;
             return Task.CompletedTask;
         }
+    }
 
-        public Task DoWorkWithToken(CancellationToken ct)
-        {
-            Worked = true;
-            return Task.CompletedTask;
-        }
+    private class FailingHandler : AMyIdJobHandler
+    {
+        public FailingHandler() : base("FAIL_HANDLER") { }
 
-        public int UnsupportedMethod(string input)
-        {
-            Console.WriteLine(input);
-            return 42;
-        }
+        public override Task HandleAsync() => throw new InvalidOperationException("handler failed");
     }
 
     //----------------------//
@@ -103,12 +70,10 @@ public class HandlerAdapterTests
     private class FakeJobExecutionContext : IJobExecutionContext
     {
         private readonly JobDetailImpl _detail;
-        private readonly JobDataMap _dataMap = [];
 
-        public FakeJobExecutionContext(string methodName)
+        public FakeJobExecutionContext()
         {
             _detail = new JobDetailImpl("test", null!, typeof(NoOpJob));
-            _detail.JobDataMap.Put("MethodName", methodName);
         }
 
         // implement required members
@@ -116,7 +81,6 @@ public class HandlerAdapterTests
         public ITrigger Trigger => null!;
         public ICalendar Calendar => null!;
         public IJobDetail JobDetail => _detail;
-        //public IJobExecutionContext? PreviousFireTime => null;
         public CancellationToken CancellationToken => CancellationToken.None;
         public DateTimeOffset FireTimeUtc => default;
         public DateTimeOffset? ScheduledFireTimeUtc => default;
@@ -139,9 +103,7 @@ public class HandlerAdapterTests
             return _detail.JobDataMap.Get(key.ToString() ?? string.Empty);
         }
 
-        //public void Recover() { }
         public void SetResult(object? newResult) { Result = newResult; }
-        //public object? Remove(string key) { return null; }
 
         public bool Recovering => false;
         public TriggerKey? RecoveringTriggerKey => null;

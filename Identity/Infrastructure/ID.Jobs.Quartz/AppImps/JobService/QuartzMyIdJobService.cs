@@ -4,7 +4,6 @@ using ID.Jobs.Quartz.Retries;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using Quartz.Impl.Matchers;
-using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace ID.Jobs.Quartz.AppImps.JobService;
@@ -22,17 +21,17 @@ internal sealed class QuartzMyIdJobService(
     {
         try
         {
-            await ScheduleRecurringJobCore(jobId, jobLambda, cronFrequencyExpression);
+            await ScheduleRecurringJobCore<Handler>(jobId, cronFrequencyExpression);
 
             _logger.LogInformation("Scheduled recurring job {JobId} with cron {Cron}", jobId, cronFrequencyExpression);
             return true;
         }
         catch (Exception e)
         {
-            Debug.WriteLine($"jobId:{jobId}");
-            Debug.WriteLine($"cronFrequencyExpression:{cronFrequencyExpression}");
-            Debug.WriteLine(e.Message);
-            Debug.WriteLine(e.StackTrace);
+            Console.WriteLine($"jobId:{jobId}");
+            Console.WriteLine($"cronFrequencyExpression:{cronFrequencyExpression}");
+            Console.WriteLine(e.Message);
+            Console.WriteLine(e.StackTrace);
             _logger.LogError(e, "Failed to schedule job {JobId}. (cron={CronFrequencyExpression}) (error={Error}.  trace={StackTrace})\r\nHave you migrated the database for quartz?",
                 jobId, cronFrequencyExpression, e.Message, e.StackTrace);
 
@@ -47,18 +46,16 @@ internal sealed class QuartzMyIdJobService(
     /// This will be used in retries to prevent infinite loops.
     /// </summary>
     /// <exception cref="Exception">Quartz Exception if DB not ready</exception>
-    private async Task ScheduleRecurringJobCore<Handler>(string jobId, Expression<Func<Handler, Task>> jobLambda, string cronFrequencyExpression)
+    private async Task ScheduleRecurringJobCore<Handler>(string jobId, string cronFrequencyExpression)
         where Handler : AMyIdJobHandler
     {
-        var method = jobLambda.ExtractMethodInfo();
         var scheduler = await _schedulerFactory.GetScheduler();
 
         var jobKey = new JobKey(jobId, QuartzConstants.JobGroup);
 
         var jobData = new JobDataMap
         {
-            [QuartzConstants.HandlerTypeKey] = QuartzJobUtils.GetHandlerTypeQualifiedName<Handler>(),
-            [QuartzConstants.MethodNameKey] = method.Name
+            [QuartzConstants.HandlerTypeKey] = QuartzJobUtils.GetHandlerTypeQualifiedName<Handler>()
         };
 
         var adapterType = typeof(HandlerAdapter<>).MakeGenericType(typeof(Handler));
@@ -87,12 +84,15 @@ internal sealed class QuartzMyIdJobService(
 
     //- - - - - - - - - - - -//
 
+    /// <summary>
+    /// Jobs can fail when DB is not ready. Store them so we can try after Migration
+    /// </summary>
     private Task StoreFailedJobAsync<Handler>(string jobId, Expression<Func<Handler, Task>> jobLambda, string cronFrequencyExpression)
           where Handler : AMyIdJobHandler
     {
         // Enqueue a retry action that will attempt the scheduling again when migrations succeed.
         var pending = new PendingRetry(
-            ct => ScheduleRecurringJobCore(jobId, jobLambda, cronFrequencyExpression),
+            ct => ScheduleRecurringJobCore<Handler>(jobId, cronFrequencyExpression),
             Description: $"StartRecurringJob {jobId}",
             EnqueuedAt: DateTimeOffset.UtcNow);
 
@@ -159,7 +159,6 @@ internal sealed class QuartzMyIdJobService(
 
     public async Task<string> ScheduleJob<Handler>(Expression<Func<Handler, Task>> jobLambda, TimeSpan delay) where Handler : AMyIdJobHandler
     {
-        var method = jobLambda.ExtractMethodInfo();
         var scheduler = await _schedulerFactory.GetScheduler();
 
         var jobId = Guid.NewGuid().ToString("N");
@@ -167,8 +166,7 @@ internal sealed class QuartzMyIdJobService(
 
         var jobData = new JobDataMap
         {
-            [QuartzConstants.HandlerTypeKey] = QuartzJobUtils.GetHandlerTypeQualifiedName<Handler>(),
-            [QuartzConstants.MethodNameKey] = method.Name
+            [QuartzConstants.HandlerTypeKey] = QuartzJobUtils.GetHandlerTypeQualifiedName<Handler>()
         };
 
         var adapterType = typeof(HandlerAdapter<>).MakeGenericType(typeof(Handler));

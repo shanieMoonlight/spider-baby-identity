@@ -11,6 +11,7 @@
 		<ProjectReference Include="..\..\..\Libs\ClArch.SimpleSpecification\ClArch.SimpleSpecification.csproj" />
 		<ProjectReference Include="..\..\Core\ID.Application\ID.Application.csproj" />
 		<ProjectReference Include="..\..\Core\ID.Domain\ID.Domain.csproj" />
+		<ProjectReference Include="..\..\Core\ID.GlobalSettings\ID.GlobalSettings.csproj" />
 		<ProjectReference Include="..\..\Extras\JwtKeyBuilder\ID.Jwt.Builder.KeyBuilder\ID.Jwt.KeyBuilder.csproj" />
 	</ItemGroup>
 

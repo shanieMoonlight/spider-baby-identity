@@ -116,7 +116,5 @@ rename any GetByIdAsync to FirstByIdAsync for clarity and similar in all domain-
         await _teamRepo.ListAllAsync(new TeamsWithExpiredSubscriptionsSpec(), cancellationToken);????????????
 
 
-        Stop using magic strings:      var handlerTypeName = data.GetString("HandlerType");
-        var methodName = data.GetString("MethodName");
 
 •	Ensure your handler types are registered in DI (e.g. services.AddTransient<MyHandler>()) — adapter resolves them at job time.

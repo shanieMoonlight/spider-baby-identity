@@ -1,5 +1,4 @@
 ﻿using ID.Application.Jobs.Abstractions;
-using ID.Application.Utility;
 using ID.Domain.Entities.Teams.Validators;
 using ID.Domain.Repos;
 using ID.GlobalSettings.Errors;
@@ -49,7 +48,7 @@ internal sealed class TeamLeaderMntcJob(IServiceProvider _serviceProvider, ILogg
         }
         catch (Exception e)
         {
-            logger.LogException(e, MyIdLoggingEvents.JOBS.DB_MNTC);
+            logger.LogException(e, IdErrorEvents.Jobs.DbMntc);
         }
     }
 

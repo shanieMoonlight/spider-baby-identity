@@ -32,7 +32,6 @@ internal sealed class PendingRetriesHostedService(
     // Called when migrations succeed (or if called manually for retry)
     private async Task OnMigrationsSucceededAsync(CancellationToken ct)
     {
-        logger.LogInformation("Migrations succeeded - attempting pending retries.");
 
         // Snapshot store so we don't iterate over a moving collection
         var snapshot = store.Snapshot();
@@ -81,7 +80,7 @@ internal sealed class PendingRetriesHostedService(
         try
         {
             // Execute the action under the Polly policy. If policy exhausts, it will throw the final exception.
-            await policy.ExecuteAsync(async ctInner => await item.Action(ctInner).ConfigureAwait(false), ct).ConfigureAwait(false);
+            await policy.ExecuteAsync(async ctInner => await item.Action(ctInner), ct);
 
             // Success -> remove from store
             if (store.TryRemove(id, out _))

@@ -1,16 +1,16 @@
 ﻿using ClArch.ValueObjects;
 using ID.Application.AppAbs.Setup;
-using ID.Application.Utility;
 using ID.Domain.Abstractions.Services.Teams;
+using ID.Domain.AppServices.Abs;
 using ID.Domain.Entities.AppUsers;
+using ID.Domain.Entities.AppUsers.ValueObjects;
 using ID.Domain.Entities.Teams;
+using ID.Domain.Repos;
 using ID.Domain.Utility.Exceptions;
 using ID.GlobalSettings.Constants;
-using ID.Domain.Repos;
+using ID.GlobalSettings.Errors;
 using LoggingHelpers;
 using Microsoft.Extensions.Logging;
-using ID.Domain.AppServices.Abs;
-using ID.Domain.Entities.AppUsers.ValueObjects;
 
 namespace ID.Infrastructure.Services.Initialization.UsersAndRoles;
 
@@ -52,7 +52,7 @@ internal class UserAndRoleDataInitializer(
         }
         catch (Exception e)
         {
-            _logger.LogException(e, MyIdLoggingEvents.STARTUP_ERROR, "STARTUP_ERROR");
+            _logger.LogException(e, IdErrorEvents.Startup, "STARTUP_ERROR");
             throw;
         }
 

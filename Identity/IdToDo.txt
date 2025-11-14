@@ -107,7 +107,6 @@ remove FromAppMiddleware
 rename any GetByIdAsync to FirstByIdAsync for clarity and similar in all domain-services
 
 
- Update transaction service
  remove MyIdLoggingEvents (or merge with IdErrorEvents)
 
 

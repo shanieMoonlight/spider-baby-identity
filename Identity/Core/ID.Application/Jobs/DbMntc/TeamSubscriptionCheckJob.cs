@@ -1,8 +1,8 @@
 ﻿using ID.Application.Jobs.Abstractions;
-using ID.Application.Utility;
 using ID.Domain.Abstractions.Services.Teams;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Repos.Transactions;
+using ID.GlobalSettings.Errors;
 using LoggingHelpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -47,7 +47,7 @@ internal class TeamSubscriptionCheckJob(IServiceProvider _serviceProvider, ILogg
             }
             catch (Exception e)
             {
-                logger.LogException(e, MyIdLoggingEvents.JOBS.DB_MNTC);
+                logger.LogException(e, IdErrorEvents.Jobs.DbMntc);
                 await transaction.RollbackAsync(ct);
             }
         }, default);

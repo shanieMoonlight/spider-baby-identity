@@ -39,18 +39,13 @@ internal class QuartzDbMigrator(
             throw new InvalidOperationException("Quartz DB migrations failed", result.Error);
         }
 
-        _logger.LogInformation("Quartz DB migrations completed successfully for {DatabaseType}. See debug logs for prepared script names and DbUp journal for applied scripts. ConnectionString: {ConnectionString}", dbType, connectionString);
-
         // Notify subscribers that migrations succeeded. Best-effort: don't let notification failures break the call.
         try
         {
-            if (!result.Scripts.Any())
-            {
-                _logger.LogInformation("No Quartz DB migrations were applied, skipping migration notification.");
-                return;
-            }
-            //Let this block so that the caller knows when migrations are done or failed or in an unknown state.
-            await _migrationNotifierLocal.NotifySucceededAsync(cancellationToken);
+            //Only notify if there were actually scripts applied.
+            if (result.Scripts.Any())
+                //Let this block so that the caller knows when migrations are done or failed or in an unknown state.
+                await _migrationNotifierLocal.NotifySucceededAsync(cancellationToken);
         }
         catch (Exception ex)
         {

@@ -66,8 +66,6 @@ public static class IdApplicationSetupExtensions
     /// </remarks>
     public static IApplicationBuilder UseMyIdApplication(this IApplicationBuilder app)    {
         
-        //app.UseMultiFactorRequiredMiddleware();
-
         // Only register FromApp middleware if header value is configured
         var options = app.ApplicationServices.GetRequiredService<IOptions<IdApplicationOptions>>();
         if (!string.IsNullOrWhiteSpace(options.Value.FromAppHeaderValue))

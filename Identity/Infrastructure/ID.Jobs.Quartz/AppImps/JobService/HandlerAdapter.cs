@@ -55,7 +55,7 @@ internal sealed class HandlerAdapter<THandler>(IServiceProvider _provider, ILogg
                 func = created;
             }
 
-            await func(handler, context.CancellationToken).ConfigureAwait(false);
+            await func(handler, context.CancellationToken);
         }
         catch (TargetInvocationException tie) when (tie.InnerException != null)
         {

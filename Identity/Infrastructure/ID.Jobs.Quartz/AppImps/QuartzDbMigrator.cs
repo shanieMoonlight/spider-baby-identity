@@ -4,7 +4,7 @@ using ID.Jobs.Quartz.Persistence.Abs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ID.Application.Jobs.Abstractions;
-using ID.Jobs.Quartz.AppImps.Migration;
+using ID.Jobs.Quartz.Persistence.MigrationNotifications;
 
 namespace ID.Jobs.Quartz.AppImps;
 
@@ -44,11 +44,17 @@ internal class QuartzDbMigrator(
         // Notify subscribers that migrations succeeded. Best-effort: don't let notification failures break the call.
         try
         {
-            await _migrationNotifierLocal.NotifySucceededAsync(cancellationToken).ConfigureAwait(false);
+            if (!result.Scripts.Any())
+            {
+                _logger.LogInformation("No Quartz DB migrations were applied, skipping migration notification.");
+                return;
+            }
+            //Let this block so that the caller knows when migrations are done or failed or in an unknown state.
+            await _migrationNotifierLocal.NotifySucceededAsync(cancellationToken);
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Migration succeeded but migration notifier failed.");
+            _logger.LogError(ex, "Migration succeeded but migration notifier failed. You should restart the app to ensure ID Jobs are running.");
         }
     }
 

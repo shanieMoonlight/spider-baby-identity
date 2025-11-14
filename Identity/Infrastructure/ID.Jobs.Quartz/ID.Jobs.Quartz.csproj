@@ -19,6 +19,7 @@
 		<PackageReference Include="dbup" />
 		<PackageReference Include="dbup-postgresql" />
 		<PackageReference Include="dbup-sqlserver" />
+		<PackageReference Include="Polly" />
 		<PackageReference Include="Quartz" />
 		<PackageReference Include="Quartz.Extensions.Hosting" />
 		<PackageReference Include="Quartz.Serialization.Json" />
@@ -41,11 +42,6 @@
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
 			<_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
 		</AssemblyAttribute>
-	</ItemGroup>
-
-
-	<ItemGroup>
-	  <Folder Include="Channel\" />
 	</ItemGroup>
 
 </Project>

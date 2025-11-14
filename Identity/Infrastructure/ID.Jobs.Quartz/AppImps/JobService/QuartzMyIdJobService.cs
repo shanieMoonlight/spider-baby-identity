@@ -1,19 +1,18 @@
 using ID.Application.Jobs.Abstractions;
 using ID.Application.Jobs.Models;
-using ID.Jobs.Quartz.AppImps.Migration;
+using ID.Jobs.Quartz.Retries;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using Quartz.Impl.Matchers;
 using System.Diagnostics;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace ID.Jobs.Quartz.AppImps.JobService;
 
 internal sealed class QuartzMyIdJobService(
     ISchedulerFactory _schedulerFactory,
-    IMigrationNotifier _migrationNotifier,
-    ILogger<QuartzMyIdJobService> _logger)
+    ILogger<QuartzMyIdJobService> _logger,
+    PendingRetryStore _store)
     : IMyIdJobService
 {
 
@@ -23,40 +22,7 @@ internal sealed class QuartzMyIdJobService(
     {
         try
         {
-            var method = ExtractMethodInfo(jobLambda);
-            var scheduler = await GetScheduler().ConfigureAwait(false);
-
-            var jobKey = new JobKey(jobId, QuartzConstants.JobGroup);
-
-
-            var jobData = new JobDataMap
-            {
-                [QuartzConstants.HandlerTypeKey] = GetHandlerTypeQualifiedName<Handler>(),
-                [QuartzConstants.MethodNameKey] = method.Name
-            };
-
-            // Use typed handler adapter instead of global reflection job
-            var adapterType = typeof(HandlerAdapter<>).MakeGenericType(typeof(Handler));
-
-            var jobDetail = JobBuilder.Create(adapterType)
-                .WithIdentity(jobKey)
-                .UsingJobData(jobData)
-                .StoreDurably()
-                .Build();
-
-            var trigger = TriggerBuilder.Create()
-                .WithIdentity($"{jobId}.trigger", QuartzConstants.JobGroup)
-                .ForJob(jobDetail)
-                .WithCronSchedule(cronFrequencyExpression)
-                .Build();
-
-            await scheduler.AddJob(jobDetail, replace: true).ConfigureAwait(false);
-
-            var existingTriggers = await scheduler.GetTriggersOfJob(jobKey).ConfigureAwait(false);
-            if (existingTriggers != null && existingTriggers.Count != 0)
-                await scheduler.RescheduleJob(existingTriggers.First().Key, trigger).ConfigureAwait(false);
-            else
-                await scheduler.ScheduleJob(trigger).ConfigureAwait(false);
+            await ScheduleRecurringJobCore(jobId, jobLambda, cronFrequencyExpression);
 
             _logger.LogInformation("Scheduled recurring job {JobId} with cron {Cron}", jobId, cronFrequencyExpression);
             return true;
@@ -67,20 +33,88 @@ internal sealed class QuartzMyIdJobService(
             Debug.WriteLine($"cronFrequencyExpression:{cronFrequencyExpression}");
             Debug.WriteLine(e.Message);
             Debug.WriteLine(e.StackTrace);
-            _logger.LogError("Failed to schedule job {JobId}. (cron={CronFrequencyExpression}) (error={Error}.  trace={StackTrace})",
+            _logger.LogError(e, "Failed to schedule job {JobId}. (cron={CronFrequencyExpression}) (error={Error}.  trace={StackTrace})\r\nHave you migrated the database for quartz?",
                 jobId, cronFrequencyExpression, e.Message, e.StackTrace);
-            //throw;
+
+            await StoreFailedJobAsync(jobId, jobLambda, cronFrequencyExpression);
             return false;
         }
     }
+
+    //- - - - - - - - - - - -//
+
+    /// <summary>
+    /// This will be used in retries to prevent infinite loops.
+    /// </summary>
+    /// <exception cref="Exception">Quartz Exception if DB not ready</exception>
+    private async Task ScheduleRecurringJobCore<Handler>(string jobId, Expression<Func<Handler, Task>> jobLambda, string cronFrequencyExpression)
+        where Handler : AMyIdJobHandler
+    {
+        var method = jobLambda.ExtractMethodInfo();
+        var scheduler = await _schedulerFactory.GetScheduler();
+
+        var jobKey = new JobKey(jobId, QuartzConstants.JobGroup);
+
+        var jobData = new JobDataMap
+        {
+            [QuartzConstants.HandlerTypeKey] = QuartzJobUtils.GetHandlerTypeQualifiedName<Handler>(),
+            [QuartzConstants.MethodNameKey] = method.Name
+        };
+
+        var adapterType = typeof(HandlerAdapter<>).MakeGenericType(typeof(Handler));
+
+        var jobDetail = JobBuilder.Create(adapterType)
+            .WithIdentity(jobKey)
+            .UsingJobData(jobData)
+            .StoreDurably()
+            .Build();
+
+        var trigger = TriggerBuilder.Create()
+            .WithIdentity($"{jobId}.trigger", QuartzConstants.JobGroup)
+            .ForJob(jobDetail)
+            .WithCronSchedule(cronFrequencyExpression)
+            .Build();
+
+        await scheduler.AddJob(jobDetail, replace: true);
+
+        var existingTriggers = await scheduler.GetTriggersOfJob(jobKey);
+        var firstTrigger = existingTriggers.FirstOrDefault();
+        if (firstTrigger != null)
+            await scheduler.RescheduleJob(firstTrigger.Key, trigger);
+        else
+            await scheduler.ScheduleJob(trigger);
+    }
+
+    //- - - - - - - - - - - -//
+
+    private Task StoreFailedJobAsync<Handler>(string jobId, Expression<Func<Handler, Task>> jobLambda, string cronFrequencyExpression)
+          where Handler : AMyIdJobHandler
+    {
+        // Enqueue a retry action that will attempt the scheduling again when migrations succeed.
+        var pending = new PendingRetry(
+            ct => ScheduleRecurringJobCore(jobId, jobLambda, cronFrequencyExpression),
+            Description: $"StartRecurringJob {jobId}",
+            EnqueuedAt: DateTimeOffset.UtcNow);
+
+        if (!_store.TryAdd(jobId, pending))
+        {
+            _logger.LogWarning("Pending retry {JobId} already present", jobId);
+            return Task.CompletedTask;
+        }
+
+        _logger.LogInformation("Stored pending retry {JobId} for later processing", jobId);
+
+        return Task.CompletedTask;
+    }
+
 
     //-----------------------//
 
     public async Task<bool> StopRecurringJob(string jobId)
     {
-        var scheduler = await GetScheduler().ConfigureAwait(false);
+        var scheduler = await _schedulerFactory.GetScheduler();
         var jobKey = new JobKey(jobId, QuartzConstants.JobGroup);
-        var result = await scheduler.DeleteJob(jobKey).ConfigureAwait(false);
+        var result = await scheduler.DeleteJob(jobKey);
         _logger.LogInformation("Stopped recurring job {JobId} (deleted={Deleted})", jobId, result);
         return result;
     }
@@ -89,15 +123,15 @@ internal sealed class QuartzMyIdJobService(
 
     public async Task<List<IdRecurringJob>> GetRecurringJobsAsync()
     {
-        var scheduler = await GetScheduler().ConfigureAwait(false);
+        var scheduler = await _schedulerFactory.GetScheduler();
         var matcher = GroupMatcher<JobKey>.GroupEquals(QuartzConstants.JobGroup);
-        var jobKeys = await scheduler.GetJobKeys(matcher).ConfigureAwait(false);
+        var jobKeys = await scheduler.GetJobKeys(matcher);
 
         var result = new List<IdRecurringJob>();
         foreach (var jk in jobKeys)
         {
-            var details = await scheduler.GetJobDetail(jk).ConfigureAwait(false);
-            var triggers = await scheduler.GetTriggersOfJob(jk).ConfigureAwait(false);
+            var details = await scheduler.GetJobDetail(jk);
+            var triggers = await scheduler.GetTriggersOfJob(jk);
             var trigger = triggers.FirstOrDefault();
 
             var jobData = details?.JobDataMap ?? [];
@@ -125,15 +159,15 @@ internal sealed class QuartzMyIdJobService(
 
     public async Task<string> ScheduleJob<Handler>(Expression<Func<Handler, Task>> jobLambda, TimeSpan delay) where Handler : AMyIdJobHandler
     {
-        var method = ExtractMethodInfo(jobLambda);
-        var scheduler = await GetScheduler().ConfigureAwait(false);
+        var method = jobLambda.ExtractMethodInfo();
+        var scheduler = await _schedulerFactory.GetScheduler();
 
         var jobId = Guid.NewGuid().ToString("N");
         var jobKey = new JobKey(jobId, QuartzConstants.JobGroup);
 
         var jobData = new JobDataMap
         {
-            [QuartzConstants.HandlerTypeKey] = GetHandlerTypeQualifiedName<Handler>(),
+            [QuartzConstants.HandlerTypeKey] = QuartzJobUtils.GetHandlerTypeQualifiedName<Handler>(),
             [QuartzConstants.MethodNameKey] = method.Name
         };
 
@@ -150,7 +184,7 @@ internal sealed class QuartzMyIdJobService(
             .StartAt(DateTimeOffset.UtcNow.Add(delay))
             .Build();
 
-        await scheduler.ScheduleJob(jobDetail, trigger).ConfigureAwait(false);
+        await scheduler.ScheduleJob(jobDetail, trigger);
 
         return jobId;
     }
@@ -160,46 +194,19 @@ internal sealed class QuartzMyIdJobService(
 
 
     public async Task<string> EnqueueJob<Handler>(Expression<Func<Handler, Task>> jobLambda) where Handler : AMyIdJobHandler =>
-        await ScheduleJob(jobLambda, TimeSpan.Zero).ConfigureAwait(false);
+        await ScheduleJob(jobLambda, TimeSpan.Zero);
 
 
     //-----------------------//
 
     public async Task<bool> DeleteJob(string jobId)
     {
-        var scheduler = await GetScheduler().ConfigureAwait(false);
+        var scheduler = await _schedulerFactory.GetScheduler();
         var jobKey = new JobKey(jobId, QuartzConstants.JobGroup);
-        var result = await scheduler.DeleteJob(jobKey).ConfigureAwait(false);
+        var result = await scheduler.DeleteJob(jobKey);
         _logger.LogInformation("Deleted job {JobId} (deleted={Deleted})", jobId, result);
         return result;
     }
 
-
-    //-----------------------//
-
-
-    private static string GetHandlerTypeQualifiedName<THandler>()
-    {
-        var handlerType = typeof(THandler);
-        return handlerType.AssemblyQualifiedName ?? throw new InvalidOperationException($"Cannot determine type name for handler: {handlerType}");
-    }
-
-    //- - - - - - - - - - - -//
-
-    private static MethodInfo ExtractMethodInfo<T>(Expression<Func<T, Task>> expression)
-    {
-        if (expression.Body is not MethodCallExpression mce)
-            throw new NotSupportedException("Only method call expressions are supported (e.g. h => h.HandleAsync()).");
-
-        if (mce.Arguments?.Count > 0)
-            throw new NotSupportedException("Only parameterless handler methods are supported by this initial adapter.");
-
-        return mce.Method;
-    }
-
-    //- - - - - - - - - - - -//
-
-    private async Task<IScheduler> GetScheduler() =>
-        await _schedulerFactory.GetScheduler().ConfigureAwait(false);
 
 }//Cls

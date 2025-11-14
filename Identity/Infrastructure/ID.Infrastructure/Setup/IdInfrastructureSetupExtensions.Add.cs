@@ -1,4 +1,5 @@
-﻿using ID.Application.AppAbs.ExtraClaims;
+﻿using CrystalQuartz.Core;
+using ID.Application.AppAbs.ExtraClaims;
 using ID.Application.AppAbs.FromApp;
 using ID.Application.AppAbs.Messaging;
 using ID.Application.AppAbs.MFA.AuthenticatorApps;
@@ -27,6 +28,7 @@ using ID.Infrastructure.Setup.Passwords;
 using ID.Infrastructure.Setup.SignIn;
 using ID.Infrastructure.TokenServices;
 using ID.Infrastructure.Utility;
+using ID.Jobs.Quartz;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -37,7 +39,7 @@ using Microsoft.Extensions.Options;
 
 namespace ID.Infrastructure.Setup;
 
-public static class IdInfrastructureSetupExtensions
+public static partial class IdInfrastructureSetupExtensions
 {
     /// <summary>
     /// Setup MyIdentity
@@ -50,18 +52,6 @@ public static class IdInfrastructureSetupExtensions
         => services.Configure<TExtraClaimsGenerator>(databaseType, setupOptions);
 
     //-----------------------//
-
-    /// <summary>
-    /// Configures Middleware and Exception Handling for IdInfrastructure
-    /// </summary>
-    /// <param name="app"></param>
-    /// <returns></returns>
-    public static IApplicationBuilder UseMyIdInfrastructure(this IApplicationBuilder app, TeamType minTypeDashboardAccess) =>
-        app.UseMyIdJobs(minTypeDashboardAccess);
-
-
-    //-----------------------//
-
 
     private static MyIdBuilders Configure<TExtraClaimsGenerator>(
         this IServiceCollection services,
@@ -81,7 +71,7 @@ public static class IdInfrastructureSetupExtensions
         services.ConfigureDependencyInjection<AppUser>(setupOptions);
         //    .AddPersistenceEf(setupOptions, idBuilder);
 
-        services.SetupJobs(databaseType, setupOptions);
+        services.AddMyIdQuartzJobs(databaseType, setupOptions.ConnectionString);
 
         services.SetupAuthChallengers(setupOptions);
 

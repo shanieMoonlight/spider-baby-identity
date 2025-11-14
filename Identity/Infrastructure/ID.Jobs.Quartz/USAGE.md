@@ -42,6 +42,18 @@ public class MyController
 }
 ```
 
+Important: register your handler type in DI before scheduling
+
+The `HandlerAdapter<THandler>` resolves the handler from the application's DI container at execution time. If the handler type is not registered the adapter will log an error and the job will not run. Register your handler (recommended lifetimes: `Transient` or `Scoped`) before scheduling:
+
+```csharp
+// Program.cs / Startup
+services.AddTransient<MyHandler>();
+
+// then schedule
+await jobsService.StartRecurringJob<MyHandler>("my.job.id", h => h.HandleAsync(), "0 0/5 * * * ?");
+```
+
 Notes:
 - If scheduling fails (typically because the Quartz DB/schema isn't ready), `StartRecurringJob` will store a `PendingRetry` in the in-memory `PendingRetryStore` for later retry.
 - You do not need to call `StoreFailedJobAsync` yourself — it's done by the service.
@@ -66,7 +78,7 @@ _store.TryAdd(jobId, pending);
 
 - After DbUp migrations complete `QuartzDbMigrator` calls `IMigrationNotifier.NotifySucceededAsync(...)`.
 - `PendingRetriesHostedService` is registered as a migration handler and will snapshot the `PendingRetryStore`.
-- Each item is executed under a Polly retry policy (exponential backoff + jitter). On success the item is removed; on exhaustion the item remains so future migration events can reattempt.
+- Each item is executed under a Polly retry policy (exponential backoff + jitter). On success the item is removed; on exhaustion the item remains in the store for future migration events.
 
 ## 5) Inspecting pending retries (diagnostic)
 
@@ -104,7 +116,8 @@ Important: the notifier supports a single registered async handler. Use the host
 
 ## 7) Durability
 
-This design uses an in-memory store. So failed jobs will be lost if the process restarts before migrations succeed.
-However when you call `StartRecurringJob` again after a restart, if the DB/schema is still not ready it will create a new `PendingRetry` for that job.
-If it is ready, the job will be scheduled successfully.
-If the Job is already scheduled in Quartz, the scheduling call is idempotent and will succeed without creating duplicates.
+This design uses an in-memory store. If you require durability across process restarts replace `PendingRetryStore` with a persistent implementation (DB table or message queue) and keep the hosted worker logic.
+
+---
+
+If you want I can add a simple management endpoint for pending retries and a sample durable store implementation (SQLite) as a reference — tell me which and I'll add it.

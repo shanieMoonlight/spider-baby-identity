@@ -8,13 +8,10 @@ namespace ID.Application.Jobs;
 public static class MyIdJobSetupExtensions
 {
 
-    public static IServiceCollection AddRecurringMyIdJobs(this IServiceCollection services)
-    {
-
-        return services
+    public static IServiceCollection AddRecurringMyIdJobs(this IServiceCollection services) => 
+        services
             .AddOutboxMsgJobs()
             .AddDbMntcJobs();
-    }
 
     //---------------------//
 

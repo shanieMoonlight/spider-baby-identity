@@ -4,6 +4,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyResults;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace ID.Email.Base.Cache;
 internal class TemplateLoaderCache_InMemory(
@@ -16,7 +18,7 @@ internal class TemplateLoaderCache_InMemory(
     : ITemplateLoader
 {
     private readonly TemplateCacheOptions _settings = _optionsProvider.Value;
-    private const string _cacheKey = "TemplateCache_InMemory.Template.Key";
+    private static readonly string _cacheKeyPrefix = $"{nameof(TemplateLoaderCache_InMemory)}";
     private MemoryCacheEntryOptions DefaultCacheOptions => new()
     {
         SlidingExpiration = TimeSpan.FromMinutes(_settings.SlidingExpirationMins)
@@ -93,8 +95,12 @@ internal class TemplateLoaderCache_InMemory(
         catch { }
 
         var stamp = fileStamp ?? asmStamp;
+        var fileName = Path.GetFileName(normalized);
 
-        return $"{_cacheKey}.Ver.{version}.Stamp.{stamp}.Path.{normalized}";
+        // compute SHA-256 of the normalized path
+        var hash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(normalized)))[..16]; // 16 hex chars
+
+        return $"{_cacheKeyPrefix}.V-{version}.T-{stamp}.F-{fileName}.{hash}";
     }
 
 }//Cls

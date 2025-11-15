@@ -8,7 +8,6 @@ namespace ID.Application.AppImps.RequestInfo;
 
 public class UserInfo(IHttpContextAccessor httpContextAccessor) : IUserInfo
 {
-    //------------------------------------//
 
     private const string _not_found = "SYSTEM";
     private readonly ClaimsPrincipal? _principal = httpContextAccessor?.HttpContext?.User;

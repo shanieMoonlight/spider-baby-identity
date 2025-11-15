@@ -96,3 +96,6 @@ public static string EMAIL_CONFIRMATION_SENT(string? email) => $"A confirmation 
 
 Email Template loader with cache
 
+
+
+Unit test UserInfo

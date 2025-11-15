@@ -46,18 +46,37 @@ public sealed class DateTimeNormalizationSaveChangesInterceptor(ILogger<DateTime
         if (dt.Kind == DateTimeKind.Utc)
             return;
 
-        if (dt.Kind == DateTimeKind.Local)
+        // Normalize both Local and Unspecified to UTC according to policy
+        DateTime normalized = dt.Kind switch
         {
-            prop.CurrentValue = dt.ToUniversalTime();
-            prop.IsModified = true;//Tell Ef core that things have changed
+            DateTimeKind.Local => DateTime.SpecifyKind(dt.ToUniversalTime(), DateTimeKind.Utc),
+            DateTimeKind.Unspecified => DateTime.SpecifyKind(dt, DateTimeKind.Utc),
+            _ => dt
+        };
+
+        // 1) Try backing field
+        TryApplyToBackingField(prop, normalized, out var actualFromField);
+        if (VerifyDateTimeApplied(normalized, actualFromField))
+            return;
+
+        // 2) Try tracked value
+        if (TryApplyToTrackedValue(prop, normalized) && VerifyDateTimeApplied(normalized, prop.CurrentValue))
+            return;
+
+        // 3) Try CLR setter (public) and verify; if setter doesn't persist expected value, force tracked value
+        if (TryApplyToClrSetter(prop, normalized, out var actualFromProp))
+        {
+            if (VerifyDateTimeApplied(normalized, actualFromProp))
+                return;
+
+            prop.CurrentValue = normalized;
+            prop.IsModified = true;
+            _logger.LogWarning("Setter didn't persist expected UTC for {Property}; forced tracked value.", prop.Metadata.Name);
             return;
         }
 
-        if (dt.Kind != DateTimeKind.Unspecified)
-            return;
-
-        // Unspecified: ensure the value is treated as UTC (preserve ticks if possible)
-        EnsureUtcAndMarkModified(prop);
+        // As a last resort ensure EF persists a UTC value via fallback
+        ConvertByAddingTick(prop);
     }
 
     //- - - - - - - - - - - - - - - // 
@@ -71,22 +90,38 @@ public sealed class DateTimeNormalizationSaveChangesInterceptor(ILogger<DateTime
         if (dtNullable.Kind == DateTimeKind.Utc)
             return;
 
-        if (dtNullable.Kind == DateTimeKind.Local)
+        // Normalize Local and Unspecified to UTC (policy: Unspecified treated as UTC)
+        DateTime? normalized = dtNullable.Kind switch
         {
-            prop.CurrentValue = dtNullable.ToUniversalTime();
-            prop.IsModified = true;//Tell Ef core that things have changed
+            DateTimeKind.Local => DateTime.SpecifyKind(dtNullable.ToUniversalTime(), DateTimeKind.Utc),
+            DateTimeKind.Unspecified => DateTime.SpecifyKind(dtNullable, DateTimeKind.Utc),
+            _ => dtNullable
+        };
+
+        TryApplyToBackingField(prop, normalized, out var actualFromField);
+        if (VerifyNullableDateTimeApplied(normalized, actualFromField))
+            return;
+
+        if (TryApplyToTrackedValue(prop, normalized) && VerifyNullableDateTimeApplied(normalized, prop.CurrentValue))
+            return;
+
+        if (TryApplyToClrSetter(prop, normalized, out var actualFromProp))
+        {
+            if (VerifyNullableDateTimeApplied(normalized, actualFromProp))
+                return;
+
+            prop.CurrentValue = (DateTime?)normalized;
+            prop.IsModified = true;
+            _logger.LogWarning("Setter didn't persist expected UTC for {Property}; forced tracked value.", prop.Metadata.Name);
             return;
         }
 
-        if (dtNullable.Kind != DateTimeKind.Unspecified)
-            return;
-
-        EnsureUtcAndMarkModified(prop);
+        ConvertByAddingTick(prop);
     }
 
     //- - - - - - - - - - - - - - - // 
 
-    private static void HandleDateTimeOffsetProperty(PropertyEntry prop)
+    private void HandleDateTimeOffsetProperty(PropertyEntry prop)
     {
         if (prop.CurrentValue is not DateTimeOffset dto)
             return;
@@ -97,13 +132,33 @@ public sealed class DateTimeNormalizationSaveChangesInterceptor(ILogger<DateTime
 
         // Normalize to UTC offset (offset = 0)
         var utc = dto.ToUniversalTime();
+
+        TryApplyToBackingField(prop, utc, out var actualFieldDto);
+        if (VerifyDateTimeOffsetApplied(utc, actualFieldDto))
+            return;
+
+        if (TryApplyToTrackedValue(prop, utc) && VerifyDateTimeOffsetApplied(utc, prop.CurrentValue))
+            return;
+
+        if (TryApplyToClrSetter(prop, utc, out var actualPropDto))
+        {
+            if (VerifyDateTimeOffsetApplied(utc, actualPropDto))
+                return;
+
+            prop.CurrentValue = utc;
+            prop.IsModified = true;
+            _logger.LogWarning("Setter didn't persist expected UTC offset for {Property}; forced tracked value.", prop.Metadata.Name);
+            return;
+        }
+
+        // fallback
         prop.CurrentValue = utc;
-        prop.IsModified = true;//Tell Ef core that things have changed
+        prop.IsModified = true;
     }
 
     //- - - - - - - - - - - - - - - // 
 
-    private static void HandleNullableDateTimeOffsetProperty(PropertyEntry prop)
+    private void HandleNullableDateTimeOffsetProperty(PropertyEntry prop)
     {
         if (prop.CurrentValue is not DateTimeOffset dtoNullable)
             return;
@@ -113,31 +168,127 @@ public sealed class DateTimeNormalizationSaveChangesInterceptor(ILogger<DateTime
             return;
 
         var utc = dtoNullable.ToUniversalTime();
-        prop.CurrentValue = utc;
-        prop.IsModified = true;//Tell Ef core that things have changed
+
+        TryApplyToBackingField(prop, (DateTimeOffset?)utc, out var actualFieldDto);
+        if (VerifyNullableDateTimeOffsetApplied((DateTimeOffset?)utc, actualFieldDto))
+            return;
+
+        if (TryApplyToTrackedValue(prop, (DateTimeOffset?)utc) && VerifyNullableDateTimeOffsetApplied((DateTimeOffset?)utc, prop.CurrentValue))
+            return;
+
+        if (TryApplyToClrSetter(prop, (DateTimeOffset?)utc, out var actualPropDto))
+        {
+            if (VerifyNullableDateTimeOffsetApplied((DateTimeOffset?)utc, actualPropDto))
+                return;
+
+            prop.CurrentValue = (DateTimeOffset?)utc;
+            prop.IsModified = true;
+            _logger.LogWarning("Setter didn't persist expected UTC offset for {Property}; forced tracked value.", prop.Metadata.Name);
+            return;
+        }
+
+        prop.CurrentValue = (DateTimeOffset?)utc;
+        prop.IsModified = true;
+    }
+
+    //--------------------------// 
+
+    // Try to set backing field; sets 'actual' to the backing value read back (or null)
+    private static void TryApplyToBackingField(PropertyEntry prop, object value, out object? actual)
+    {
+        actual = null;
+        var entry = prop.EntityEntry;
+        var fi = prop.Metadata.FieldInfo;
+        if (fi is null)
+            return;
+
+        try
+        {
+            fi.SetValue(entry.Entity, value);
+            actual = fi.GetValue(entry.Entity);
+            prop.IsModified = true;
+        }
+        catch
+        {
+            // ignore
+        }
+    }
+
+    // Try to set EF tracked value
+    private static bool TryApplyToTrackedValue(PropertyEntry prop, object value)
+    {
+        try
+        {
+            prop.CurrentValue = value;
+            prop.IsModified = true;
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    // Try to set CLR setter if public; returns actual read-back value via out parameter
+    private static bool TryApplyToClrSetter(PropertyEntry prop, object value, out object? actual)
+    {
+        actual = null;
+        var entry = prop.EntityEntry;
+        var pi = prop.Metadata.PropertyInfo;
+        if (pi is null || pi.SetMethod is null || !pi.SetMethod.IsPublic)
+            return false;
+
+        try
+        {
+            pi.SetValue(entry.Entity, value);
+            actual = pi.GetValue(entry.Entity);
+            entry.Property(prop.Metadata.Name).IsModified = true;
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    // Verification helpers
+    private static bool VerifyDateTimeApplied(DateTime expectedUtc, object? actual)
+    {
+        if (actual is not DateTime a)
+            return false;
+        return a.Kind == DateTimeKind.Utc && a.Ticks == expectedUtc.Ticks;
+    }
+
+    private static bool VerifyNullableDateTimeApplied(DateTime? expectedUtc, object? actual)
+    {
+        if (expectedUtc is null)
+            return actual is null;
+        return VerifyDateTimeApplied(expectedUtc.Value, actual);
+    }
+
+    private static bool VerifyDateTimeOffsetApplied(DateTimeOffset expectedUtc, object? actual)
+    {
+        if (actual is not DateTimeOffset a)
+            return false;
+        return a.Offset == TimeSpan.Zero && a.UtcDateTime.Ticks == expectedUtc.UtcDateTime.Ticks;
+    }
+
+    private static bool VerifyNullableDateTimeOffsetApplied(DateTimeOffset? expectedUtc, object? actual)
+    {
+        if (expectedUtc is null)
+            return actual is null;
+        return VerifyDateTimeOffsetApplied(expectedUtc.Value, actual);
     }
 
     //--------------------------// 
 
     /// <summary>
     /// Ensure the tracked property's value is treated as UTC and force EF to persist the change.
-    ///
-    /// Behavior:
-    /// - Reads the current value from <c>prop.CurrentValue</c> (expected DateTime or DateTime?).
-    /// - Creates a DateTime with the same ticks but Kind=Utc (preserve instant).
-    /// - Attempts to assign the new value to the actual CLR property (via PropertyInfo) so the entity
-    ///   instance reflects the change (covers private setters).
-    /// - If that fails, attempts to assign the mapped backing field (FieldInfo).
-    /// - If both CLR assignments fail, sets the EF entry's CurrentValue. Because assigning a value with
-    ///   identical ticks may be ignored by EF, as a last resort we change ticks by one tick to guarantee
-    ///   the entry observes a difference and will persist the value.
-    ///
-    /// The method always marks the EF property as modified so the value will be sent to the database.
+    /// (unchanged)
     /// </summary>
-    private void EnsureUtcAndMarkModified(PropertyEntry prop)
+    private void ConvertByAddingTick(PropertyEntry prop)
     {
-        var entry = prop.EntityEntry;      
-        
+        var entry = prop.EntityEntry;
 
         // Handle DateTime and nullable DateTime
         if (prop.CurrentValue is not DateTime dt)
@@ -145,40 +296,6 @@ public sealed class DateTimeNormalizationSaveChangesInterceptor(ILogger<DateTime
 
         var utcPreserve = DateTime.SpecifyKind(dt, DateTimeKind.Utc);
 
-
-        // Try to set CLR property
-        var pi = prop.Metadata.PropertyInfo;
-        if (pi is not null && pi.CanWrite)
-        {
-            try
-            {
-                pi.SetValue(entry.Entity, utcPreserve);
-                entry.Property(prop.Metadata.Name).IsModified = true;
-                return;
-            }
-            catch
-            {
-                // fall through
-            }
-        }
-
-        // Try backing field
-        var fi = prop.Metadata.FieldInfo;
-        if (fi is not null)
-        {
-            try
-            {
-                fi.SetValue(entry.Entity, utcPreserve);
-                prop.IsModified = true;
-                return;
-            }
-            catch
-            {
-                // fall through
-            }
-        }
-
-        // Last resort: set CurrentValue; if EF ignores because ticks equal, tweak by one tick
         prop.CurrentValue = utcPreserve;
         prop.IsModified = true;
 
@@ -186,8 +303,8 @@ public sealed class DateTimeNormalizationSaveChangesInterceptor(ILogger<DateTime
         if (prop.CurrentValue is DateTime after && after.Kind != DateTimeKind.Utc)
         {
             // Use parity-based tweak to avoid monotonic drift. Alternate between +1 and -1 tick deterministically.
-            var tweaked = utcPreserve.Ticks % 2 == 0 
-                ? utcPreserve.AddTicks(1) 
+            var tweaked = utcPreserve.Ticks % 2 == 0
+                ? utcPreserve.AddTicks(1)
                 : utcPreserve.AddTicks(-1);
 
             prop.CurrentValue = tweaked;
@@ -218,6 +335,9 @@ public sealed class DateTimeNormalizationSaveChangesInterceptor(ILogger<DateTime
     }
 
 }//Cls
+
+
+
 
 
 

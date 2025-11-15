@@ -4,45 +4,18 @@ Quick examples for wiring and using the Quartz integration, scheduling jobs, and
 
 ## 1) Register services (Program.cs / Startup)
 
-```csharp
-// in HostBuilder / WebApplicationBuilder
-services.AddMyIdQuartzJobs(databaseType: DatabaseType.postgres, connectionString: "...");
-
-// later in the HTTP pipeline
-app.UseMyIdQuartzJobs();
-```
-
-This registers:
-- Quartz persistence and app helpers
-- `IMigrationNotifier` (`InMemoryMigrationNotifier`)
-- `PendingRetryStore` and `PendingRetriesHostedService` (retry worker)
-
-## 2) Schedule a recurring job (application code)
-
-Inject `IMyIdJobService` and call `StartRecurringJob`.
-
-```csharp
-public class MyController
-{
-    private readonly IMyIdJobService _jobs;
-
-    public MyController(IMyIdJobService jobs) => _jobs = jobs;
-
-    public async Task<IActionResult> CreateJob()
-    {
-        // Handler is a typed job handler implementing AMyIdJobHandler
-        var ok = await _jobs.StartRecurringJob<MyHandler>(
-            jobId: "my.job.id",
-            jobLambda: h => h.HandleAsync(),
-            cronFrequencyExpression: "0 0/5 * * * ?" // every 5 minutes
-        );
-
-        return ok ? Ok() : Problem("Failed to schedule");
-    }
-}
-```
 
 Important: register your handler type in DI before scheduling
+
+```csharp
+   services.TryAddScoped<ProcessMyIdOutboxMsgJob>();
+```
+or
+```csharp
+   services.TryAddScoped<IProcessMyIdOutboxMsgJob, ProcessMyIdOutboxMsgJob>();  (If using an interface as the Handler Type)
+```
+Then register the Quartz jobs services:
+```csharp
 
 The `HandlerAdapter<THandler>` resolves the handler from the application's DI container at execution time. If the handler type is not registered the adapter will log an error and the job will not run. Register your handler (recommended lifetimes: `Transient` or `Scoped`) before scheduling:
 
@@ -58,7 +31,7 @@ Notes:
 - If scheduling fails (typically because the Quartz DB/schema isn't ready), `StartRecurringJob` will store a `PendingRetry` in the in-memory `PendingRetryStore` for later retry.
 - You do not need to call `StoreFailedJobAsync` yourself — it's done by the service.
 
-## 3) Customizing retry metadata
+## 2) Customizing retry metadata
 
 When a job schedule fails the `PendingRetry` created by the job service uses the `jobId` as the store key and includes a default `MaxAttempts` value. If you need different behaviour, modify `StoreFailedJobAsync` to construct a `PendingRetry` with your preferred `MaxAttempts` (the hosted worker will use that value).
 
@@ -74,13 +47,13 @@ var pending = new PendingRetry(
 _store.TryAdd(jobId, pending);
 ```
 
-## 4) How retries are executed
+## 3) How retries are executed
 
 - After DbUp migrations complete `QuartzDbMigrator` calls `IMigrationNotifier.NotifySucceededAsync(...)`.
 - `PendingRetriesHostedService` is registered as a migration handler and will snapshot the `PendingRetryStore`.
 - Each item is executed under a Polly retry policy (exponential backoff + jitter). On success the item is removed; on exhaustion the item remains in the store for future migration events.
 
-## 5) Inspecting pending retries (diagnostic)
+## 4) Inspecting pending retries (diagnostic)
 
 You can inspect the in-memory pending store (useful for diagnostics or a management endpoint):
 
@@ -99,7 +72,7 @@ public class JobsAdminController : ControllerBase
 }
 ```
 
-## 6) Registering a migration handler directly (advanced)
+## 5) Registering a migration handler directly (advanced)
 
 The library exposes a single-handler `IMigrationNotifier` API. If you want to run other work when migrations succeed you can register a handler:
 
@@ -114,7 +87,7 @@ notifier.SetMigrationsSucceededHandler(async ct =>
 
 Important: the notifier supports a single registered async handler. Use the hosted worker pattern for heavier or multiple consumers.
 
-## 7) Durability
+## 6) Durability
 
 This design uses an in-memory store. If you require durability across process restarts replace `PendingRetryStore` with a persistent implementation (DB table or message queue) and keep the hosted worker logic.
 

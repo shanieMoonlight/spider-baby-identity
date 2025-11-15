@@ -1,4 +1,4 @@
-namespace ID.Jobs.Quartz.Persistence.MigrationNotifications;
+namespace ID.Jobs.Quartz.Persistence.Abs;
 
 internal interface IMigrationNotifier
 {

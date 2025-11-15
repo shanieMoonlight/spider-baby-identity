@@ -3,7 +3,6 @@ using ID.Jobs.Quartz.Persistence.Abs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using ID.Application.Jobs.Abstractions;
-using ID.Jobs.Quartz.Persistence.MigrationNotifications;
 
 namespace ID.Jobs.Quartz.AppImps;
 

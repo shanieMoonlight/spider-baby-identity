@@ -1,9 +1,8 @@
 ﻿using ID.Application.Models;
 using ID.Jobs.Quartz.Persistence.Abs;
-using ID.Jobs.Quartz.Persistence.DbUp;
-using ID.Jobs.Quartz.Persistence.DbUp.Postgres;
-using ID.Jobs.Quartz.Persistence.DbUp.SqlServer;
 using ID.Jobs.Quartz.Persistence.Ef;
+using ID.Jobs.Quartz.Persistence.Ef.Postgres;
+using ID.Jobs.Quartz.Persistence.Ef.SqlServer;
 using ID.Jobs.Quartz.Persistence.MigrationNotifications;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -22,14 +21,10 @@ internal static class SetupPersistence
             case DatabaseType.SqlServer:
                 services.AddScoped<IDbCommandExecutor, SqlDbCommandExecutor>();
                 services.TryAddScoped<IEfCoreMigrator, SqlEfCoreMigrator>();
-                //services.AddScoped<IDbConnectionFactory, SqlDbConnectionFactory>();
-                //services.TryAddScoped<IDbUpMigrator, DbUpSqlServerMigrator>();
                 break;
             case DatabaseType.PostgreSql:
                 services.AddScoped<IDbCommandExecutor, PgDbCommandExecutor>();
                 services.TryAddScoped<IEfCoreMigrator, PgEfCoreMigrator>();
-                //services.AddScoped<IDbConnectionFactory, PgDbConnectionFactory>();
-                //services.TryAddScoped<IDbUpMigrator, DbUpPostgresServerMigrator>();
                 break;
             default:
                 throw new NotSupportedException($"The database type '{dbType}' is not supported for Quartz job implementations.");

@@ -1,3 +1,4 @@
+using ID.Jobs.Quartz.Persistence.Abs;
 using Microsoft.Extensions.Logging;
 
 namespace ID.Jobs.Quartz.Persistence.MigrationNotifications;

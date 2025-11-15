@@ -1,4 +1,4 @@
-namespace ID.Jobs.Quartz.Tests;
+namespace ID.Jobs.Quartz.Tests.Migrators;
 
 public class PgEfCoreMigratorUnitTests
 {
@@ -91,7 +91,7 @@ public class PgEfCoreMigratorUnitTests
             .ReturnsAsync(0);
         // Simulate failure when executing the script content
         mockExecutor.Setup(e => e.ExecuteNonQueryAsync(It.Is<string>(sql => sql.Contains("CREATE TABLE pg_table")), It.IsAny<IDictionary<string, object?>>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new System.Exception("execution failed"));
+            .ThrowsAsync(new Exception("execution failed"));
 
         var migrator = new PgEfCoreMigrator(mockExecutor.Object, mockLoader.Object, NullLogger<PgEfCoreMigrator>.Instance);
 

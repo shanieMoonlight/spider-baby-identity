@@ -4,7 +4,7 @@ using Npgsql;
 using System.Data;
 using System.Data.Common;
 
-namespace ID.Jobs.Quartz.Persistence.DbUp.Postgres;
+namespace ID.Jobs.Quartz.Persistence.Ef.Postgres;
 
 internal class PgDbCommandExecutor : IDbCommandExecutor
 {

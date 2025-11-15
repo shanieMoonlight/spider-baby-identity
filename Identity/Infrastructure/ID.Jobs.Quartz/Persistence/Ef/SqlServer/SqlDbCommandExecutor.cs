@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using System.Data;
 using System.Data.Common;
 
-namespace ID.Jobs.Quartz.Persistence.DbUp.SqlServer;
+namespace ID.Jobs.Quartz.Persistence.Ef.SqlServer;
 
 internal class SqlDbCommandExecutor : IDbCommandExecutor
 {

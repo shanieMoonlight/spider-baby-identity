@@ -1,5 +1,3 @@
-using ID.Jobs.Quartz.Persistence.DbUp.Postgres;
-
 namespace ID.Jobs.Quartz.Tests.Migrators;
 
 public class PgDbCommandExecutorParameterTests

@@ -1,33 +1,49 @@
-//namespace ID.Jobs.Quartz.Tests;
+using ID.Jobs.Quartz.Persistence.Ef.SqlServer;
 
-//public class SetupPersistenceTests
-//{
-//    [Fact]
-//    public void AddQuartzPersistence_RegistersSqlServerMigrator_WhenDatabaseTypeIsSqlServer()
-//    {
-//        var services = new ServiceCollection();
+namespace ID.Jobs.Quartz.Tests;
 
-//        services.AddQuartzPersistence(DatabaseType.SqlServer);
+public class SetupPersistenceTests
+{
+    [Fact]
+    public void AddQuartzPersistence_RegistersSqlServerServices_WhenDatabaseTypeIsSqlServer()
+    {
+        var services = new ServiceCollection();
 
-//        var sd = services.FirstOrDefault(s => s.ServiceType == typeof(IDbUpMigrator));
-//        sd.ShouldNotBeNull();
-//        sd.Lifetime.ShouldBe(ServiceLifetime.Scoped);
-//        sd.ImplementationType.ShouldBe(typeof(DbUpSqlServerMigrator));
-//    }
+        services.AddQuartzPersistence(DatabaseType.SqlServer);
 
-//    //-----------------------//
+        var executor = services.FirstOrDefault(s => s.ServiceType == typeof(IDbCommandExecutor));
+        var migrator = services.FirstOrDefault(s => s.ServiceType == typeof(IEfCoreMigrator));
 
-//    [Fact]
-//    public void AddQuartzPersistence_RegistersPostgresMigrator_WhenDatabaseTypeIsPostgres()
-//    {
-//        var services = new ServiceCollection();
 
-//        services.AddQuartzPersistence(DatabaseType.PostgreSql);
+        executor.ShouldNotBeNull();
+        executor.Lifetime.ShouldBe(ServiceLifetime.Scoped);
+        executor.ImplementationType.ShouldBe(typeof(SqlDbCommandExecutor));
 
-//        var sd = services.FirstOrDefault(s => s.ServiceType == typeof(IDbUpMigrator));
-//        sd.ShouldNotBeNull();
-//        sd.Lifetime.ShouldBe(ServiceLifetime.Scoped);
-//        sd.ImplementationType.ShouldBe(typeof(DbUpPostgresServerMigrator));
-//    }
+        migrator.ShouldNotBeNull();
+        migrator.Lifetime.ShouldBe(ServiceLifetime.Scoped);
+        migrator.ImplementationType.ShouldBe(typeof(SqlEfCoreMigrator));
+    }
 
-//}//Cls
+    //-----------------------//
+
+    [Fact]
+    public void AddQuartzPersistence_RegistersPostgresServices_WhenDatabaseTypeIsPostgres()
+    {
+        var services = new ServiceCollection();
+
+        services.AddQuartzPersistence(DatabaseType.PostgreSql);
+
+        var executor = services.FirstOrDefault(s => s.ServiceType == typeof(IDbCommandExecutor));
+        var migrator = services.FirstOrDefault(s => s.ServiceType == typeof(IEfCoreMigrator));
+
+
+        executor.ShouldNotBeNull();
+        executor.Lifetime.ShouldBe(ServiceLifetime.Scoped);
+        executor.ImplementationType.ShouldBe(typeof(PgDbCommandExecutor));
+
+        migrator.ShouldNotBeNull();
+        migrator.Lifetime.ShouldBe(ServiceLifetime.Scoped);
+        migrator.ImplementationType.ShouldBe(typeof(PgEfCoreMigrator));
+    }
+
+}//Cls

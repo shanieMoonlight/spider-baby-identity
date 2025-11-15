@@ -1,4 +1,4 @@
-using ID.Jobs.Quartz.Persistence.MigrationNotifications;
+using ID.Jobs.Quartz.Persistence.Abs;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Polly;

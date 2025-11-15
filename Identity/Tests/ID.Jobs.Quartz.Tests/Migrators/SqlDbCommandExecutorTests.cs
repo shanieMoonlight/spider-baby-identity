@@ -1,3 +1,5 @@
+using ID.Jobs.Quartz.Persistence.Ef.SqlServer;
+
 namespace ID.Jobs.Quartz.Tests.Migrators;
 
 public class SqlDbCommandExecutorTests

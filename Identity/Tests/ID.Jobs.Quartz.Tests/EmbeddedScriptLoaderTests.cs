@@ -1,5 +1,3 @@
-using ID.Jobs.Quartz.Persistence.DbUp;
-
 namespace ID.Jobs.Quartz.Tests;
 
 public class EmbeddedScriptLoaderTests

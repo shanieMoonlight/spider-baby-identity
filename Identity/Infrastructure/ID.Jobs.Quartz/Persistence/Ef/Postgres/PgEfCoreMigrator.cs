@@ -1,7 +1,7 @@
 using ID.Jobs.Quartz.Persistence.Abs;
 using Microsoft.Extensions.Logging;
 
-namespace ID.Jobs.Quartz.Persistence.Ef;
+namespace ID.Jobs.Quartz.Persistence.Ef.Postgres;
 
 internal class PgEfCoreMigrator(
     IDbCommandExecutor _executor,
@@ -24,7 +24,7 @@ internal class PgEfCoreMigrator(
         try
         {
             var assembly = IdJobsQrzAssemblyReference.Assembly;
-            const string nsPrefix = "ID.Jobs.Quartz.Persistence.DbUp.Postgres.Migrations.";
+            const string nsPrefix = "ID.Jobs.Quartz.Persistence.Ef.Postgres.Migrations.";
             var scripts = _loader.LoadEmbeddedSqlScripts(assembly, nsPrefix, variables);
 
             await _executor.EnsureOpenAsync(cancellationToken);

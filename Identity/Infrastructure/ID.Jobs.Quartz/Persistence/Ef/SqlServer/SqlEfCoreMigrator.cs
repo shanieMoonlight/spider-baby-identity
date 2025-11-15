@@ -30,7 +30,7 @@ internal partial class SqlEfCoreMigrator(
         {
             // Load scripts from embedded resources (loader performs token replacement)
             var assembly = IdJobsQrzAssemblyReference.Assembly;
-            const string nsPrefix = "ID.Jobs.Quartz.Persistence.DbUp.SqlServer.Migrations.";
+            const string nsPrefix = "ID.Jobs.Quartz.Persistence.Ef.SqlServer.Migrations.";
             var scripts = _loader.LoadEmbeddedSqlScripts(assembly, nsPrefix, variables);
 
             await _executor.EnsureOpenAsync(cancellationToken);

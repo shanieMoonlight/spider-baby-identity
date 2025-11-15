@@ -18,6 +18,9 @@ internal static class IsolatedQuartzExtensionsSql
             {
                 storeBuilder.UseProperties = true;
                 storeBuilder.RetryInterval = TimeSpan.FromSeconds(15);
+
+                //When app starts there will be no schema in DB yet, so skip validation to allow Quartz to create objects
+                //User will Migrate the schema separately using migrations endpoint
                 storeBuilder.PerformSchemaValidation = false;
 
                 // set clustering via storeBuilder.UseClustering() if available
@@ -31,12 +34,10 @@ internal static class IsolatedQuartzExtensionsSql
             });
         });
 
-        services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
-
-
-        return services;
+        return services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
     }
-}
+
+}//Cls
 
 
 

@@ -1,15 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using ID.Jobs.Quartz.Persistence.DbUp.Postgres;
-using ID.Jobs.Quartz.Persistence.Abs;
-using Microsoft.Extensions.Options;
-using Shouldly;
-using Xunit;
-
 namespace ID.Jobs.Quartz.Tests.Migrators;
 
 public class PgDbCommandExecutorTests

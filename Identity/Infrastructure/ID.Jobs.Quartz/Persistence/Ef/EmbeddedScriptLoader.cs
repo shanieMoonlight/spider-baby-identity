@@ -2,7 +2,7 @@ using ID.Jobs.Quartz.Persistence.Abs;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
 
-namespace ID.Jobs.Quartz.Persistence.DbUp;
+namespace ID.Jobs.Quartz.Persistence.Ef;
 
 internal class EmbeddedScriptLoader(ILogger<EmbeddedScriptLoader> _logger) : IEmbeddedScriptLoader
 {

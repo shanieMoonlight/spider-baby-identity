@@ -18,6 +18,8 @@ internal static class IsolatedQuartzExtensionsPostgres
                 storeBuilder.RetryInterval = TimeSpan.FromSeconds(15);
                 storeBuilder.UseNewtonsoftJsonSerializer();
 
+                //When app starts there will be no schema in DB yet, so skip validation to allow Quartz to create objects
+                //User will Migrate the schema separately using migrations endpoint
                 storeBuilder.PerformSchemaValidation = false;
 
                 // Build connection string that sets the search_path so unqualified names land in `schema`
@@ -40,11 +42,10 @@ internal static class IsolatedQuartzExtensionsPostgres
             });
         });
 
-        services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
-        return services;
+        return services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
     }
 
-}
+}//Cls
 
 
 

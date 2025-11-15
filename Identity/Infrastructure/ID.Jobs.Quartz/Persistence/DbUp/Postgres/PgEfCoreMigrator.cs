@@ -10,7 +10,7 @@ internal class PgEfCoreMigrator(
     : IEfCoreMigrator
 {
 
-    private const string _journalTable = QuartzConstants.Db.MigrationsJournalTable.Sql.NAME;
+    private const string _journalTable = QuartzConstants.Db.MigrationsJournalTable.Postgres.NAME;
     private const string _journalColPrimary = QuartzConstants.Db.MigrationsJournalTable.Postgres.Columns.PRIMARY;
     private const string _journalColScriptName = QuartzConstants.Db.MigrationsJournalTable.Postgres.Columns.ScriptName;
     private const string _journalColAppliedAt = QuartzConstants.Db.MigrationsJournalTable.Postgres.Columns.AppliedAt;

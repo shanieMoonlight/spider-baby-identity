@@ -26,7 +26,7 @@ internal class QuartzConstants
 
             public static class Postgres
             {
-                public const string NAME = "schema-versions";
+                public const string NAME = "schema_versions";
                 public static class Columns
                 {
                     public const string PRIMARY = "id";

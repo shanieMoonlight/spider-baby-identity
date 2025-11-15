@@ -20,15 +20,15 @@ internal static class SetupPersistence
         switch (dbType)
         {
             case DatabaseType.SqlServer:
-                //services.AddScoped<IDbConnectionFactory, SqlDbConnectionFactory>();
                 services.AddScoped<IDbCommandExecutor, SqlDbCommandExecutor>();
                 services.TryAddScoped<IEfCoreMigrator, SqlEfCoreMigrator>();
+                //services.AddScoped<IDbConnectionFactory, SqlDbConnectionFactory>();
                 //services.TryAddScoped<IDbUpMigrator, DbUpSqlServerMigrator>();
                 break;
             case DatabaseType.PostgreSql:
-                //services.AddScoped<IDbConnectionFactory, PgDbConnectionFactory>();
                 services.AddScoped<IDbCommandExecutor, PgDbCommandExecutor>();
                 services.TryAddScoped<IEfCoreMigrator, PgEfCoreMigrator>();
+                //services.AddScoped<IDbConnectionFactory, PgDbConnectionFactory>();
                 //services.TryAddScoped<IDbUpMigrator, DbUpPostgresServerMigrator>();
                 break;
             default:

@@ -1,6 +1,5 @@
 using ID.AddOns.Middleware.Swagger;
 using ID.API.Setup;
-using ID.Application.Middleware.ExternalPages;
 using MyIdDemo.Middleware.Exceptions;
 using MyIdDemo.Setup;
 using MyIdDemo.Setup.Data;
@@ -46,8 +45,8 @@ _services.AddEndpointsApiExplorer();
 _builder
     .InstallSwagger(_startupData)
     .InstallHangfire(_startupData)
-    .InstallMyId_Sql(_startupData)
-    //.InstallMyId_Pg(_startupData)
+    //.InstallMyId_Sql(_startupData)
+    .InstallMyId_Pg(_startupData)
     .InstallLogging(_startupData)
     ;
 

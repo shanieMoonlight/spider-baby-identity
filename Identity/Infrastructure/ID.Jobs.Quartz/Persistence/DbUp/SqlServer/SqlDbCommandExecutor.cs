@@ -58,7 +58,9 @@ internal class SqlDbCommandExecutor : IDbCommandExecutor
 
     private DbCommand CreateCommand(string sql, IDictionary<string, object?>? parameters)
     {
-        if (_connection == null) throw new InvalidOperationException("Connection not opened. Call EnsureOpenAsync first.");
+        if (_connection == null) 
+            throw new InvalidOperationException("Connection not opened. Call EnsureOpenAsync first.");
+
         var cmd = _connection.CreateCommand();
         cmd.CommandText = sql;
         cmd.CommandTimeout = 0;
@@ -66,6 +68,9 @@ internal class SqlDbCommandExecutor : IDbCommandExecutor
         {
             foreach (var kv in parameters)
             {
+                if (string.IsNullOrWhiteSpace(kv.Key))
+                    throw new ArgumentException("Parameter name cannot be null or whitespace", nameof(parameters));
+
                 var p = cmd.CreateParameter();
                 p.ParameterName = kv.Key.StartsWith('@') ? kv.Key : "@" + kv.Key;
                 p.Value = kv.Value ?? DBNull.Value;

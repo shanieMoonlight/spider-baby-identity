@@ -3,7 +3,6 @@ using Microsoft.Extensions.Options;
 using Npgsql;
 using System.Data;
 using System.Data.Common;
-using System.Threading;
 
 namespace ID.Jobs.Quartz.Persistence.DbUp.Postgres;
 
@@ -20,6 +19,8 @@ internal class PgDbCommandExecutor : IDbCommandExecutor
         _connectionFactory = connectionFactory ?? (() => new NpgsqlConnection(_config.ConnectionString));
     }
 
+    //----------------------//
+
     public async Task EnsureOpenAsync(CancellationToken cancellationToken = default)
     {
         await _openLock.WaitAsync(cancellationToken);
@@ -35,6 +36,8 @@ internal class PgDbCommandExecutor : IDbCommandExecutor
         }
     }
 
+    //----------------------//
+
     public async Task<object?> ExecuteScalarAsync(string sql, IDictionary<string, object?>? parameters = null, CancellationToken cancellationToken = default)
     {
         await EnsureOpenAsync(cancellationToken);
@@ -42,12 +45,16 @@ internal class PgDbCommandExecutor : IDbCommandExecutor
         return await cmd.ExecuteScalarAsync(cancellationToken);
     }
 
+    //----------------------//
+
     public async Task<int> ExecuteNonQueryAsync(string sql, IDictionary<string, object?>? parameters = null, CancellationToken cancellationToken = default)
     {
         await EnsureOpenAsync(cancellationToken);
         await using var cmd = CreateCommand(sql, parameters);
         return await cmd.ExecuteNonQueryAsync(cancellationToken);
     }
+
+    //----------------------//
 
     private DbCommand CreateCommand(string sql, IDictionary<string, object?>? parameters)
     {
@@ -59,6 +66,9 @@ internal class PgDbCommandExecutor : IDbCommandExecutor
         {
             foreach (var kv in parameters)
             {
+                if (string.IsNullOrWhiteSpace(kv.Key))
+                    throw new ArgumentException("Parameter name cannot be null or whitespace", nameof(parameters));
+
                 var p = cmd.CreateParameter();
                 p.ParameterName = kv.Key.StartsWith('@') ? kv.Key : "@" + kv.Key;
                 p.Value = kv.Value ?? DBNull.Value;

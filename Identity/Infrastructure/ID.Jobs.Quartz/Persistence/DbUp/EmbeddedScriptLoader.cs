@@ -1,4 +1,3 @@
-using DbUp.Engine;
 using ID.Jobs.Quartz.Persistence.Abs;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
@@ -7,7 +6,7 @@ namespace ID.Jobs.Quartz.Persistence.DbUp;
 
 internal class EmbeddedScriptLoader(ILogger<EmbeddedScriptLoader> _logger) : IEmbeddedScriptLoader
 {
-    public IReadOnlyList<SqlScript> LoadEmbeddedSqlScripts(
+    public IReadOnlyList<QuartzSqlScript> LoadEmbeddedSqlScripts(
         Assembly assembly, string namespacePrefix, IDictionary<string, string> variables)
     {
         ArgumentNullException.ThrowIfNull(assembly);
@@ -21,7 +20,7 @@ internal class EmbeddedScriptLoader(ILogger<EmbeddedScriptLoader> _logger) : IEm
         if (resourceNames.Length == 0)
             throw new InvalidOperationException($"No embedded SQL migrations found under '{namespacePrefix}' in assembly {assembly.FullName}.");
 
-        var scripts = new List<SqlScript>(resourceNames.Length);
+        var scripts = new List<QuartzSqlScript>(resourceNames.Length);
 
         foreach (var res in resourceNames)
         {
@@ -39,7 +38,7 @@ internal class EmbeddedScriptLoader(ILogger<EmbeddedScriptLoader> _logger) : IEm
 
             var scriptName = res[namespacePrefix.Length..];
             _logger?.LogDebug("Prepared script: {ScriptName}", scriptName);
-            scripts.Add(new SqlScript(scriptName, sql));
+            scripts.Add(new QuartzSqlScript(scriptName, sql));
         }
 
         return scripts;

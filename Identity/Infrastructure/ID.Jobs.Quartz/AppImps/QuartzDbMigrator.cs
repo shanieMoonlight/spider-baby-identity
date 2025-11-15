@@ -1,5 +1,4 @@
-﻿using DbUp.Engine;
-using ID.Application.Models;
+﻿using ID.Application.Models;
 using ID.Jobs.Quartz.Persistence.Abs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -10,7 +9,7 @@ namespace ID.Jobs.Quartz.AppImps;
 
 internal class QuartzDbMigrator(
     IOptions<QuartzConfig> _configProvider,
-    IDbUpMigrator _dbUpMigrator,
+    IEfCoreMigrator _efCoreMigrator,
     ILogger<QuartzDbMigrator> _logger,
     IMigrationNotifier _migrationNotifier)
     : IJobsDbMigrator
@@ -26,24 +25,22 @@ internal class QuartzDbMigrator(
         string connectionString = _config.ConnectionString;
         Dictionary<string, string> _variables = new()
         {
-            ["schema"] = QuartzConstants.Schema
+            ["schema"] = QuartzConstants.Db.Schema
         };
 
+        var result = await _efCoreMigrator.MigrateAsync(_variables, cancellationToken);
 
-        UpgradeEngine upgrader = await _dbUpMigrator.MigrateAsync(_variables, cancellationToken);
-
-        var result = upgrader.PerformUpgrade();
-        if (!result.Successful)
+        if (!result.Succeeded)
         {
-            _logger.LogError(result.Error, "Quartz DB migrations failed for {DatabaseType}. See debug logs for prepared script names and DbUp journal for applied scripts. ConnectionString: {ConnectionString}", dbType, connectionString);
-            throw new InvalidOperationException("Quartz DB migrations failed", result.Error);
+            _logger.LogError(result.Exception, "Quartz DB migrations failed for {DatabaseType}. Details: {ErrorMessage}. ConnectionString: {ConnectionString}", dbType, result.ErrorMessage, connectionString);
+            throw new InvalidOperationException("Quartz DB migrations failed", result.Exception ?? new Exception(result.ErrorMessage ?? "Unknown migration error"));
         }
 
         // Notify subscribers that migrations succeeded. Best-effort: don't let notification failures break the call.
         try
         {
             //Only notify if there were actually scripts applied.
-            if (result.Scripts.Any())
+            if (result.AppliedScripts != null && result.AppliedScripts.Any())
                 //Let this block so that the caller knows when migrations are done or failed or in an unknown state.
                 await _migrationNotifierLocal.NotifySucceededAsync(cancellationToken);
         }

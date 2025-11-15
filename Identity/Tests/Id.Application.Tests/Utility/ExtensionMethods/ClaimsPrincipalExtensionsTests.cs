@@ -144,7 +144,7 @@ public class ClaimsPrincipalExtensionsTests
     [Fact]
     public void IsAuthenticated_Returns_True_If_Authenticated()
     {
-        var identity = new ClaimsIdentity(new[] { new Claim("type", "value") }, "mock");
+        var identity = new ClaimsIdentity([new Claim("type", "value")], "mock");
         var principal = new ClaimsPrincipal(identity);
         principal.IsAuthenticated().ShouldBeTrue();
     }

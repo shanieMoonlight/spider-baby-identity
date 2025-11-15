@@ -33,8 +33,8 @@ public static class Setup
         services.AddIsolatedQuartz(
             databaseType: databaseType,
             connectionString: connectionString,
-            schema: QuartzConstants.Schema,
-            tablePrefix: QuartzConstants.TablePrefix
+            schema: QuartzConstants.Db.Schema,
+            tablePrefix: QuartzConstants.Db.TablePrefix
         );
 
         services.AddRetries();

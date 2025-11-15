@@ -80,7 +80,7 @@ public class HttpContextIdExtensionsTests
     public void HasClaim_Delegates_To_User()
     {
         var claim = new Claim("type", "val");
-        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { claim }, "mock"));
+        var user = new ClaimsPrincipal(new ClaimsIdentity([claim], "mock"));
         var ctx = new DefaultHttpContext { User = user };
         ctx.HasClaim(claim).ShouldBeTrue();
     }
@@ -88,7 +88,7 @@ public class HttpContextIdExtensionsTests
     [Fact]
     public void IsAuthenticated_Delegates_To_User()
     {
-        var user = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim("type", "val") }, "mock"));
+        var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("type", "val")], "mock"));
         var ctx = new DefaultHttpContext { User = user };
         ctx.IsAuthenticated().ShouldBeTrue();
     }

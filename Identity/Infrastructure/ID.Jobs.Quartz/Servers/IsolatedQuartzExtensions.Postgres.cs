@@ -18,6 +18,8 @@ internal static class IsolatedQuartzExtensionsPostgres
                 storeBuilder.RetryInterval = TimeSpan.FromSeconds(15);
                 storeBuilder.UseNewtonsoftJsonSerializer();
 
+                storeBuilder.PerformSchemaValidation = false;
+
                 // Build connection string that sets the search_path so unqualified names land in `schema`
                 // Requires NpgsqlConnectionStringBuilder from Npgsql (add Npgsql package if missing)
                 var csb = new Npgsql.NpgsqlConnectionStringBuilder(connectionString)

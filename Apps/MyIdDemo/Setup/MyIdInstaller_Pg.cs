@@ -41,16 +41,16 @@ public class MyIdInstaller_Pg : IServiceInstaller
                //config.JwtAsymmetricPrivateKey_Xml = startupData.GetAsymmetricPrivateKeyXmlString();
                //config.JwtAsymmetricPublicKey_Xml = startupData.GetAsymmetricPublicKeyXmlString();
                config.JwtTokenExpirationMinutes = startupData.IdentitySection.GetJwtExpirationMinutes();
-               //config.JwtAsymmetricPemKeyPair = AsymmetricPemKeyPair.Create(
-               //    startupData.GetAsymmetricPublicKeyPemString(),
-               //    startupData.GetAsymmetricPrivateKeyPemString()
-               // );
-
-
-               config.JwtAsymmetricXmlKeyPair = AsymmetricXmlKeyPair.Create(
-                   startupData.GetAsymmetricPublicKeyXmlString(),
-                   startupData.GetAsymmetricPrivateKeyXmlString()
+               config.JwtAsymmetricPemKeyPair = AsymmetricPemKeyPair.Create(
+                   startupData.GetAsymmetricPublicKeyPemString(),
+                   startupData.GetAsymmetricPrivateKeyPemString()
                 );
+
+
+               //config.JwtAsymmetricXmlKeyPair = AsymmetricXmlKeyPair.Create(
+               //    startupData.GetAsymmetricPublicKeyXmlString(),
+               //    startupData.GetAsymmetricPrivateKeyXmlString()
+               // );
 
 
                //config.JwtTokenExpirationMinutes = 2;

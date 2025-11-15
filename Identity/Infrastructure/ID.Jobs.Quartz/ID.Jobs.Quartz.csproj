@@ -17,13 +17,17 @@
 
 	<ItemGroup>
 		<PackageReference Include="CrystalQuartz.AspNetCore" />
-		<PackageReference Include="dbup" />
+		<!--	<PackageReference Include="dbup" />
 		<PackageReference Include="dbup-postgresql" />
-		<PackageReference Include="dbup-sqlserver" />
+		<PackageReference Include="dbup-sqlserver" />-->
 		<PackageReference Include="Polly" />
 		<PackageReference Include="Quartz" />
 		<PackageReference Include="Quartz.Extensions.Hosting" />
 		<PackageReference Include="Quartz.Serialization.Json" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+		<PackageReference Include="EFCore.NamingConventions" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
 	</ItemGroup>
 
 

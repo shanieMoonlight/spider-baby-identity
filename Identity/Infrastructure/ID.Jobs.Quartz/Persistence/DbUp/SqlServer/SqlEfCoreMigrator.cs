@@ -1,19 +1,16 @@
 using ID.Jobs.Quartz.Persistence.Abs;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace ID.Jobs.Quartz.Persistence.Ef;
 
 internal class SqlEfCoreMigrator(
-    IOptions<QuartzConfig> _configProvider,
+    IDbCommandExecutor _executor,
     IEmbeddedScriptLoader _loader,
     ILogger<SqlEfCoreMigrator> _loggerLocal)
     : IEfCoreMigrator
 {
-    private readonly QuartzConfig _config = _configProvider.Value;
 
     private const string _journalTable = QuartzConstants.Db.MigrationsJournalTable.Sql.NAME;
     private const string _journalColPrimary = QuartzConstants.Db.MigrationsJournalTable.Sql.Columns.PRIMARY;
@@ -23,7 +20,6 @@ internal class SqlEfCoreMigrator(
 
     public async Task<QuartzMigrateResult> MigrateAsync(Dictionary<string, string> variables, CancellationToken cancellationToken = default)
     {
-        var connString = _config.ConnectionString;
         var applied = new List<string>();
         var skipped = new List<string>();
 
@@ -34,11 +30,10 @@ internal class SqlEfCoreMigrator(
             const string nsPrefix = "ID.Jobs.Quartz.Persistence.DbUp.SqlServer.Migrations.";
             var scripts = _loader.LoadEmbeddedSqlScripts(assembly, nsPrefix, variables);
 
-            await using var conn = new SqlConnection(connString);
-            await conn.OpenAsync(cancellationToken);
+            await _executor.OpenAsync(cancellationToken);
 
-            await EnsureSchemaExistsAsync(conn, cancellationToken);
-            await EnsureJournalTableExistsAsync(conn, cancellationToken);
+            await EnsureSchemaExistsAsync(cancellationToken);
+            await EnsureJournalTableExistsAsync(cancellationToken);
 
             // Apply scripts in order
             foreach (var s in scripts)
@@ -49,49 +44,32 @@ internal class SqlEfCoreMigrator(
                 Debug.WriteLine($"Processing script {s.Name}... {Environment.NewLine}{s.Contents}");
 
                 // check journal
-                await using (var check = conn.CreateCommand())
+                var checkCommandText = $@"SELECT TOP(1) 1 FROM [{_schema}].[{_journalTable}] WHERE {_journalColScriptName} = @name;";
+                var exists = await _executor.ExecuteScalarAsync(checkCommandText, new Dictionary<string, object?> { ["name"] = s.Name }, cancellationToken);
+                if (exists != null)
                 {
-                    check.CommandText = $@"SELECT TOP(1) 1 FROM [{_schema}].[{_journalTable}] WHERE {_journalColScriptName} = @name;";
-                    var p = check.CreateParameter();
-                    p.ParameterName = "name";
-                    p.Value = s.Name;
-                    check.Parameters.Add(p);
-
-                    var exists = await check.ExecuteScalarAsync(cancellationToken);
-                    if (exists != null)
-                    {
-                        skipped.Add(s.Name);
-                        _loggerLocal.LogDebug("Skipping already applied script {Script}", s.Name);
-                        continue;
-                    }
+                    skipped.Add(s.Name);
+                    _loggerLocal.LogDebug("Skipping already applied script {Script}", s.Name);
+                    continue;
                 }
+
 
                 try
                 {
                     // Split script on lines that contain only 'GO' (case-insensitive) and execute each batch separately
-                    var batches = Regex.Split(s.Contents, @"^\s*GO\s*$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+                    var batches = SplitBatches(s.Contents);
 
                     foreach (var batch in batches)
                     {
                         if (string.IsNullOrWhiteSpace(batch))
                             continue;
 
-                        await using var exec = conn.CreateCommand();
-                        exec.CommandText = batch;
-                        exec.CommandTimeout = 0;
-                        await exec.ExecuteNonQueryAsync(cancellationToken);
+                        await _executor.ExecuteNonQueryAsync(batch, null, cancellationToken);
                     }
 
                     // Insert journal entry
-                    await using (var ins = conn.CreateCommand())
-                    {
-                        ins.CommandText = $@"INSERT INTO [{_schema}].[{_journalTable}] ({_journalColScriptName}, {_journalColAppliedAt}) VALUES (@name, SYSDATETIMEOFFSET());";
-                        var p = ins.CreateParameter();
-                        p.ParameterName = "name";
-                        p.Value = s.Name;
-                        ins.Parameters.Add(p);
-                        await ins.ExecuteNonQueryAsync(cancellationToken);
-                    }
+                    var insCommandText = $@"INSERT INTO [{_schema}].[{_journalTable}] ({_journalColScriptName}, {_journalColAppliedAt}) VALUES (@name, SYSDATETIMEOFFSET());";
+                    await _executor.ExecuteNonQueryAsync(insCommandText, new Dictionary<string, object?> { ["name"] = s.Name }, cancellationToken);
 
                     applied.Add(s.Name);
                     _loggerLocal.LogInformation("Applied Quartz migration script {Script}", s.Name);
@@ -112,23 +90,32 @@ internal class SqlEfCoreMigrator(
         }
     }
 
-    //----------------------//
-
-    private static async Task EnsureSchemaExistsAsync(SqlConnection conn, CancellationToken cancellationToken)
+    internal static string[] SplitBatches(string contents)
     {
-        await using var cmd = conn.CreateCommand();
-        cmd.CommandText = $@"
-IF SCHEMA_ID(N'{_schema}') IS NULL
-    EXEC(N'CREATE SCHEMA [{_schema}]');";
-        await cmd.ExecuteNonQueryAsync(cancellationToken);
+        if (string.IsNullOrEmpty(contents))
+            return [];
+
+        var batches = Regex.Split(contents, @"^\s*GO\s*$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+        return [.. batches.Select(b => b.Trim()).Where(b => !string.IsNullOrEmpty(b))];
     }
 
     //----------------------//
 
-    private static async Task EnsureJournalTableExistsAsync(SqlConnection conn, CancellationToken cancellationToken)
+    private async Task EnsureSchemaExistsAsync(CancellationToken cancellationToken)
     {
-        await using var cmd = conn.CreateCommand();
-        cmd.CommandText = $@"
+        var cmdCommandText = $@"
+IF SCHEMA_ID(N'{_schema}') IS NULL
+    EXEC(N'CREATE SCHEMA [{_schema}]');";
+
+
+        await _executor.ExecuteNonQueryAsync(cmdCommandText, null, cancellationToken);
+    }
+
+    //----------------------//
+
+    private async Task EnsureJournalTableExistsAsync(CancellationToken cancellationToken)
+    {
+        var cmdCommandText = $@"
 IF NOT EXISTS (
     SELECT 1 FROM INFORMATION_SCHEMA.TABLES
     WHERE TABLE_SCHEMA = N'{_schema}' AND TABLE_NAME = N'{_journalTable}'
@@ -140,7 +127,7 @@ BEGIN
         {_journalColAppliedAt} DATETIMEOFFSET NOT NULL
     );
 END";
-        await cmd.ExecuteNonQueryAsync(cancellationToken);
+        await _executor.ExecuteNonQueryAsync(cmdCommandText, null, cancellationToken);
     }
 
 }//Cls

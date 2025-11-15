@@ -42,7 +42,7 @@ public class QuartzMyIdJobServiceTests
         var mockScheduler = new Mock<IScheduler>();
 
         mockScheduler.Setup(s => s.AddJob(It.IsAny<IJobDetail>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
-        mockScheduler.Setup(s => s.GetTriggersOfJob(It.IsAny<JobKey>(), It.IsAny<CancellationToken>())).ReturnsAsync(new List<ITrigger>());
+        mockScheduler.Setup(s => s.GetTriggersOfJob(It.IsAny<JobKey>(), It.IsAny<CancellationToken>())).ReturnsAsync([]);
         // ScheduleJob may return Task<DateTimeOffset?> or Task - cover common case by returning completed task
         mockScheduler.Setup(s => s.ScheduleJob(It.IsAny<ITrigger>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(DateTimeOffset.UtcNow));
 
@@ -99,7 +99,7 @@ public class QuartzMyIdJobServiceTests
 
         mockScheduler.Setup(s => s.GetJobKeys(It.IsAny<GroupMatcher<JobKey>>(), It.IsAny<CancellationToken>())).ReturnsAsync(jobKeys);
         mockScheduler.Setup(s => s.GetJobDetail(jk, It.IsAny<CancellationToken>())).ReturnsAsync(jobDetail);
-        mockScheduler.Setup(s => s.GetTriggersOfJob(jk, It.IsAny<CancellationToken>())).ReturnsAsync(new List<ITrigger> { cronTrigger });
+        mockScheduler.Setup(s => s.GetTriggersOfJob(jk, It.IsAny<CancellationToken>())).ReturnsAsync([cronTrigger]);
 
         mockFactory.Setup(f => f.GetScheduler(It.IsAny<CancellationToken>())).ReturnsAsync(mockScheduler.Object);
 

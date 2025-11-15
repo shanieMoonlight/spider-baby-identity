@@ -1,13 +1,12 @@
 ﻿using ID.Application.Models;
 using ID.Jobs.Quartz.Persistence.Abs;
 using ID.Jobs.Quartz.Persistence.DbUp;
+using ID.Jobs.Quartz.Persistence.DbUp.Postgres;
 using ID.Jobs.Quartz.Persistence.DbUp.SqlServer;
 using ID.Jobs.Quartz.Persistence.Ef;
 using ID.Jobs.Quartz.Persistence.MigrationNotifications;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Npgsql;
 
 namespace ID.Jobs.Quartz.Persistence;
 internal static class SetupPersistence
@@ -17,19 +16,19 @@ internal static class SetupPersistence
     {
 
         services.AddScoped<IEmbeddedScriptLoader, EmbeddedScriptLoader>();
-
+            
         switch (dbType)
         {
             case DatabaseType.SqlServer:
-                services.AddScoped<IDbConnectionFactory<SqlConnection>, SqlDbConnectionFactory>();
+                //services.AddScoped<IDbConnectionFactory, SqlDbConnectionFactory>();
+                services.AddScoped<IDbCommandExecutor, SqlDbCommandExecutor>();
                 services.TryAddScoped<IEfCoreMigrator, SqlEfCoreMigrator>();
-                services.AddScoped< IDbCommandExecutor , SqlDbCommandExecutor>();
                 //services.TryAddScoped<IDbUpMigrator, DbUpSqlServerMigrator>();
                 break;
             case DatabaseType.PostgreSql:
-                services.AddScoped<IDbConnectionFactory<NpgsqlConnection>, PgDbConnectionFactory>();
+                //services.AddScoped<IDbConnectionFactory, PgDbConnectionFactory>();
+                services.AddScoped<IDbCommandExecutor, PgDbCommandExecutor>();
                 services.TryAddScoped<IEfCoreMigrator, PgEfCoreMigrator>();
-                //services.AddScoped<IDbCommandExecutor, PgDbCommandExecutor>();
                 //services.TryAddScoped<IDbUpMigrator, DbUpPostgresServerMigrator>();
                 break;
             default:

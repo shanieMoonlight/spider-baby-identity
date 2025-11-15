@@ -1,25 +1,24 @@
 using ID.Jobs.Quartz.Persistence.Abs;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
+using Npgsql;
 using System.Data;
 using System.Data.Common;
+using System.Threading;
 
-namespace ID.Jobs.Quartz.Persistence.DbUp.SqlServer;
+namespace ID.Jobs.Quartz.Persistence.DbUp.Postgres;
 
-internal class SqlDbCommandExecutor : IDbCommandExecutor
+internal class PgDbCommandExecutor : IDbCommandExecutor
 {
     private readonly QuartzConfig _config;
     private readonly Func<DbConnection> _connectionFactory;
     private DbConnection? _connection;
     private readonly SemaphoreSlim _openLock = new(1,1);
 
-    public SqlDbCommandExecutor(IOptions<QuartzConfig> options, Func<DbConnection>? connectionFactory = null)
+    public PgDbCommandExecutor(IOptions<QuartzConfig> options, Func<DbConnection>? connectionFactory = null)
     {
         _config = options.Value;
-        _connectionFactory = connectionFactory ?? (() => new SqlConnection(_config.ConnectionString));
+        _connectionFactory = connectionFactory ?? (() => new NpgsqlConnection(_config.ConnectionString));
     }
-
-    //----------------------//
 
     public async Task EnsureOpenAsync(CancellationToken cancellationToken = default)
     {
@@ -36,8 +35,6 @@ internal class SqlDbCommandExecutor : IDbCommandExecutor
         }
     }
 
-    //----------------------//
-
     public async Task<object?> ExecuteScalarAsync(string sql, IDictionary<string, object?>? parameters = null, CancellationToken cancellationToken = default)
     {
         await EnsureOpenAsync(cancellationToken);
@@ -45,16 +42,12 @@ internal class SqlDbCommandExecutor : IDbCommandExecutor
         return await cmd.ExecuteScalarAsync(cancellationToken);
     }
 
-    //----------------------//
-
     public async Task<int> ExecuteNonQueryAsync(string sql, IDictionary<string, object?>? parameters = null, CancellationToken cancellationToken = default)
     {
         await EnsureOpenAsync(cancellationToken);
         await using var cmd = CreateCommand(sql, parameters);
         return await cmd.ExecuteNonQueryAsync(cancellationToken);
     }
-
-    //----------------------//
 
     private DbCommand CreateCommand(string sql, IDictionary<string, object?>? parameters)
     {
@@ -74,4 +67,4 @@ internal class SqlDbCommandExecutor : IDbCommandExecutor
         }
         return cmd;
     }
-}//Cls
+}

@@ -13,3 +13,5 @@ global using ID.Jobs.Quartz.Persistence.Abs;
 global using Shouldly;
 global using ID.Jobs.Quartz.AppImps;
 global using Microsoft.Extensions.Options;
+global using ID.Jobs.Quartz.Persistence.Ef;
+global using Moq;

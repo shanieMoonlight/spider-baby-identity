@@ -5,12 +5,15 @@ using System.Text.RegularExpressions;
 
 namespace ID.Jobs.Quartz.Persistence.Ef;
 
-internal class SqlEfCoreMigrator(
+internal partial class SqlEfCoreMigrator(
     IDbCommandExecutor _executor,
     IEmbeddedScriptLoader _loader,
     ILogger<SqlEfCoreMigrator> _loggerLocal)
     : IEfCoreMigrator
 {
+
+    [GeneratedRegex(@"^\s*GO\s*$", RegexOptions.IgnoreCase | RegexOptions.Multiline, "en-GB")]
+    private static partial Regex GoRegex();
 
     private const string _journalTable = QuartzConstants.Db.MigrationsJournalTable.Sql.NAME;
     private const string _journalColPrimary = QuartzConstants.Db.MigrationsJournalTable.Sql.Columns.PRIMARY;
@@ -30,7 +33,7 @@ internal class SqlEfCoreMigrator(
             const string nsPrefix = "ID.Jobs.Quartz.Persistence.DbUp.SqlServer.Migrations.";
             var scripts = _loader.LoadEmbeddedSqlScripts(assembly, nsPrefix, variables);
 
-            await _executor.OpenAsync(cancellationToken);
+            await _executor.EnsureOpenAsync(cancellationToken);
 
             await EnsureSchemaExistsAsync(cancellationToken);
             await EnsureJournalTableExistsAsync(cancellationToken);
@@ -44,15 +47,13 @@ internal class SqlEfCoreMigrator(
                 Debug.WriteLine($"Processing script {s.Name}... {Environment.NewLine}{s.Contents}");
 
                 // check journal
-                var checkCommandText = $@"SELECT TOP(1) 1 FROM [{_schema}].[{_journalTable}] WHERE {_journalColScriptName} = @name;";
-                var exists = await _executor.ExecuteScalarAsync(checkCommandText, new Dictionary<string, object?> { ["name"] = s.Name }, cancellationToken);
-                if (exists != null)
+                var exists = await CheckIfMigrationAlreadyApplied(s.Name, cancellationToken);
+                if (exists)
                 {
                     skipped.Add(s.Name);
                     _loggerLocal.LogDebug("Skipping already applied script {Script}", s.Name);
                     continue;
                 }
-
 
                 try
                 {
@@ -68,8 +69,7 @@ internal class SqlEfCoreMigrator(
                     }
 
                     // Insert journal entry
-                    var insCommandText = $@"INSERT INTO [{_schema}].[{_journalTable}] ({_journalColScriptName}, {_journalColAppliedAt}) VALUES (@name, SYSDATETIMEOFFSET());";
-                    await _executor.ExecuteNonQueryAsync(insCommandText, new Dictionary<string, object?> { ["name"] = s.Name }, cancellationToken);
+                    await RecordMigrationJournal(s.Name, cancellationToken);
 
                     applied.Add(s.Name);
                     _loggerLocal.LogInformation("Applied Quartz migration script {Script}", s.Name);
@@ -90,12 +90,14 @@ internal class SqlEfCoreMigrator(
         }
     }
 
-    internal static string[] SplitBatches(string contents)
+    //----------------------//
+
+    private static string[] SplitBatches(string contents)
     {
         if (string.IsNullOrEmpty(contents))
             return [];
 
-        var batches = Regex.Split(contents, @"^\s*GO\s*$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+        var batches = GoRegex().Split(contents);
         return [.. batches.Select(b => b.Trim()).Where(b => !string.IsNullOrEmpty(b))];
     }
 
@@ -129,5 +131,27 @@ BEGIN
 END";
         await _executor.ExecuteNonQueryAsync(cmdCommandText, null, cancellationToken);
     }
+
+    //----------------------//
+
+    private async Task<bool> CheckIfMigrationAlreadyApplied(string name, CancellationToken cancellationToken)
+    {
+        var checkCommandText = $@"SELECT TOP(1) 1 FROM [{_schema}].[{_journalTable}] WHERE {_journalColScriptName} = @name;";
+        var result = await _executor.ExecuteScalarAsync(checkCommandText, new Dictionary<string, object?> { ["name"] = name }, cancellationToken);
+        return result != null;
+
+    }
+
+    //----------------------//
+
+    private async Task RecordMigrationJournal(string name, CancellationToken cancellationToken)
+    {
+        // Insert journal entry
+        var insCommandText = $@"INSERT INTO [{_schema}].[{_journalTable}] ({_journalColScriptName}, {_journalColAppliedAt}) VALUES (@name, SYSDATETIMEOFFSET());";
+        await _executor.ExecuteNonQueryAsync(insCommandText, new Dictionary<string, object?> { ["name"] = name }, cancellationToken);
+
+    }
+
+
 
 }//Cls

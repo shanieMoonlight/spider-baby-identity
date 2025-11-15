@@ -133,7 +133,7 @@ public class SpaDefaultFilesMiddlewareTests
         // Assert
         called.ShouldBeFalse();
         context.Response.StatusCode.ShouldBe(StatusCodes.Status301MovedPermanently);
-        context.Response.Headers["Location"].ToString().ShouldContain("/about/");
+        context.Response.Headers.Location.ToString().ShouldContain("/about/");
     }
 
     //----------------------------//

@@ -1,5 +1,6 @@
 ﻿using Pagination.Result;
 using Pagination.Utility;
+using System.Globalization;
 using System.Linq.Expressions;
 
 namespace Pagination.Extensions.Utility;
@@ -41,10 +42,12 @@ internal class DateFilterProvider
 
         var datePropertyExp = GetSafeDatePropertyExpression(originalProperty);
 
-        if (!DateTime.TryParse(filterRequest.FilterValue, out var outDate))
+        if (!TryParseDateTimeSafe(filterRequest.FilterValue, out var outDate))
             return new PgResult<Expression>(false, $"Can't convert {filterRequest.FilterValue} to DateTime value");
 
-        var value = Expression.Constant(outDate.Date);//What to compare with
+        // Ensure we compare using the date at UTC midnight (postgres needs UTC)
+        var utcDate = DateTime.SpecifyKind(outDate.Date, DateTimeKind.Utc);
+        var value = Expression.Constant(utcDate);
 
 
         var expTypeResult = FilterTypes.GetDateExpressionType(filterRequest.FilterType);
@@ -62,7 +65,7 @@ internal class DateFilterProvider
     }
 
 
-    //-----------------------------------//
+    //------------------------//
 
 
     /// <summary>
@@ -90,11 +93,11 @@ internal class DateFilterProvider
             return new PgResult<Expression>(false, $"{filterRequest.FilterValue} is not a valid BETWEEN value");
 
         var startDateStr = dateStrings[0];
-        if (!DateTime.TryParse(startDateStr, out var startDate))
+        if (!TryParseDateTimeSafe(startDateStr, out var startDate))
             return new PgResult<Expression>(false, $"Can't convert {startDateStr} of '{filterRequest.FilterValue}' to DateTime value");
 
         var endDateStr = dateStrings[1];
-        if (!DateTime.TryParse(endDateStr, out var endDate))
+        if (!TryParseDateTimeSafe(endDateStr, out var endDate))
             return new PgResult<Expression>(false, $"Can't convert {endDateStr} of '{filterRequest.FilterValue}' to DateTime value");
 
 
@@ -105,7 +108,7 @@ internal class DateFilterProvider
 
     }
 
-    //-----------------------------------//    
+    //------------------------//    
 
 
     /// <summary>
@@ -131,4 +134,15 @@ internal class DateFilterProvider
         return Expression.PropertyOrField(safeOriginalProperty, "Date"); //Set it to midnight
 
     }
+
+
+    //------------------------//    
+
+    private static bool TryParseDateTimeSafe(string dateString, out DateTime result) => 
+        DateTime.TryParse(
+            dateString,
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
+            out result);
+
 }

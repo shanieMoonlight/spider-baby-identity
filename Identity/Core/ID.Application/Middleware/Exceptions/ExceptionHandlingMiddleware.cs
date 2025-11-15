@@ -1,6 +1,7 @@
 ﻿using ClArch.ValueObjects.Exceptions;
 using ID.Application.Utility;
 using ID.Domain.Utility.Exceptions;
+using ID.GlobalSettings.Errors;
 using LoggingHelpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -26,14 +27,14 @@ internal class ExceptionHandlingMiddleware(
         }
         catch (MyIdException exception)
         {
-            logger.LogException(exception, MyIdLoggingEvents.UNEXPECTED);
+            logger.LogException(exception, IdErrorEvents.Unexpected);
             var exceptionDetails = _converter.GetExceptionDetails(exception);
             context.Response.StatusCode = exceptionDetails.Status;
             await context.Response.WriteAsJsonAsync(exceptionDetails.Details);
         }
         catch (InvalidPropertyException exception)
         {
-            logger.LogException(exception, MyIdLoggingEvents.DB.InvalidProperty);
+            logger.LogException(exception, IdErrorEvents.DB.InvalidProperty);
             var exceptionDetails = _converter.GetExceptionDetails(exception);
             context.Response.StatusCode = exceptionDetails.Status;
             await context.Response.WriteAsJsonAsync(exceptionDetails.Details);

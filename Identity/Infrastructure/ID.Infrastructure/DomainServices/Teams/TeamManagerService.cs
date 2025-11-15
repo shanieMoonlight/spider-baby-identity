@@ -46,7 +46,7 @@ internal class TeamManagerService<TUser>(
 
     //- - - - - - - - - - - - - - - - - - //
 
-    public async Task<IReadOnlyList<Team>> GetAllTeamsWithExpiredSubscriptions(CancellationToken cancellationToken) =>
+    public async Task<IReadOnlyList<Team>> GetAllTeamsWithExpiredSubscriptions(CancellationToken cancellationToken = default) =>
         await _teamRepo.ListAllAsync(new TeamsWithExpiredSubscriptionsSpec(), cancellationToken);
 
     //- - - - - - - - - - - - - - - - - - //

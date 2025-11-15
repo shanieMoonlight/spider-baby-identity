@@ -5,7 +5,7 @@ internal class IdInfrastructureConstants
     {
         public const string Server = "MyIdServer";
         public const string Schema = "MyIdJobs";
-        public const string DashboardPath = "/myid-hangfire";
+        public const string DashboardPath = "/myid-jobs-dashboard";
         public const string DashboardTitle = "MyId Jobs Dashboard";
         public const string BackToAppPath = "/";
         public const string DI_StorageKey = "MyIdDiStorageKey";

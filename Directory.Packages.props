@@ -7,11 +7,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="BouncyCastle.Cryptography" Version="2.6.1" />
-    <PackageVersion Include="FluentAssertions" Version="8.3.0" />
+    <PackageVersion Include="CrystalQuartz.AspNetCore" Version="7.3.0" />
+    <PackageVersion Include="EFCore.NamingConventions" Version="8.0.3" />
+    <PackageVersion Include="FluentAssertions" Version="8.8.0" />
     <PackageVersion Include="Google.Apis.Auth" Version="1.70.0" />
     <PackageVersion Include="GoogleAuthenticator" Version="3.2.0" />
-    <PackageVersion Include="Hangfire" Version="1.8.20" />
-    <PackageVersion Include="Hangfire.Core" Version="1.8.20" />
+    <PackageVersion Include="Hangfire" Version="1.8.22" />
+    <PackageVersion Include="Hangfire.PostgreSql" Version="1.20.12" />
     <PackageVersion Include="Lamar" Version="15.0.0" />
     <PackageVersion Include="libphonenumber-csharp" Version="9.0.5" />
     <PackageVersion Include="MailKit" Version="4.12.1" />
@@ -62,9 +64,14 @@
     <PackageVersion Include="Mono.Cecil" Version="0.11.6" />
     <PackageVersion Include="NewId" Version="4.0.1" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageVersion Include="Polly" Version="8.6.0" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
+    <!--<PackageVersion Include="Npgsql" Version="8.0.7" />-->
+    <PackageVersion Include="Polly" Version="8.6.4" />
     <PackageVersion Include="Polly.Core" Version="8.6.0" />
     <PackageVersion Include="Polly.Extensions" Version="8.6.0" />
+    <PackageVersion Include="Quartz" Version="3.15.1" />
+    <PackageVersion Include="Quartz.Extensions.Hosting" Version="3.15.1" />
+    <PackageVersion Include="Quartz.Serialization.Json" Version="3.15.1" />
     <PackageVersion Include="RandomDataGenerator.Net" Version="1.0.18" />
     <PackageVersion Include="SendGrid" Version="9.29.3" />
     <PackageVersion Include="StronglyTypedAppSettings" Version="1.0.6" />

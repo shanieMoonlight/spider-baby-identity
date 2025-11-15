@@ -11,6 +11,7 @@ using System.Text.Encodings.Web;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using ID.Application.Middleware.ExternalPages;
 
 namespace ID.AddOns.Tests.Middleware.Swagger;
 

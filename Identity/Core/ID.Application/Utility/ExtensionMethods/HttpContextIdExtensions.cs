@@ -80,6 +80,14 @@ public static class HttpContextIdExtensions
     //----------------------//
 
     /// <summary>
+    /// <inheritdoc cref="ClaimsPrincipalExtensions.IsInCustomerTeam(ClaimsPrincipal)"/>
+    /// </summary>
+    public static bool IsInCustomerTeamMinimum(this HttpContext ctx) =>
+        ctx?.User.IsInCustomerTeamMinimum() ?? false;
+
+    //----------------------//
+
+    /// <summary>
     /// <inheritdoc cref="ClaimsPrincipalExtensions.IsInMntcTeam(ClaimsPrincipal)"/>
     /// </summary>
     public static bool IsInMntcTeam(this HttpContext ctx) =>

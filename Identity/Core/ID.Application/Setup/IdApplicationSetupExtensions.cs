@@ -10,7 +10,6 @@ using ID.GlobalSettings.Testing.Wrappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System.Threading;
 
 namespace ID.Application.Setup;
 
@@ -67,8 +66,6 @@ public static class IdApplicationSetupExtensions
     /// </remarks>
     public static IApplicationBuilder UseMyIdApplication(this IApplicationBuilder app)    {
         
-        //app.UseMultiFactorRequiredMiddleware();
-
         // Only register FromApp middleware if header value is configured
         var options = app.ApplicationServices.GetRequiredService<IOptions<IdApplicationOptions>>();
         if (!string.IsNullOrWhiteSpace(options.Value.FromAppHeaderValue))
@@ -77,8 +74,7 @@ public static class IdApplicationSetupExtensions
         app.UseCustomExceptionHandler(new MyIdExceptionConverter());
 
 
-        var cancellationTokenSource = new CancellationTokenSource();
-        app.ApplicationServices.StartRecurringMyIdJobs(cancellationTokenSource.Token);
+        app.ApplicationServices.StartRecurringMyIdJobs();
 
         return app;
     }

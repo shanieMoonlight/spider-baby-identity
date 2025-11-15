@@ -43,7 +43,7 @@ internal class NumericFilterProvider
 
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     internal static PgResult<Expression> CreateNumericInFilter(ParameterExpression param, FilterRequest filterRequest, Func<string, string>? getPropertySelectorLambda = null)
     {
@@ -67,7 +67,7 @@ internal class NumericFilterProvider
 
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     internal static PgResult<Expression> CreateNumericBetweenFilter(FilterRequest filterRequest, MemberExpression property)
     {

@@ -19,7 +19,7 @@ internal sealed class Process_Old_MyIdOutboxMsgs(
 
     [MyIdDisableConcurrentExecution(timeoutInSeconds: 300)]
     [DisplayName("MyId - Remove Old Outbox Msgs")]
-    public async Task HandleAsync()
+    public override async Task HandleAsync()
     {
         try
         {

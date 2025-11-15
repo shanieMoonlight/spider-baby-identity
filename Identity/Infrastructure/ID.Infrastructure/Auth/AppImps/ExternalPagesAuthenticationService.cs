@@ -1,7 +1,5 @@
 using ID.GlobalSettings.Constants;
 using ID.Infrastructure.Auth.AppAbs;
-using ID.Infrastructure.Persistance.EF.Setup.Options;
-using ID.Infrastructure.Setup;
 using ID.Infrastructure.Setup.Options;
 using ID.Infrastructure.Utility.ExtensionMethods;
 using Microsoft.AspNetCore.Authentication;
@@ -126,9 +124,6 @@ public class ExternalPageAuthenticationService(
         return AuthenticateResult.Success(ticket);
 
     }
-
-
-    //-----------------------//
 
 
 

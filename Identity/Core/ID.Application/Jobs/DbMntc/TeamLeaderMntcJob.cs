@@ -1,5 +1,4 @@
 ﻿using ID.Application.Jobs.Abstractions;
-using ID.Application.Utility;
 using ID.Domain.Entities.Teams.Validators;
 using ID.Domain.Repos;
 using ID.GlobalSettings.Errors;
@@ -16,7 +15,7 @@ internal sealed class TeamLeaderMntcJob(IServiceProvider _serviceProvider, ILogg
 {
     [MyIdDisableConcurrentExecution(timeoutInSeconds: 300)]
     [DisplayName("MyId - Missing team leader job")]
-    public async Task HandleAsync(CancellationToken cancellationToken)
+    public override async Task HandleAsync()
     {
         try
         {
@@ -24,7 +23,7 @@ internal sealed class TeamLeaderMntcJob(IServiceProvider _serviceProvider, ILogg
             var uow = scope.ServiceProvider.GetRequiredService<IIdUnitOfWork>();
 
             IIdentityTeamRepo _repo = uow.TeamRepo;
-            var teams = await _repo.ListAllAsync(new TeamsWithMissingLeadersSpec(), cancellationToken);
+            var teams = await _repo.ListAllAsync(new TeamsWithMissingLeadersSpec());
             foreach (var team in teams)
             {
                 var highestPositionMember = team.Members
@@ -45,11 +44,11 @@ internal sealed class TeamLeaderMntcJob(IServiceProvider _serviceProvider, ILogg
                 }
             }
 
-            await uow.SaveChangesAsync(cancellationToken);
+            await uow.SaveChangesAsync();
         }
         catch (Exception e)
         {
-            logger.LogException(e, MyIdLoggingEvents.JOBS.DB_MNTC);
+            logger.LogException(e, IdErrorEvents.Jobs.DbMntc);
         }
     }
 

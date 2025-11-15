@@ -7,7 +7,7 @@ namespace ControllerHelpers.Responses;
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
 public static class ObjectResultExtensions
 {
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Generates an Ok Result including the data:  {message: msg}
@@ -79,6 +79,6 @@ public static class ObjectResultExtensions
     public static ObjectResult InternalServerErrorWithMessageDto(this ControllerBase controller, string msg) =>
         new InternalServerErrorResponse(MessageResponseDto.Generate(msg));
 
-    //-----------------------------------//
+    //------------------------//
 
 }//Cls

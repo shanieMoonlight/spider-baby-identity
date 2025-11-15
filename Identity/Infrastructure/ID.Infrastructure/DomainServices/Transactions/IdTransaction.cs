@@ -1,4 +1,4 @@
-﻿using ID.Domain.Abstractions.Services.Transactions;
+﻿using ID.Domain.Repos.Transactions;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ID.Infrastructure.DomainServices.Transactions;

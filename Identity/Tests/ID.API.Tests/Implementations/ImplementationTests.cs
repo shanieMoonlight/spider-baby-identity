@@ -1,5 +1,7 @@
 using ID.Application;
 using ID.Infrastructure;
+using ID.Jobs.Quartz;
+using ID.Persistence.Ef;
 using ID.Tests.Utility;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -16,6 +18,8 @@ public class ImplementationTests
         // Get all interfaces in ID.Application
         var appAssembly = IdApplicationAssemblyReference.Assembly;
         var infraAssembly = IdInfrastructureAssemblyReference.Assembly;
+        var persistenceAssembly = IdPersistenceEfAssemblyReference.Assembly;
+        var quartzAssembly = IdJobsQrzAssemblyReference.Assembly;
 
         var interfaces = InterfaceScanner.GetApplicationInterfaces(appAssembly);
 
@@ -24,6 +28,8 @@ public class ImplementationTests
         // Get all concrete classes in both assemblies
         var allTypes = appAssembly.GetTypes()
             .Concat(infraAssembly.GetTypes())
+            .Concat(persistenceAssembly.GetTypes())
+            .Concat(quartzAssembly.GetTypes())
             .Where(t => t.IsClass && !t.IsAbstract)
             .ToList();
 

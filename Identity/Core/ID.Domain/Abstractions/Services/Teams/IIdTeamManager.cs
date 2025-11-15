@@ -216,7 +216,7 @@ public interface IIdentityTeamManager<TUser> where TUser : AppUser
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of teams with expired subscriptions.</returns>
-    Task<IReadOnlyList<Team>> GetAllTeamsWithExpiredSubscriptions(CancellationToken cancellationToken);
+    Task<IReadOnlyList<Team>> GetAllTeamsWithExpiredSubscriptions(CancellationToken cancellationToken = default);
 
 
     /// <summary>

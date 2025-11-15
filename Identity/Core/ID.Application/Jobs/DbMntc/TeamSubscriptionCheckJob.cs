@@ -1,13 +1,12 @@
 ﻿using ID.Application.Jobs.Abstractions;
-using ID.Application.Utility;
 using ID.Domain.Abstractions.Services.Teams;
-using ID.Domain.Abstractions.Services.Transactions;
 using ID.Domain.Entities.AppUsers;
+using ID.Domain.Repos.Transactions;
+using ID.GlobalSettings.Errors;
 using LoggingHelpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel;
-using System.Diagnostics;
 
 
 namespace ID.Application.Jobs.DbMntc;
@@ -16,39 +15,47 @@ internal class TeamSubscriptionCheckJob(IServiceProvider _serviceProvider, ILogg
 {
     [MyIdDisableConcurrentExecution(timeoutInSeconds: 300)]
     [DisplayName("MyId - Check Expired Subscriptions")]
-    public async Task HandleAsync(CancellationToken cancellationToken)
+    public override async Task HandleAsync()
     {
 
         using var scope = _serviceProvider.CreateScope();
         var _teamMgr = scope.ServiceProvider.GetRequiredService<IIdentityTeamManager<AppUser>>();
         var transactionService = scope.ServiceProvider.GetRequiredService<IIdentityTransactionService>();
-        using var transaction = await transactionService.BeginTransactionAsync(cancellationToken);
-        try
+
+        // Get the execution strategy from the transaction service and run the transactional unit inside it.
+        var strategy = await transactionService.CreateExecutionStrategyAsync();
+
+        await strategy.ExecuteAsync(async ct =>
         {
-            Console.WriteLine("TeamSubscriptionJob:HandleAsync");
-            Debug.WriteLine("TeamSubscriptionJob:HandleAsync");
-
-
-            var teams = await _teamMgr.GetAllTeamsWithExpiredSubscriptions(cancellationToken);
-
-            foreach (var team in teams)
+            using var transaction = await transactionService.BeginTransactionAsync(ct);
+            try
             {
-                foreach (var subscription in team.Subscriptions)
-                {
-                    if (subscription.Expired)
-                        subscription.Deactivate();
-                }
-                await _teamMgr.UpdateAsync(team);
-            }
+                var teams = await _teamMgr.GetAllTeamsWithExpiredSubscriptions(ct);
 
-            await transactionService.SaveChangesAsync(cancellationToken);
-            await transaction.CommitAsync(cancellationToken);
-        }
-        catch (Exception e)
-        {
-            logger.LogException(e, MyIdLoggingEvents.JOBS.DB_MNTC);
-            await transaction.RollbackAsync(cancellationToken);
-        }
+                foreach (var team in teams)
+                {
+                    foreach (var subscription in team.Subscriptions)
+                    {
+                        if (subscription.Expired)
+                            subscription.Deactivate();
+                    }
+                    await _teamMgr.UpdateAsync(team);
+                }
+
+                await transactionService.SaveChangesAsync(ct);
+                await transaction.CommitAsync(ct);
+            }
+            catch (Exception e)
+            {
+                logger.LogException(e, IdErrorEvents.Jobs.DbMntc);
+                await transaction.RollbackAsync(ct);
+            }
+        }, default);
+
+
+
+
+
     }
 
 

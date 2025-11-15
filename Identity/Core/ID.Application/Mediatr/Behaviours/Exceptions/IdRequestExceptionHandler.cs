@@ -1,5 +1,6 @@
 ﻿using ID.Application.Utility;
 using ID.Domain.Utility.Exceptions;
+using ID.GlobalSettings.Errors;
 using LoggingHelpers;
 using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
@@ -45,7 +46,7 @@ public class IdRequestExceptionHandler<TRequest, TResponse, TException>(
 
         //Unexpected so log it.
         if(response?.Status == BasicResult.ResultStatus.Failure)
-            logger.LogException(exception, MyIdLoggingEvents.MEDIATR.UNKNOWN);
+            logger.LogException(exception, IdErrorEvents.Mediatr.Unexpected);
 
         return Task.CompletedTask;
     }

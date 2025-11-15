@@ -28,7 +28,7 @@ internal class GuidFilterProvider
         return new PgResult<Expression>(comparisonExp);
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     internal static PgResult<Expression> CreateGuidInFilter(ParameterExpression param, FilterRequest filterRequest, Func<string, string>? getPropertySelectorLambda = null)
     {

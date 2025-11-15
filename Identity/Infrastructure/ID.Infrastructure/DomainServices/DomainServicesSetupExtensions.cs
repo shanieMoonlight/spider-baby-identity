@@ -4,8 +4,8 @@ using ID.Domain.Abstractions.Services.SubPlans;
 using ID.Domain.Abstractions.Services.Teams;
 using ID.Domain.Abstractions.Services.Teams.Dvcs;
 using ID.Domain.Abstractions.Services.Teams.Subs;
-using ID.Domain.Abstractions.Services.Transactions;
 using ID.Domain.Entities.AppUsers;
+using ID.Domain.Repos.Transactions;
 using ID.Infrastructure.DomainServices.Members;
 using ID.Infrastructure.DomainServices.Outbox;
 using ID.Infrastructure.DomainServices.SubPlans;
@@ -44,7 +44,7 @@ public static class DomainServicesSetupExtensions
         services.TryAddScoped<IIdentityOutboxMsgsService, IdentityOutboxMsgsService>();
 
 
-        services.TryAddScoped<IIdentityTransactionService, IdentityTransactionService>();
+        services.TryAddScoped<IIdentityTransactionService, IdEfTransactionService>();
 
         return services;
 

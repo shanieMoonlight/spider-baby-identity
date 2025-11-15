@@ -20,7 +20,7 @@ public static class ClaimsPrincipalExtensions
         ?? user.GetClaimValue(MyIdClaimTypes.EMAIL)
         ?? user.GetClaimValue(ClaimTypes.Email);
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Looks for the DeviceID claim on this <paramref name="user"/> found in the subscriptions claim
@@ -70,7 +70,7 @@ public static class ClaimsPrincipalExtensions
         }
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Checks the team id claim on this <paramref name="user"/>
@@ -82,7 +82,7 @@ public static class ClaimsPrincipalExtensions
         return Guid.TryParse(teamIdStr, out var teamId) ? teamId : null;
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Checks the team id claim on this <paramref name="user"/>
@@ -94,7 +94,7 @@ public static class ClaimsPrincipalExtensions
         return Enum.TryParse(typeof(TeamType), teamTypeStr, out var teamPosition) ? (TeamType)teamPosition : TeamType.customer;
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Checks the User id claim on this <paramref name="user"/>
@@ -107,7 +107,7 @@ public static class ClaimsPrincipalExtensions
         return Guid.TryParse(userIdStr, out var userId) ? userId : null;
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Gets the Username claim on this <paramref name="user"/>
@@ -119,7 +119,7 @@ public static class ClaimsPrincipalExtensions
         ?? user.GetClaimValue(ClaimTypes.Name)
         ?? user.GetClaimValue(ClaimTypes.NameIdentifier);
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Can <paramref name="principal"/> add/remove/change role with value <paramref name="position"/> from other users.
@@ -131,7 +131,7 @@ public static class ClaimsPrincipalExtensions
     public static bool HasClaim(this ClaimsPrincipal principal, Claim claim) =>
         principal.HasClaim(c => c.Type == claim.Type && c.Value == claim.Value);
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Checks if <paramref name="user"/> has logged in
@@ -140,7 +140,7 @@ public static class ClaimsPrincipalExtensions
     public static bool IsAuthenticated(this ClaimsPrincipal user) =>
         user.Identity?.IsAuthenticated ?? false;
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Checks if <paramref name="user"/> is in team with Id <paramref name="teamId"/>
@@ -149,7 +149,7 @@ public static class ClaimsPrincipalExtensions
     public static bool IsInCustomerTeam(this ClaimsPrincipal? user) =>
         user?.GetClaimValue(MyIdClaimTypes.TEAM_TYPE) == MyTeamClaimValues.CUSTOMER_TEAM_NAME;
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Checks if <paramref name="user"/> is in Mntc team
@@ -158,7 +158,7 @@ public static class ClaimsPrincipalExtensions
     public static bool IsInMntcTeam(this ClaimsPrincipal? user) =>
         user?.GetClaimValue(MyIdClaimTypes.TEAM_TYPE) == MyTeamClaimValues.MAINTENANCE_TEAM_NAME;
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Checks if <paramref name="user"/> is in Mntc team or Higher
@@ -176,7 +176,7 @@ public static class ClaimsPrincipalExtensions
     public static bool IsInCustomerTeamMinimum(this ClaimsPrincipal? user) =>
         (user?.IsInCustomerTeam() ?? false) || (user?.IsInMntcTeamMinimum() ?? false);
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Checks if <paramref name="user"/> is in team with Id <paramref name="teamId"/>
@@ -188,7 +188,7 @@ public static class ClaimsPrincipalExtensions
         && c.Value == role)
         ?? false;
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Checks if <paramref name="user"/> is in Super team
@@ -197,7 +197,7 @@ public static class ClaimsPrincipalExtensions
     public static bool IsInSuperTeam(this ClaimsPrincipal? user) =>
         user?.GetClaimValue(MyIdClaimTypes.TEAM_TYPE) == MyTeamClaimValues.SUPER_TEAM_NAME;
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Checks if <paramref name="user"/> is in team with Id <paramref name="teamId"/>
@@ -206,7 +206,7 @@ public static class ClaimsPrincipalExtensions
     public static bool IsInTeam(this ClaimsPrincipal? user, Guid teamId) =>
         user.GetTeamId() == teamId;
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Checks if <paramref name="user"/> is in team with Id <paramref name="teamId"/>
@@ -215,7 +215,7 @@ public static class ClaimsPrincipalExtensions
     public static bool IsTeamLeader(this ClaimsPrincipal? user) =>
         IsInMyIdRole(user, MyTeamClaimValues.LEADER);
 
-    //-----------------------------------//
+    //------------------------//
 
     /// <summary>
     /// Checks the team id claim on this <paramref name="user"/>
@@ -227,7 +227,7 @@ public static class ClaimsPrincipalExtensions
         return int.TryParse(teamPositionStr, out var teamPosition) ? teamPosition : -1;
     }
 
-    //-----------------------------------//
+    //------------------------//
 
     public static string? GetClaimValue(this ClaimsPrincipal? principal, string claimType) =>
         principal?.FindFirst(claimType)?.Value;

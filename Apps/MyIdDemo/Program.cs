@@ -1,5 +1,5 @@
-using ID.AddOns.Middleware.Swagger;
 using ID.API.Setup;
+using ID.Application.Middleware.ExternalPages;
 using MyIdDemo.Middleware.Exceptions;
 using MyIdDemo.Setup;
 using MyIdDemo.Setup.Data;
@@ -94,7 +94,7 @@ _app.UseEndpoints(endpoints =>
 
 //Swagger Auth comes before Swagger UI
 if (!_app.Environment.IsDevelopment())
-    _app.UseSwaggerAuthSuperTeam();
+    _app.UseSwaggerAuth_SuperTeam();
 
 _app.UseSwagger()
     .UseSwaggerUI();

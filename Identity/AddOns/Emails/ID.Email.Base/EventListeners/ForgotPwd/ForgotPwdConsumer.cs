@@ -1,5 +1,7 @@
-﻿using ID.Email.Base.Abs;
-using ID.Email.Base.AppAbs;
+﻿using ID.Email.Base.AppAbs;
+using ID.Email.Base.LocalAbs;
+using ID.Email.Base.LocalImps;
+using ID.Email.Base.LocalImps.Specs;
 using ID.GlobalSettings.Constants;
 using ID.GlobalSettings.Errors;
 using ID.GlobalSettings.Setup.Options;
@@ -39,12 +41,8 @@ public class ForgotPwdConsumer(
             string pwdResetTknUrl = $"{pwdResetTknAddress}?{IdGlobalConstants.EmailRoutes.Params.UserId}={data.UserId}&{IdGlobalConstants.EmailRoutes.Params.ResetToken}={data.ResetToken}";
 
 
-            var eDetails = await emailDetailsTemplateGenerator
-                   .GeneratePasswordResetTemplateAsync(
-                      data.Name,
-                      data.Email,
-                      pwdResetTknUrl
-                   );
+            var spec = new PasswordResetSpec(data.Name, data.Email, pwdResetTknUrl);
+            var eDetails = await emailDetailsTemplateGenerator.GenerateFromSpecAsync(spec);
 
             var result = await emailService.SendEmailAsync(eDetails);
 

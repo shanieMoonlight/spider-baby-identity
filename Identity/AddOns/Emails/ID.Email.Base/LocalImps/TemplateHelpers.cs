@@ -1,15 +1,16 @@
 ﻿using CollectionHelpers;
-using ID.Email.Base.AppAbs;
+using ID.Email.Base.LocalAbs;
 using ID.Email.Base.Models;
 using ID.Email.Base.Setup;
 using ID.GlobalSettings.Setup.Options;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 
-namespace ID.Email.Base.AppImps;
+namespace ID.Email.Base.LocalImps;
 internal class TemplateHelpers(
     IOptions<IdGlobalOptions> _globalOptionsProvider, 
-    IOptions<IdEmailBaseOptions> _emailOptionsProvider)
+    IOptions<IdEmailBaseOptions> _emailOptionsProvider,
+    ITemplateLoader _loader)
     : ITemplateHelpers
 {
     private readonly IdGlobalOptions _globalOptions = _globalOptionsProvider.Value;
@@ -75,12 +76,12 @@ internal class TemplateHelpers(
             });
         }
 
+        // Use the injected template loader which implements disk-first then embedded-resource fallback
+        var loadResult = await _loader.LoadAsync(templatePath);
+        if (!loadResult.Succeeded)
+            throw new FileNotFoundException($"Email template not found: {templatePath}");
 
-        var buildDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-        var filePath = Path.Combine(buildDir!, templatePath);  //Let the consumer handle it.  . It'll be reported
-
-        using var sr = new StreamReader(filePath);
-        var template = await sr.ReadToEndAsync();
+        var template = loadResult.Value ?? string.Empty;
 
         foreach (var placeholder in placeholders)
         {

@@ -20,7 +20,7 @@ public partial class IDMsgs
         public static class Passwords
         {
             public const string PASSWORD_CHANGE_SUCCESSFUL = "Your password has been changed.";
-            public const string PASSWORD_RESET = "A password reset message was sent to your email address. Make sure to check your Spam folder if it's not in your inbox in a few minutes";
+            public const string PASSWORD_RESET = "A password reset message will be sent to your email address. Make sure to check your Spam folder if it's not in your inbox in a few minutes";
         }
 
 
@@ -30,7 +30,7 @@ public partial class IDMsgs
         {
             public const string EMAIL_CONFIRMED = "Email has been confirmed!";
             public static string EMAIL_ALREADY_CONFIRMED(string? email) => $"Email {email} has already been confirmed. Try logging in.";
-            public static string EMAIL_CONFIRMATION_SENT(string? email) => $"A confirmation email sent to {email ?? "no-email"}. Make sure to check the Spam Folder if it's not in the inbox in a few minutes";
+            public static string EMAIL_CONFIRMATION_SENT(string? email) => $"A confirmation email will be sent to {email ?? "no-email"}. Make sure to check the Spam Folder if it's not in the inbox in a few minutes";
         }
 
         //---------------------------//

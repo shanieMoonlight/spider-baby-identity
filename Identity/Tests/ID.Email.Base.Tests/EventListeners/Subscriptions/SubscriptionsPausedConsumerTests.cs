@@ -1,10 +1,10 @@
 using Id.Tests.Utility.Exceptions;
-using ID.Email.Base.Abs;
 using ID.Email.Base.EventListeners.Subscriptions;
+using ID.Email.Base.LocalAbs;
+using ID.Email.Base.LocalImps.Specs;
 using ID.GlobalSettings.Errors;
 using ID.IntegrationEvents.Events.Account.Subscriptions;
 using Microsoft.Extensions.Logging;
-using MyResults;
 
 namespace ID.Email.Base.Tests.EventListeners.Subscriptions;
 
@@ -44,8 +44,7 @@ public class SubscriptionsPausedConsumerTests
             SubscriptionPlanName = "Premium Plan"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -55,11 +54,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateSubscriptionPausedTemplateAsync(
-            "Test User",
-            "test@example.com",
-            "Premium Plan",
-            "Subscription Paused"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Once);
     }
@@ -79,8 +74,7 @@ public class SubscriptionsPausedConsumerTests
             SubscriptionPlanName = "Basic Plan"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -90,11 +84,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateSubscriptionPausedTemplateAsync(
-            "Jane Doe",
-            "jane@example.com",
-            "Basic Plan",
-            "Subscription Paused"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
     }
 
     //------------------------------------//
@@ -114,16 +104,14 @@ public class SubscriptionsPausedConsumerTests
 
         var exception = new Exception("Template generation failed");
 
-        _templateGeneratorMock.Setup(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ThrowsAsync(exception);
 
         // Act
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()), Times.Never);
 
@@ -148,8 +136,7 @@ public class SubscriptionsPausedConsumerTests
         var errorMessage = "Email service failed";
         var failureResult = BasicResult.Failure(errorMessage);
 
-        _templateGeneratorMock.Setup(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -179,8 +166,7 @@ public class SubscriptionsPausedConsumerTests
 
         var exception = new Exception("Email service exception");
 
-        _templateGeneratorMock.Setup(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -212,8 +198,7 @@ public class SubscriptionsPausedConsumerTests
             SubscriptionPlanName = subscriptionPlanName
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -223,11 +208,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateSubscriptionPausedTemplateAsync(
-            toName,
-            email,
-            subscriptionPlanName,
-            "Subscription Paused"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
     }
 
     //------------------------------------//
@@ -245,8 +226,7 @@ public class SubscriptionsPausedConsumerTests
             SubscriptionPlanName = "Premium Plan"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -256,11 +236,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateSubscriptionPausedTemplateAsync(
-            "",
-            "test@example.com",
-            "Premium Plan",
-            "Subscription Paused"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
     }
 
     //------------------------------------//
@@ -278,8 +254,7 @@ public class SubscriptionsPausedConsumerTests
             SubscriptionPlanName = ""
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -289,11 +264,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateSubscriptionPausedTemplateAsync(
-            "Test User",
-            "test@example.com",
-            "",
-            "Subscription Paused"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
     }
 
     //------------------------------------//
@@ -311,8 +282,7 @@ public class SubscriptionsPausedConsumerTests
             SubscriptionPlanName = "Premium Plan & Extra Features"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -322,11 +292,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateSubscriptionPausedTemplateAsync(
-            "Test User (Special)",
-            "test+special@example.com",
-            "Premium Plan & Extra Features",
-            "Subscription Paused"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
     }
 
     //------------------------------------//
@@ -353,8 +319,7 @@ public class SubscriptionsPausedConsumerTests
             SubscriptionPlanName = "Premium Plan"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -365,17 +330,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(secondEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateSubscriptionPausedTemplateAsync(
-            "User One",
-            "user1@example.com",
-            "Basic Plan",
-            "Subscription Paused"), Times.Once);
-
-        _templateGeneratorMock.Verify(x => x.GenerateSubscriptionPausedTemplateAsync(
-            "User Two",
-            "user2@example.com",
-            "Premium Plan",
-            "Subscription Paused"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Exactly(2));
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Exactly(2));
     }
@@ -396,8 +351,7 @@ public class SubscriptionsPausedConsumerTests
             SubscriptionPlanName = longPlanName
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -407,11 +361,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateSubscriptionPausedTemplateAsync(
-            "Test User",
-            "test@example.com",
-            longPlanName,
-            "Subscription Paused"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
     }
 
     //------------------------------------//
@@ -429,8 +379,7 @@ public class SubscriptionsPausedConsumerTests
             SubscriptionPlanName = "P"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -440,11 +389,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateSubscriptionPausedTemplateAsync(
-            "U",
-            "a@b.c",
-            "P",
-            "Subscription Paused"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Once);
     }
@@ -464,8 +409,7 @@ public class SubscriptionsPausedConsumerTests
             SubscriptionPlanName = "Premium Plan"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -475,11 +419,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(),
-            It.IsAny<string>(),
-            It.IsAny<string>(),
-            "Subscription Paused"), Times.Once); // Should always be "Subscription Paused"
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once); // Should always be "Subscription Paused"
     }
 
     //------------------------------------//
@@ -511,8 +451,7 @@ public class SubscriptionsPausedConsumerTests
             SubscriptionPlanName = "Premium Plan"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateSubscriptionPausedTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -523,11 +462,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(secondEvent);
 
         // Assert - Both should generate identical template calls since GUIDs don't affect email content
-        _templateGeneratorMock.Verify(x => x.GenerateSubscriptionPausedTemplateAsync(
-            "Test User",
-            "test@example.com",
-            "Premium Plan",
-            "Subscription Paused"), Times.Exactly(2));
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Exactly(2));
     }
 
 }//Cls

@@ -1,6 +1,7 @@
 using Id.Tests.Utility.Exceptions;
-using ID.Email.Base.Abs;
 using ID.Email.Base.EventListeners.ForgotPwd;
+using ID.Email.Base.LocalAbs;
+using ID.Email.Base.LocalImps;
 using ID.GlobalSettings.Constants;
 using ID.GlobalSettings.Errors;
 using ID.GlobalSettings.Setup.Options;
@@ -10,6 +11,7 @@ using ID.Tests.Data.GlobalOptions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyResults;
+using ID.Email.Base.LocalImps.Specs;
 
 namespace ID.Email.Base.Tests.EventListeners.ForgotPwd;
 
@@ -105,8 +107,7 @@ public class ForgotPwdConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ResetPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ResetToken}={eventData.ResetToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GeneratePasswordResetTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -117,8 +118,7 @@ public class ForgotPwdConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GeneratePasswordResetTemplateAsync(
-            eventData.Name, eventData.Email, expectedUrl), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<PasswordResetSpec>()), Times.Once);
 
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }
@@ -136,8 +136,7 @@ public class ForgotPwdConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_globalOptions.MntcAccountsUrl, IdGlobalConstants.EmailRoutes.ResetPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ResetToken}={eventData.ResetToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GeneratePasswordResetTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -148,8 +147,7 @@ public class ForgotPwdConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GeneratePasswordResetTemplateAsync(
-            eventData.Name, eventData.Email, expectedUrl), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<PasswordResetSpec>()), Times.Once);
 
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }
@@ -167,8 +165,7 @@ public class ForgotPwdConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ResetPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ResetToken}={eventData.ResetToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GeneratePasswordResetTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -192,8 +189,7 @@ public class ForgotPwdConsumerTests
         var expectedException = new InvalidOperationException("Template generation failed");
 
         _mockTemplateGenerator
-            .Setup(x => x.GeneratePasswordResetTemplateAsync(
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ThrowsAsync(expectedException);
 
         // Act
@@ -216,8 +212,7 @@ public class ForgotPwdConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ResetPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ResetToken}={eventData.ResetToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GeneratePasswordResetTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -228,10 +223,7 @@ public class ForgotPwdConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GeneratePasswordResetTemplateAsync(
-            eventData.Name,
-            eventData.Email,
-            expectedUrl),
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<PasswordResetSpec>()),
         Times.Once);
 
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
@@ -250,8 +242,7 @@ public class ForgotPwdConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ResetPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ResetToken}={eventData.ResetToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GeneratePasswordResetTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -262,8 +253,7 @@ public class ForgotPwdConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GeneratePasswordResetTemplateAsync(
-            eventData.Name, eventData.Email, expectedUrl), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<PasswordResetSpec>()), Times.Once);
 
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }
@@ -280,8 +270,7 @@ public class ForgotPwdConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_globalOptions.MntcAccountsUrl, IdGlobalConstants.EmailRoutes.ResetPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ResetToken}={eventData.ResetToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GeneratePasswordResetTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -292,8 +281,7 @@ public class ForgotPwdConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GeneratePasswordResetTemplateAsync(
-            eventData.Name, eventData.Email, expectedUrl), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<PasswordResetSpec>()), Times.Once);
 
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }
@@ -308,8 +296,7 @@ public class ForgotPwdConsumerTests
         var expectedException = new ArgumentException("Invalid template parameters");
 
         _mockTemplateGenerator
-            .Setup(x => x.GeneratePasswordResetTemplateAsync(
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ThrowsAsync(expectedException);
 
         // Act
@@ -330,8 +317,7 @@ public class ForgotPwdConsumerTests
         var successResult = BasicResult.Success();
 
         _mockTemplateGenerator
-            .Setup(x => x.GeneratePasswordResetTemplateAsync(
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -356,8 +342,7 @@ public class ForgotPwdConsumerTests
         var failureResult = BasicResult.Failure("Email sending failed");
 
         _mockTemplateGenerator
-            .Setup(x => x.GeneratePasswordResetTemplateAsync(
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService

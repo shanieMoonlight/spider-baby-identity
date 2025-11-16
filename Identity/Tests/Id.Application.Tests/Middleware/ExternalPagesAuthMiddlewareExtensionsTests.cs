@@ -37,11 +37,11 @@ public class ExternalPagesAuthMiddlewareExtensionsTests
         builder.LastMiddlewareFactory.ShouldNotBeNull();
 
         builder = new FakeApplicationBuilder();
-        builder.UseExternalPagesAuth_Mntc("/m2");
+        builder.UseExternalPagesAuth_MntcTeam("/m2");
         builder.LastMiddlewareFactory.ShouldNotBeNull();
 
         builder = new FakeApplicationBuilder();
-        builder.UseExternalPagesAuth_Customer("/c2");
+        builder.UseExternalPagesAuth_CustomerTeam("/c2");
         builder.LastMiddlewareFactory.ShouldNotBeNull();
     }
 
@@ -55,11 +55,11 @@ public class ExternalPagesAuthMiddlewareExtensionsTests
         var factory = builder.LastMiddlewareFactory.ShouldNotBeNull();
 
         // next writes "next" into response
-        RequestDelegate next = async ctx =>
+        static async Task next(HttpContext ctx)
         {
             ctx.Response.StatusCode = StatusCodes.Status200OK;
             await ctx.Response.WriteAsync("next");
-        };
+        }
 
         var composed = factory(next);
 
@@ -85,7 +85,7 @@ public class ExternalPagesAuthMiddlewareExtensionsTests
         builder.UseExternalPagesAuth_Custom("/ext", ctx => false);
         var factory = builder.LastMiddlewareFactory.ShouldNotBeNull();
 
-        RequestDelegate next = ctx => throw new InvalidOperationException("next should not be called");
+        static Task next(HttpContext ctx) => throw new InvalidOperationException("next should not be called");
 
         var composed = factory(next);
 
@@ -97,7 +97,7 @@ public class ExternalPagesAuthMiddlewareExtensionsTests
 
         ctx.Response.StatusCode.ShouldBe(StatusCodes.Status401Unauthorized);
         ctx.Response.ContentType?.ShouldContain("application/json");
-        ctx.Response.Headers.WWWAuthenticate.ToString().ShouldBe(ExternalPagesAuthConstants.WWWAuthenticateHeader);
+        ctx.Response.Headers.WWWAuthenticate.ToString().ShouldBe(ExternalPagesAuthMiddleware._wwwAuthenticateHeader);
 
         ctx.Response.Body.Seek(0, SeekOrigin.Begin);
         using var sr = new StreamReader(ctx.Response.Body);
@@ -126,3 +126,6 @@ public class ExternalPagesAuthMiddlewareExtensionsTests
         public IApplicationBuilder New() => new FakeApplicationBuilder();
     }
 }
+
+
+

@@ -1,3 +1,5 @@
+using ID.Email.Base.LocalImps;
+
 namespace ID.Email.Base.Tests;
 
 public class TemplateLoaderTests

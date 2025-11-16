@@ -192,6 +192,16 @@ internal class EmailDetailsTemplateGenerator(
     }
 
     //------------------------------------//
+
+    public Task<IEmailDetails> GenerateFromSpecAsync(IEmailSpec spec)
+    {
+        return spec is null
+            ? throw new ArgumentNullException(nameof(spec))
+            : spec.BuildAsync(_globalOptions, _templateHelpers, _emailOptions);
+    }
+
+    //------------------------------------//
+
 }
 
 #pragma warning restore IDE1006 // Naming Styles

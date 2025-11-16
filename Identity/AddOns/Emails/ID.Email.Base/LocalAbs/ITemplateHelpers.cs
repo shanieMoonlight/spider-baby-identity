@@ -3,7 +3,7 @@ namespace ID.Email.Base.LocalAbs;
 /// <summary>
 /// Interface for template operations to allow mocking
 /// </summary>
-internal interface ITemplateHelpers
+public interface ITemplateHelpers
 {
     /// <summary>
     /// Generates an email details object with a callback URL.

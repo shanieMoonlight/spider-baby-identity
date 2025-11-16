@@ -127,4 +127,7 @@ public interface IEmailDetailsTemplateGenerator
         string toAddress, 
         string subPlanName, 
         string subject = "Subscription Paused");
+
+    // New: generate from IEmailSpec
+    Task<IEmailDetails> GenerateFromSpecAsync(IEmailSpec spec);
 }

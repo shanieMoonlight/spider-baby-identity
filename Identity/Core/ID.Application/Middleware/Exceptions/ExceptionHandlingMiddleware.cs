@@ -45,8 +45,6 @@ internal class ExceptionHandlingMiddleware(
 
     internal record ExceptionDetails(int Status, object Details);
 
-    //-------------------------------------//
-
 }//Cls
 
 //==================================================================================//

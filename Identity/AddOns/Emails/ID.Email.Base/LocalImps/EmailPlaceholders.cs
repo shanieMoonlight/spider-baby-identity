@@ -1,4 +1,4 @@
-namespace ID.Email.Base.AppImps;
+namespace ID.Email.Base.LocalImps;
 
 internal static class EmailPlaceholders
 {

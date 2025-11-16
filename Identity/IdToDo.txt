@@ -29,8 +29,6 @@ review Team -> mbr?.UpdatePosition
 
 Device Auth
 
-IIsFromMobileApp _fromAppService
- - Maybe remove this and and send 2 factor anyway???
 
  
 
@@ -39,7 +37,6 @@ Make sure teammanager uses the full team with members when updating team members
 
 
 
-MOre OathLogins
 
 
 
@@ -74,7 +71,10 @@ Stop using : InvariantStringDictionary
 
 
 
+Replace FromAppService with DeviceAuthService
 remove FromAppMiddleware
+IIsFromMobileApp _fromAppService
+ - Maybe remove this and and send 2 factor anyway???
 
 rename any GetByIdAsync to FirstByIdAsync for clarity and similar in all domain-services
 
@@ -82,17 +82,23 @@ rename any GetByIdAsync to FirstByIdAsync for clarity and similar in all domain-
 
 Ensure your handler types are registered in DI (e.g. services.AddTransient<MyHandler>()) — adapter resolves them at job time.
 
-Replace FromAppService with DeviceAuthService
-
-
-
-
-Fix file paths for Linux containers (Email Templates)
-EmailSpec
 
 
 
 public static string EMAIL_CONFIRMATION_SENT(string? email) => $"A confirmation email will be sent to {email ?? "no-email"}. Make sure to check the Spam Folder if it's not in the inbox in a few minutes";
 
-Email Template loader with cache
+
+
+Unit test UserInfo
+
+
+
+MOre OathLogins
+
+
+
+
+
+
+
 

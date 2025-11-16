@@ -1,5 +1,6 @@
-﻿using ID.Email.Base.Abs;
-using ID.Email.Base.AppAbs;
+﻿using ID.Email.Base.AppAbs;
+using ID.Email.Base.LocalAbs;
+using ID.Email.Base.LocalImps.Specs;
 using ID.GlobalSettings.Errors;
 using ID.IntegrationEvents.Abstractions;
 using ID.IntegrationEvents.Events.Account.Subscriptions;
@@ -22,12 +23,8 @@ public class SubscriptionsPausedConsumer(
             Debug.WriteLine($"{nameof(SubscriptionsPausedIntegrationEvent)}: {data.ToName}, {data.SubscriptionPlanName}");
 
 
-            var eDetails = await emailDetailsTemplateGenerator
-               .GenerateSubscriptionPausedTemplateAsync(
-                    data.ToName,
-                    data.Email,
-                    data.SubscriptionPlanName
-               );
+            var spec = new SubscriptionPausedSpec(data.ToName, data.Email, data.SubscriptionPlanName);
+            var eDetails = await emailDetailsTemplateGenerator.GenerateFromSpecAsync(spec);
 
             var result = await emailService.SendEmailAsync(eDetails);
 

@@ -11,17 +11,6 @@ namespace ID.Application.Middleware.ExternalPages;
 
 //#############################//
 
-public static class ExternalPagesAuthConstants
-{
-    //public const string ExternalPagesStartPath = "/ExternalPages";
-    public const string WWWAuthenticateHeader = "Bearer";
-    public const string ResponseContentType = "application/json";
-    public static object ErrorResponse(string page) => new { Error = $"Unauthorized: {page} access requires authentication." };
-    public static readonly Predicate<HttpContext> DefaultAuthPredicate = (context) => false; // By default, no access
-}
-
-//#############################//
-
 
 public record ExternalPagesAuthMiddlewareOptions(Predicate<HttpContext> ExternalPagesAuthPredicate, string ExternalPagesStartPath);
 
@@ -30,10 +19,17 @@ public record ExternalPagesAuthMiddlewareOptions(Predicate<HttpContext> External
 
 public class ExternalPagesAuthMiddleware(RequestDelegate next, IOptions<ExternalPagesAuthMiddlewareOptions> iOptsProvider)
 {
+    internal const string _wwwAuthenticateHeader = "Bearer";
+    internal const string _responseContentType = "application/json";
+    internal static object ErrorResponse(string page) => new { Error = $"Unauthorized: {page} access requires authentication." };
+    internal static readonly Predicate<HttpContext> _defaultAuthPredicate = (context) => false; // By default, no access
+
+    //-----------------------------//
+
     public async Task InvokeAsync(HttpContext context)
     {
         var options = iOptsProvider.Value;
-        Predicate<HttpContext> authPredicate = options.ExternalPagesAuthPredicate ?? ExternalPagesAuthConstants.DefaultAuthPredicate;
+        Predicate<HttpContext> authPredicate = options.ExternalPagesAuthPredicate ?? _defaultAuthPredicate;
         var ExternalPagesStartPathString = GetExternalPagesStartSegment(options.ExternalPagesStartPath);
 
 
@@ -55,10 +51,10 @@ public class ExternalPagesAuthMiddleware(RequestDelegate next, IOptions<External
             return;
         }
 
-        context.Response.Headers.WWWAuthenticate = ExternalPagesAuthConstants.WWWAuthenticateHeader;
+        context.Response.Headers.WWWAuthenticate = _wwwAuthenticateHeader;
         context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-        context.Response.ContentType = ExternalPagesAuthConstants.ResponseContentType;
-        await context.Response.WriteAsJsonAsync(ExternalPagesAuthConstants.ErrorResponse(options.ExternalPagesStartPath));
+        context.Response.ContentType = _responseContentType;
+        await context.Response.WriteAsJsonAsync(ErrorResponse(options.ExternalPagesStartPath));
     }
 
 
@@ -97,26 +93,27 @@ public static class ExternalPagesAuthMiddlewareExtensions
         this IApplicationBuilder builder, string externalPagesPathStart) =>
         builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInSuperTeam());
 
+    public static IApplicationBuilder UseExternalPagesAuth_MntcTeam(
+        this IApplicationBuilder builder, string externalPagesPathStart) =>
+        builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInMntcTeam());
+
 
     public static IApplicationBuilder UseExternalPagesAuth_MntcMinimum(
         this IApplicationBuilder builder, string externalPagesPathStart) =>
         builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInMntcTeamMinimum());
+
+
+    public static IApplicationBuilder UseExternalPagesAuth_CustomerTeam(
+        this IApplicationBuilder builder, string externalPagesPathStart) =>
+        builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInCustomerTeam());
 
     public static IApplicationBuilder UseExternalPagesAuth_CustomerMinimum(
         this IApplicationBuilder builder, string externalPagesPathStart) =>
         builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInCustomerTeamMinimum());
 
 
-    public static IApplicationBuilder UseExternalPagesAuth_Mntc(
-        this IApplicationBuilder builder, string externalPagesPathStart) =>
-        builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInMntcTeam());
-
-    public static IApplicationBuilder UseExternalPagesAuth_Customer(
-        this IApplicationBuilder builder, string externalPagesPathStart) =>
-        builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInCustomerTeam());
-
-
 
 }//Cls
+
 
 //#############################//

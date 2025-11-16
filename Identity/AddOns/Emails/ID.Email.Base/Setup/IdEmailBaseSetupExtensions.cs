@@ -1,6 +1,7 @@
-﻿using ID.Email.Base.Abs;
-using ID.Email.Base.AppAbs;
-using ID.Email.Base.AppImps;
+﻿using ID.Email.Base.AppAbs;
+using ID.Email.Base.Cache;
+using ID.Email.Base.LocalAbs;
+using ID.Email.Base.LocalImps;
 using ID.IntegrationEvents.Setup;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,7 +57,12 @@ public static class IdEmailBaseSetupExtensions
         services.TryAddSingleton<IEmailDetailsTemplateGenerator, EmailDetailsTemplateGenerator>();
         services.TryAddTransient<IIdEmailService, TEmailService>();
         services.TryAddSingleton<ITemplateHelpers, TemplateHelpers>();
-        services.RegisterIdEventListeners(typeof(IdEmailBaseAssemblyReference).Assembly);
+        services.TryAddTransient<ITemplateLoader, TemplateLoader>();
+
+        services.RegisterIdEventListeners(IdEmailBaseAssemblyReference.Assembly);
+
+        services.AddEmailTemplateCaching();
+
         return services;
     }
 

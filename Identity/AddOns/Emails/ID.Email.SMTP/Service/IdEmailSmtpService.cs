@@ -1,5 +1,5 @@
-﻿using ID.Email.Base.Abs;
-using ID.Email.Base.AppAbs;
+﻿using ID.Email.Base.AppAbs;
+using ID.Email.Base.LocalAbs;
 using ID.Email.Base.Models;
 using ID.Email.Base.Utility;
 using ID.Email.SMTP.Setup;

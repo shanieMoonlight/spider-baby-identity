@@ -1,6 +1,6 @@
 ﻿using ID.Email.Base.Models;
 
-namespace ID.Email.Base.AppAbs;
+namespace ID.Email.Base.LocalAbs;
 
 /// <summary>
 /// Contains all the basic info that is needed to send an email

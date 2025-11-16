@@ -1,7 +1,7 @@
-﻿using ID.Email.Base.AppAbs;
+﻿using ID.Email.Base.LocalAbs;
 using MyResults;
 
-namespace ID.Email.Base.Abs;
+namespace ID.Email.Base.AppAbs;
 
 /// <summary>
 /// Service for sending emails

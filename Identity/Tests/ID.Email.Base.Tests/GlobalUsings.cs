@@ -1,7 +1,12 @@
 ﻿global using ID.Email.Base.AppAbs;
-global using ID.Email.Base.AppImps;
+global using  ID.Email.Base.Cache;
 global using ID.Email.Base.Models;
 global using ID.Email.Base.Setup;
+global using  Microsoft.Extensions.Caching.Memory;
+global using  Microsoft.Extensions.Hosting;
+global using  Microsoft.Extensions.Logging.Abstractions;
+global using  Microsoft.Extensions.Options;
 global using Moq;
+global using MyResults;
 global using Shouldly;
 global using System.Reflection;

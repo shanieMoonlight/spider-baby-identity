@@ -106,8 +106,9 @@ public class IdFeatureFlagsController(ISender sender) : Controller
     /// <returns>A paginated list of feature flags.</returns>
     [HttpPost]
     [AllowAnonymous]
-    public async Task<ActionResult<PagedResponse<FeatureFlagDto>>> Page([FromBody] PagedRequest? request) =>
+    public async Task<ActionResult<PagedResponse<FeatureFlagDto>>> Page([FromBody] PagedRequest? request) => 
         this.ProcessResult(await sender.Send(new GetFeatureFlagsPageQry(request)));
 
 
 } //Cls
+

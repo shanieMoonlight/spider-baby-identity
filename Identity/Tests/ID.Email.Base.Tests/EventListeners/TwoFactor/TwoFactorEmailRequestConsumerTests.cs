@@ -1,14 +1,12 @@
-using ID.Email.Base.EventListeners.TwoFactor;
 using Id.Tests.Utility.Exceptions;
+using ID.Email.Base.EventListeners.TwoFactor;
+using ID.Email.Base.LocalAbs;
+using ID.GlobalSettings.Errors;
 using ID.IntegrationEvents.Events.Account.TwoFactor;
 using Microsoft.Extensions.Logging;
-using MyResults;
-using ID.GlobalSettings.Errors;
-using ID.Email.Base.LocalAbs;
 
 namespace ID.Email.Base.Tests.EventListeners.TwoFactor;
 
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 public class TwoFactorEmailRequestConsumerTests
 {
     private readonly Mock<ILogger<TwoFactorEmailRequestConsumer>> _loggerMock;
@@ -43,8 +41,7 @@ public class TwoFactorEmailRequestConsumerTests
             VerificationCode = "123456"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -54,11 +51,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorTemplateAsync(
-            "Test User",
-            "test@example.com",
-            "Verification Code",
-            "123456"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Once);
     }
@@ -76,8 +69,7 @@ public class TwoFactorEmailRequestConsumerTests
             VerificationCode = "789012"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -87,11 +79,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorTemplateAsync(
-            "Test User",
-            "test@example.com",
-            "Verification Code",
-            "789012"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Once);
     }
@@ -109,8 +97,7 @@ public class TwoFactorEmailRequestConsumerTests
             VerificationCode = "654321"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -120,11 +107,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorTemplateAsync(
-            "Jane Doe",
-            "jane@example.com",
-            "Verification Code",
-            "654321"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
     }
 
     [Fact]
@@ -140,16 +123,14 @@ public class TwoFactorEmailRequestConsumerTests
             VerificationCode = "123456"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ThrowsAsync(new Exception("Template generation failed"));
 
         // Act
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()), Times.Never);
     }
@@ -170,8 +151,7 @@ public class TwoFactorEmailRequestConsumerTests
         var errorMessage = "Email service failed";
         var failureResult = BasicResult.Failure(errorMessage);
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -199,8 +179,7 @@ public class TwoFactorEmailRequestConsumerTests
 
         var exception = new Exception("Email service exception");
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -228,8 +207,7 @@ public class TwoFactorEmailRequestConsumerTests
 
         var exception = new Exception("Template generator exception");
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ThrowsAsync(exception);
 
         // Act
@@ -257,8 +235,7 @@ public class TwoFactorEmailRequestConsumerTests
             VerificationCode = verificationCode
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -268,11 +245,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorTemplateAsync(
-            name,
-            email,
-            "Verification Code",
-            verificationCode), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
     }
 
     [Fact]
@@ -288,8 +261,7 @@ public class TwoFactorEmailRequestConsumerTests
             VerificationCode = "123456"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -299,11 +271,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorTemplateAsync(
-            "",
-            "test@example.com",
-            "Verification Code",
-            "123456"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
     }
 
     [Fact]
@@ -319,8 +287,7 @@ public class TwoFactorEmailRequestConsumerTests
             VerificationCode = "123456"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -330,11 +297,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorTemplateAsync(
-            null,
-            "test@example.com",
-            "Verification Code",
-            "123456"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
     }
 
     [Fact]
@@ -350,8 +313,7 @@ public class TwoFactorEmailRequestConsumerTests
             VerificationCode = "A1B2C3"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -361,11 +323,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorTemplateAsync(
-            "Test User",
-            "test@example.com",
-            "Verification Code",
-            "A1B2C3"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
     }
 
     [Fact]
@@ -390,8 +348,7 @@ public class TwoFactorEmailRequestConsumerTests
             VerificationCode = "222222"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -402,17 +359,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(secondEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorTemplateAsync(
-            "User One",
-            "user1@example.com",
-            "Verification Code",
-            "111111"), Times.Once);
-
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorTemplateAsync(
-            "User Two",
-            "user2@example.com",
-            "Verification Code",
-            "222222"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Exactly(2));
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Exactly(2));
     }
@@ -430,8 +377,7 @@ public class TwoFactorEmailRequestConsumerTests
             VerificationCode = "ABCDEF123456789"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -441,11 +387,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorTemplateAsync(
-            "Test User",
-            "test@example.com",
-            "Verification Code",
-            "ABCDEF123456789"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
     }
 
     [Fact]
@@ -461,8 +403,7 @@ public class TwoFactorEmailRequestConsumerTests
             VerificationCode = "123456"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -472,10 +413,6 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorTemplateAsync(
-            It.IsAny<string>(),
-            It.IsAny<string>(),
-            "Verification Code", // Subject should always be "Verification Code"
-            It.IsAny<string>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
     }
 }

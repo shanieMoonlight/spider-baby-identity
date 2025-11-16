@@ -1,11 +1,14 @@
-﻿using ID.Email.Base.AppAbs;
-using ID.Email.Base.LocalAbs;
-using ID.GlobalSettings.Errors;
+﻿using ID.GlobalSettings.Setup;
+using ID.Email.Base.Setup;
 using ID.IntegrationEvents.Abstractions;
 using ID.IntegrationEvents.Events.Account.TwoFactor;
 using LoggingHelpers;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using ID.GlobalSettings.Errors;
+using ID.Email.Base.LocalAbs;
+using ID.Email.Base.AppAbs;
+using ID.Email.Base.LocalImps.Specs;
 
 namespace ID.Email.Base.EventListeners.TwoFactor;
 public class TwoFactorAuthySetupRequestConsumer(
@@ -21,15 +24,8 @@ public class TwoFactorAuthySetupRequestConsumer(
             logger.LogError("{message}", $"TwoFactorRequestEvent: {data.Email}: {data.ManualQrCode}: {data.Name}");
             Debug.WriteLine($"TwoFactorRequestEvent: {data.Email}");
 
-
-            var eDetails = await emailDetailsTemplateGenerator
-                   .GenerateTwoFactorAuthTemplateAsync(
-                        data.Name,
-                        data.Email,
-                        data.QrSrc,
-                        data.ManualQrCode,
-                        "Authy"
-                   );
+            var spec = new TwoFactorAuthSpec(data.Name, data.Email, data.QrSrc, data.ManualQrCode, "Authy");
+            var eDetails = await emailDetailsTemplateGenerator.GenerateFromSpecAsync(spec);
 
             var result = await emailService.SendEmailAsync(eDetails);
 

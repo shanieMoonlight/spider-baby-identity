@@ -1,5 +1,6 @@
 using ID.Email.Base.LocalAbs;
 using ID.Email.Base.LocalImps;
+using ID.Email.Base.LocalImps.Specs;
 using ID.GlobalSettings.Setup.Options;
 using ID.Tests.Data.GlobalOptions;
 
@@ -17,7 +18,6 @@ public class EmailDetailsTemplateGeneratorTests
     private readonly string _mntcAccountsUrl = "mntc/accounts";
 
     //- - - - - - - - - - - - - - - - - - //
-
 
 
     public EmailDetailsTemplateGeneratorTests()
@@ -94,7 +94,7 @@ public class EmailDetailsTemplateGeneratorTests
         _mockTemplateHelpers
             .Setup(t => t.ReadAndReplaceTemplateAsync(
                 It.IsAny<string>(),
-                It.IsAny<Dictionary<string, string>>()))
+                It.IsAny<Dictionary<string, string>>() ))
             .ReturnsAsync((string templatePath, Dictionary<string, string> placeholders) =>
             {
                 // Create a simple message with placeholders replaced
@@ -124,32 +124,6 @@ public class EmailDetailsTemplateGeneratorTests
 
     //------------------------------------//
 
-    //[Fact]
-    //public async Task GenerateChangePasswordTemplateAsync_ShouldCallTemplateHelperWithCorrectParameters()
-    //{
-    //    // Arrange
-    //    string toName = "John Doe";
-    //    string toAddress = "john.doe@example.com";
-    //    string callbackUrl = "https://example.com/reset-password?token=123456";
-
-    //    // Act
-    //    var result = await _templateGenerator.GenerateChangePasswordTemplateAsync(toName, toAddress, callbackUrl);
-
-    //    // Assert
-    //    _mockTemplateHelpers.Verify(t => t.GenerateTemplateWithCallback(
-    //        toName,
-    //        toAddress,
-    //        callbackUrl,
-    //        It.Is<string>(s => s.Contains("ResetPassword")),
-    //        It.Is<string>(s => s.Contains("New User") && s.Contains(_applicationName))),
-    //        Times.Once);
-
-    //    result.ShouldNotBeNull();
-    //    result.ShouldBeAssignableTo<IEmailDetails>();
-    //}
-
-    //------------------------------------//
-
     [Fact]
     public async Task GenerateEmailConfirmationMntcTemplateAsync_ShouldCallTemplateHelperWithCorrectParameters()
     {
@@ -158,8 +132,10 @@ public class EmailDetailsTemplateGeneratorTests
         string toAddress = "john.doe@example.com";
         string callbackUrl = "https://example.com/confirm-email?token=123456";
 
+        var spec = new EmailConfirmationMntcSpec(toName, toAddress, callbackUrl);
+
         // Act
-        var result = await _templateGenerator.GenerateEmailConfirmationMntcTemplateAsync(toName, toAddress, callbackUrl);
+        var result = await _templateGenerator.GenerateFromSpecAsync(spec);
 
         // Assert
         _mockTemplateHelpers.Verify(t => t.GenerateTemplateWithCallback(
@@ -184,8 +160,10 @@ public class EmailDetailsTemplateGeneratorTests
         string toAddress = "john.doe@example.com";
         string callbackUrl = "https://example.com/confirm-email?token=123456";
 
+        var spec = new EmailConfirmationCustomerSpec(toName, toAddress, callbackUrl);
+
         // Act
-        var result = await _templateGenerator.GenerateEmailConfirmationCustomerTemplateAsync(toName, toAddress, callbackUrl);
+        var result = await _templateGenerator.GenerateFromSpecAsync(spec);
 
         // Assert
         _mockTemplateHelpers.Verify(t => t.GenerateTemplateWithCallback(
@@ -210,8 +188,10 @@ public class EmailDetailsTemplateGeneratorTests
         string toAddress = "john.doe@example.com";
         string callbackUrl = "https://example.com/reset-password?token=123456";
 
+        var spec = new PasswordResetSpec(toName, toAddress, callbackUrl);
+
         // Act
-        var result = await _templateGenerator.GeneratePasswordResetTemplateAsync(toName, toAddress, callbackUrl);
+        var result = await _templateGenerator.GenerateFromSpecAsync(spec);
 
         // Assert
         _mockTemplateHelpers.Verify(t => t.GenerateTemplateWithCallback(
@@ -237,8 +217,10 @@ public class EmailDetailsTemplateGeneratorTests
         string subject = "Your verification code";
         string verificationCode = "123456";
 
+        var spec = new TwoFactorSpec(toName, toAddress, subject, verificationCode);
+
         // Act
-        var result = await _templateGenerator.GenerateTwoFactorTemplateAsync(toName, toAddress, subject, verificationCode);
+        var result = await _templateGenerator.GenerateFromSpecAsync(spec);
 
         // Assert
         _mockTemplateHelpers.Verify(t => t.ReadAndReplaceTemplateAsync(
@@ -269,8 +251,10 @@ public class EmailDetailsTemplateGeneratorTests
         string manualQrCode = "ABCDEFGHIJK";
         string subject = "Two-Factor Authentication Setup";
 
+        var spec = new TwoFactorGoogleAuthSpec(toName, toAddress, qrSrc, manualQrCode, subject);
+
         // Act
-        var result = await _templateGenerator.GenerateTwoFactorGoogleAuthTemplateAsync(toName, toAddress, qrSrc, manualQrCode, subject);
+        var result = await _templateGenerator.GenerateFromSpecAsync(spec);
 
         // Assert
         _mockTemplateHelpers.Verify(t => t.ReadAndReplaceTemplateAsync(
@@ -306,8 +290,10 @@ public class EmailDetailsTemplateGeneratorTests
         string provider = "Microsoft Authenticator";
         string subject = "Two-Factor Authentication Setup";
 
+        var spec = new TwoFactorAuthSpec(toName, toAddress, qrSrc, manualQrCode, provider, subject);
+
         // Act
-        var result = await _templateGenerator.GenerateTwoFactorAuthTemplateAsync(toName, toAddress, qrSrc, manualQrCode, provider, subject);
+        var result = await _templateGenerator.GenerateFromSpecAsync(spec);
 
         // Assert
         _mockTemplateHelpers.Verify(t => t.ReadAndReplaceTemplateAsync(
@@ -341,8 +327,10 @@ public class EmailDetailsTemplateGeneratorTests
         string subPlanName = "Premium Plan";
         string subject = "Your Subscription Has Been Paused";
 
+        var spec = new SubscriptionPausedSpec(toName, toAddress, subPlanName, subject);
+
         // Act
-        var result = await _templateGenerator.GenerateSubscriptionPausedTemplateAsync(toName, toAddress, subPlanName, subject);
+        var result = await _templateGenerator.GenerateFromSpecAsync(spec);
 
         // Assert
         _mockTemplateHelpers.Verify(t => t.ReadAndReplaceTemplateAsync(

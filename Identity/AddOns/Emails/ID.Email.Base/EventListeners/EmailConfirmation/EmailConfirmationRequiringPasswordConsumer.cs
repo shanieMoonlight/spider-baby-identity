@@ -1,5 +1,6 @@
 ﻿using ID.Email.Base.AppAbs;
 using ID.Email.Base.LocalAbs;
+using ID.Email.Base.LocalImps.Specs;
 using ID.GlobalSettings.Constants;
 using ID.GlobalSettings.Errors;
 using ID.GlobalSettings.Setup.Options;
@@ -69,12 +70,8 @@ public class EmailConfirmationRequiringPasswordConsumer(
         string emailConfirmationAddress = UrlBuilder.Combine(_globalCustomerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ConfirmEmailWithPassword);
         string emailConfirmationUrl = $"{emailConfirmationAddress}?{IdGlobalConstants.EmailRoutes.Params.UserId}={data.UserId}&{IdGlobalConstants.EmailRoutes.Params.ConfirmationToken}={data.ConfirmationToken}";
 
-        var eDetails = await emailDetailsTemplateGenerator
-           .GenerateEmailConfirmationCustomerTemplateAsync(
-                  data.Name,
-                  data.Email,
-                  emailConfirmationUrl
-           );
+        var spec = new EmailConfirmationCustomerSpec(data.Name, data.Email, emailConfirmationUrl);
+        var eDetails = await emailDetailsTemplateGenerator.GenerateFromSpecAsync(spec);
 
         return await emailService.SendEmailAsync(eDetails);
 
@@ -94,12 +91,8 @@ public class EmailConfirmationRequiringPasswordConsumer(
         string emailConfirmationAddress = UrlBuilder.Combine(_globalOptions.MntcAccountsUrl, IdGlobalConstants.EmailRoutes.ConfirmEmailWithPassword);
         string emailConfirmationUrl = $"{emailConfirmationAddress}?{IdGlobalConstants.EmailRoutes.Params.UserId}={data.UserId}&{IdGlobalConstants.EmailRoutes.Params.ConfirmationToken}={data.ConfirmationToken}";
 
-        var eDetails = await emailDetailsTemplateGenerator
-           .GenerateEmailConfirmationMntcTemplateAsync(
-                  data.Name,
-                  data.Email,
-                  emailConfirmationUrl
-           );
+        var spec = new EmailConfirmationMntcSpec(data.Name, data.Email, emailConfirmationUrl);
+        var eDetails = await emailDetailsTemplateGenerator.GenerateFromSpecAsync(spec);
 
         return await emailService.SendEmailAsync(eDetails);
 

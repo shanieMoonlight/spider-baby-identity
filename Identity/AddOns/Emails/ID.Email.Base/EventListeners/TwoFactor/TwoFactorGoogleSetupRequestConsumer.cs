@@ -1,13 +1,12 @@
-﻿using ID.GlobalSettings.Setup;
-using ID.Email.Base.Setup;
+﻿using ID.Email.Base.AppAbs;
+using ID.Email.Base.LocalAbs;
+using ID.Email.Base.LocalImps.Specs;
+using ID.GlobalSettings.Errors;
 using ID.IntegrationEvents.Abstractions;
 using ID.IntegrationEvents.Events.Account.TwoFactor;
 using LoggingHelpers;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using ID.GlobalSettings.Errors;
-using ID.Email.Base.LocalAbs;
-using ID.Email.Base.AppAbs;
 
 namespace ID.Email.Base.EventListeners.TwoFactor;
 public class TwoFactorGoogleSetupRequestConsumer(
@@ -25,13 +24,8 @@ public class TwoFactorGoogleSetupRequestConsumer(
             Debug.WriteLine($"TwoFactorRequestEvent: {data.Email}");
 
 
-            var eDetails = await emailDetailsTemplateGenerator
-                   .GenerateTwoFactorGoogleAuthTemplateAsync(
-                    data.Name,
-                    data.Email,
-                    data.QrSrc,
-                    data.ManualQrCode
-               );
+            var spec = new TwoFactorGoogleAuthSpec(data.Name, data.Email, data.QrSrc, data.ManualQrCode);
+            var eDetails = await emailDetailsTemplateGenerator.GenerateFromSpecAsync(spec);
 
             var result = await emailService.SendEmailAsync(eDetails);
 

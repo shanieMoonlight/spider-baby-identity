@@ -1,4 +1,6 @@
-﻿using ID.IntegrationEvents.Abstractions;
+﻿using ID.GlobalSettings.Setup;
+using ID.Email.Base.Setup;
+using ID.IntegrationEvents.Abstractions;
 using ID.IntegrationEvents.Events.Account.TwoFactor;
 using LoggingHelpers;
 using Microsoft.Extensions.Logging;
@@ -6,6 +8,7 @@ using System.Diagnostics;
 using ID.GlobalSettings.Errors;
 using ID.Email.Base.LocalAbs;
 using ID.Email.Base.AppAbs;
+using ID.Email.Base.LocalImps.Specs;
 
 namespace ID.Email.Base.EventListeners.TwoFactor;
 public class TwoFactorEmailRequestConsumer(
@@ -23,13 +26,8 @@ public class TwoFactorEmailRequestConsumer(
             Debug.WriteLine($"TwoFactorRequestEvent: {data.Email}");
 
 
-            var eDetails = await emailDetailsTemplateGenerator
-                   .GenerateTwoFactorTemplateAsync(
-                    data.Name,
-                    data.Email,
-                    "Verification Code",
-                    data.VerificationCode
-               );
+            var spec = new TwoFactorSpec(data.Name, data.Email, "Verification Code", data.VerificationCode);
+            var eDetails = await emailDetailsTemplateGenerator.GenerateFromSpecAsync(spec);
 
             var result = await emailService.SendEmailAsync(eDetails);
 

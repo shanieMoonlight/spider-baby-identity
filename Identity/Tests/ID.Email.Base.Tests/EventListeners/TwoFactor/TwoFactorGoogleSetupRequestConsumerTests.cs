@@ -1,10 +1,9 @@
-using ID.Email.Base.EventListeners.TwoFactor;
 using Id.Tests.Utility.Exceptions;
+using ID.Email.Base.EventListeners.TwoFactor;
+using ID.Email.Base.LocalAbs;
+using ID.GlobalSettings.Errors;
 using ID.IntegrationEvents.Events.Account.TwoFactor;
 using Microsoft.Extensions.Logging;
-using MyResults;
-using ID.GlobalSettings.Errors;
-using ID.Email.Base.LocalAbs;
 
 namespace ID.Email.Base.Tests.EventListeners.TwoFactor;
 
@@ -42,8 +41,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
             ManualQrCode = "JBSWY3DPEHPK3PXP"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -53,12 +51,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            "Test User",
-            "test@example.com",
-            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==",
-            "JBSWY3DPEHPK3PXP",
-            "Two-Factor Setup"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Once);
     }
@@ -76,8 +69,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
             ManualQrCode = "ABCDEFGHIJKLMNOP"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -87,12 +79,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            "Jane Doe",
-            "jane@example.com",
-            "data:image/png;base64,DIFFERENTQRDATA",
-            "ABCDEFGHIJKLMNOP",
-            "Two-Factor Setup"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
     }
 
     [Fact]
@@ -110,16 +97,14 @@ public class TwoFactorGoogleSetupRequestConsumerTests
 
         var exception = new Exception("Template generation failed");
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ThrowsAsync(exception);
 
         // Act
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()), Times.Never);
 
@@ -142,8 +127,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         var errorMessage = "Email service failed";
         var failureResult = BasicResult.Failure(errorMessage);
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -171,8 +155,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
 
         var exception = new Exception("Email service exception");
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -203,8 +186,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
             ManualQrCode = manualQrCode
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -214,12 +196,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            name,
-            email,
-            qrSrc,
-            manualQrCode,
-            "Two-Factor Setup"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
     }
 
     [Fact]
@@ -235,8 +212,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
             ManualQrCode = "TESTCODE123"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -246,12 +222,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            "",
-            "test@example.com",
-            "data:image/png;base64,testdata",
-            "TESTCODE123",
-            "Two-Factor Setup"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
     }
 
     [Fact]
@@ -268,8 +239,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
             ManualQrCode = longQrCode
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -279,12 +249,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            "Test User",
-            "test@example.com",
-            "data:image/png;base64,verylongbase64encodedqrimagedatathatrepresentsaqrcode",
-            longQrCode,
-            "Two-Factor Setup"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
     }
 
     [Fact]
@@ -309,8 +274,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
             ManualQrCode = "SECRET2"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -321,19 +285,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(secondEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            "User One",
-            "user1@example.com",
-            "data:image/png;base64,QR1DATA",
-            "SECRET1",
-            "Two-Factor Setup"), Times.Once);
-
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            "User Two",
-            "user2@example.com",
-            "data:image/png;base64,QR2DATA",
-            "SECRET2",
-            "Two-Factor Setup"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Exactly(2));
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Exactly(2));
     }
@@ -351,8 +303,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
             ManualQrCode = "SECRET_WITH-SPECIAL@CHARS"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -362,12 +313,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            "Test User (Special)",
-            "test+special@example.com",
-            "data:image/png;base64,ABC123+/=",
-            "SECRET_WITH-SPECIAL@CHARS",
-            "Two-Factor Setup"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
     }
 
     [Fact]
@@ -383,8 +329,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
             ManualQrCode = "S"
         };
 
-        _templateGeneratorMock.Setup(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _templateGeneratorMock.Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(_emailDetailsMock.Object);
 
         _emailServiceMock.Setup(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()))
@@ -394,12 +339,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateTwoFactorGoogleAuthTemplateAsync(
-            "U",
-            "a@b.c",
-            "data:image/png;base64,A",
-            "S",
-            "Two-Factor Setup"), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Once);
     }

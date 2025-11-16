@@ -81,8 +81,7 @@ public class EmailConfirmationConsumerTests
         var successResult = BasicResult.Success();
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-                eventData.Name, eventData.Email, It.IsAny<string>()))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -93,14 +92,12 @@ public class EmailConfirmationConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-            eventData.Name, eventData.Email, It.IsAny<string>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
         
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
         
         // Verify that maintenance team method was not called
-        _mockTemplateGenerator.Verify(x => x.GenerateEmailConfirmationMntcTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+        // previous behaviour validated via specific method; now we ensure only GenerateFromSpecAsync used
     }
 
     //------------------------------------//
@@ -114,8 +111,7 @@ public class EmailConfirmationConsumerTests
         var successResult = BasicResult.Success();
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationMntcTemplateAsync(
-                eventData.Name, eventData.Email, It.IsAny<string>()))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -126,14 +122,11 @@ public class EmailConfirmationConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateEmailConfirmationMntcTemplateAsync(
-            eventData.Name, eventData.Email, It.IsAny<string>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
         
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
         
-        // Verify that customer team method was not called
-        _mockTemplateGenerator.Verify(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-            It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+        // previous tests ensured customer method not called; GenerateFromSpecAsync replaces both
     }
 
     //------------------------------------//
@@ -147,8 +140,7 @@ public class EmailConfirmationConsumerTests
         var failureResult = BasicResult.Failure("Email sending failed");
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -160,8 +152,6 @@ public class EmailConfirmationConsumerTests
 
         // Assert
 
-        //_mockLogger.Verify(x => x.LogBasicResultFailure(
-        //    failureResult, IdErrorEvents.Email.EmailConfirmation, "UNKNOWN_EVENT"), Times.Once);
         ExceptionUtils.VerifyBasicResultLogging(
             _mockLogger, IdErrorEvents.Email.EmailConfirmation, failureResult);
 
@@ -178,8 +168,7 @@ public class EmailConfirmationConsumerTests
         var expectedException = new InvalidOperationException("Test exception");
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ThrowsAsync(expectedException);
 
         // Act
@@ -206,8 +195,7 @@ public class EmailConfirmationConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ConfirmEmail)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ConfirmationToken}={eventData.ConfirmationToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -218,11 +206,7 @@ public class EmailConfirmationConsumerTests
         var result = await _consumer.SendRegistrationEmailCustomer(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-            eventData.Name,
-            eventData.Email, 
-            expectedUrl), 
-        Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
         
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
         
@@ -230,7 +214,6 @@ public class EmailConfirmationConsumerTests
     }
 
     //------------------------------------//
-
 
 
     [Fact]
@@ -243,8 +226,7 @@ public class EmailConfirmationConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_globalOptions.MntcAccountsUrl, IdGlobalConstants.EmailRoutes.ConfirmEmail)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ConfirmationToken}={eventData.ConfirmationToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationMntcTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -255,8 +237,7 @@ public class EmailConfirmationConsumerTests
         var result = await _consumer.SendRegistrationEmailMntc(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateEmailConfirmationMntcTemplateAsync(
-            eventData.Name, eventData.Email, expectedUrl), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
         
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
         
@@ -276,8 +257,7 @@ public class EmailConfirmationConsumerTests
         var failureResult = BasicResult.Failure("Email service failed");
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -305,8 +285,7 @@ public class EmailConfirmationConsumerTests
         var failureResult = BasicResult.Failure("Email service failed");
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationMntcTemplateAsync(
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService

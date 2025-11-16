@@ -1,16 +1,14 @@
-using ID.Email.Base.EventListeners.EmailConfirmation;
 using Id.Tests.Utility.Exceptions;
+using ID.Email.Base.EventListeners.EmailConfirmation;
+using ID.Email.Base.LocalAbs;
+using ID.Email.Base.LocalImps;
 using ID.GlobalSettings.Constants;
+using ID.GlobalSettings.Errors;
 using ID.GlobalSettings.Setup.Options;
 using ID.GlobalSettings.Utility;
 using ID.IntegrationEvents.Events.Account.EmailConfirmation;
 using ID.Tests.Data.GlobalOptions;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using MyResults;
-using ID.GlobalSettings.Errors;
-using ID.Email.Base.LocalImps;
-using ID.Email.Base.LocalAbs;
 
 namespace ID.Email.Base.Tests.EventListeners.EmailConfirmation;
 
@@ -104,8 +102,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ConfirmEmailWithPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ConfirmationToken}={eventData.ConfirmationToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -116,8 +113,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-            eventData.Name, eventData.Email, expectedUrl), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
         
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }
@@ -135,8 +131,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_globalOptions.MntcAccountsUrl, IdGlobalConstants.EmailRoutes.ConfirmEmailWithPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ConfirmationToken}={eventData.ConfirmationToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationMntcTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -147,8 +142,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateEmailConfirmationMntcTemplateAsync(
-            eventData.Name, eventData.Email, expectedUrl), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
         
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }
@@ -166,8 +160,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ConfirmEmailWithPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ConfirmationToken}={eventData.ConfirmationToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -191,8 +184,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         var expectedException = new InvalidOperationException("Template generation failed");
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ThrowsAsync(expectedException);
 
         // Act
@@ -215,8 +207,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ConfirmEmailWithPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ConfirmationToken}={eventData.ConfirmationToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -227,10 +218,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         var result = await _consumer.SendRegistrationEmailCustomer(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-            eventData.Name,
-            eventData.Email, 
-            expectedUrl), 
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()),
         Times.Once);
         
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
@@ -251,8 +239,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_globalOptions.MntcAccountsUrl, IdGlobalConstants.EmailRoutes.ConfirmEmailWithPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ConfirmationToken}={eventData.ConfirmationToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationMntcTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -263,8 +250,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         var result = await _consumer.SendRegistrationEmailMntc(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateEmailConfirmationMntcTemplateAsync(
-            eventData.Name, eventData.Email, expectedUrl), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
         
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
         
@@ -284,8 +270,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ConfirmEmailWithPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ConfirmationToken}={eventData.ConfirmationToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -312,8 +297,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_globalOptions.MntcAccountsUrl, IdGlobalConstants.EmailRoutes.ConfirmEmailWithPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ConfirmationToken}={eventData.ConfirmationToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationMntcTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -340,8 +324,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_customerOptions.CustomerAccountsUrl, IdGlobalConstants.EmailRoutes.ConfirmEmailWithPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ConfirmationToken}={eventData.ConfirmationToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -352,8 +335,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         await _consumer.SendRegistrationEmailCustomer(eventData);
 
         // Assert - Verify the URL contains the correct route and parameters
-        _mockTemplateGenerator.Verify(x => x.GenerateEmailConfirmationCustomerTemplateAsync(
-            eventData.Name, eventData.Email, expectedUrl), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
 
     }
 
@@ -370,8 +352,7 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         var expectedUrl = $"{UrlBuilder.Combine(_globalOptions.MntcAccountsUrl, IdGlobalConstants.EmailRoutes.ConfirmEmailWithPassword)}?{IdGlobalConstants.EmailRoutes.Params.UserId}={eventData.UserId}&{IdGlobalConstants.EmailRoutes.Params.ConfirmationToken}={eventData.ConfirmationToken}";
 
         _mockTemplateGenerator
-            .Setup(x => x.GenerateEmailConfirmationMntcTemplateAsync(
-                eventData.Name, eventData.Email, expectedUrl))
+            .Setup(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()))
             .ReturnsAsync(expectedEmailDetails);
 
         _mockEmailService
@@ -384,7 +365,6 @@ public class EmailConfirmationRequiringPasswordConsumerTests
         await _consumer.SendRegistrationEmailMntc(eventData);
 
         // Assert - Verify the URL contains the correct route and parameters
-        _mockTemplateGenerator.Verify(x => x.GenerateEmailConfirmationMntcTemplateAsync(
-            eventData.Name, eventData.Email, expectedUrl), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
     }
 }

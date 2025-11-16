@@ -21,16 +21,16 @@ public class UserInfo(IHttpContextAccessor httpContextAccessor) : IUserInfo
     //------------------------------------//
 
     public string GetLoggedInUserName(string? fallback = null) =>
-        _principal?.GetClaimValue(ClaimTypes.Name) 
-        ?? _principal?.GetClaimValue(MyIdClaimTypes.NAME)
+         _principal?.GetClaimValue(MyIdClaimTypes.NAME)
+        ?? _principal?.GetClaimValue(ClaimTypes.Name) 
         ?? fallback 
         ?? _not_found;
 
     //------------------------------------//
 
     public string GetLoggedInUserEmail(string? fallback = null) =>
-        _principal?.GetClaimValue(ClaimTypes.Email)
-        ?? _principal?.GetClaimValue(MyIdClaimTypes.EMAIL) 
+         _principal?.GetClaimValue(MyIdClaimTypes.EMAIL) 
+        ?? _principal?.GetClaimValue(ClaimTypes.Email)
         ?? fallback 
         ?? _not_found;
 

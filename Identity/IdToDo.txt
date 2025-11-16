@@ -98,10 +98,6 @@ MOre OathLogins
 
 
 
-move SwaggerAuthMiddlewareExtensions to application layer
-
-
-
 
 
 

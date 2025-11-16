@@ -50,7 +50,7 @@ public class SwaggerAuthMiddlewareTests
     [Fact]
     public async Task AuthenticatedSwaggerRequest_IsAllowed()
     {
-        using var server = CreateServer(addAuth: true);
+        using var server = CreateServer(predicate: ctx => ctx.User.Identity?.IsAuthenticated == true, addAuth: true);
         var client = server.CreateClient();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_authScheme);
         var response = await client.GetAsync(_swaggerPath);
@@ -98,7 +98,7 @@ public class SwaggerAuthMiddlewareTests
             .Configure(app =>
             {
                 if (addAuth) //Don't use with addAuth=false so that the request stays with the default Authenticated=false
-                    app.UseAuthentication(); 
+                    app.UseAuthentication();
 
                 app.UseSwaggerAuth(predicate);
 

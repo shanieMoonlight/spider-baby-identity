@@ -1,4 +1,4 @@
-using ID.Email.Base.AppAbs;
+using ID.Email.Base.LocalAbs;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

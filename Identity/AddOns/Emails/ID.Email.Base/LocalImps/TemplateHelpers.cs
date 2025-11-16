@@ -1,12 +1,12 @@
 ﻿using CollectionHelpers;
-using ID.Email.Base.AppAbs;
+using ID.Email.Base.LocalAbs;
 using ID.Email.Base.Models;
 using ID.Email.Base.Setup;
 using ID.GlobalSettings.Setup.Options;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 
-namespace ID.Email.Base.AppImps;
+namespace ID.Email.Base.LocalImps;
 internal class TemplateHelpers(
     IOptions<IdGlobalOptions> _globalOptionsProvider, 
     IOptions<IdEmailBaseOptions> _emailOptionsProvider,

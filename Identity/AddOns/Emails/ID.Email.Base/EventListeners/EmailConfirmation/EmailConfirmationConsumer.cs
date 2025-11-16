@@ -1,5 +1,5 @@
-﻿using ID.Email.Base.Abs;
-using ID.Email.Base.AppAbs;
+﻿using ID.Email.Base.AppAbs;
+using ID.Email.Base.LocalAbs;
 using ID.GlobalSettings.Constants;
 using ID.GlobalSettings.Errors;
 using ID.GlobalSettings.Setup.Options;

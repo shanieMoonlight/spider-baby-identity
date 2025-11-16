@@ -1,4 +1,4 @@
-namespace ID.Email.Base.AppAbs;
+namespace ID.Email.Base.LocalAbs;
 
 /// <summary>
 /// Interface for template operations to allow mocking

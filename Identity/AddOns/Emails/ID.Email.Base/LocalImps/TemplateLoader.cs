@@ -1,9 +1,9 @@
 using System.Reflection;
-using ID.Email.Base.AppAbs;
+using ID.Email.Base.LocalAbs;
 using Microsoft.Extensions.Hosting;
 using MyResults;
 
-namespace ID.Email.Base.AppImps;
+namespace ID.Email.Base.LocalImps;
 internal class TemplateLoader(IHostEnvironment env) : ITemplateLoader
 {
     public async Task<GenResult<string>> LoadAsync(string templatePath)

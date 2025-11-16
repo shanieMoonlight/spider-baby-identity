@@ -1,7 +1,7 @@
-﻿using ID.Email.Base.AppAbs;
+﻿using ID.Email.Base.LocalAbs;
 using ID.Email.Base.Models;
 
-namespace ID.Email.Base.AppImps;
+namespace ID.Email.Base.LocalImps;
 
 /// <summary>
 /// The user will fill these out before sending email.

@@ -1,7 +1,7 @@
-﻿using ID.Email.Base.Abs;
-using ID.Email.Base.AppAbs;
-using ID.Email.Base.AppImps;
+﻿using ID.Email.Base.AppAbs;
 using ID.Email.Base.Cache;
+using ID.Email.Base.LocalAbs;
+using ID.Email.Base.LocalImps;
 using ID.IntegrationEvents.Setup;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

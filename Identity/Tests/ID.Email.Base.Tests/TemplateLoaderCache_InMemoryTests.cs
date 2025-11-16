@@ -1,3 +1,5 @@
+using ID.Email.Base.LocalAbs;
+
 namespace ID.Email.Base.Tests;
 
 public class TemplateLoaderCache_InMemoryTests

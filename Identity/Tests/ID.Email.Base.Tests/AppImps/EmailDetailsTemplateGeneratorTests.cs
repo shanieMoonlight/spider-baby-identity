@@ -1,6 +1,7 @@
+using ID.Email.Base.LocalAbs;
+using ID.Email.Base.LocalImps;
 using ID.GlobalSettings.Setup.Options;
 using ID.Tests.Data.GlobalOptions;
-using Microsoft.Extensions.Options;
 
 namespace ID.Email.Base.Tests.AppImps;
 
@@ -123,29 +124,29 @@ public class EmailDetailsTemplateGeneratorTests
 
     //------------------------------------//
 
-    [Fact]
-    public async Task GenerateChangePasswordTemplateAsync_ShouldCallTemplateHelperWithCorrectParameters()
-    {
-        // Arrange
-        string toName = "John Doe";
-        string toAddress = "john.doe@example.com";
-        string callbackUrl = "https://example.com/reset-password?token=123456";
+    //[Fact]
+    //public async Task GenerateChangePasswordTemplateAsync_ShouldCallTemplateHelperWithCorrectParameters()
+    //{
+    //    // Arrange
+    //    string toName = "John Doe";
+    //    string toAddress = "john.doe@example.com";
+    //    string callbackUrl = "https://example.com/reset-password?token=123456";
 
-        // Act
-        var result = await _templateGenerator.GenerateChangePasswordTemplateAsync(toName, toAddress, callbackUrl);
+    //    // Act
+    //    var result = await _templateGenerator.GenerateChangePasswordTemplateAsync(toName, toAddress, callbackUrl);
 
-        // Assert
-        _mockTemplateHelpers.Verify(t => t.GenerateTemplateWithCallback(
-            toName,
-            toAddress,
-            callbackUrl,
-            It.Is<string>(s => s.Contains("ResetPassword")),
-            It.Is<string>(s => s.Contains("New User") && s.Contains(_applicationName))),
-            Times.Once);
+    //    // Assert
+    //    _mockTemplateHelpers.Verify(t => t.GenerateTemplateWithCallback(
+    //        toName,
+    //        toAddress,
+    //        callbackUrl,
+    //        It.Is<string>(s => s.Contains("ResetPassword")),
+    //        It.Is<string>(s => s.Contains("New User") && s.Contains(_applicationName))),
+    //        Times.Once);
 
-        result.ShouldNotBeNull();
-        result.ShouldBeAssignableTo<IEmailDetails>();
-    }
+    //    result.ShouldNotBeNull();
+    //    result.ShouldBeAssignableTo<IEmailDetails>();
+    //}
 
     //------------------------------------//
 

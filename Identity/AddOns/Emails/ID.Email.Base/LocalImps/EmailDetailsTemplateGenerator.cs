@@ -1,10 +1,10 @@
-using ID.Email.Base.AppAbs;
+using ID.Email.Base.LocalAbs;
 using ID.Email.Base.Models;
 using ID.Email.Base.Setup;
 using ID.GlobalSettings.Setup.Options;
 using Microsoft.Extensions.Options;
 
-namespace ID.Email.Base.AppImps;
+namespace ID.Email.Base.LocalImps;
 
 #pragma warning disable IDE1006 // Naming Styles
 internal class EmailDetailsTemplateGenerator(
@@ -25,17 +25,17 @@ internal class EmailDetailsTemplateGenerator(
 
     //------------------------------------//   
 
-    public async Task<IEmailDetails> GenerateChangePasswordTemplateAsync(
-       string toName,
-       string toAddress,
-       string callbackUrl) =>
-     await _templateHelpers.GenerateTemplateWithCallback(
-           toName,
-           toAddress,
-           callbackUrl,
-           PASSWORD_RESET_TEMPLATE_PATH,
-           $"New User - {_globalOptions.ApplicationName}"
-       );
+    //public async Task<IEmailDetails> GenerateChangePasswordTemplateAsync(
+    //   string toName,
+    //   string toAddress,
+    //   string callbackUrl) =>
+    // await _templateHelpers.GenerateTemplateWithCallback(
+    //       toName,
+    //       toAddress,
+    //       callbackUrl,
+    //       PASSWORD_RESET_TEMPLATE_PATH,
+    //       $"New User - {_globalOptions.ApplicationName}"
+    //   );
 
     //------------------------------------//
 

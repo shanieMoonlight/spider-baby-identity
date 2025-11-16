@@ -1,4 +1,4 @@
-﻿namespace ID.Email.Base.AppAbs;
+﻿namespace ID.Email.Base.LocalAbs;
 
 /// <summary>
 /// Interface for sending some common emails
@@ -19,17 +19,17 @@ public interface IEmailDetailsTemplateGenerator
 
     //- - - - - - - - - - - - - - - - - - - -//
 
-    /// <summary>
-    /// Generates IEmailDetails with template for change password email
-    /// </summary>
-    /// <param name="toName">Employee name</param>
-    /// <param name="toAddress">Employee email</param>
-    /// <param name="callbackUrl">The address of the EmailConfirmation page</param>
-    /// <returns>IEmailDetails with template</returns>
-    Task<IEmailDetails> GenerateChangePasswordTemplateAsync(
-        string toName,
-        string toAddress,
-        string callbackUrl);
+    ///// <summary>
+    ///// Generates IEmailDetails with template for change password email
+    ///// </summary>
+    ///// <param name="toName">Employee name</param>
+    ///// <param name="toAddress">Employee email</param>
+    ///// <param name="callbackUrl">The address of the EmailConfirmation page</param>
+    ///// <returns>IEmailDetails with template</returns>
+    //Task<IEmailDetails> GenerateChangePasswordTemplateAsync(
+    //    string toName,
+    //    string toAddress,
+    //    string callbackUrl);
 
     //- - - - - - - - - - - - - - - - - - - -//
 

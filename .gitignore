@@ -376,4 +376,4 @@ FodyWeavers.xsd
 *Secret*
 # **/ClientApp/
 **/NEXT_STEPS.md
-**/ID.OAuth.Facebook/**
+##**/ID.OAuth.Facebook/**

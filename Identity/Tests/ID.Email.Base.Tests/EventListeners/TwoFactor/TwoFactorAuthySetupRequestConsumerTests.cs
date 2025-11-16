@@ -4,6 +4,7 @@ using ID.Email.Base.LocalAbs;
 using ID.GlobalSettings.Errors;
 using ID.IntegrationEvents.Events.Account.TwoFactor;
 using Microsoft.Extensions.Logging;
+using ID.Email.Base.LocalImps.Specs;
 
 namespace ID.Email.Base.Tests.EventListeners.TwoFactor;
 
@@ -54,7 +55,7 @@ public class TwoFactorAuthySetupRequestConsumerTests
         await _consumer.HandleEventAsync(integrationEvent);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorAuthSpec>()), Times.Once);
 
         _mockEmailService.Verify(x => x.SendEmailAsync(_mockEmailDetails.Object), Times.Once);
     }
@@ -84,7 +85,7 @@ public class TwoFactorAuthySetupRequestConsumerTests
         await _consumer.HandleEventAsync(integrationEvent);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorAuthSpec>()), Times.Once);
     }
 
     [Fact]
@@ -112,7 +113,7 @@ public class TwoFactorAuthySetupRequestConsumerTests
         await _consumer.HandleEventAsync(integrationEvent);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorAuthSpec>()), Times.Once);
     }
 
     [Theory]
@@ -145,7 +146,7 @@ public class TwoFactorAuthySetupRequestConsumerTests
         await _consumer.HandleEventAsync(integrationEvent);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorAuthSpec>()), Times.Once);
     }
 
     [Fact]
@@ -259,7 +260,7 @@ public class TwoFactorAuthySetupRequestConsumerTests
         await _consumer.HandleEventAsync(integrationEvent);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorAuthSpec>()), Times.Once);
     }
 
     [Fact]
@@ -288,7 +289,7 @@ public class TwoFactorAuthySetupRequestConsumerTests
         await _consumer.HandleEventAsync(integrationEvent);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorAuthSpec>()), Times.Once);
     }
 
     [Fact]
@@ -316,7 +317,7 @@ public class TwoFactorAuthySetupRequestConsumerTests
         await _consumer.HandleEventAsync(integrationEvent);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorAuthSpec>()), Times.Once);
     }
 
     [Fact]
@@ -354,7 +355,7 @@ public class TwoFactorAuthySetupRequestConsumerTests
         await _consumer.HandleEventAsync(event2);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Exactly(2));
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorAuthSpec>()), Times.Exactly(2));
 
         _mockEmailService.Verify(x => x.SendEmailAsync(_mockEmailDetails.Object), Times.Exactly(2));
     }
@@ -384,7 +385,7 @@ public class TwoFactorAuthySetupRequestConsumerTests
         await _consumer.HandleEventAsync(integrationEvent);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorAuthSpec>()), Times.Once);
     }
 
     [Fact]
@@ -412,6 +413,6 @@ public class TwoFactorAuthySetupRequestConsumerTests
         await _consumer.HandleEventAsync(integrationEvent);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorAuthSpec>()), Times.Once);
     }
 }

@@ -1,6 +1,7 @@
 using Id.Tests.Utility.Exceptions;
 using ID.Email.Base.EventListeners.Subscriptions;
 using ID.Email.Base.LocalAbs;
+using ID.Email.Base.LocalImps.Specs;
 using ID.GlobalSettings.Errors;
 using ID.IntegrationEvents.Events.Account.Subscriptions;
 using Microsoft.Extensions.Logging;
@@ -53,7 +54,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Once);
     }
@@ -83,7 +84,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
     }
 
     //------------------------------------//
@@ -110,7 +111,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()), Times.Never);
 
@@ -207,7 +208,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
     }
 
     //------------------------------------//
@@ -235,7 +236,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
     }
 
     //------------------------------------//
@@ -263,7 +264,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
     }
 
     //------------------------------------//
@@ -291,7 +292,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
     }
 
     //------------------------------------//
@@ -329,7 +330,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(secondEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Exactly(2));
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Exactly(2));
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Exactly(2));
     }
@@ -360,7 +361,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
     }
 
     //------------------------------------//
@@ -388,7 +389,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Once);
     }
@@ -418,7 +419,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(subscriptionPausedEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once); // Should always be "Subscription Paused"
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Once); // Should always be "Subscription Paused"
     }
 
     //------------------------------------//
@@ -461,7 +462,7 @@ public class SubscriptionsPausedConsumerTests
         await _consumer.HandleEventAsync(secondEvent);
 
         // Assert - Both should generate identical template calls since GUIDs don't affect email content
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Exactly(2));
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<SubscriptionPausedSpec>()), Times.Exactly(2));
     }
 
 }//Cls

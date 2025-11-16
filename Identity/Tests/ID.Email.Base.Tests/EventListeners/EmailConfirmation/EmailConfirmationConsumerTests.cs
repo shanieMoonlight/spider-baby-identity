@@ -2,6 +2,7 @@ using Id.Tests.Utility.Exceptions;
 using ID.Email.Base.EventListeners.EmailConfirmation;
 using ID.Email.Base.LocalAbs;
 using ID.Email.Base.LocalImps;
+using ID.Email.Base.LocalImps.Specs;
 using ID.GlobalSettings.Constants;
 using ID.GlobalSettings.Errors;
 using ID.GlobalSettings.Setup.Options;
@@ -92,7 +93,7 @@ public class EmailConfirmationConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<EmailConfirmationCustomerSpec>()), Times.Once);
         
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
         
@@ -122,7 +123,7 @@ public class EmailConfirmationConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<EmailConfirmationMntcSpec>()), Times.Once);
         
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
         
@@ -206,7 +207,7 @@ public class EmailConfirmationConsumerTests
         var result = await _consumer.SendRegistrationEmailCustomer(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<EmailConfirmationCustomerSpec>()), Times.Once);
         
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
         
@@ -237,7 +238,7 @@ public class EmailConfirmationConsumerTests
         var result = await _consumer.SendRegistrationEmailMntc(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<EmailConfirmationMntcSpec>()), Times.Once);
         
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
         

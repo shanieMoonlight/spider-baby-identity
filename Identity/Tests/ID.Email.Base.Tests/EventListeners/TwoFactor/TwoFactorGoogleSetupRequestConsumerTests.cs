@@ -1,9 +1,11 @@
 using Id.Tests.Utility.Exceptions;
+using Microsoft.Extensions.Logging;
 using ID.Email.Base.EventListeners.TwoFactor;
 using ID.Email.Base.LocalAbs;
-using ID.GlobalSettings.Errors;
 using ID.IntegrationEvents.Events.Account.TwoFactor;
-using Microsoft.Extensions.Logging;
+using MyResults;
+using ID.GlobalSettings.Errors;
+using ID.Email.Base.LocalImps.Specs;
 
 namespace ID.Email.Base.Tests.EventListeners.TwoFactor;
 
@@ -51,7 +53,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorGoogleAuthSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Once);
     }
@@ -79,7 +81,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorGoogleAuthSpec>()), Times.Once);
     }
 
     [Fact]
@@ -104,7 +106,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorGoogleAuthSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()), Times.Never);
 
@@ -196,7 +198,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorGoogleAuthSpec>()), Times.Once);
     }
 
     [Fact]
@@ -222,7 +224,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorGoogleAuthSpec>()), Times.Once);
     }
 
     [Fact]
@@ -249,7 +251,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorGoogleAuthSpec>()), Times.Once);
     }
 
     [Fact]
@@ -285,7 +287,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(secondEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Exactly(2));
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorGoogleAuthSpec>()), Times.Exactly(2));
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Exactly(2));
     }
@@ -313,7 +315,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorGoogleAuthSpec>()), Times.Once);
     }
 
     [Fact]
@@ -339,7 +341,7 @@ public class TwoFactorGoogleSetupRequestConsumerTests
         await _consumer.HandleEventAsync(googleSetupEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorGoogleAuthSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Once);
     }

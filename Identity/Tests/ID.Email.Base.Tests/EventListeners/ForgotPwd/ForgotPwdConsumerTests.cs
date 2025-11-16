@@ -11,6 +11,7 @@ using ID.Tests.Data.GlobalOptions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyResults;
+using ID.Email.Base.LocalImps.Specs;
 
 namespace ID.Email.Base.Tests.EventListeners.ForgotPwd;
 
@@ -117,7 +118,7 @@ public class ForgotPwdConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<PasswordResetSpec>()), Times.Once);
 
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }
@@ -146,7 +147,7 @@ public class ForgotPwdConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<PasswordResetSpec>()), Times.Once);
 
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }
@@ -222,7 +223,7 @@ public class ForgotPwdConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()),
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<PasswordResetSpec>()),
         Times.Once);
 
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
@@ -252,7 +253,7 @@ public class ForgotPwdConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<PasswordResetSpec>()), Times.Once);
 
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }
@@ -280,7 +281,7 @@ public class ForgotPwdConsumerTests
         await _consumer.HandleEventAsync(eventData);
 
         // Assert
-        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _mockTemplateGenerator.Verify(x => x.GenerateFromSpecAsync(It.IsAny<PasswordResetSpec>()), Times.Once);
 
         _mockEmailService.Verify(x => x.SendEmailAsync(expectedEmailDetails), Times.Once);
     }

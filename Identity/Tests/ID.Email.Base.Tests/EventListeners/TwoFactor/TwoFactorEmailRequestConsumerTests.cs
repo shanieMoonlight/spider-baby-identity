@@ -1,6 +1,7 @@
 using Id.Tests.Utility.Exceptions;
 using ID.Email.Base.EventListeners.TwoFactor;
 using ID.Email.Base.LocalAbs;
+using ID.Email.Base.LocalImps.Specs;
 using ID.GlobalSettings.Errors;
 using ID.IntegrationEvents.Events.Account.TwoFactor;
 using Microsoft.Extensions.Logging;
@@ -51,7 +52,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Once);
     }
@@ -79,7 +80,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Once);
     }
@@ -107,7 +108,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorSpec>()), Times.Once);
     }
 
     [Fact]
@@ -130,7 +131,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorSpec>()), Times.Once);
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(It.IsAny<IEmailDetails>()), Times.Never);
     }
@@ -245,7 +246,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorSpec>()), Times.Once);
     }
 
     [Fact]
@@ -271,7 +272,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorSpec>()), Times.Once);
     }
 
     [Fact]
@@ -297,7 +298,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorSpec>()), Times.Once);
     }
 
     [Fact]
@@ -323,7 +324,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(twoFactorEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Once);
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorSpec>()), Times.Once);
     }
 
     [Fact]
@@ -359,7 +360,7 @@ public class TwoFactorEmailRequestConsumerTests
         await _consumer.HandleEventAsync(secondEvent);
 
         // Assert
-        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<IEmailSpec>()), Times.Exactly(2));
+        _templateGeneratorMock.Verify(x => x.GenerateFromSpecAsync(It.IsAny<TwoFactorSpec>()), Times.Exactly(2));
 
         _emailServiceMock.Verify(x => x.SendEmailAsync(_emailDetailsMock.Object), Times.Exactly(2));
     }

@@ -1,6 +1,4 @@
-using ID.OAuth.Facebook.Auth.Abs;
-using ID.OAuth.Facebook.Auth.Imps;
-using ID.OAuth.Facebook.Setup;
+using ID.OAuth.Facebook.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

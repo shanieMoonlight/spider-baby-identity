@@ -7,8 +7,8 @@ using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.AppUsers.OAuth;
 using ID.Domain.Entities.AppUsers.ValueObjects;
 using ID.Domain.Models;
-using ID.OAuth.Facebook.Auth.Abs;
 using ID.OAuth.Facebook.Data;
+using ID.OAuth.Facebook.Services;
 using MyResults;
 
 namespace ID.OAuth.Facebook.FacebookSignUp;

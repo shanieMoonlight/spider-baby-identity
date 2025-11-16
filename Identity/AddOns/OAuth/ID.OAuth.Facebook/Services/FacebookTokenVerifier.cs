@@ -15,7 +15,7 @@ internal sealed partial class FacebookTokenVerifier(
     private readonly HttpClient _http = httpFactory.CreateClient("facebook-graph");
     private readonly IdOAuthFacebookOptions _opts = opts.Value;
 
-    public async Task<FacebookTokenVerificationResult> VerifyAsync(string userAccessToken, CancellationToken cancellationToken = default)
+    public async Task<FacebookTokenVerificationResult> VerifyTokenAsync(string userAccessToken, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(userAccessToken))
             return FacebookTokenVerificationResult.Invalid("empty_user_token");

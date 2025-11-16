@@ -164,13 +164,13 @@ The Facebook OAuth implementation uses `Microsoft.Extensions.Http.Resilience` fo
 - **Timeouts**: 10 seconds per attempt, 30 seconds total request timeout
 - **Automatic Recovery**: Circuit breaker automatically closes when conditions improve
 
-## 🔄 Comparison to Google OAuth
+## 🔄 Comparison to Facebook OAuth
 
-| Feature | Google OAuth | Facebook OAuth |
+| Feature | Facebook OAuth | Facebook OAuth |
 |---------|--------------|----------------|
 | Token Type | JWT (server verification) | Access Token (API verification) |
 | Verification | Local JWT validation | Remote API calls |
-| Official SDK | ✅ Google.Apis.Auth | ❌ Use HttpClient |
+| Official SDK | ✅ Facebook.Apis.Auth | ❌ Use HttpClient |
 | Performance | Faster (local) | Slower (API calls) |
 | Security | JWT signatures | API validation |
 

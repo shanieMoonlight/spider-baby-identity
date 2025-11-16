@@ -20,4 +20,8 @@
     <ProjectReference Include="..\..\Core\ID.Application\ID.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Middleware\Swagger\" />
+  </ItemGroup>
+
 </Project>

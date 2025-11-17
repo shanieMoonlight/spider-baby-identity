@@ -25,10 +25,9 @@ public static class FacebookOAuthSetupExtensions
         IConfiguration configuration,
         string sectionName = "FacebookOAuth")
     {
-        // Configure Facebook OAuth options
-        services.Configure<IdOAuthFacebookOptions>(
-            configuration.GetSection(sectionName));
-
+        // Configure Facebook OAuth options and validate on start
+        services.AddOptionsWithValidateOnStart<IdOAuthFacebookOptions, FbOauthSetupOptionsValidator>()
+                .Bind(configuration.GetSection(sectionName));
 
         return services.AddFacebookOAuthDI();
 
@@ -40,19 +39,24 @@ public static class FacebookOAuthSetupExtensions
     /// Adds Facebook OAuth services with explicit options configuration.
     /// </summary>
     /// <param name="services">The service collection</param>
-    /// <param name="configureOptions">Action to configure Facebook OAuth options</param>
+    /// <param name="config">Action to configure Facebook OAuth options</param>
     /// <returns>The service collection for method chaining</returns>
     public static IServiceCollection AddMyIdFacebookOAuth(
         this IServiceCollection services,
-        Action<IdOAuthFacebookOptions> configureOptions)
+        Action<IdOAuthFacebookOptions> config)
     {
-        // Configure Facebook OAuth options
-        services.Configure(configureOptions);
+        // Configure Facebook OAuth options and validate on start
+        services
+            .Configure(config);
+
+        services.AddOptionsWithValidateOnStart<IdOAuthFacebookOptions, FbOauthSetupOptionsValidator>();
 
         // Register Facebook OAuth services
         return services.AddFacebookOAuthDI();
 
     }
+
+    //----------------------//
 
     public static IServiceCollection AddFacebookOAuthDI(this IServiceCollection services)
     {
@@ -82,4 +86,4 @@ public static class FacebookOAuthSetupExtensions
         return services;
     }
 
-}
+}//Cls

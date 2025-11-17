@@ -1,3 +1,5 @@
+using ID.OAuth.Facebook.HttpService;
+
 namespace ID.OAuth.Facebook.Setup;
 
 public class IdOAuthFacebookOptions
@@ -15,12 +17,12 @@ public class IdOAuthFacebookOptions
     /// <summary>
     /// Facebook Graph API version to use for API calls
     /// </summary>
-    public string GraphApiVersion { get; set; } = "v24.0";
+    public string GraphApiVersion { get; set; } = GraphApi.Version;
 
     /// <summary>
     /// Base URL for Facebook Graph API calls
     /// </summary>
-    public string GraphApiBaseUrl { get; set; } = "https://graph.facebook.com";
+    public string GraphApiBaseUrl { get; set; } = GraphApi.BaseUrl;
 
     /// <summary>
     /// Timeout in seconds for HTTP requests to Facebook API

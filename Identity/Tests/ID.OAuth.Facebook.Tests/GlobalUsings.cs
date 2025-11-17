@@ -1,0 +1,15 @@
+﻿global using ID.OAuth.Facebook.HttpService;
+global using ID.OAuth.Facebook.Services;
+global using ID.OAuth.Facebook.Setup;
+global using Microsoft.Extensions.Logging;
+global using Microsoft.Extensions.Options;
+global using Moq;
+global using Shouldly;
+global using System.Net;
+global using ID.Application.AppAbs.ApplicationServices.User;
+global using ID.Application.Customers.Abstractions;
+global using ID.Domain.Entities.AppUsers;
+global using ID.OAuth.Facebook.Data;
+global using ID.OAuth.Facebook.Features.SignIn;
+global using ID.Tests.Data.Factories;
+global using MyResults;

@@ -39,6 +39,8 @@ internal class FindOrCreateService<TUser>(
             return GenResult<AppUser>.Failure("An Email is required for account registration");
 
 
+        // Always mark email as unverified for Facebook registrations. Facebook's `verified` flag
+        // can reflect phone verification and does not guarantee the email address is verified.
         OAuthInfo oAuth = OAuthInfo.Create(
             OAuthProvider.Facebook,
             IssuerNullable.Create("Facebook"),

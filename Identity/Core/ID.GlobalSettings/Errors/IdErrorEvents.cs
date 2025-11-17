@@ -49,6 +49,8 @@ public class IdErrorEvents
     public static class OAuth
     {
         public const int Verification = 15001;
+        public const int Facebook = Verification + 1;
+        public const int Google = Facebook + 1;
     }
 
 }

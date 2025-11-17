@@ -23,6 +23,7 @@
     <ProjectReference Include="..\..\..\..\Libs\ClArch.ValueObjects\ClArch.ValueObjects.csproj" />
     <ProjectReference Include="..\..\..\..\Libs\Logging\LoggingHelpers\LoggingHelpers\LoggingHelpers.csproj" />
     <ProjectReference Include="..\..\..\..\Libs\MyResults\MyResults.csproj" />
+    <ProjectReference Include="..\..\..\..\Libs\StringHelpers\StringHelpers.csproj" />
     <ProjectReference Include="..\..\..\Core\ID.Application.Customers\ID.Application.Customers.csproj" />
     <ProjectReference Include="..\..\..\Core\ID.Application\ID.Application.csproj" />
     <ProjectReference Include="..\..\..\Core\ID.Domain\ID.Domain.csproj" />
@@ -36,6 +37,10 @@
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
       <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
     </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Auth\Abs\" />
   </ItemGroup>
 
 </Project>

@@ -47,7 +47,7 @@ internal static class SubscriptionRenewalTypesExtensions
     /// <param name="renewalTypes">The type of renewal.</param>
     /// <returns>The extended date or null for lifetime renewals.</returns>
     internal static DateTime? Extend(this DateTime? from, SubscriptionRenewalTypes renewalTypes) =>
-        (from ?? DateTime.Now).Extend(renewalTypes);
+        (from ?? DateTime.UtcNow).Extend(renewalTypes);
 
     //----------------------------//
 
@@ -64,6 +64,6 @@ internal static class SubscriptionRenewalTypesExtensions
             return true;
 
         var nextPaymentDate = lastPaymentDate.Value.Extend(renewalTypes);
-        return nextPaymentDate < DateTime.Now;
+        return nextPaymentDate < DateTime.UtcNow;
     }
 }

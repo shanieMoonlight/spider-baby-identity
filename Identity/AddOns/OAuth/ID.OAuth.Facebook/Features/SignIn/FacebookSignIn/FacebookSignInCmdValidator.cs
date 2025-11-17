@@ -13,7 +13,11 @@ public class FacebookSignUpCmdValidator : AbstractValidator<FacebookSignInCmd>
 
         When(p => p.Dto != null, () =>
         {
-            RuleFor(p => p.Dto.IdToken)
+            RuleFor(p => p.Dto.AuthToken)
+                .NotEmpty()
+                        .WithMessage(IDMsgs.Error.IsRequired("{PropertyName}"));
+
+            RuleFor(p => p.Dto.Id)
                 .NotEmpty()
                         .WithMessage(IDMsgs.Error.IsRequired("{PropertyName}"));
 

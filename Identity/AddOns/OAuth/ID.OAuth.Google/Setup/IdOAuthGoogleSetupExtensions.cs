@@ -103,9 +103,6 @@ public static class IdOAuthGoogleSetupExtensions
         return services;
     }
 
-    //------------------------------------//
-
-
 
 
 }//Cls

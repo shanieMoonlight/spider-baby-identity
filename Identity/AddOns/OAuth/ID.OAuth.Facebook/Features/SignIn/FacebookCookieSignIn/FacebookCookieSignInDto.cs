@@ -1,4 +1,6 @@
-﻿namespace ID.OAuth.Facebook.Features.SignIn.FacebookCookieSignIn;
+﻿using ID.OAuth.Facebook.Features.SignIn;
+
+namespace ID.OAuth.Facebook.Features.SignIn.FacebookCookieSignIn;
 
 public sealed class FacebookCookieSignInDto : FacebookSignInDto
 {

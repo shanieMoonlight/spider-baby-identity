@@ -2,8 +2,9 @@
 using ID.Application.Dtos.Account.Cookies;
 using ID.Domain.Models;
 using ID.GlobalSettings.Routes;
-using ID.OAuth.Facebook.FacebookSignUp;
+using ID.OAuth.Facebook.Features.SignIn;
 using ID.OAuth.Facebook.Features.SignIn.FacebookCookieSignIn;
+using ID.OAuth.Facebook.Features.SignIn.FacebookSignIn;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,17 @@ public class AccountController(ISender sender) : ControllerBase
     [AllowAnonymous]
     public async Task<ActionResult<JwtPackage>> FacebookLogin(FacebookSignInDto dto) =>
         this.ProcessResult(await sender.Send(new FacebookSignInCmd(dto)));
+
+
+    ///// <summary>
+    ///// Authenticates a user using Facebook OAuth and returns a JWT package if successful.
+    ///// </summary>
+    ///// <param name="dto">The Facebook sign-in data including ID token and optional subscription/device info.</param>
+    ///// <returns>A JWT package containing access and refresh tokens, or two-factor requirements.</returns>
+    //[HttpPost("[action]")]
+    //[AllowAnonymous]
+    //public async Task<ActionResult<JwtPackage>> FacebookLogin(FacebookSignInDto dto) =>
+    //    this.ProcessResult(await sender.Send(new TempFacebookSignInCmd(dto)));
 
     /// <summary>
     /// Authenticates a user using Facebook OAuth and issues a cookie-based sign-in result.

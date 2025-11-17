@@ -83,7 +83,7 @@ public partial class IDMsgs
 
         public static class Jobs
         {
-            public static string MISSING_OUTBOX_CONTENT(IdOutboxMessage msg) => $"Date:{DateTime.Now} Missing outbox content for: {msg}";
+            public static string MISSING_OUTBOX_CONTENT(IdOutboxMessage msg) => $"Date:{DateTime.UtcNow} Missing outbox content for: {msg}";
         }
 
         //-----------------------//

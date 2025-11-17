@@ -374,6 +374,10 @@ FodyWeavers.xsd
 **/secrets.**
 **/secrets/**
 *Secret*
+*Secrets
+# Ignore files that contain ".Secret" or ".Secrets" anywhere in the filename (case-insensitive)
+*.[Ss]ecret*
+*.[Ss]ecrets*
 # **/ClientApp/
 **/NEXT_STEPS.md
 ##**/ID.OAuth.Facebook/**

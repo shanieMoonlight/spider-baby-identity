@@ -1,15 +1,14 @@
 ﻿using System.Reflection;
 
-namespace ID.OAuth.Google
+namespace ID.OAuth.Google;
+
+/// <summary>
+/// Class for finding assembly in tests
+/// </summary>
+public static class IdGoogleOAuthAssemblyReference
 {
     /// <summary>
-    /// Class for finding assembly in tests
+    /// Project Assembly
     /// </summary>
-    public static class IdGoogleOAuthAssemblyReference
-    {
-        /// <summary>
-        /// Project Assemble
-        /// </summary>
-        public static readonly Assembly Assembly = typeof(IdGoogleOAuthAssemblyReference).Assembly;
-    }
+    public static readonly Assembly Assembly = typeof(IdGoogleOAuthAssemblyReference).Assembly;
 }

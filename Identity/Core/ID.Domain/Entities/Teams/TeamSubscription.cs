@@ -68,10 +68,10 @@ public class TeamSubscription : IdDomainEntity
 
         Discount = discount?.Value ?? 0;
 
-        StartDate = DateTime.Now;
+        StartDate = DateTime.UtcNow;
 
-        TrialStartDate = DateTime.Now;
-        TrialEndDate = DateTime.Now.AddMonths(plan.TrialMonths);
+        TrialStartDate = DateTime.UtcNow;
+        TrialEndDate = DateTime.UtcNow.AddMonths(plan.TrialMonths);
 
         EndDate = TrialEndDate; //Will change when payments are received
 
@@ -109,7 +109,7 @@ public class TeamSubscription : IdDomainEntity
     public TeamSubscription RecordPayment()
     {
         LastPaymenAmount = SubscriptionPlan?.Price ?? -1; //-1 Means we didn't have the Plan avaiable. It's probably not necesary anyway
-        LastPaymentDate = DateTime.Now;
+        LastPaymentDate = DateTime.UtcNow;
         SubscriptionStatus = SubscriptionStatus.Active;
         ExtendEndDate();
 
@@ -120,8 +120,8 @@ public class TeamSubscription : IdDomainEntity
 
     public TeamSubscription Deactivate()
     {
-        if (EndDate > DateTime.Now)
-            EndDate = DateTime.Now;
+        if (EndDate > DateTime.UtcNow)
+            EndDate = DateTime.UtcNow;
 
         //Make sure we don't raise the event twice
         if (SubscriptionStatus != SubscriptionStatus.InActive)
@@ -166,7 +166,7 @@ public class TeamSubscription : IdDomainEntity
 
     #region NotMapped
     [NotMapped]
-    public bool Trial { get => TrialEndDate < DateTime.Now.Date; }
+    public bool Trial { get => TrialEndDate < DateTime.UtcNow.Date; }
 
     //- - - - - - - - - - - - //
 

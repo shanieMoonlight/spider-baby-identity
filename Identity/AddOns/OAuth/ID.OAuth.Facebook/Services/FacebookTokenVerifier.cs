@@ -1,77 +1,103 @@
-using System.Net.Http.Json;
-using System.Text.Json.Serialization;
-using ID.OAuth.Facebook.Models;
+using ID.GlobalSettings.Errors;
+using ID.OAuth.Facebook.Data;
+using ID.OAuth.Facebook.HttpService;
+using ID.OAuth.Facebook.Setup;
+using LoggingHelpers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MyResults;
+using StringHelpers;
 
 namespace ID.OAuth.Facebook.Services;
 
 internal sealed partial class FacebookTokenVerifier(
-    IHttpClientFactory httpFactory, 
-    IOptions<IdOAuthFacebookOptions> opts, 
-    ILogger<FacebookTokenVerifier> log) 
+    IFacebookClient _http,
+    IOptions<IdOAuthFacebookOptions> optsProvider,
+    ILogger<FacebookTokenVerifier> _logger)
     : IFacebookTokenVerifier
 {
-    private readonly HttpClient _http = httpFactory.CreateClient("facebook-graph");
-    private readonly IdOAuthFacebookOptions _opts = opts.Value;
+    private readonly IdOAuthFacebookOptions _opts = optsProvider.Value;
 
-    public async Task<FacebookTokenVerificationResult> VerifyTokenAsync(string userAccessToken, CancellationToken cancellationToken = default)
+    //----------------------//
+
+    public async Task<GenResult<FacebookDebugTokenData>> VerifyTokenAsync(string authToken, string expectedUserId, CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(userAccessToken))
-            return FacebookTokenVerificationResult.Invalid("empty_user_token");
+        if (authToken.IsNullOrWhiteSpace())
+            return GenResult<FacebookDebugTokenData>.Failure("empty_user_token");
 
-        if (string.IsNullOrWhiteSpace(_opts.AppId) || string.IsNullOrWhiteSpace(_opts.AppSecret))
-            return FacebookTokenVerificationResult.Invalid("missing_server_credentials");
+        if (_opts.AppId.IsNullOrWhiteSpace())
+            return GenResult<FacebookDebugTokenData>.Failure("missing_server_credentials: AppId");
+
+        if (_opts.AppSecret.IsNullOrWhiteSpace())
+            return GenResult<FacebookDebugTokenData>.Failure("missing_server_credentials: AppSecret");
 
         try
         {
             var appToken = $"{_opts.AppId}|{_opts.AppSecret}";
-            var url = $"debug_token?input_token={Uri.EscapeDataString(userAccessToken)}&access_token={Uri.EscapeDataString(appToken)}";
+            var url = $"debug_token?input_token={Uri.EscapeDataString(authToken)}&access_token={Uri.EscapeDataString(appToken)}";
 
-            var resp = await _http.GetFromJsonAsync<DebugTokenResponse>(url, cancellationToken);
-            if (resp?.Data is null)
-                return FacebookTokenVerificationResult.Invalid("invalid_response");
+            var debugDataResult = await _http.GetDebugTokenAsync(authToken, cancellationToken);
 
-            var d = resp.Data;
+            if(!debugDataResult.Succeeded)
+                return debugDataResult;
 
-            if (!d.IsValid)
-                return FacebookTokenVerificationResult.Invalid("token_not_valid");
+            var debugData = debugDataResult.Value!; //Success is non-null
 
-            if (!string.Equals(d.AppId, _opts.AppId, StringComparison.Ordinal))
-                return FacebookTokenVerificationResult.Invalid("app_id_mismatch");
+            // 5. Perform the Critical Security Checks (just like in server.js)
+            if (!debugData.IsValid)
+                return GenResult<FacebookDebugTokenData>.Failure($"Token is invalid or expired. DebugData: {debugData}");
 
-            var expiresAt = d.ExpiresAt.HasValue ? DateTimeOffset.FromUnixTimeSeconds(d.ExpiresAt.Value) : (DateTimeOffset?)null;
+            if (debugData.AppId != _opts.AppId)
+                return GenResult<FacebookDebugTokenData>.Failure($"Token was not issued for this application. DebugData: {debugData}");
 
-            return FacebookTokenVerificationResult.Valid(d.UserId ?? string.Empty, expiresAt, d.Scopes ?? []);
+            if (debugData.UserId != expectedUserId)
+                return GenResult<FacebookDebugTokenData>.Failure($"Token user ID does not match expected ID. UserId: {expectedUserId}. DebugData: {debugData}");
+            
+            var expiresAt = debugData.ExpiresAt.HasValue ? DateTimeOffset.FromUnixTimeSeconds(debugData.ExpiresAt.Value) : (DateTimeOffset?)null;
+            if (expiresAt.HasValue && expiresAt.Value <= DateTimeOffset.UtcNow)
+                return GenResult<FacebookDebugTokenData>.Failure($"Token has expired. DebugData: {debugData}");
+
+            return GenResult<FacebookDebugTokenData>.Success(debugData);
         }
         catch (Exception ex)
         {
-            log.LogError(ex, "Failed to verify facebook token");
-            return FacebookTokenVerificationResult.Invalid("exception");
+            _logger.LogException(ex, IdErrorEvents.OAuth.Facebook);
+            return GenResult<FacebookDebugTokenData>.Failure(ex);
         }
     }
 
-    private sealed class DebugTokenResponse
+    //----------------------//
+
+    public async Task<GenResult<FacebookUserProfile>> GetUserProfileAsync(string userAccessToken, CancellationToken cancellationToken = default)
     {
-        [JsonPropertyName("data")]
-        public DebugTokenData? Data { get; set; }
+        if (userAccessToken.IsNullOrWhiteSpace())
+            return GenResult<FacebookUserProfile>.Failure("empty_user_token");
+
+        if (_opts.AppId.IsNullOrWhiteSpace())
+            return GenResult<FacebookUserProfile>.Failure("missing_server_credentials: AppId");
+
+        if (_opts.AppSecret.IsNullOrWhiteSpace())
+            return GenResult<FacebookUserProfile>.Failure("missing_server_credentials: AppSecret");
+
+        try
+        {
+            var profileResult = await _http.GetUserProfileAsync(userAccessToken, cancellationToken);
+
+            if (!profileResult.Succeeded)
+                return profileResult;
+
+            var profile = profileResult.Value!; // Success guarantees non-null
+
+            if (string.IsNullOrWhiteSpace(profile?.Id))
+                return GenResult<FacebookUserProfile>.Failure("Failed to retrieve user profile or missing user id.");
+
+            return GenResult<FacebookUserProfile>.Success(profile);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogException(ex, IdErrorEvents.OAuth.Facebook);
+            return GenResult<FacebookUserProfile>.Failure(ex);
+        }
     }
 
-    private sealed class DebugTokenData
-    {
-        [JsonPropertyName("app_id")]
-        public string? AppId { get; set; }
-
-        [JsonPropertyName("is_valid")]
-        public bool IsValid { get; set; }
-
-        [JsonPropertyName("user_id")]
-        public string? UserId { get; set; }
-
-        [JsonPropertyName("expires_at")]
-        public long? ExpiresAt { get; set; }
-
-        [JsonPropertyName("scopes")]
-        public string[]? Scopes { get; set; }
-    }
-}
+}//Cls

@@ -95,6 +95,8 @@ Unit test UserInfo
 
 MOre OathLogins
 
+make IssuerNullable use OathProvider enum instead of string
+
 
 
 

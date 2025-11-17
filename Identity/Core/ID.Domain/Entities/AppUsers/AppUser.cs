@@ -330,7 +330,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
 
     public IIdAuditableDomainEntity SetModified(string? username = null, string? userId = null)
     {
-        LastModifiedDate = DateTime.Now;
+        LastModifiedDate = DateTime.UtcNow;
         AdministratorUsername = username;
         AdministratorId = userId;
         return this;
@@ -340,7 +340,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
 
     public IIdAuditableDomainEntity SetCreated(string? username = null, string? userId = null)
     {
-        DateCreated = DateTime.Now;
+        DateCreated = DateTime.UtcNow;
         AdministratorUsername = username;
         AdministratorId = userId;
         return this;
@@ -351,7 +351,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
     public AppUser SetTkn(string? tkn)
     {
         Tkn = tkn;
-        TknModifiedDate = DateTime.Now;
+        TknModifiedDate = DateTime.UtcNow;
         return this;
     }
 

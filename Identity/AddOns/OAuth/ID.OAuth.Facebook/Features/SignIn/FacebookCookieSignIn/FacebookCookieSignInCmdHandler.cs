@@ -7,7 +7,6 @@ using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Utility.Messages;
 using ID.OAuth.Facebook.Services;
-using ID.OAuth.Facebook.Services.Abs;
 using MyResults;
 
 namespace ID.OAuth.Facebook.Features.SignIn.FacebookCookieSignIn;
@@ -25,21 +24,27 @@ public class FacebookCookieSignInCmdHandler(
     {
         var dto = request.Dto;
 
-
-        var verifyResult = await _verifier.VerifyTokenAsync(dto.IdToken, cancellationToken);
+        var verifyResult = await _verifier.VerifyTokenAsync(dto.AuthToken, dto.Id, cancellationToken);
         if (!verifyResult.Succeeded)
             return verifyResult.Convert<CookieSignInResultData>();
 
+        var verificationData = verifyResult.Value!;
+        if (!verificationData.IsValid)
+            return verifyResult.Convert<CookieSignInResultData>(null, "Invalid token, try logging in again.");
 
-        var payload = verifyResult.Value!; //Success is non-null
+        var userProfileResult = await _verifier.GetUserProfileAsync(dto.AuthToken, cancellationToken);
+        if (!userProfileResult.Succeeded)
+            return verifyResult.Convert<CookieSignInResultData>();
+
+        var userProfile = userProfileResult.Value!;
 
 
-        var userResult = await _findOrCreate.FindOrCreateUserAsync(payload, dto, cancellationToken);
+        var userResult = await _findOrCreate.FindOrCreateUserAsync(userProfile, dto, cancellationToken);
         if (!userResult.Succeeded)
             return userResult.Convert<CookieSignInResultData>();
 
         AppUser user = userResult.Value!;  //Success is non-null
-        Team team = user.Team!; 
+        Team team = user.Team!;
 
 
         var twoFactorEnabled = await _2FactorService.IsTwoFactorEnabledAsync(user);
@@ -85,7 +90,7 @@ public class FacebookCookieSignInCmdHandler(
        Team team,
        bool rememberMe,
        string? currentDeviceId)
-    {      
+    {
         var twoFactorResult = await _twoFactorMsgService.SendOTPFor2FactorAuth(team, user);
         if (!twoFactorResult.Succeeded)
             return GenResult<CookieSignInResultData>.Failure(twoFactorResult.Info);

@@ -15,7 +15,7 @@ public class IdOAuthFacebookOptions
     /// <summary>
     /// Facebook Graph API version to use for API calls
     /// </summary>
-    public string GraphApiVersion { get; set; } = "v18.0";
+    public string GraphApiVersion { get; set; } = "v24.0";
 
     /// <summary>
     /// Base URL for Facebook Graph API calls
@@ -26,4 +26,10 @@ public class IdOAuthFacebookOptions
     /// Timeout in seconds for HTTP requests to Facebook API
     /// </summary>
     public int RequestTimeoutSeconds { get; set; } = 30;
+
+    //// Optional: callback path used by the ASP.NET Core Facebook middleware
+    //public string CallbackPath { get; set; } = "/signin-facebook";
+
+    //// Optional additional scopes requested from Facebook
+    //public string[]? Scopes { get; set; }
 }

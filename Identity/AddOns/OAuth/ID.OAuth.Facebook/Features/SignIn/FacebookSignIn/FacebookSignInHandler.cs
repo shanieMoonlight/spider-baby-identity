@@ -6,7 +6,6 @@ using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Models;
 using ID.OAuth.Facebook.Services;
-using ID.OAuth.Facebook.Services.Abs;
 using MyResults;
 
 namespace ID.OAuth.Facebook.Features.SignIn.FacebookSignIn;
@@ -24,20 +23,25 @@ public class FacebookSignInHandler(
         var dto = request.Dto;
 
 
-        var verifyResult = await _verifier.VerifyTokenAsync(dto.IdToken, cancellationToken);
+        var verifyResult = await _verifier.VerifyTokenAsync(dto.AuthToken, dto.Id, cancellationToken);
         if (!verifyResult.Succeeded)
             return verifyResult.Convert<JwtPackage>();
 
+        var verificationData = verifyResult.Value!;
+        if (!verificationData.IsValid)
+            return verifyResult.Convert<JwtPackage>(null, "Invalid token, try logging in again.");
 
-        var payload = verifyResult.Value!; //Success is non-null
+        var userProfileResult = await _verifier.GetUserProfileAsync(dto.AuthToken, cancellationToken);
+        if (!userProfileResult.Succeeded)
+            return verifyResult.Convert<JwtPackage>();
 
+        var userProfile = userProfileResult.Value!;
 
-        var userResult = await _findOrCreate.FindOrCreateUserAsync(payload, dto, cancellationToken);
+        var userResult = await _findOrCreate.FindOrCreateUserAsync(userProfile, dto, cancellationToken);
         if (!userResult.Succeeded)
             return userResult.Convert<JwtPackage>();
 
         AppUser user = userResult.Value!;  //Success is non-null
-
 
         var tfEnabled = await _2FactorService.IsTwoFactorEnabledAsync(user);
 
@@ -96,8 +100,6 @@ public class FacebookSignInHandler(
         return GenResult<JwtPackage>.Success(jwtPackage);
     }
 
-
-    //- - - - - - - - - - - - - - -//
 
 
 }//Cls

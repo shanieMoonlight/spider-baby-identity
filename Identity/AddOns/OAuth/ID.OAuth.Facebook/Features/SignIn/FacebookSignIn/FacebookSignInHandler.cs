@@ -12,7 +12,7 @@ namespace ID.OAuth.Facebook.Features.SignIn.FacebookSignIn;
 public class FacebookSignInHandler(
     IFindOrCreateService<AppUser> _findOrCreate,
     IJwtPackageProvider _jwtPackageProvider,
-    IFacebookTokenVerifier _verifier,
+    IFacebookAuthenticationService _verifier,
     ITwoFactorVerificationService<AppUser> _2FactorService,
     ITwoFactorMsgService _twoFactorMsgService)
     : IIdCommandHandler<FacebookSignInCmd, JwtPackage>
@@ -22,20 +22,12 @@ public class FacebookSignInHandler(
     {
         var dto = request.Dto;
 
+        // Combined verification + profile fetch
+        var profileResult = await _verifier.VerifyAndGetProfileAsync(dto.AuthToken, dto.Id, cancellationToken);
+        if (!profileResult.Succeeded)
+            return profileResult.Convert<JwtPackage>();
 
-        var verifyResult = await _verifier.VerifyTokenAsync(dto.AuthToken, dto.Id, cancellationToken);
-        if (!verifyResult.Succeeded)
-            return verifyResult.Convert<JwtPackage>();
-
-        var verificationData = verifyResult.Value!;
-        if (!verificationData.IsValid)
-            return verifyResult.Convert<JwtPackage>(null, "Invalid token, try logging in again.");
-
-        var userProfileResult = await _verifier.GetUserProfileAsync(dto.AuthToken, cancellationToken);
-        if (!userProfileResult.Succeeded)
-            return verifyResult.Convert<JwtPackage>();
-
-        var userProfile = userProfileResult.Value!;
+        var userProfile = profileResult.Value!; // non-null on success
 
         var userResult = await _findOrCreate.FindOrCreateUserAsync(userProfile, dto, cancellationToken);
         if (!userResult.Succeeded)

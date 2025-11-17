@@ -9,11 +9,11 @@ using MyResults;
 using System.Text.Json;
 
 namespace ID.OAuth.Facebook.HttpService;
-internal class FacebookClient(
+internal class FacebookHttpClient(
     HttpClient _client,
     IFacebookClientUtilities _utilities,
     IOptions<IdOAuthFacebookOptions> _optsProvider,
-    ILogger<FacebookClient> _logger) : IFacebookClient
+    ILogger<FacebookHttpClient> _logger) : IFacebookHttpClient
 {
 
     private readonly IdOAuthFacebookOptions _opts = _optsProvider.Value;

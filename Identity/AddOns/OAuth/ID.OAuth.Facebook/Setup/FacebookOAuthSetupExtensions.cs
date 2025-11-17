@@ -61,7 +61,7 @@ public static class FacebookOAuthSetupExtensions
         services.AddFacebookOAuthHttpClient();
 
         // Register Facebook OAuth services
-        services.AddScoped<IFacebookTokenVerifier, FacebookTokenVerifier>();
+        services.AddScoped<IFacebookAuthenticationService, FacebookAuthenticationService>();
         services.AddScoped<IFacebookClientUtilities, FacebookClientUtilities>();
         services.AddScoped<IFindOrCreateService<AppUser>, FindOrCreateService<AppUser>>();
 

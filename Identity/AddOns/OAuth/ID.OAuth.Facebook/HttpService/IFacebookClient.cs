@@ -3,7 +3,7 @@ using MyResults;
 
 namespace ID.OAuth.Facebook.HttpService;
 
-internal interface IFacebookClient
+internal interface IFacebookHttpClient
 {
     Task<GenResult<FacebookDebugTokenData>> GetDebugTokenAsync(string userAccessToken, CancellationToken cancellationToken = default);
     Task<GenResult<FacebookUserProfile>> GetUserProfileAsync(string userAccessToken, CancellationToken cancellationToken = default);

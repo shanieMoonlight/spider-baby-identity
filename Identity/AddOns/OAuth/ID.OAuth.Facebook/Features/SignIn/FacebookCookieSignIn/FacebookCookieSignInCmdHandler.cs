@@ -14,7 +14,7 @@ namespace ID.OAuth.Facebook.Features.SignIn.FacebookCookieSignIn;
 public class FacebookCookieSignInCmdHandler(
     IFindOrCreateService<AppUser> _findOrCreate,
     ICookieAuthService<AppUser> _cookieSignInService,
-    IFacebookTokenVerifier _verifier,
+    IFacebookAuthenticationService _verifier,
     ITwoFactorVerificationService<AppUser> _2FactorService,
     ITwoFactorMsgService _twoFactorMsgService)
     : IIdCommandHandler<FacebookCookieSignInCmd, CookieSignInResultData>
@@ -24,19 +24,12 @@ public class FacebookCookieSignInCmdHandler(
     {
         var dto = request.Dto;
 
-        var verifyResult = await _verifier.VerifyTokenAsync(dto.AuthToken, dto.Id, cancellationToken);
-        if (!verifyResult.Succeeded)
-            return verifyResult.Convert<CookieSignInResultData>();
+        // Combined verification + profile fetch
+        var profileResult = await _verifier.VerifyAndGetProfileAsync(dto.AuthToken, dto.Id, cancellationToken);
+        if (!profileResult.Succeeded)
+            return profileResult.Convert<CookieSignInResultData>();
 
-        var verificationData = verifyResult.Value!;
-        if (!verificationData.IsValid)
-            return verifyResult.Convert<CookieSignInResultData>(null, "Invalid token, try logging in again.");
-
-        var userProfileResult = await _verifier.GetUserProfileAsync(dto.AuthToken, cancellationToken);
-        if (!userProfileResult.Succeeded)
-            return verifyResult.Convert<CookieSignInResultData>();
-
-        var userProfile = userProfileResult.Value!;
+        var userProfile = profileResult.Value!; // non-null on success
 
 
         var userResult = await _findOrCreate.FindOrCreateUserAsync(userProfile, dto, cancellationToken);

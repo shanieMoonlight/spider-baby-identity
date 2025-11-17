@@ -19,7 +19,7 @@ public static class FacebookHttpClientConfiguration
     public static IServiceCollection AddFacebookOAuthHttpClient(this IServiceCollection services)
     {
 
-        services.AddHttpClient<IFacebookClient, FacebookClient>((serviceProvider, client) =>
+        services.AddHttpClient<IFacebookHttpClient, FacebookHttpClient>((serviceProvider, client) =>
         {
             var options = serviceProvider.GetRequiredService<IOptions<IdOAuthFacebookOptions>>().Value;
 

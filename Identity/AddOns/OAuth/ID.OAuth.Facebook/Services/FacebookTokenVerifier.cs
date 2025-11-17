@@ -10,11 +10,11 @@ using StringHelpers;
 
 namespace ID.OAuth.Facebook.Services;
 
-internal sealed partial class FacebookTokenVerifier(
-    IFacebookClient _http,
+internal sealed partial class FacebookAuthenticationService(
+    IFacebookHttpClient _http,
     IOptions<IdOAuthFacebookOptions> optsProvider,
-    ILogger<FacebookTokenVerifier> _logger)
-    : IFacebookTokenVerifier
+    ILogger<FacebookAuthenticationService> _logger)
+    : IFacebookAuthenticationService
 {
     private readonly IdOAuthFacebookOptions _opts = optsProvider.Value;
 
@@ -98,6 +98,47 @@ internal sealed partial class FacebookTokenVerifier(
             _logger.LogException(ex, IdErrorEvents.OAuth.Facebook);
             return GenResult<FacebookUserProfile>.Failure(ex);
         }
+    }
+
+    //----------------------//
+
+    /// <summary>
+    /// Verify the supplied user access token using debug_token and then fetch the verified profile (/me).
+    /// Returns a GenResult containing the verified user profile on success.
+    /// </summary>
+    public async Task<GenResult<FacebookUserProfile>> VerifyAndGetProfileAsync(
+        string userAccessToken,
+        string? expectedUserId = null,
+        CancellationToken cancellationToken = default)
+    {
+        // 1. Verify token
+        var verifyResult = await VerifyTokenAsync(userAccessToken, expectedUserId ?? string.Empty, cancellationToken);
+        if (!verifyResult.Succeeded)
+        {
+            // propagate failure info
+            return GenResult<FacebookUserProfile>.Failure(verifyResult.Info ?? "Token verification failed.");
+        }
+
+        var debug = verifyResult.Value!;
+
+        // Additional security checks already done in VerifyTokenAsync (IsValid, AppId, UserId, Expiry)
+
+        // 2. Fetch profile
+        var profileResult = await GetUserProfileAsync(userAccessToken, cancellationToken);
+        if (!profileResult.Succeeded)
+        {
+            return GenResult<FacebookUserProfile>.Failure(profileResult.Info ?? "Failed to fetch profile.");
+        }
+
+        var profile = profileResult.Value!;
+
+        // 3. Ensure ids match
+        if (!string.Equals(profile.Id, debug.UserId, StringComparison.Ordinal))
+        {
+            return GenResult<FacebookUserProfile>.Failure("Profile id does not match token user id.");
+        }
+
+        return GenResult<FacebookUserProfile>.Success(profile);
     }
 
 }//Cls

@@ -1,7 +1,4 @@
-using System;
 using System.Text.Json;
-using Shouldly;
-using Xunit;
 
 namespace ID.OAuth.Facebook.Tests;
 

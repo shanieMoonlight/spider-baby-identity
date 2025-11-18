@@ -55,13 +55,32 @@ internal class FacebookHttpClient(
             var jsonResponse = await response.Content.ReadAsStringAsync(cancellationToken);
 
             if (!response.IsSuccessStatusCode)
-                return GenResult<FacebookDebugTokenData>.Failure($"Failed to retrieve debug token.:{jsonResponse}");
+            {
+                // Log details to aid debugging
+                _logger.LogWarning("Facebook debug_token request failed. StatusCode: {StatusCode}, Endpoint: {Endpoint}, Response: {Response}",
+                    response.StatusCode, relative, jsonResponse);
+
+                return GenResult<FacebookDebugTokenData>.Failure($"Failed to retrieve debug token. StatusCode: {(int)response.StatusCode}. Body: {jsonResponse}");
+            }
 
             // Deserialize the response into a C# class (you'll define this struct)
 
-            var debugDataResponse = JsonSerializer.Deserialize<FacebookDebugTokenResponse>(jsonResponse, _jsonOptions);
+            FacebookDebugTokenResponse? debugDataResponse = null;
+            try
+            {
+                debugDataResponse = JsonSerializer.Deserialize<FacebookDebugTokenResponse>(jsonResponse, _jsonOptions);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to deserialize debug_token response. Endpoint: {Endpoint}. Body: {Body}", relative, jsonResponse);
+                return GenResult<FacebookDebugTokenData>.Failure($"Failed to parse debug token response. Body: {jsonResponse}");
+            }
+
             if (debugDataResponse?.Data == null)
-                return GenResult<FacebookDebugTokenData>.Failure("Failed to parse debug token response.");
+            {
+                _logger.LogWarning("Parsed debug_token response did not contain expected 'data' property. Endpoint: {Endpoint}. Body: {Body}", relative, jsonResponse);
+                return GenResult<FacebookDebugTokenData>.Failure($"Failed to parse debug token response. Body: {jsonResponse}");
+            }
 
             return GenResult<FacebookDebugTokenData>.Success(debugDataResponse.Data);
 
@@ -69,6 +88,8 @@ internal class FacebookHttpClient(
         catch(Exception ex)
         {
             _logger.LogException(ex, IdErrorEvents.OAuth.Facebook);
+            Debug.WriteLine(ex.Message);
+            Debug.WriteLine(ex.StackTrace);
             return GenResult<FacebookDebugTokenData>.Failure(ex);
         }
 
@@ -110,11 +131,27 @@ internal class FacebookHttpClient(
             var json = await response.Content.ReadAsStringAsync(cancellationToken);
 
             if (!response.IsSuccessStatusCode)
-                return GenResult<FacebookUserProfile>.Failure($"Failed to retrieve user profile.:{json}");
+            {
+                _logger.LogWarning("Facebook /me request failed. StatusCode: {StatusCode}, Endpoint: {Endpoint}, Response: {Response}", response.StatusCode, relative, json);
+                return GenResult<FacebookUserProfile>.Failure($"Failed to retrieve user profile. StatusCode: {(int)response.StatusCode}. Body: {json}");
+            }
 
-            var profile = JsonSerializer.Deserialize<FacebookUserProfile>(json, _jsonOptions);
+            FacebookUserProfile? profile = null;
+            try
+            {
+                profile = JsonSerializer.Deserialize<FacebookUserProfile>(json, _jsonOptions);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Failed to deserialize /me response. Endpoint: {Endpoint}. Body: {Body}", relative, json);
+                return GenResult<FacebookUserProfile>.Failure($"Failed to parse user profile response. Body: {json}");
+            }
+
             if (profile == null)
+            {
+                _logger.LogWarning("Parsed /me response was null. Endpoint: {Endpoint}. Body: {Body}", relative, json);
                 return GenResult<FacebookUserProfile>.Failure("Failed to parse user profile response.");
+            }
 
             return GenResult<FacebookUserProfile>.Success(profile);
         }

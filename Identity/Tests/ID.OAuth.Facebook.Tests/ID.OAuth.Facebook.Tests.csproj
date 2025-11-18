@@ -21,6 +21,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\AddOns\OAuth\ID.OAuth.Facebook\ID.OAuth.Facebook.csproj" />
 	  <ProjectReference Include="..\ID.Tests.Data\ID.Tests.Data.csproj" />
+	  <ProjectReference Include="..\Id.Tests.Utility\ID.Tests.Utility.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

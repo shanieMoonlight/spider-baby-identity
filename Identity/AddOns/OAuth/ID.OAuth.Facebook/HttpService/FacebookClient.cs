@@ -6,6 +6,7 @@ using LoggingHelpers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MyResults;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace ID.OAuth.Facebook.HttpService;
@@ -13,7 +14,9 @@ internal class FacebookHttpClient(
     HttpClient _client,
     IFacebookClientUtilities _utilities,
     IOptions<IdOAuthFacebookOptions> _optsProvider,
-    ILogger<FacebookHttpClient> _logger) : IFacebookHttpClient
+    ILogger<FacebookHttpClient> _logger,
+    JsonSerializerOptions _jsonOptions)
+    : IFacebookHttpClient
 {
 
     private readonly IdOAuthFacebookOptions _opts = _optsProvider.Value;
@@ -56,7 +59,7 @@ internal class FacebookHttpClient(
 
             // Deserialize the response into a C# class (you'll define this struct)
 
-            var debugDataResponse = JsonSerializer.Deserialize<FacebookDebugTokenResponse>(jsonResponse);
+            var debugDataResponse = JsonSerializer.Deserialize<FacebookDebugTokenResponse>(jsonResponse, _jsonOptions);
             if (debugDataResponse?.Data == null)
                 return GenResult<FacebookDebugTokenData>.Failure("Failed to parse debug token response.");
 
@@ -109,7 +112,7 @@ internal class FacebookHttpClient(
             if (!response.IsSuccessStatusCode)
                 return GenResult<FacebookUserProfile>.Failure($"Failed to retrieve user profile.:{json}");
 
-            var profile = JsonSerializer.Deserialize<FacebookUserProfile>(json);
+            var profile = JsonSerializer.Deserialize<FacebookUserProfile>(json, _jsonOptions);
             if (profile == null)
                 return GenResult<FacebookUserProfile>.Failure("Failed to parse user profile response.");
 

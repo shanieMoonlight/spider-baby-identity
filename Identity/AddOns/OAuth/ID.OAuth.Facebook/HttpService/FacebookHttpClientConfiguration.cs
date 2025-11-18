@@ -1,6 +1,8 @@
 using ID.OAuth.Facebook.Setup;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ID.OAuth.Facebook.HttpService;
 
@@ -18,6 +20,25 @@ public static class FacebookHttpClientConfiguration
     /// <returns></returns>
     public static IServiceCollection AddFacebookOAuthHttpClient(this IServiceCollection services)
     {
+
+        // Register a shared JsonSerializerOptions for Facebook deserialization
+        services.AddSingleton(provider =>
+        {
+            var opts = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                AllowTrailingCommas = true,
+                ReadCommentHandling = JsonCommentHandling.Skip,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
+
+            // Register the Unix epoch converter for timestamps
+            opts.Converters.Add(new UnixEpochSecondsJsonConverter());
+
+            return opts;
+        });
+
+
 
         services.AddHttpClient<IFacebookHttpClient, FacebookHttpClient>((serviceProvider, client) =>
         {

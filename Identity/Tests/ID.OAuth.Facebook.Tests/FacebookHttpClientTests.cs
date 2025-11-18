@@ -1,3 +1,6 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace ID.OAuth.Facebook.Tests;
 
 //###########################################################///
@@ -14,6 +17,20 @@ internal class TestHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessa
 
 public class FacebookHttpClientTests
 {
+    private static JsonSerializerOptions CreateJsonOptionsWithConverter()
+    {
+        var jsonOpts = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+            AllowTrailingCommas = true,
+            ReadCommentHandling = JsonCommentHandling.Skip
+        };
+
+        jsonOpts.Converters.Add(new UnixEpochSecondsJsonConverter());
+
+        return jsonOpts;
+    }
+
     [Fact]
     public async Task GetDebugTokenAsync_ReturnsSuccess_WhenResponseIs200AndValidJson()
     {
@@ -39,7 +56,9 @@ public class FacebookHttpClientTests
         var utilities = new FacebookClientUtilities(opts);
         var logger = Mock.Of<ILogger<FacebookHttpClient>>();
 
-        var fb = new FacebookHttpClient(client, utilities, opts, logger);
+        var jsonOpts = CreateJsonOptionsWithConverter();
+
+        var fb = new FacebookHttpClient(client, utilities, opts, logger, jsonOpts);
 
         // Act
         var result = await fb.GetDebugTokenAsync(userToken);
@@ -87,7 +106,9 @@ public class FacebookHttpClientTests
         var utilities = new FacebookClientUtilities(opts);
         var logger = Mock.Of<ILogger<FacebookHttpClient>>();
 
-        var fb = new FacebookHttpClient(client, utilities, opts, logger);
+        var jsonOpts = CreateJsonOptionsWithConverter();
+
+        var fb = new FacebookHttpClient(client, utilities, opts, logger, jsonOpts);
 
         // Act
         var result = await fb.GetUserProfileAsync(userToken);
@@ -117,7 +138,8 @@ public class FacebookHttpClientTests
         var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
         var utilities = new FacebookClientUtilities(opts);
         var logger = Mock.Of<ILogger<FacebookHttpClient>>();
-        var fb = new FacebookHttpClient(client, utilities, opts, logger);
+        var jsonOpts = CreateJsonOptionsWithConverter();
+        var fb = new FacebookHttpClient(client, utilities, opts, logger, jsonOpts);
 
         // Act
         var result = await fb.GetDebugTokenAsync(userToken);
@@ -143,7 +165,8 @@ public class FacebookHttpClientTests
         var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
         var utilities = new FacebookClientUtilities(opts);
         var logger = Mock.Of<ILogger<FacebookHttpClient>>();
-        var fb = new FacebookHttpClient(client, utilities, opts, logger);
+        var jsonOpts = CreateJsonOptionsWithConverter();
+        var fb = new FacebookHttpClient(client, utilities, opts, logger, jsonOpts);
 
         // Act
         var result = await fb.GetUserProfileAsync(userToken);

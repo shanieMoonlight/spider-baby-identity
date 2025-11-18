@@ -1,13 +1,3 @@
-using ID.OAuth.Facebook.Data;
-using ID.OAuth.Facebook.HttpService;
-using ID.OAuth.Facebook.Services;
-using ID.OAuth.Facebook.Setup;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Moq;
-using MyResults;
-using Shouldly;
-
 namespace ID.OAuth.Facebook.Tests;
 
 public class FacebookAuthenticationServiceTests
@@ -24,7 +14,7 @@ public class FacebookAuthenticationServiceTests
             AppId = "app123",
             IsValid = true,
             UserId = userId,
-            ExpiresAt = DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds()
+            ExpiresAt = DateTimeOffset.UtcNow.AddHours(1)
         };
 
         var profile = new FacebookUserProfile
@@ -68,7 +58,7 @@ public class FacebookAuthenticationServiceTests
             AppId = "app123",
             IsValid = false,
             UserId = userId,
-            ExpiresAt = DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds()
+            ExpiresAt = DateTimeOffset.UtcNow.AddHours(1)
         };
 
         var mockHttp = new Mock<IFacebookHttpClient>();
@@ -102,7 +92,7 @@ public class FacebookAuthenticationServiceTests
             AppId = "app123",
             IsValid = true,
             UserId = debugUserId,
-            ExpiresAt = DateTimeOffset.UtcNow.AddHours(1).ToUnixTimeSeconds()
+            ExpiresAt = DateTimeOffset.UtcNow.AddHours(1)
         };
 
         var profile = new FacebookUserProfile
@@ -145,7 +135,7 @@ public class FacebookAuthenticationServiceTests
             AppId = "app123",
             IsValid = true,
             UserId = userId,
-            ExpiresAt = DateTimeOffset.UtcNow.AddHours(-1).ToUnixTimeSeconds()
+            ExpiresAt = DateTimeOffset.UtcNow.AddHours(-1)
         };
 
         var mockHttp = new Mock<IFacebookHttpClient>();

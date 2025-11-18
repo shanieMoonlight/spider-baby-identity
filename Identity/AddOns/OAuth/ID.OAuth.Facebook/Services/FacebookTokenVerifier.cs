@@ -53,7 +53,7 @@ internal sealed partial class FacebookAuthenticationService(
             if (debugData.UserId != expectedUserId)
                 return GenResult<FacebookDebugTokenData>.Failure($"Token user ID does not match expected ID. UserId: {expectedUserId}. DebugData: {debugData}");
             
-            var expiresAt = debugData.ExpiresAt.HasValue ? DateTimeOffset.FromUnixTimeSeconds(debugData.ExpiresAt.Value) : (DateTimeOffset?)null;
+            var expiresAt = debugData.ExpiresAt; // now DateTimeOffset?
             if (expiresAt.HasValue && expiresAt.Value <= DateTimeOffset.UtcNow)
                 return GenResult<FacebookDebugTokenData>.Failure($"Token has expired. DebugData: {debugData}");
 

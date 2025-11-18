@@ -9,8 +9,8 @@ public class OutboxMsgsCompletedOlderThanSpecTests(ITestOutputHelper output)
     public void Constructor_SetsCriteriaCorrectly()
     {
         // Arrange
-        var daysAgo = 1;
-        var date = DateTime.UtcNow.AddDays(-daysAgo - 5);
+        var daysAgo = 5;
+        var date = DateTime.UtcNow.AddDays(-daysAgo);
         //processedOn => nonnull, Created => before daysago
         var msg = IdOutboxMessageDataFactory.Create(createdOn: date, processedOn: date.AddHours(-1), error: string.Empty);
 
@@ -33,6 +33,8 @@ public class OutboxMsgsCompletedOlderThanSpecTests(ITestOutputHelper output)
         output.WriteLine($"string.IsNullOrWhiteSpace(msg.Error): {what3}");
         output.WriteLine($"Criteria: {what}");
         output.WriteLine($"msg.ProcessedOnUtc:  {msg.ProcessedOnUtc}");
+
+        spec.Seed.ShouldBe(daysAgo);
 
         criteria(msg).ShouldBeTrue();
     }

@@ -39,10 +39,10 @@ public sealed class FacebookDebugTokenData
     public string? UserId { get; set; }
 
     [JsonPropertyName("expires_at")]
-    public long? ExpiresAt { get; set; }
+    public DateTimeOffset? ExpiresAt { get; set; }
 
     [JsonPropertyName("data_access_expires_at")]
-    public long? DataAccessExpiresAt { get; set; }
+    public DateTimeOffset? DataAccessExpiresAt { get; set; }
 
     [JsonPropertyName("scopes")]
     public string[]? Scopes { get; set; }
@@ -56,8 +56,8 @@ public sealed class FacebookDebugTokenData
             .AppendLine($"Application: {Application ?? string.Empty}")
             .AppendLine($"IsValid: {IsValid}")
             .AppendLine($"UserId: {UserId ?? string.Empty}")
-            .AppendLine($"ExpiresAt: {(ExpiresAt.HasValue ? ExpiresAt.Value.ToString() : string.Empty)}")
-            .AppendLine($"DataAccessExpiresAt: {(DataAccessExpiresAt.HasValue ? DataAccessExpiresAt.Value.ToString() : string.Empty)}")
+            .AppendLine($"ExpiresAt: {(ExpiresAt.HasValue ? ExpiresAt.Value.ToString("o") : string.Empty)}")
+            .AppendLine($"DataAccessExpiresAt: {(DataAccessExpiresAt.HasValue ? DataAccessExpiresAt.Value.ToString("o") : string.Empty)}")
             .AppendLine($"Scopes: {(Scopes != null && Scopes.Length > 0 ? string.Join(", ", Scopes) : string.Empty)}")
             .ToString();
 }//Cls

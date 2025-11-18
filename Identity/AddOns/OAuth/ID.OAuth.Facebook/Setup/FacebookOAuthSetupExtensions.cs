@@ -5,6 +5,9 @@ using ID.OAuth.Facebook.Services;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ID.OAuth.Facebook.Setup;
 
@@ -60,6 +63,7 @@ public static class FacebookOAuthSetupExtensions
 
     public static IServiceCollection AddFacebookOAuthDI(this IServiceCollection services)
     {
+
 
         // Configure named HttpClient with resilience policies
         services.AddFacebookOAuthHttpClient();

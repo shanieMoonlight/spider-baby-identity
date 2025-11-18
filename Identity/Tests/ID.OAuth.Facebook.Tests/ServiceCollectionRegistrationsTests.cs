@@ -3,6 +3,7 @@ using ID.Application.Customers.Setup;
 using ID.Domain.Entities.AppUsers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
 
 namespace ID.OAuth.Facebook.Tests;
 
@@ -86,5 +87,30 @@ public class ServiceCollectionRegistrationsTests
 
     }
 
+    //----------------------//
+
+    [Fact]
+    public void AddMyIdFacebookOAuth_RegistersJsonSerializerOptions()
+    {
+        // Arrange
+        var services = new ServiceCollection();
+
+        // Act
+        services.AddMyIdFacebookOAuth(opts =>
+        {
+            opts.AppId = "app123";
+            opts.AppSecret = "secret";
+            opts.GraphApiBaseUrl = "https://graph.facebook.com";
+        });
+
+        // Assert - registration exists in collection
+        services.Any(sd => sd.ServiceType == typeof(JsonSerializerOptions)).ShouldBeTrue();
+
+        // And it resolves with expected settings
+        var sp = services.BuildServiceProvider();
+        var jsonOpts = sp.GetRequiredService<JsonSerializerOptions>();
+        jsonOpts.PropertyNameCaseInsensitive.ShouldBeTrue();
+        jsonOpts.AllowTrailingCommas.ShouldBeTrue();
+    }
 
 }//Cls

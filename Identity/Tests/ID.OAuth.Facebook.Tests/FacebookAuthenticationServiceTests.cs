@@ -1,3 +1,5 @@
+using MyResults;
+
 namespace ID.OAuth.Facebook.Tests;
 
 public class FacebookAuthenticationServiceTests
@@ -75,6 +77,7 @@ public class FacebookAuthenticationServiceTests
 
         // Assert
         result.Succeeded.ShouldBeFalse();
+        result.Status.ShouldBe(BasicResult.ResultStatus.Unauthorized);
         result.Info.ShouldContain("invalid", Case.Insensitive);
     }
 
@@ -118,6 +121,7 @@ public class FacebookAuthenticationServiceTests
 
         // Assert
         result.Succeeded.ShouldBeFalse();
+        result.Status.ShouldBe(BasicResult.ResultStatus.Unauthorized);
         result.Info.ShouldContain("match", Case.Insensitive);
     }
 
@@ -152,6 +156,7 @@ public class FacebookAuthenticationServiceTests
 
         // Assert
         result.Succeeded.ShouldBeFalse();
+        result.Status.ShouldBe(BasicResult.ResultStatus.Unauthorized);
         result.Info.ShouldContain("expired", Case.Insensitive);
     }
 }//Cls

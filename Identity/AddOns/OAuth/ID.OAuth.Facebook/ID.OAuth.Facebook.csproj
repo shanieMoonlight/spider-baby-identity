@@ -40,9 +40,5 @@
     </AssemblyAttribute>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Auth\Abs\" />
-  </ItemGroup>
-
 </Project>
 

@@ -55,13 +55,7 @@ internal class FacebookHttpClient(
             var jsonResponse = await response.Content.ReadAsStringAsync(cancellationToken);
 
             if (!response.IsSuccessStatusCode)
-            {
-                // Log details to aid debugging
-                _logger.LogWarning("Facebook debug_token request failed. StatusCode: {StatusCode}, Endpoint: {Endpoint}, Response: {Response}",
-                    response.StatusCode, relative, jsonResponse);
-
-                return GenResult<FacebookDebugTokenData>.Failure($"Failed to retrieve debug token. StatusCode: {(int)response.StatusCode}. Body: {jsonResponse}");
-            }
+                return MapResponseToResult<FacebookDebugTokenData>(response, relative, jsonResponse);
 
             // Deserialize the response into a C# class (you'll define this struct)
 
@@ -108,7 +102,7 @@ internal class FacebookHttpClient(
         try
         {
             if (string.IsNullOrWhiteSpace(userAccessToken))
-                return GenResult<FacebookUserProfile>.Failure("Missing user access token.");
+                return GenResult<FacebookUserProfile>.BadRequestResult("Missing user access token.");
 
             // Use appsecret_proof for additional security (utilities generates it)
             var appSecretProof = _utilities.GenerateAppSecretProof(userAccessToken);
@@ -131,10 +125,7 @@ internal class FacebookHttpClient(
             var json = await response.Content.ReadAsStringAsync(cancellationToken);
 
             if (!response.IsSuccessStatusCode)
-            {
-                _logger.LogWarning("Facebook /me request failed. StatusCode: {StatusCode}, Endpoint: {Endpoint}, Response: {Response}", response.StatusCode, relative, json);
-                return GenResult<FacebookUserProfile>.Failure($"Failed to retrieve user profile. StatusCode: {(int)response.StatusCode}. Body: {json}");
-            }
+                return MapResponseToResult<FacebookUserProfile>(response, relative, json);
 
             FacebookUserProfile? profile = null;
             try
@@ -162,6 +153,31 @@ internal class FacebookHttpClient(
         }
     }
 
+    //----------------------//
+
+
+    // Helper to map non-success HTTP responses to GenResult<T>
+    private GenResult<T> MapResponseToResult<T>(HttpResponseMessage response, string endpoint, string body)
+    {
+        // Log details to aid debugging
+        _logger.LogWarning("Facebook request failed. StatusCode: {StatusCode}, Endpoint: {Endpoint}, Response: {Response}", response.StatusCode, endpoint, body);
+
+        var info = $"StatusCode: {(int)response.StatusCode}. Body: {body}";
+
+        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            return GenResult<T>.UnauthorizedResult(info);
+
+        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            return GenResult<T>.ForbiddenResult(info);
+
+        if ((int)response.StatusCode == 429)
+            return GenResult<T>.Failure($"rate_limited: {info}");
+
+        if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
+            return GenResult<T>.BadRequestResult(info);
+
+        return GenResult<T>.Failure($"Request failed. {info}");
+    }
 
 
 }//Cls

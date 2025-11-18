@@ -4,20 +4,6 @@ This file lists recommended follow-up tasks prioritized by importance. Tackle th
 
 ## High priority
 
-1. Add unit tests for core services
-   - Targets: `FacebookClient`, `FacebookClientUtilities`, `FacebookTokenVerifier`.
-   - Details: mock `HttpMessageHandler` to return known JSON for `debug_token` and `/me`. Assert parsing and GenResult values.
-   - Reason: prevents regressions and verifies parsing/edge cases.
-
-
-4. Add combined verification+profile helper
-   - Targets: `FacebookTokenVerifier` (add `VerifyAndGetProfileAsync` or similar).
-   - Details: call `GetDebugTokenAsync`, validate `app_id`, `user_id`, expiry, then fetch `/me`, verify `profile.Id` matches and return both token result and profile.
-   - Reason: centralizes security checks and simplifies sign-in handlers.
-
-5. Ensure all public methods return `GenResult<T>` consistently
-   - Targets: `FacebookClient`, other public surfaces.
-   - Details: convert any `null` returns to `GenResult<T>.Failure(...)` and include HTTP status/body information where appropriate.
 
 6. Email verification policy
    - Targets: `FindOrCreateService`, `FacebookUserProfile` model.
@@ -25,9 +11,6 @@ This file lists recommended follow-up tasks prioritized by importance. Tackle th
 
 ## Medium priority
 
-7. IOptions validation for `IdOAuthFacebookOptions`
-   - Targets: `FacebookOAuthSetupExtensions`, `IdOAuthFacebookOptions`.
-   - Details: use `services.AddOptions<IdOAuthFacebookOptions>().Validate(...)` to require `AppId` and `AppSecret` at startup.
 
 8. Improve logging and error mapping
    - Targets: `FacebookClient`, `FacebookTokenVerifier`, handlers.
@@ -55,9 +38,6 @@ This file lists recommended follow-up tasks prioritized by importance. Tackle th
     - Targets: repository CI pipeline.
     - Details: add build step and unit tests for the Facebook addon to run on PRs.
 
-14. Add more robust error/result model
-    - Targets: `GenResult<T>` usage.
-    - Details: include ResultType/Code/Message/Exception/Info fields so callers can handle different failure modes easily.
 
 ## Quick wins (apply immediately)
 
@@ -67,4 +47,6 @@ This file lists recommended follow-up tasks prioritized by importance. Tackle th
 
 ---
 
-If you want I can implement items in order. Which task should I start with?
+
+
+Dom't include body:   var info = $"StatusCode: {(int)response.StatusCode}. Body: {body}";

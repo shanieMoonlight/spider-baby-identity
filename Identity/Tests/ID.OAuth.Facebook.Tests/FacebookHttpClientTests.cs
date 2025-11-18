@@ -1,5 +1,6 @@
 using ID.Tests.Utility.Logging;
 using System.Text.Json;
+using static MyResults.BasicResult;
 
 namespace ID.OAuth.Facebook.Tests;
 
@@ -26,7 +27,10 @@ public class FacebookHttpClientTests
             ReadCommentHandling = JsonCommentHandling.Skip
         };
 
+        // Add internal converter via reflection
+
         jsonOpts.Converters.Add(new UnixEpochSecondsJsonConverter());
+
         return jsonOpts;
     }
 
@@ -139,9 +143,7 @@ public class FacebookHttpClientTests
 
         // Assert
         result.Succeeded.ShouldBeFalse();
-        result.Info.ShouldContain("Failed to retrieve debug token", Case.Insensitive);
-        // New assertions: ensure status code and body are included in the Info
-        result.Info.ShouldContain("StatusCode: 400");
+        result.Status.ShouldBe(ResultStatus.BadRequest);
         result.Info.ShouldContain("bad request");
     }
 
@@ -169,11 +171,11 @@ public class FacebookHttpClientTests
 
         // Assert
         result.Succeeded.ShouldBeFalse();
-        result.Info.ShouldContain("Failed to retrieve user profile", Case.Insensitive);
-        // New assertions: ensure status code and body are included in the Info
-        result.Info.ShouldContain("StatusCode: 500");
+        result.Status.ShouldBe(ResultStatus.Failure);
         result.Info.ShouldContain("oops");
     }
+
+    //----------------------//
 
     [Fact]
     public async Task GetDebugTokenAsync_ReturnsFailure_WhenResponseIsNon200_And_LogsWarning()
@@ -197,11 +199,11 @@ public class FacebookHttpClientTests
 
         // Assert
         result.Succeeded.ShouldBeFalse();
-        result.Info.ShouldContain("StatusCode: 400");
+        result.Status.ShouldBe(ResultStatus.BadRequest);
         result.Info.ShouldContain("bad request");
 
         // Verify warning logged
-        mockLogger.VerifyWarningLogging(msg => msg.ToString()?.Contains("debug_token request failed") == true, Times.Once);
+        mockLogger.VerifyWarningLogging(msg => msg.ToString()?.Contains(ResultStatus.BadRequest.ToString()) == true, Times.Once);
     }
 
     //----------------------//
@@ -228,11 +230,14 @@ public class FacebookHttpClientTests
 
         // Assert
         result.Succeeded.ShouldBeFalse();
-        result.Info.ShouldContain("StatusCode: 500");
+        result.Status.ShouldBe(ResultStatus.Failure);
         result.Info.ShouldContain("oops");
 
+
         // Verify warning logged
-        mockLogger.VerifyWarningLogging(msg => msg.ToString()?.Contains("/me request failed") == true, Times.Once);
+        mockLogger.VerifyWarningLogging(
+            msg => msg.ToString()?.Contains("Request failed", StringComparison.CurrentCultureIgnoreCase) == true
+        , Times.Once);
     }
 
     //----------------------//
@@ -258,6 +263,7 @@ public class FacebookHttpClientTests
 
         // Assert
         result.Succeeded.ShouldBeFalse();
+        result.Status.ShouldBe(ResultStatus.Failure);
         result.Info.ShouldContain("Failed to parse debug token response");
 
         mockLogger.VerifyWarningLogging(msg => msg.ToString()?.Contains("Failed to deserialize debug_token response") == true, Times.Once);

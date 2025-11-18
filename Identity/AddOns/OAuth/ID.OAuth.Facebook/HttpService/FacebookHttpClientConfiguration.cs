@@ -3,8 +3,7 @@ using ID.OAuth.Facebook.HttpService.Imps;
 using ID.OAuth.Facebook.Setup;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using ID.OAuth.Utils.HttpClient;
 
 namespace ID.OAuth.Facebook.HttpService;
 
@@ -25,23 +24,6 @@ public static class FacebookHttpClientConfiguration
 
         services.AddScoped<IFacebookClientUtilities, FacebookClientUtilities>();
 
-
-        //// Register a shared JsonSerializerOptions for Facebook deserialization
-        //services.AddSingleton(provider =>
-        //{
-        //    var opts = new JsonSerializerOptions
-        //    {
-        //        PropertyNameCaseInsensitive = true,
-        //        AllowTrailingCommas = true,
-        //        ReadCommentHandling = JsonCommentHandling.Skip,
-        //        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-        //    };
-
-        //    // Register the Unix epoch converter for timestamps
-        //    opts.Converters.Add(new UnixEpochSecondsJsonConverter());
-
-        //    return opts;
-        //});
 
 
 
@@ -66,21 +48,7 @@ public static class FacebookHttpClientConfiguration
             // Add User-Agent header for better API rate limiting
             client.DefaultRequestHeaders.Add("User-Agent", "SpiderBaby-MyId-FacebookOAuth/1.0");
         })
-        .AddStandardResilienceHandler(options =>
-        {
-            // Configure retry options
-            options.Retry.MaxRetryAttempts = 3;
-            options.Retry.Delay = TimeSpan.FromSeconds(1);
-
-            // Configure circuit breaker options
-            options.CircuitBreaker.FailureRatio = 0.5; // 50% failure rate
-            options.CircuitBreaker.MinimumThroughput = 3; // At least 3 requests
-            options.CircuitBreaker.BreakDuration = TimeSpan.FromSeconds(30);
-
-            // Configure timeout options
-            options.AttemptTimeout.Timeout = TimeSpan.FromSeconds(10);
-            options.TotalRequestTimeout.Timeout = TimeSpan.FromSeconds(30);
-        });
+        .AddMyIdOauthStandardResilienceHandler();
 
         return services;
     }

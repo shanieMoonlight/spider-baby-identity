@@ -1,6 +1,4 @@
 using FluentValidation.TestHelper;
-using ID.OAuth.Amazon.Features.SignIn.AmazonCookieSignIn;
-using Shouldly;
 
 namespace ID.OAuth.Amazon.Tests.Features.SignIn.AmazonCookieSignIn;
 

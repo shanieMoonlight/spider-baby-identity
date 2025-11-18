@@ -78,46 +78,46 @@
 
 //    //----------------------//
 
-//    [Fact]
-//    public async Task GetUserProfileAsync_ReturnsSuccess_WhenResponseIs200AndValidJson()
+//[Fact]
+//public async Task GetUserProfileAsync_ReturnsSuccess_WhenResponseIs200AndValidJson()
+//{
+//    // Arrange
+//    var userToken = "some_user_token";
+//    var profileJson = @"{""id"": ""101"", ""email"": ""me@example.com"", ""name"": ""Test Me"", ""first_name"": ""Test"", ""last_name"": ""Me"", ""picture"": { ""data"": { ""height"": 50, ""is_silhouette"": false, ""url"": ""https://example.com/p.jpg"", ""width"": 50 } }, ""verified"": true}";
+
+//    var handler = new TestHttpMessageHandler(req =>
 //    {
-//        // Arrange
-//        var userToken = "some_user_token";
-//        var profileJson = @"{""id"": ""101"", ""email"": ""me@example.com"", ""name"": ""Test Me"", ""first_name"": ""Test"", ""last_name"": ""Me"", ""picture"": { ""data"": { ""height"": 50, ""is_silhouette"": false, ""url"": ""https://example.com/p.jpg"", ""width"": 50 } }, ""verified"": true}";
-
-//        var handler = new TestHttpMessageHandler(req =>
+//        var resp = new HttpResponseMessage(HttpStatusCode.OK)
 //        {
-//            var resp = new HttpResponseMessage(HttpStatusCode.OK)
-//            {
-//                Content = new StringContent(profileJson)
-//            };
-//            return resp;
-//        });
-
-//        var client = new HttpClient(handler)
-//        {
-//            BaseAddress = new Uri("https://graph.facebook.com/v18.0/")
+//            Content = new StringContent(profileJson)
 //        };
+//        return resp;
+//    });
 
-//        var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
-//        var utilities = new FacebookClientUtilities(opts);
-//        var logger = Mock.Of<ILogger<FacebookHttpClient>>();
+//    var client = new HttpClient(handler)
+//    {
+//        BaseAddress = new Uri("https://graph.facebook.com/v18.0/")
+//    };
 
-//        var jsonOpts = CreateJsonOptionsWithConverter();
+//    var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
+//    var utilities = new FacebookClientUtilities(opts);
+//    var logger = Mock.Of<ILogger<FacebookHttpClient>>();
 
-//        var fb = new FacebookHttpClient(client, utilities, opts, logger, jsonOpts);
+//    var jsonOpts = CreateJsonOptionsWithConverter();
 
-//        // Act
-//        var result = await fb.GetUserProfileAsync(userToken);
+//    var fb = new FacebookHttpClient(client, utilities, opts, logger, jsonOpts);
 
-//        // Assert
-//        result.Succeeded.ShouldBeTrue();
-//        result.Value.ShouldNotBeNull();
-//        result.Value.Id.ShouldBe("101");
-//        result.Value.Email.ShouldBe("me@example.com");
-//        result.Value.Picture.ShouldNotBeNull();
-//        result.Value.Picture.Data?.Url.ShouldBe("https://example.com/p.jpg");
-//    }
+//    // Act
+//    var result = await fb.GetUserProfileAsync(userToken);
+
+//    // Assert
+//    result.Succeeded.ShouldBeTrue();
+//    result.Value.ShouldNotBeNull();
+//    result.Value.Id.ShouldBe("101");
+//    result.Value.Email.ShouldBe("me@example.com");
+//    result.Value.Picture.ShouldNotBeNull();
+//    result.Value.Picture.Data?.Url.ShouldBe("https://example.com/p.jpg");
+//}
 
 //    //----------------------//
 

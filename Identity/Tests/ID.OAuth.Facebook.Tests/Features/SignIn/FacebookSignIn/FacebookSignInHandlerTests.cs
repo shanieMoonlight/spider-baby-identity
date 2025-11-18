@@ -1,21 +1,32 @@
+using System.Threading;
+using System.Threading.Tasks;
+using Moq;
+using Shouldly;
+using Xunit;
+using MyResults;
+using ID.OAuth.Facebook.Features.SignIn.FacebookSignIn;
+using ID.OAuth.Facebook.Services.Abs;
+using ID.Domain.Entities.AppUsers;
+using ID.Tests.Data.Factories;
 using ID.Application.JWT;
-using ID.OAuth.Amazon.Features.SignIn;
-using ID.OAuth.Amazon.Features.SignIn.AmazonSignIn;
+using ID.Domain.Entities.Teams;
+using ID.Domain.Models;
+using ID.Application.AppAbs.ApplicationServices.TwoFactor;
 
-namespace ID.OAuth.Amazon.Tests.Features.SignIn.AmazonSignIn;
+namespace ID.OAuth.Facebook.Tests.Features.SignIn.FacebookSignIn;
 
-public class AmazonSignInHandlerTests
+public class FacebookSignInHandlerTests
 {
     [Fact]
     public async Task Handle_ShouldReturnJwtPackage_WhenTwoFactorDisabled()
     {
         // Arrange
-        var dto = new AmazonSignInDto { AuthToken = "token", DeviceId = "dev-1" };
-        var cmd = new AmazonSignInCmd(dto);
+        var dto = new FacebookSignInDto { AuthToken = "token", DeviceId = "dev-1" };
+        var cmd = new FacebookSignInCmd(dto);
 
         var mockFindOrCreate = new Mock<IFindOrCreateService<AppUser>>();
         var mockJwtProvider = new Mock<IJwtPackageProvider>();
-        var mockVerifier = new Mock<IAmazonAuthenticationService>();
+        var mockVerifier = new Mock<IFacebookAuthenticationService>();
         var mock2FactorService = new Mock<Application.AppAbs.TokenVerificationServices.ITwoFactorVerificationService<AppUser>>();
         var mockTwoFactorMsg = new Mock<ITwoFactorMsgService>();
 
@@ -23,9 +34,9 @@ public class AmazonSignInHandlerTests
         var team = user.Team!;
 
         mockVerifier.Setup(v => v.VerifyAndGetProfileAsync(dto.AuthToken, dto.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(GenResult<Data.AmazonUserProfile>.Success(new Data.AmazonUserProfile { UserId = "u1", Email = "a@b.com", Name = "Name" }));
+            .ReturnsAsync(GenResult<FacebookUserProfile>.Success(new FacebookUserProfile { Id = "u1", Email = "a@b.com", Name = "Name" }));
 
-        mockFindOrCreate.Setup(f => f.FindOrCreateUserAsync(It.IsAny<Data.AmazonUserProfile>(), dto, It.IsAny<CancellationToken>()))
+        mockFindOrCreate.Setup(f => f.FindOrCreateUserAsync(It.IsAny<FacebookUserProfile>(), dto, It.IsAny<CancellationToken>()))
             .ReturnsAsync(GenResult<AppUser>.Success(user));
 
         mock2FactorService.Setup(x => x.IsTwoFactorEnabledAsync(user)).ReturnsAsync(false);
@@ -34,7 +45,7 @@ public class AmazonSignInHandlerTests
         mockJwtProvider.Setup(j => j.CreateJwtPackageAsync(user, user.Team!, dto.DeviceId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedJwt);
 
-        var handler = new AmazonSignInHandler(
+        var handler = new FacebookSignInHandler(
             mockFindOrCreate.Object,
             mockJwtProvider.Object,
             mockVerifier.Object,
@@ -55,12 +66,12 @@ public class AmazonSignInHandlerTests
     public async Task Handle_ShouldReturnTwoFactorJwt_WhenTwoFactorEnabled()
     {
         // Arrange
-        var dto = new AmazonSignInDto { AuthToken = "token", DeviceId = "dev-2" };
-        var cmd = new AmazonSignInCmd(dto);
+        var dto = new FacebookSignInDto { AuthToken = "token", DeviceId = "dev-2" };
+        var cmd = new FacebookSignInCmd(dto);
 
         var mockFindOrCreate = new Mock<IFindOrCreateService<AppUser>>();
         var mockJwtProvider = new Mock<IJwtPackageProvider>();
-        var mockVerifier = new Mock<IAmazonAuthenticationService>();
+        var mockVerifier = new Mock<IFacebookAuthenticationService>();
         var mock2FactorService = new Mock<Application.AppAbs.TokenVerificationServices.ITwoFactorVerificationService<AppUser>>();
         var mockTwoFactorMsg = new Mock<ITwoFactorMsgService>();
 
@@ -68,9 +79,9 @@ public class AmazonSignInHandlerTests
         var team = user.Team!;
 
         mockVerifier.Setup(v => v.VerifyAndGetProfileAsync(dto.AuthToken, dto.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(GenResult<Data.AmazonUserProfile>.Success(new Data.AmazonUserProfile { UserId = "u1", Email = "a@b.com", Name = "Name" }));
+            .ReturnsAsync(GenResult<FacebookUserProfile>.Success(new FacebookUserProfile { Id = "u1", Email = "a@b.com", Name = "Name" }));
 
-        mockFindOrCreate.Setup(f => f.FindOrCreateUserAsync(It.IsAny<Data.AmazonUserProfile>(), dto, It.IsAny<CancellationToken>()))
+        mockFindOrCreate.Setup(f => f.FindOrCreateUserAsync(It.IsAny<FacebookUserProfile>(), dto, It.IsAny<CancellationToken>()))
             .ReturnsAsync(GenResult<AppUser>.Success(user));
 
         mock2FactorService.Setup(x => x.IsTwoFactorEnabledAsync(user)).ReturnsAsync(true);
@@ -82,7 +93,7 @@ public class AmazonSignInHandlerTests
         mockJwtProvider.Setup(j => j.CreateJwtPackageWithTwoFactorRequiredAsync(user, TwoFactorProvider.Email, It.IsAny<string?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(twoFactorJwt);
 
-        var handler = new AmazonSignInHandler(
+        var handler = new FacebookSignInHandler(
             mockFindOrCreate.Object,
             mockJwtProvider.Object,
             mockVerifier.Object,

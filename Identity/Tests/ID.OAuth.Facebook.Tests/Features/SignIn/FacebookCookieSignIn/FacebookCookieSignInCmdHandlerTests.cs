@@ -1,34 +1,48 @@
-namespace ID.OAuth.Amazon.Tests.Features.SignIn.AmazonCookieSignIn;
+using System.Threading;
+using System.Threading.Tasks;
+using Moq;
+using Shouldly;
+using Xunit;
+using MyResults;
+using ID.OAuth.Facebook.Features.SignIn.FacebookCookieSignIn;
+using ID.OAuth.Facebook.Services.Abs;
+using ID.Domain.Entities.AppUsers;
+using ID.Tests.Data.Factories;
+using ID.Application.AppAbs.SignIn;
+using ID.Application.AppAbs.ApplicationServices.TwoFactor;
+using ID.Domain.Entities.Teams;
+using ID.Domain.Models;
 
-public class AmazonCookieSignInCmdHandlerTests
+namespace ID.OAuth.Facebook.Tests.Features.SignIn.FacebookCookieSignIn;
+
+public class FacebookCookieSignInCmdHandlerTests
 {
     [Fact]
     public async Task Handle_ShouldReturnSuccessAndCallSignIn_WhenTwoFactorDisabled()
     {
         // Arrange
-        var dto = new AmazonCookieSignInDto { AuthToken = "token", RememberMe = true, DeviceId = "dev-1" };
-        var cmd = new AmazonCookieSignInCmd(dto);
+        var dto = new FacebookCookieSignInDto { AuthToken = "token", RememberMe = true, DeviceId = "dev-1" };
+        var cmd = new FacebookCookieSignInCmd(dto);
 
         var mockFindOrCreate = new Mock<IFindOrCreateService<AppUser>>();
         var mockCookieService = new Mock<ICookieAuthService<AppUser>>();
-        var mockVerifier = new Mock<IAmazonAuthenticationService>();
+        var mockVerifier = new Mock<IFacebookAuthenticationService>();
         var mock2FactorService = new Mock<Application.AppAbs.TokenVerificationServices.ITwoFactorVerificationService<AppUser>>();
         var mockTwoFactorMsg = new Mock<ITwoFactorMsgService>();
 
         var user = AppUserDataFactory.AnyUser;
-        // AppUserDataFactory.AnyUser already has a Team
         var team = user.Team!;
 
         mockVerifier.Setup(v => v.VerifyAndGetProfileAsync(dto.AuthToken, dto.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(GenResult<Data.AmazonUserProfile>.Success(new Data.AmazonUserProfile { UserId = "u1", Email = "a@b.com", Name = "Name" }));
+            .ReturnsAsync(GenResult<FacebookUserProfile>.Success(new FacebookUserProfile { Id = "u1", Email = "a@b.com", Name = "Name" }));
 
-        mockFindOrCreate.Setup(f => f.FindOrCreateUserAsync(It.IsAny<Data.AmazonUserProfile>(), dto, It.IsAny<CancellationToken>()))
+        mockFindOrCreate.Setup(f => f.FindOrCreateUserAsync(It.IsAny<FacebookUserProfile>(), dto, It.IsAny<CancellationToken>()))
             .ReturnsAsync(GenResult<AppUser>.Success(user));
 
         mock2FactorService.Setup(x => x.IsTwoFactorEnabledAsync(user))
             .ReturnsAsync(false);
 
-        var handler = new AmazonCookieSignInCmdHandler(
+        var handler = new FacebookCookieSignInCmdHandler(
             mockFindOrCreate.Object,
             mockCookieService.Object,
             mockVerifier.Object,
@@ -48,12 +62,12 @@ public class AmazonCookieSignInCmdHandlerTests
     public async Task Handle_ShouldReturnPreconditionRequired_WhenTwoFactorEnabled()
     {
         // Arrange
-        var dto = new AmazonCookieSignInDto { AuthToken = "token", RememberMe = false, DeviceId = "dev-2" };
-        var cmd = new AmazonCookieSignInCmd(dto);
+        var dto = new FacebookCookieSignInDto { AuthToken = "token", RememberMe = false, DeviceId = "dev-2" };
+        var cmd = new FacebookCookieSignInCmd(dto);
 
         var mockFindOrCreate = new Mock<IFindOrCreateService<AppUser>>();
         var mockCookieService = new Mock<ICookieAuthService<AppUser>>();
-        var mockVerifier = new Mock<IAmazonAuthenticationService>();
+        var mockVerifier = new Mock<IFacebookAuthenticationService>();
         var mock2FactorService = new Mock<Application.AppAbs.TokenVerificationServices.ITwoFactorVerificationService<AppUser>>();
         var mockTwoFactorMsg = new Mock<ITwoFactorMsgService>();
 
@@ -61,9 +75,9 @@ public class AmazonCookieSignInCmdHandlerTests
         var team = user.Team!;
 
         mockVerifier.Setup(v => v.VerifyAndGetProfileAsync(dto.AuthToken, dto.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(GenResult<Data.AmazonUserProfile>.Success(new Data.AmazonUserProfile { UserId = "u1", Email = "a@b.com", Name = "Name" }));
+            .ReturnsAsync(GenResult<FacebookUserProfile>.Success(new FacebookUserProfile { Id = "u1", Email = "a@b.com", Name = "Name" }));
 
-        mockFindOrCreate.Setup(f => f.FindOrCreateUserAsync(It.IsAny<Data.AmazonUserProfile>(), dto, It.IsAny<CancellationToken>()))
+        mockFindOrCreate.Setup(f => f.FindOrCreateUserAsync(It.IsAny<FacebookUserProfile>(), dto, It.IsAny<CancellationToken>()))
             .ReturnsAsync(GenResult<AppUser>.Success(user));
 
         mock2FactorService.Setup(x => x.IsTwoFactorEnabledAsync(user))
@@ -72,7 +86,7 @@ public class AmazonCookieSignInCmdHandlerTests
         mockTwoFactorMsg.Setup(x => x.SendOTPFor2FactorAuth(It.IsAny<Team>(), It.IsAny<AppUser>(), It.IsAny<TwoFactorProvider?>()))
             .ReturnsAsync(GenResult<MfaResultData>.Success(MfaResultData.Create(TwoFactorProvider.Email)));
 
-        var handler = new AmazonCookieSignInCmdHandler(
+        var handler = new FacebookCookieSignInCmdHandler(
             mockFindOrCreate.Object,
             mockCookieService.Object,
             mockVerifier.Object,

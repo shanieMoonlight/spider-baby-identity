@@ -1,7 +1,6 @@
 using FluentValidation.TestHelper;
 using ID.OAuth.Amazon.Features.SignIn;
 using ID.OAuth.Amazon.Features.SignIn.AmazonSignIn;
-using Shouldly;
 
 namespace ID.OAuth.Amazon.Tests.Features.SignIn.AmazonSignIn;
 

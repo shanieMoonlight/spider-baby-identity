@@ -53,6 +53,8 @@ internal sealed partial class AmazonAuthenticationService(
         }
     }
 
+    //--------------------------//
+
     public async Task<GenResult<AmazonUserProfile>> GetUserProfileAsync(string accessToken, CancellationToken cancellationToken = default)
     {
         if (accessToken.IsNullOrWhiteSpace())
@@ -96,4 +98,5 @@ internal sealed partial class AmazonAuthenticationService(
 
         return GenResult<AmazonUserProfile>.Success(profile);
     }
-}
+
+}//Cls

@@ -1,6 +1,4 @@
 using ID.Domain.Entities.AppUsers;
-using ID.OAuth.Facebook.HttpService.Abs;
-using ID.OAuth.Facebook.HttpService.Imps;
 using ID.OAuth.Facebook.Services.Abs;
 using ID.OAuth.Facebook.Services.Imps;
 using Microsoft.Extensions.DependencyInjection;

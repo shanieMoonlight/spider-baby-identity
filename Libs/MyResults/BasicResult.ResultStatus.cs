@@ -43,6 +43,11 @@ public partial class BasicResult
         /// <summary>
         /// Additional conditions must be satisfied before the request can be processed
         /// </summary>
-        PreconditionRequired
+        PreconditionRequired,
+
+        /// <summary>
+        /// The user has sent too many requests in a given amount of time
+        /// </summary>
+        RateLimitExceeded
     }
 }

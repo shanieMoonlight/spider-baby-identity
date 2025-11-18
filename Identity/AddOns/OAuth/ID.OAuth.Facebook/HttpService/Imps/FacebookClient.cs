@@ -1,6 +1,6 @@
 ﻿using ID.GlobalSettings.Errors;
 using ID.OAuth.Facebook.Data;
-using ID.OAuth.Facebook.Services;
+using ID.OAuth.Facebook.HttpService.Abs;
 using ID.OAuth.Facebook.Setup;
 using LoggingHelpers;
 using Microsoft.Extensions.Logging;
@@ -9,7 +9,7 @@ using MyResults;
 using System.Diagnostics;
 using System.Text.Json;
 
-namespace ID.OAuth.Facebook.HttpService;
+namespace ID.OAuth.Facebook.HttpService.Imps;
 internal class FacebookHttpClient(
     HttpClient _client,
     IFacebookClientUtilities _utilities,
@@ -170,8 +170,8 @@ internal class FacebookHttpClient(
         if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
             return GenResult<T>.ForbiddenResult(info);
 
-        if ((int)response.StatusCode == 429)
-            return GenResult<T>.Failure($"rate_limited: {info}");
+        if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
+            return GenResult<T>.RateLimitExceededResult($"rate_limited: {info}");
 
         if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
             return GenResult<T>.BadRequestResult(info);

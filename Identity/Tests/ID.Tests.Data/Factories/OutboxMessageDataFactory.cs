@@ -8,9 +8,6 @@ namespace ID.Tests.Data.Factories;
 
 public static class IdOutboxMessageDataFactory
 {
-    private static bool _isProcessed = false;
-
-    //------------------------------------//
 
     /// <summary>
     /// Alternate Entities will be unprocessed
@@ -38,14 +35,16 @@ public static class IdOutboxMessageDataFactory
         ev ??= DomainEventsFactory.CreateRandom();
         createdOn ??= RandomDateGenerator.Generate(DateTime.Now.AddDays(-28), DateTime.Now);
 
-        _isProcessed = processedOn != null;
+        // Use a local flag instead of a static field so this method is thread-safe
+        var isProcessed = processedOn != null;
 
         var paramaters = new[]
            {
             new PropertyAssignment(nameof(IdOutboxMessage.Id),  () => id ),
             new PropertyAssignment(nameof(IdOutboxMessage.Type),  () => type ),
             new PropertyAssignment(nameof(IdOutboxMessage.Error),  () => error ),
-            new PropertyAssignment(nameof(IdOutboxMessage.ProcessedOnUtc),  () => _isProcessed ? GetProcessedOn():null ),
+            // Use the provided processedOn value if present, otherwise null
+            new PropertyAssignment(nameof(IdOutboxMessage.ProcessedOnUtc),  () => isProcessed ? (processedOn ?? GetProcessedOn()) : null ),
             new PropertyAssignment(nameof(IdOutboxMessage.CreatedOnUtc),  () => createdOn ),
             new PropertyAssignment(nameof(IdOutboxMessage.ContentJson),  () => JsonConvert.SerializeObject(
                 ev,

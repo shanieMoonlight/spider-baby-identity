@@ -1,6 +1,7 @@
 using ID.GlobalSettings.Errors;
 using ID.OAuth.Facebook.Data;
-using ID.OAuth.Facebook.HttpService;
+using ID.OAuth.Facebook.HttpService.Abs;
+using ID.OAuth.Facebook.Services.Abs;
 using ID.OAuth.Facebook.Setup;
 using LoggingHelpers;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,7 @@ using MyResults;
 using StringHelpers;
 using static MyResults.BasicResult;
 
-namespace ID.OAuth.Facebook.Services;
+namespace ID.OAuth.Facebook.Services.Imps;
 
 internal sealed partial class FacebookAuthenticationService(
     IFacebookHttpClient _http,

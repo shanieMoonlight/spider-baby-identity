@@ -29,9 +29,4 @@ public class IdOAuthFacebookOptions
     /// </summary>
     public int RequestTimeoutSeconds { get; set; } = 30;
 
-    //// Optional: callback path used by the ASP.NET Core Facebook middleware
-    //public string CallbackPath { get; set; } = "/signin-facebook";
-
-    //// Optional additional scopes requested from Facebook
-    //public string[]? Scopes { get; set; }
-}
+}//Cls

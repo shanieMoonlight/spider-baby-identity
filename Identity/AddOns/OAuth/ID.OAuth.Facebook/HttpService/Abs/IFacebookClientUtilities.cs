@@ -1,4 +1,4 @@
-﻿namespace ID.OAuth.Facebook.Services;
+﻿namespace ID.OAuth.Facebook.HttpService.Abs;
 
 using System;
 

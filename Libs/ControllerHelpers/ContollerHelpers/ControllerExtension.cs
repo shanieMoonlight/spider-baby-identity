@@ -213,6 +213,9 @@ public static class ControllerExtension
         if (result.Forbidden)
             return controller.ForbiddenWithMessageDto(result.Info);
 
+        if (result.RateLimitExceeded)
+            return controller.RateLimitExceededWithMessageDto(result.Info);
+
         return controller.InternalServerError(MessageResponseDto.Generate(result.Info));
 
     }
@@ -239,6 +242,10 @@ public static class ControllerExtension
 
         if (result.Forbidden)
             return controller.ForbiddenWithMessageDto(result.Info);
+
+
+        if (result.RateLimitExceeded)
+            return controller.RateLimitExceededWithMessageDto(result.Info);
 
         return controller.InternalServerError(MessageResponseDto.Generate(result.Info));
 

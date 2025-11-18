@@ -13,3 +13,6 @@ global using ID.OAuth.Facebook.Data;
 global using ID.OAuth.Facebook.Features.SignIn;
 global using ID.Tests.Data.Factories;
 global using MyResults;
+global using ID.OAuth.Facebook.Services.Imps;
+global using ID.Tests.Utility.Logging;
+global using System.Text.Json;

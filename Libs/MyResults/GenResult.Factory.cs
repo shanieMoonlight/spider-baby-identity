@@ -7,13 +7,29 @@ public partial class GenResult<T> : BasicResult
     /// </summary>
     /// <param name="info">What is wrong with request</param>
     /// <returns>GenResult with BadRequest status</returns>
-    public static new GenResult<T> BadRequestResult(string? info) =>
+    public static new GenResult<T> BadRequestResult(string? info = null) =>
         new(
             succeeded: false,
             value: default,
             info: info,
             exception: null,
             status: ResultStatus.BadRequest
+        );
+
+    //------------------------------------//
+
+    /// <summary>
+    /// Generates a GenResult with RateLimitExceeded status
+    /// </summary>
+    /// <param name="info">What is wrong with request</param>
+    /// <returns>GenResult with RateLimitExceeded status</returns>
+    public static new GenResult<T> RateLimitExceededResult(string? info = null) =>
+        new(
+            succeeded: false,
+            value: default,
+            info: info,
+            exception: null,
+            status: ResultStatus.RateLimitExceeded
         );
 
     //------------------------------------//

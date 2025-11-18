@@ -1,9 +1,8 @@
-using ID.OAuth.Facebook.Services;
-using ID.OAuth.Facebook.Setup;
-using Microsoft.Extensions.Options;
-using Shouldly;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.Extensions.Options;
+using ID.OAuth.Facebook.HttpService.Imps;
+using ID.OAuth.Facebook.Setup;
 
 namespace ID.OAuth.Facebook.Tests;
 

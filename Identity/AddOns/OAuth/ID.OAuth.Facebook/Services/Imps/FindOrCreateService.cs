@@ -6,9 +6,10 @@ using ID.Domain.Entities.AppUsers.OAuth;
 using ID.Domain.Entities.AppUsers.ValueObjects;
 using ID.OAuth.Facebook.Data;
 using ID.OAuth.Facebook.Features.SignIn;
+using ID.OAuth.Facebook.Services.Abs;
 using MyResults;
 
-namespace ID.OAuth.Facebook.Services;
+namespace ID.OAuth.Facebook.Services.Imps;
 
 internal class FindOrCreateService<TUser>(
     IFindUserService<TUser> _findUserService,

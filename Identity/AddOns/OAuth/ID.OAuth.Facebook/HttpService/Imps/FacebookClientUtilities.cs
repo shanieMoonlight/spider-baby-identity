@@ -1,9 +1,10 @@
-﻿using ID.OAuth.Facebook.Setup;
+﻿using ID.OAuth.Facebook.HttpService.Abs;
+using ID.OAuth.Facebook.Setup;
 using Microsoft.Extensions.Options;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ID.OAuth.Facebook.Services;
+namespace ID.OAuth.Facebook.HttpService.Imps;
 internal class FacebookClientUtilities(IOptions<IdOAuthFacebookOptions> optsProvider) : IFacebookClientUtilities
 {
 

@@ -10,7 +10,8 @@ namespace ID.Tests.Data.Factories;
 public static class AppUserDataFactory
 {
 
-    public static AppUser AnyUser = AppUser.Create(
+    // Return a fresh AppUser instance each time to avoid shared mutable state in tests
+    public static AppUser AnyUser => AppUser.Create(
          TeamDataFactory.AnyTeam,
          EmailAddress.Create("anyone@anywhere.com"),
          UsernameNullable.Create("anyone"),
@@ -27,7 +28,7 @@ public static class AppUserDataFactory
         return [.. IdGenerator.GetGuidIdsList(count).Select(id => Create(id))];
     }
 
-    //- - - - - - - - - - - - - - - - - - //
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
     public static AppUser Create(
         Guid? teamId = null,
@@ -46,15 +47,13 @@ public static class AppUserDataFactory
         string? securityStamp = null,
         string? concurrencyStamp = null,
         bool? phoneNumberConfirmed = null,
+        string? passwordHash = null,
         bool? twoFactorEnabled = null,
         Team? team = null,
         IdentityAddress? identityAddress = null,
         TwoFactorProvider? twoFactorProvider = null,
         int? teamPosition = 1,
         DateTime? tknModifiedDate = null,
-        string? passwordHash = null,
-        bool? lockoutEnabled = null,
-        int? accessFailedCount = null,
         string? administratorUsername = null,
         string? administratorId = null
         )
@@ -80,9 +79,6 @@ public static class AppUserDataFactory
         phoneNumber ??= $"{MyRandomDataGenerator.Phone()}";
         phoneNumberConfirmed ??= false;
         twoFactorEnabled ??= false;
-        lockoutEnabled ??= false;
-        accessFailedCount ??= 0;
-        twoFactorProvider ??= TwoFactorProvider.Email;
         teamPosition ??= 1;
 
         var paramaters = new[]
@@ -107,8 +103,8 @@ public static class AppUserDataFactory
                 new PropertyAssignment(nameof(AppUser.ConcurrencyStamp),  () => concurrencyStamp ),
                 new PropertyAssignment(nameof(AppUser.PhoneNumber),  () => phoneNumber ),
                 new PropertyAssignment(nameof(AppUser.PhoneNumberConfirmed),  () => phoneNumberConfirmed ),
-                new PropertyAssignment(nameof(AppUser.LockoutEnabled),  () => lockoutEnabled ),
-                new PropertyAssignment(nameof(AppUser.AccessFailedCount),  () => accessFailedCount ), 
+                new PropertyAssignment(nameof(AppUser.LockoutEnabled),  () => false ),
+                new PropertyAssignment(nameof(AppUser.AccessFailedCount),  () => 0 ), 
                 new PropertyAssignment(nameof(AppUser.TwoFactorEnabled),  () => twoFactorEnabled ),
                 new PropertyAssignment(nameof(AppUser.TeamPosition),  () => teamPosition ),
                 new PropertyAssignment(nameof(AppUser.Address),  () => identityAddress ),

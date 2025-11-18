@@ -1,13 +1,9 @@
 using FluentValidation;
-using ID.Domain.Entities.AppUsers;
 using ID.OAuth.Facebook.HttpService;
 using ID.OAuth.Facebook.Services;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace ID.OAuth.Facebook.Setup;
 
@@ -63,18 +59,13 @@ public static class FacebookOAuthSetupExtensions
 
     public static IServiceCollection AddFacebookOAuthDI(this IServiceCollection services)
     {
-
-
         // Configure named HttpClient with resilience policies
         services.AddFacebookOAuthHttpClient();
 
         // Register Facebook OAuth services
-        services.AddScoped<IFacebookAuthenticationService, FacebookAuthenticationService>();
-        services.AddScoped<IFacebookClientUtilities, FacebookClientUtilities>();
-        services.AddScoped<IFindOrCreateService<AppUser>, FindOrCreateService<AppUser>>();
+        services.AddFacebookOAuthServices();
 
         var assembly = typeof(IdFacebookOAuthAssemblyReference).Assembly;
-        //IdOAuthFacebookOptionsSetup.ConfigureIdOAuthFacebookOptions(services, setupOptions ?? new IdOAuthFacebookOptions());
 
         services.AddMediatR(config =>
         {

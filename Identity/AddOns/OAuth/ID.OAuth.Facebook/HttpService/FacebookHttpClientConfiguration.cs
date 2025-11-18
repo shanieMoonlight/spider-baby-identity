@@ -1,3 +1,5 @@
+using ID.OAuth.Facebook.HttpService.Abs;
+using ID.OAuth.Facebook.HttpService.Imps;
 using ID.OAuth.Facebook.Setup;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -20,6 +22,9 @@ public static class FacebookHttpClientConfiguration
     /// <returns></returns>
     public static IServiceCollection AddFacebookOAuthHttpClient(this IServiceCollection services)
     {
+
+        services.AddScoped<IFacebookClientUtilities, FacebookClientUtilities>();
+
 
         // Register a shared JsonSerializerOptions for Facebook deserialization
         services.AddSingleton(provider =>

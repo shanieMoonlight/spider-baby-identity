@@ -1,4 +1,0 @@
-Validate setup options. Especially ensure that the App ID and App Secret are provided. and BaseUrl is set to Facebook's OAuth endpoint and valid.
-
-
-

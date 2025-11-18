@@ -5,6 +5,7 @@ using ID.Email.SG.Setup;
 using ID.Email.SMTP.Setup;
 using ID.Infrastructure.Auth.JWT.Setup;
 using ID.Msg.Twilio.Setup;
+using ID.OAuth.Facebook.Services;
 using ID.OAuth.Facebook.Setup;
 using ID.OAuth.Google.Setup;
 using ID.PhoneConfirmation.Setup;

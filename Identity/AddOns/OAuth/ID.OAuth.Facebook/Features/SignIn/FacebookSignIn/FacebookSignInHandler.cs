@@ -5,7 +5,7 @@ using ID.Application.Mediatr.CqrsAbs;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Models;
-using ID.OAuth.Facebook.Services;
+using ID.OAuth.Facebook.Services.Abs;
 using MyResults;
 
 namespace ID.OAuth.Facebook.Features.SignIn.FacebookSignIn;

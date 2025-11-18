@@ -1,7 +1,7 @@
 using ID.OAuth.Facebook.Data;
 using MyResults;
 
-namespace ID.OAuth.Facebook.Services;
+namespace ID.OAuth.Facebook.Services.Abs;
 
 public interface IFacebookAuthenticationService
 {

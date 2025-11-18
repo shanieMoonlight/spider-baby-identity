@@ -1,7 +1,7 @@
 ﻿using ID.OAuth.Facebook.Data;
 using MyResults;
 
-namespace ID.OAuth.Facebook.HttpService;
+namespace ID.OAuth.Facebook.HttpService.Abs;
 
 internal interface IFacebookHttpClient
 {

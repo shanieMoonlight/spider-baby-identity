@@ -2,7 +2,7 @@ using ID.OAuth.Facebook.HttpService.Imps;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ID.OAuth.Facebook.Tests;
+namespace ID.OAuth.Facebook.Tests.HttpService;
 
 public class FacebookClientUtilitiesTests
 {

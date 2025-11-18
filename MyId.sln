@@ -234,6 +234,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ID.OAuth.Amazon.Tests", "Id
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ID.OAuth.Utils", "Identity\AddOns\OAuth\ID.OAuth.Utils\ID.OAuth.Utils.csproj", "{387397C5-2D76-4143-91D6-881F8B2210E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ID.OAuth.Utils.Tests", "Identity\Tests\ID.OAuth.Utils.Tests\ID.OAuth.Utils.Tests.csproj", "{7EFAEADB-E8C7-4C10-ABAF-7EFBCF16DE1C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -556,6 +558,10 @@ Global
 		{387397C5-2D76-4143-91D6-881F8B2210E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{387397C5-2D76-4143-91D6-881F8B2210E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{387397C5-2D76-4143-91D6-881F8B2210E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EFAEADB-E8C7-4C10-ABAF-7EFBCF16DE1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EFAEADB-E8C7-4C10-ABAF-7EFBCF16DE1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EFAEADB-E8C7-4C10-ABAF-7EFBCF16DE1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EFAEADB-E8C7-4C10-ABAF-7EFBCF16DE1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -667,6 +673,7 @@ Global
 		{35FDB7C4-AB1B-40F9-A1F1-71DFE548E738} = {7E05A465-77A0-479D-B4C7-F0BAC4FBEB91}
 		{F8B04577-7E9E-4FE8-8F46-FF18F6582B09} = {5EFB6D7C-41DD-4C63-B618-9512E0A852BA}
 		{387397C5-2D76-4143-91D6-881F8B2210E3} = {7E05A465-77A0-479D-B4C7-F0BAC4FBEB91}
+		{7EFAEADB-E8C7-4C10-ABAF-7EFBCF16DE1C} = {5EFB6D7C-41DD-4C63-B618-9512E0A852BA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32CD658E-91A7-4238-A40D-2FCD8CC81535}

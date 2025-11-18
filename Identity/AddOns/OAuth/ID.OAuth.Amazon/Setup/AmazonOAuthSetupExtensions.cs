@@ -18,12 +18,16 @@ public static class AmazonOAuthSetupExtensions
         return services.AddAmazonOAuthDI();
     }
 
+    //--------------------------//
+
     public static IServiceCollection AddMyIdAmazonOAuth(this IServiceCollection services, Action<IdOAuthAmazonOptions> config)
     {
         services.Configure(config);
         services.AddOptionsWithValidateOnStart<IdOAuthAmazonOptions, AmazonOauthSetupOptionsValidator>();
         return services.AddAmazonOAuthDI();
     }
+
+    //--------------------------//
 
     public static IServiceCollection AddAmazonOAuthDI(this IServiceCollection services)
     {

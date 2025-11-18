@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 
-namespace ID.OAuth.Facebook.Tests;
+namespace ID.OAuth.Facebook.Tests.Setup;
 
 public class ServiceCollectionRegistrationsTests
 {

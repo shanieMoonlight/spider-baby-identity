@@ -24,7 +24,7 @@ internal class AmazonHttpClient(
         if (string.IsNullOrWhiteSpace(accessToken))
             return GenResult<AmazonTokenInfo>.BadRequestResult("Missing access token.");
 
-        var relative = $"auth/o2/tokeninfo?access_token={Uri.EscapeDataString(accessToken)}";
+        var relative = $"auth/o2/{AmazonApi.Endpoints.TokenInfo}?access_token={Uri.EscapeDataString(accessToken)}";
 
         var response = await client.GetAsync(relative, cancellationToken);
         var body = await response.Content.ReadAsStringAsync(cancellationToken);
@@ -56,14 +56,15 @@ internal class AmazonHttpClient(
         if (string.IsNullOrWhiteSpace(accessToken))
             return GenResult<AmazonUserProfile>.BadRequestResult("Missing access token.");
 
-        var req = new HttpRequestMessage(HttpMethod.Get, "user/profile");
+        var userProfilePath = AmazonApi.Endpoints.UserProfile;
+        var req = new HttpRequestMessage(HttpMethod.Get, userProfilePath);
         req.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
 
         var response = await client.SendAsync(req, cancellationToken);
         var body = await response.Content.ReadAsStringAsync(cancellationToken);
 
         if (!response.IsSuccessStatusCode)
-            return oAuthUtils.MapResponseToResult<AmazonUserProfile>(response, "Amazon", "user/profile", body);
+            return oAuthUtils.MapResponseToResult<AmazonUserProfile>(response, "Amazon", userProfilePath, body);
 
         AmazonUserProfile? profile;
         try
@@ -72,7 +73,7 @@ internal class AmazonHttpClient(
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, "Failed to deserialize user profile. Endpoint: {Endpoint}. Body: {Body}", "user/profile", body);
+            logger.LogWarning(ex, "Failed to deserialize user profile. Endpoint: {Endpoint}. Body: {Body}", userProfilePath, body);
             return GenResult<AmazonUserProfile>.Failure($"Failed to parse user profile response. Body: {body}");
         }
 

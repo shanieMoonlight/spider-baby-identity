@@ -1,4 +1,4 @@
-namespace ID.OAuth.Facebook.Tests;
+namespace ID.OAuth.Facebook.Tests.Services;
 
 public class FindOrCreateServiceTests
 {

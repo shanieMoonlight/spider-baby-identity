@@ -20,9 +20,9 @@ public class AmazonCookieSignInCmdHandlerTests
         var team = user.Team!;
 
         mockVerifier.Setup(v => v.VerifyAndGetProfileAsync(dto.AuthToken, dto.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(GenResult<Data.AmazonUserProfile>.Success(new Data.AmazonUserProfile { UserId = "u1", Email = "a@b.com", Name = "Name" }));
+            .ReturnsAsync(GenResult<AmazonUserProfile>.Success(new AmazonUserProfile { UserId = "u1", Email = "a@b.com", Name = "Name" }));
 
-        mockFindOrCreate.Setup(f => f.FindOrCreateUserAsync(It.IsAny<Data.AmazonUserProfile>(), dto, It.IsAny<CancellationToken>()))
+        mockFindOrCreate.Setup(f => f.FindOrCreateUserAsync(It.IsAny<AmazonUserProfile>(), dto, It.IsAny<CancellationToken>()))
             .ReturnsAsync(GenResult<AppUser>.Success(user));
 
         mock2FactorService.Setup(x => x.IsTwoFactorEnabledAsync(user))
@@ -61,9 +61,9 @@ public class AmazonCookieSignInCmdHandlerTests
         var team = user.Team!;
 
         mockVerifier.Setup(v => v.VerifyAndGetProfileAsync(dto.AuthToken, dto.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(GenResult<Data.AmazonUserProfile>.Success(new Data.AmazonUserProfile { UserId = "u1", Email = "a@b.com", Name = "Name" }));
+            .ReturnsAsync(GenResult<AmazonUserProfile>.Success(new AmazonUserProfile { UserId = "u1", Email = "a@b.com", Name = "Name" }));
 
-        mockFindOrCreate.Setup(f => f.FindOrCreateUserAsync(It.IsAny<Data.AmazonUserProfile>(), dto, It.IsAny<CancellationToken>()))
+        mockFindOrCreate.Setup(f => f.FindOrCreateUserAsync(It.IsAny<AmazonUserProfile>(), dto, It.IsAny<CancellationToken>()))
             .ReturnsAsync(GenResult<AppUser>.Success(user));
 
         mock2FactorService.Setup(x => x.IsTwoFactorEnabledAsync(user))

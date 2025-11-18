@@ -1,3 +1,6 @@
+using ClArch.ValueObjects;
+
+
 namespace ID.OAuth.Facebook.Tests.Services;
 
 public class FindOrCreateServiceTests
@@ -24,11 +27,11 @@ public class FindOrCreateServiceTests
         result.Succeeded.ShouldBeTrue();
         result.Value?.Email.ShouldBe("test@example.com");
         mockSignup.Verify(x => x.RegisterOAuthAsync(
-                It.IsAny<ClArch.ValueObjects.EmailAddress>(),
-                It.IsAny<ClArch.ValueObjects.UsernameNullable>(),
-                It.IsAny<ClArch.ValueObjects.PhoneNullable>(),
-                It.IsAny<ClArch.ValueObjects.FirstNameNullable>(),
-                It.IsAny<ClArch.ValueObjects.LastNameNullable>(),
+                It.IsAny<EmailAddress>(),
+                It.IsAny<UsernameNullable>(),
+                It.IsAny<PhoneNullable>(),
+                It.IsAny<FirstNameNullable>(),
+                It.IsAny<LastNameNullable>(),
                 It.IsAny<Domain.Entities.AppUsers.ValueObjects.TeamPositionNullable>(),
                 It.IsAny<Domain.Entities.AppUsers.OAuth.OAuthInfo>(),
                 It.IsAny<Guid?>(),
@@ -48,11 +51,11 @@ public class FindOrCreateServiceTests
 
         var mockSignup = new Mock<IIdCustomerRegistrationService>();
         mockSignup.Setup(x => x.RegisterOAuthAsync(
-            It.IsAny<ClArch.ValueObjects.EmailAddress>(),
-            It.IsAny<ClArch.ValueObjects.UsernameNullable>(),
-            It.IsAny<ClArch.ValueObjects.PhoneNullable>(),
-            It.IsAny<ClArch.ValueObjects.FirstNameNullable>(),
-            It.IsAny<ClArch.ValueObjects.LastNameNullable>(),
+            It.IsAny<EmailAddress>(),
+            It.IsAny<UsernameNullable>(),
+            It.IsAny<PhoneNullable>(),
+            It.IsAny<FirstNameNullable>(),
+            It.IsAny<LastNameNullable>(),
             It.IsAny<Domain.Entities.AppUsers.ValueObjects.TeamPositionNullable>(),
             It.IsAny<Domain.Entities.AppUsers.OAuth.OAuthInfo>(),
             It.IsAny<Guid?>(),
@@ -71,11 +74,11 @@ public class FindOrCreateServiceTests
         result.Succeeded.ShouldBeTrue();
         result.Value?.Email.ShouldBe("new@example.com");
         mockSignup.Verify(x => x.RegisterOAuthAsync(
-                It.IsAny<ClArch.ValueObjects.EmailAddress>(),
-                It.IsAny<ClArch.ValueObjects.UsernameNullable>(),
-                It.IsAny<ClArch.ValueObjects.PhoneNullable>(),
-                It.IsAny<ClArch.ValueObjects.FirstNameNullable>(),
-                It.IsAny<ClArch.ValueObjects.LastNameNullable>(),
+                It.IsAny<EmailAddress>(),
+                It.IsAny<UsernameNullable>(),
+                It.IsAny<PhoneNullable>(),
+                It.IsAny<FirstNameNullable>(),
+                It.IsAny<LastNameNullable>(),
                 It.IsAny<Domain.Entities.AppUsers.ValueObjects.TeamPositionNullable>(),
                 It.IsAny<Domain.Entities.AppUsers.OAuth.OAuthInfo>(),
                 It.IsAny<Guid?>(),
@@ -107,11 +110,11 @@ public class FindOrCreateServiceTests
         result.Succeeded.ShouldBeFalse();
         result.Info.ShouldContain("Email is required");
         mockSignup.Verify(x => x.RegisterOAuthAsync(
-                It.IsAny<ClArch.ValueObjects.EmailAddress>(),
-                It.IsAny<ClArch.ValueObjects.UsernameNullable>(),
-                It.IsAny<ClArch.ValueObjects.PhoneNullable>(),
-                It.IsAny<ClArch.ValueObjects.FirstNameNullable>(),
-                It.IsAny<ClArch.ValueObjects.LastNameNullable>(),
+                It.IsAny<EmailAddress>(),
+                It.IsAny<UsernameNullable>(),
+                It.IsAny<PhoneNullable>(),
+                It.IsAny<FirstNameNullable>(),
+                It.IsAny<LastNameNullable>(),
                 It.IsAny<Domain.Entities.AppUsers.ValueObjects.TeamPositionNullable>(),
                 It.IsAny<Domain.Entities.AppUsers.OAuth.OAuthInfo>(),
                 It.IsAny<Guid?>(), It.IsAny<CancellationToken>()),

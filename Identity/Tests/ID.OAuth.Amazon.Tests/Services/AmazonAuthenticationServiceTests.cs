@@ -1,7 +1,7 @@
 using ID.OAuth.Amazon.HttpService.Abs;
 using ID.OAuth.Amazon.Services.Imps;
 
-namespace ID.OAuth.Amazon.Tests;
+namespace ID.OAuth.Amazon.Tests.Services;
 
 public class AmazonAuthenticationServiceTests
 {

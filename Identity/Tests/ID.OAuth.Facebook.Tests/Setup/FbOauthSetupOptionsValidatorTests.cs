@@ -47,4 +47,6 @@ public class FbOauthSetupOptionsValidatorTests
         // Assert
         result.ShouldNotBe(ValidateOptionsResult.Success);
     }
+
+
 }//Cls

@@ -1,4 +1,4 @@
-namespace ID.OAuth.Amazon.Tests;
+namespace ID.OAuth.Amazon.Tests.HttpService;
 
 public class AmazonHttpClientTests
 {

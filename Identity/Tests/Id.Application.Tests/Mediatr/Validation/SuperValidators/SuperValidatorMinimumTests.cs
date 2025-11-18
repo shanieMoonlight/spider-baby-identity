@@ -8,7 +8,7 @@ public class SuperValidatorMinimumTests
 {
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void SuperMinimumValidator_Should_Have_Error_When_IsSuperMinimum_Is_False()
@@ -25,7 +25,7 @@ public class SuperValidatorMinimumTests
         result.Errors.First().CustomState.ShouldBe(ValidationError.Forbidden);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void SuperMinimumValidator_Should_Not_Have_Error_When_IsSuperMinimum_Is_True()
@@ -40,7 +40,7 @@ public class SuperValidatorMinimumTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void SuperMinimumValidator_With_Position_Should_Have_Error_When_TeamPosition_Is_Less_Than_Position()
@@ -57,7 +57,7 @@ public class SuperValidatorMinimumTests
         result.Errors.First().CustomState.ShouldBe(ValidationError.Forbidden);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void SuperMinimumValidator_With_Position_Should_Not_Have_Error_When_TeamPosition_Is_Greater_Than_Or_Equal_To_Position()
@@ -72,6 +72,6 @@ public class SuperValidatorMinimumTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

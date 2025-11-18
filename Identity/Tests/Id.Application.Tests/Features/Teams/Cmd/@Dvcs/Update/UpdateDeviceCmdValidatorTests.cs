@@ -29,7 +29,7 @@ public class UpdateDeviceCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoDeviceId()
@@ -52,7 +52,7 @@ public class UpdateDeviceCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto.Id);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoSubscriptionId()
@@ -76,7 +76,7 @@ public class UpdateDeviceCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsValid()
@@ -100,7 +100,7 @@ public class UpdateDeviceCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsValid_Without_DeviceId()
@@ -124,7 +124,7 @@ public class UpdateDeviceCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto.Id);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenDto_HasNoName()
@@ -150,7 +150,7 @@ public class UpdateDeviceCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -162,6 +162,6 @@ public class UpdateDeviceCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<UpdateDeviceCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

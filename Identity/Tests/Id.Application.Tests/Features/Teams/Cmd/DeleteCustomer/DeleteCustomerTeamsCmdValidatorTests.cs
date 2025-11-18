@@ -10,7 +10,7 @@ namespace ID.Application.Tests.Features.Teams.Cmd.DeleteCustomer;
 public class DeleteCustomerTeamCmdValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenIdIsNull()
@@ -29,7 +29,7 @@ public class DeleteCustomerTeamCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenIdIsValid()
@@ -46,7 +46,7 @@ public class DeleteCustomerTeamCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -58,6 +58,6 @@ public class DeleteCustomerTeamCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<DeleteCustomerTeamCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

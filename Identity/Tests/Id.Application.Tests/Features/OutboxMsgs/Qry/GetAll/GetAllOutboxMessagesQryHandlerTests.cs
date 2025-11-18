@@ -12,12 +12,12 @@ public class GetAllOutboxMessagesQryHandlerTests
 {
     private readonly Mock<IIdentityOutboxMsgsService> _repoMock;
 
-    //------------------------------------//
+    //--------------------------//
 
     public GetAllOutboxMessagesQryHandlerTests() => 
         _repoMock = new Mock<IIdentityOutboxMsgsService>();
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnAllOutboxMessages_WhenSuccessful()
@@ -39,7 +39,7 @@ public class GetAllOutboxMessagesQryHandlerTests
         _repoMock.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnEmptyList_WhenNoOutboxMessagesExist()
@@ -60,6 +60,6 @@ public class GetAllOutboxMessagesQryHandlerTests
         _repoMock.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

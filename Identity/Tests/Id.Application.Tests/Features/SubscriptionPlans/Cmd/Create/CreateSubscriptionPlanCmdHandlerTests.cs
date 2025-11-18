@@ -21,7 +21,7 @@ public class CreateSubscriptionPlanCmdHandlerTests
         _handler = new CreateSubscriptionPlanCmdHandler(_serviceMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Should_CreateSubscriptionPlan_When_FeatureFlagsIsEmpty_And_FeatureFlagIdsIsNot()
@@ -47,7 +47,7 @@ public class CreateSubscriptionPlanCmdHandlerTests
         result.Value.Id.ShouldBe(expectedPlan.Id);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Should_CreateSubscriptionPlan_When_FeatureFlagIdsIsEmpty_And_FeatureFlagsIsNot()
@@ -73,7 +73,7 @@ public class CreateSubscriptionPlanCmdHandlerTests
         result.Value.Id.ShouldBe(expectedPlan.Id);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Should_CreateSubscriptionPlan_When_BothFeatureFlagsAndFeatureFlagIdsAreEmpty()
@@ -99,6 +99,6 @@ public class CreateSubscriptionPlanCmdHandlerTests
         result.Value.Id.ShouldBe(expectedPlan.Id);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -20,7 +20,7 @@ public class AppPermissionService_CanDelete_Tests
         _service = new CanDeletePermissions<AppUser>(_mockTeamManager.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanDeleteAsync_UserNotFound_ReturnsNotFoundResult()
@@ -43,7 +43,7 @@ public class AppPermissionService_CanDelete_Tests
         result.NotFound.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanDeleteAsync_CannotDeleteSelf_ReturnsBadRequestResult()
@@ -67,7 +67,7 @@ public class AppPermissionService_CanDelete_Tests
         result.BadRequest.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanDeleteAsync_UserFromDifferentTeam_ReturnsForbiddenResult()
@@ -91,7 +91,7 @@ public class AppPermissionService_CanDelete_Tests
         result.Forbidden.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanDeleteAsync_CannotDeleteHigherPosition_ReturnsForbiddenResult()
@@ -116,7 +116,7 @@ public class AppPermissionService_CanDelete_Tests
         result.Forbidden.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanDeleteAsync_ValidRequest_ReturnsSuccessResult()
@@ -141,6 +141,6 @@ public class AppPermissionService_CanDelete_Tests
         result.Succeeded.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

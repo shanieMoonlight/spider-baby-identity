@@ -27,7 +27,7 @@ public class IdRequestExceptionHandlerTests
         _sut = new IdRequestExceptionHandler<TestRequest, BasicResult, MyIdException>(_loggerMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_GivenInvalidTeamNameException_ShouldCreateBadRequestResponse()
@@ -142,7 +142,7 @@ public class IdRequestExceptionHandlerTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
 
     public static IEnumerable<object[]> ExceptionHandlers()
@@ -167,7 +167,7 @@ public class IdRequestExceptionHandlerTests
         testParams.Challenger(response);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     // Test classes

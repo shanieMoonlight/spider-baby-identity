@@ -11,7 +11,7 @@ public class ConfirmEmailCmdValidatorTests
         _validator = new ConfirmEmailCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_DTO_is_null()
@@ -32,7 +32,7 @@ public class ConfirmEmailCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_AllIdentifiersAreMissing()
@@ -52,7 +52,7 @@ public class ConfirmEmailCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_NoTokenSupplied()
@@ -71,7 +71,7 @@ public class ConfirmEmailCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_NoIdSupplied()
@@ -90,7 +90,7 @@ public class ConfirmEmailCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_NOT_have_DTO_error_when_IDAndTOkenSupplied()
@@ -109,7 +109,7 @@ public class ConfirmEmailCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

@@ -20,7 +20,7 @@ public class AddFeaturesToPlanCmdHandlerTests
         _handler = new AddFeatureToSubscriptionPlanCmdHandler(_serviceMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNotFound_WhenPlanDoesNotExist()
@@ -45,7 +45,7 @@ public class AddFeaturesToPlanCmdHandlerTests
         result.NotFound.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WhenFeaturesAddedSuccessfully()
@@ -74,6 +74,6 @@ public class AddFeaturesToPlanCmdHandlerTests
         result.Succeeded.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

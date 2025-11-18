@@ -19,7 +19,7 @@ public class RecordSubscriptionPaymentCmdHandlerTests
         _handler = new RecordSubscriptionPaymentCmdHandler(_mockSubsServiceFactory.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailureResult_WhenGetServiceFails()
@@ -38,7 +38,7 @@ public class RecordSubscriptionPaymentCmdHandlerTests
         result.Info.ShouldBe("Service not found");
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccessResult_WhenAddSubscriptionSucceeds()
@@ -73,6 +73,6 @@ public class RecordSubscriptionPaymentCmdHandlerTests
         result.Value.Id.ShouldBe(subscription.Id);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

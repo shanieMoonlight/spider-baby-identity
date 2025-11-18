@@ -12,7 +12,7 @@ namespace ID.Application.Tests.Features.Account.Cmd.ResendEmailConf;
 public class ResendEmailConfCmdHandlerTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_Return_SuccessWithMessage_WhenAlreadyConfirmed()
@@ -41,7 +41,7 @@ public class ResendEmailConfCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_ReturnNotFoundResultWhenUserNotFound()
@@ -70,7 +70,7 @@ public class ResendEmailConfCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_PublishEventWhenUserFound()
@@ -105,7 +105,7 @@ public class ResendEmailConfCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 

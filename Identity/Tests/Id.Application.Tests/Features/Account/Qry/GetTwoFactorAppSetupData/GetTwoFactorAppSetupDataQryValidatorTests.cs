@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.Account.Qry.GetTwoFactorAppSetupData;
 public class GetTwoFactorAppSetupDataQryValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidatorr()
@@ -19,6 +19,6 @@ public class GetTwoFactorAppSetupDataQryValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<GetTwoFactorAppSetupDataQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

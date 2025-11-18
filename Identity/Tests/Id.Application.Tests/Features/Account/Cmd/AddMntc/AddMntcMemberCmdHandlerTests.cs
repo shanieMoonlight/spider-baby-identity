@@ -24,7 +24,7 @@ public class AddMntcMemberCmdHandlerTests
         _handler = new AddMntcMemberCmdHandler(_mockTeamManager.Object, _mockAppPermissionService.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailure_WhenUserCannotAdministerRole_MNTC()
@@ -49,7 +49,7 @@ public class AddMntcMemberCmdHandlerTests
         result.Succeeded.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailure_WhenUserCanAdministerRole_SPR()
@@ -89,7 +89,7 @@ public class AddMntcMemberCmdHandlerTests
         _mockTeamManager.Verify(m => m.RegisterMemberAsync(It.IsAny<Team>(), It.IsAny<AppUser>()), Times.Once());
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WhenUserIsRegisteredSuccessfully()
@@ -148,7 +148,7 @@ public class AddMntcMemberCmdHandlerTests
         result.Value.TeamPosition.ShouldBe(request.Dto.TeamPosition);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Should_Call_RegisterMemberAsync()
@@ -189,7 +189,7 @@ public class AddMntcMemberCmdHandlerTests
         _mockTeamManager.Verify(m => m.RegisterMemberAsync(It.IsAny<Team>(), It.IsAny<AppUser>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

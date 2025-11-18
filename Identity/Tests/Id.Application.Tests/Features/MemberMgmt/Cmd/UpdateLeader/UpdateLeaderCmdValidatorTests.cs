@@ -27,7 +27,7 @@ public class UpdateLeaderCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenIdIsValid()
@@ -44,7 +44,7 @@ public class UpdateLeaderCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -56,6 +56,6 @@ public class UpdateLeaderCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<UpdateMyTeamLeaderCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

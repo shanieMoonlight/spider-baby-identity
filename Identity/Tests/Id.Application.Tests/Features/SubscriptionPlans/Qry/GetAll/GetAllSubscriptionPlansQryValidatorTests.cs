@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.SubscriptionPlans.Qry.GetAll;
 public class GetAllSubscriptionPlansQryValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -17,7 +17,7 @@ public class GetAllSubscriptionPlansQryValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<GetAllSubscriptionPlansQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

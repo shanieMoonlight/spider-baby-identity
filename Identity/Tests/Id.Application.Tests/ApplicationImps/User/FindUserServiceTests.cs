@@ -34,7 +34,7 @@ public class FindUserServiceTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -64,7 +64,7 @@ public class FindUserServiceTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -94,7 +94,7 @@ public class FindUserServiceTests
         result.Id.ShouldBe(testUser.Id);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -126,7 +126,7 @@ public class FindUserServiceTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -156,5 +156,5 @@ public class FindUserServiceTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 }

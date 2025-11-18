@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Mediatr.Validation.MntcValidators;
 public class MntcValidatorOnlyTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void MntcOnlyValidator_Should_Have_Error_When_IsMntc_Is_False()
@@ -25,7 +25,7 @@ public class MntcValidatorOnlyTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void MntcOnlyValidator_Should_Not_Have_Error_When_IsMntc_Is_True()
@@ -40,7 +40,7 @@ public class MntcValidatorOnlyTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls
 

@@ -14,7 +14,7 @@ public class ChPwdCmdValidatorTests
         _validator = new ChPwdCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_DTO_is_null()
@@ -35,7 +35,7 @@ public class ChPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_AllIdentifiersAreMissing()
@@ -54,7 +54,7 @@ public class ChPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
     [Fact]
     public void Should_have_error_when_NoPasswordSupplied()
     {
@@ -77,7 +77,7 @@ public class ChPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
     [Fact]
     public void Should_have_error_when_NoNewPasswordSupplied()
     {
@@ -100,7 +100,7 @@ public class ChPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
     [Fact]
     public void Should_have_error_when_NoConfirmPasswordSupplied()
     {
@@ -123,7 +123,7 @@ public class ChPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
     [Fact]
     public void Should_have_error_when_PasswordsDoNotMatch()
     {
@@ -147,7 +147,7 @@ public class ChPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
     [Fact]
     public void Should_NOT_have_error_when_PasswordsDoMatch()
     {
@@ -171,7 +171,7 @@ public class ChPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_NOT_have_DTO_error_when_EmailSupplied()
@@ -194,7 +194,7 @@ public class ChPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_NOT_have_DTO_error_when_UsernameSupplied()
@@ -217,7 +217,7 @@ public class ChPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_NOT_have_DTO_error_when_UserIdSupplied()
@@ -239,7 +239,7 @@ public class ChPwdCmdValidatorTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -251,6 +251,6 @@ public class ChPwdCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<ChPwdCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

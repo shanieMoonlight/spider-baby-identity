@@ -12,7 +12,7 @@ public class TwoFactorEnableCmdValidatorTests
         _validator = new TwoFactorEnableCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -27,7 +27,7 @@ public class TwoFactorEnableCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<TwoFactorEnableCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

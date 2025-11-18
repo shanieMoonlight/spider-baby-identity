@@ -24,7 +24,7 @@ public class UpdateDeviceCmdHandlerTests
         _handler = new UpdateDeviceHandler(_deviceServiceFactoryMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccessResult_WhenDeviceIsUpdatedSuccessfully()
@@ -67,7 +67,7 @@ public class UpdateDeviceCmdHandlerTests
         _deviceServiceMock.Verify(x => x.UpdateDeviceAsync(dto.Id, It.IsAny<Name>(), It.IsAny<DescriptionNullable>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailureResult_WhenServiceFailsToRetrieve()
@@ -98,7 +98,7 @@ public class UpdateDeviceCmdHandlerTests
         _deviceServiceMock.Verify(x => x.UpdateDeviceAsync(It.IsAny<Guid>(), It.IsAny<Name>(), It.IsAny<DescriptionNullable>()), Times.Never);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailureResult_WhenServiceNotFound()

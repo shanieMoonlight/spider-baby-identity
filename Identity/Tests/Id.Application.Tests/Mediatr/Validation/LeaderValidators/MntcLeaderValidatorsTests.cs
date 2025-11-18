@@ -8,7 +8,7 @@ public class MntcLeaderValidatorsTests
 {
     private readonly TestIsMntcLeaderValidator _validator = new();
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_IsLeader_Is_False()
@@ -19,7 +19,7 @@ public class MntcLeaderValidatorsTests
               .WithErrorMessage(IDMsgs.Error.Teams.ONlY_LEADER_CAN_UPDATE);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_IsMntc_Is_False()
@@ -30,7 +30,7 @@ public class MntcLeaderValidatorsTests
               .WithErrorMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.maintenance));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Not_Have_Error_When_IsLeader_And_IsMntc_Are_True()
@@ -41,7 +41,7 @@ public class MntcLeaderValidatorsTests
         result.ShouldNotHaveValidationErrorFor(r => r.IsMntc);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

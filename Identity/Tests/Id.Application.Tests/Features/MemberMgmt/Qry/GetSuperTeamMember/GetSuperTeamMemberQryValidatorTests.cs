@@ -14,7 +14,7 @@ public class GetSuperTeamMemberQryValidatorTests
         _validator = new GetSuperTeamMemberQryValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_MemberId_Is_Empty()
@@ -29,7 +29,7 @@ public class GetSuperTeamMemberQryValidatorTests
         result.ShouldHaveValidationErrorFor(q => q.MemberId);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Not_Have_Error_When_Ids_Are_Valid()
@@ -44,7 +44,7 @@ public class GetSuperTeamMemberQryValidatorTests
         result.ShouldNotHaveValidationErrorFor(q => q.MemberId);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void GetTeamMemberQryValidator_ShouldImplement_ASuperMinimumValidator()
@@ -56,6 +56,6 @@ public class GetSuperTeamMemberQryValidatorTests
         validator.ShouldBeAssignableTo<ASuperMinimumValidator<GetSuperTeamMemberQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

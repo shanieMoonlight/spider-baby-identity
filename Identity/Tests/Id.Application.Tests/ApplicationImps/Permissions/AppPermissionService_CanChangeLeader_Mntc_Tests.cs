@@ -21,7 +21,7 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
         _service = new CanChangeLeaderPermissions<AppUser>(_mockTeamManager.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangeLeader_Mntc_Async_Should_Return_NotFoundWhen_TeamIdMissing()
@@ -38,7 +38,7 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
         result.NotFound.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangeLeader_Mntc_Async_Should_Return_NotFoundWhen_NewLeaderIdMissing()
@@ -55,7 +55,7 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
         result.NotFound.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangeLeader_Mntc_Async_Should_Return_Forbidden_If_Request_IsCustomer()
@@ -72,7 +72,7 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
         result.Forbidden.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -93,7 +93,7 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
         result.NotFound.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangeLeader_Mntc_Async_Should_Return_Forbidden_If_Request_IsMntc_And_Team_Is_Super()
@@ -113,7 +113,7 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
         result.Forbidden.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangeLeader_Mntc_Async_Should_Return_BadRequest_If_NewLeader_Not_In_Team()
@@ -132,7 +132,7 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
         result.BadRequest.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangeLeader_Mntc_Async_Should_Return_Success_If_Conditions_Met()
@@ -156,7 +156,7 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
         result.Value.ShouldBeEquivalentTo(team);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangeLeader_Mntc_Async_Should_Return_Forbidden_If_NOtLeaderOfTeam_AfterOtherCondtionsMet_1()
@@ -182,7 +182,7 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
         result.Forbidden.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangeLeader_Mntc_Async_Should_Return_Forbidden_If_NOtLeaderOfTeam_AfterOtherCondtionsMet_2()
@@ -212,7 +212,7 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
         result.Forbidden.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangeLeader_Mntc_Async_Should_Success_WhenCondtionsMet_2()
@@ -240,6 +240,6 @@ public class AppPermissionService_CanChangeLeader_Mntc_Tests
         result.Value.ShouldBeEquivalentTo(team);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

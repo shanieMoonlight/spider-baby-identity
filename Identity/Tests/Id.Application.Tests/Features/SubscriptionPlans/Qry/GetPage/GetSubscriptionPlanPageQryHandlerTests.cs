@@ -49,7 +49,7 @@ public class GetSubscriptionPlansPageQryHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnEmptyPagedResponse_WhenNoPlansExist()
@@ -75,7 +75,7 @@ public class GetSubscriptionPlansPageQryHandlerTests
         result.Value?.PageSize.ShouldBe(pagedRequest.PageSize);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldUseDefaultPagedRequest_WhenNotProvided()
@@ -94,6 +94,6 @@ public class GetSubscriptionPlansPageQryHandlerTests
         _mockRepo.Verify(m => m.GetPageAsync(emptyPagedRequest.PageNumber, emptyPagedRequest.PageSize, emptyPagedRequest.SortList, emptyPagedRequest.FilterList), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

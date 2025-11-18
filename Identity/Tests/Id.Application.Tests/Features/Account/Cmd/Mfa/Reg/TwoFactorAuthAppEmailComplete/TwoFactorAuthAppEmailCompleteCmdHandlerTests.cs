@@ -19,7 +19,7 @@ public class TwoFactorAuthAppEmailCompleteCmdHandlerTests
         _handler = new TwoFactorAuthAppEmailCompleteCmdHandler(_googleAuthMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WhenEnableAsyncSucceeds()
@@ -42,7 +42,7 @@ public class TwoFactorAuthAppEmailCompleteCmdHandlerTests
         result.Value.UserName.ShouldBe(user.UserName);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailure_WhenEnableAsyncFails()
@@ -64,6 +64,6 @@ public class TwoFactorAuthAppEmailCompleteCmdHandlerTests
         result.Info.ShouldBe(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_CODE);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

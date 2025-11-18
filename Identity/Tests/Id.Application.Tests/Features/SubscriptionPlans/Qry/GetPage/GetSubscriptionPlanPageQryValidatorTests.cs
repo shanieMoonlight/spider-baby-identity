@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.SubscriptionPlans.Qry.GetPage;
 public class GetSubscriptionPlanPageQryValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -17,7 +17,7 @@ public class GetSubscriptionPlanPageQryValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<GetSubscriptionPlansPageQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

@@ -7,7 +7,7 @@ public class RefreshTokenRevokeCmdValidatorTests
 {
     private readonly RefreshTokenRevokeCmdValidator _validator = new();
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -19,6 +19,6 @@ public class RefreshTokenRevokeCmdValidatorTests
         _validator.ShouldBeAssignableTo<IsAuthenticatedValidator<RefreshTokenRevokeCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

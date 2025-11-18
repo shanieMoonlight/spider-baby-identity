@@ -18,7 +18,7 @@ public class GetTeamMemberQryValidatorTests
         _validator = new GetTeamMemberQryValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_MemberId_Is_Empty()
@@ -33,7 +33,7 @@ public class GetTeamMemberQryValidatorTests
         result.ShouldHaveValidationErrorFor(q => q.TeamId);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_TeamId_Is_Empty()
@@ -48,7 +48,7 @@ public class GetTeamMemberQryValidatorTests
         result.ShouldHaveValidationErrorFor(q => q.MemberId);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Not_Have_Error_When_Ids_Are_Valid()
@@ -64,7 +64,7 @@ public class GetTeamMemberQryValidatorTests
         result.ShouldNotHaveValidationErrorFor(q => q.TeamId);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void GetTeamMemberQryValidator_ShouldImplement_AMntcMinimumValidator()
@@ -76,6 +76,6 @@ public class GetTeamMemberQryValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<GetTeamMemberQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

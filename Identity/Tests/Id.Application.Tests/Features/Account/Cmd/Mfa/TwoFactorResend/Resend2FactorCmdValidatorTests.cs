@@ -14,7 +14,7 @@ public class Resend2FactorCmdValidatorTests
         _validator = new Resend2FactorCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_Dto_Is_Null()
@@ -32,7 +32,7 @@ public class Resend2FactorCmdValidatorTests
             .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_Dto_Has_No_Valid_Properties()
@@ -48,7 +48,7 @@ public class Resend2FactorCmdValidatorTests
         result.ShouldHaveValidationErrors();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Not_Have_Error_When_Dto_Has_Valid_Token()
@@ -65,7 +65,7 @@ public class Resend2FactorCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -77,5 +77,5 @@ public class Resend2FactorCmdValidatorTests
         validator.ShouldBeAssignableTo<AbstractValidator<Resend2FactorCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 }

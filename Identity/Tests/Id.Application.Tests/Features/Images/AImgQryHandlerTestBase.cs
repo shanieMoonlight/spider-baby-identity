@@ -32,7 +32,7 @@ public abstract class AImgQryHandlerTestBase<THandler, TQuery>
 
     protected TQuery CreateQuery() => new();
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WhenImageExists()
@@ -56,7 +56,7 @@ public abstract class AImgQryHandlerTestBase<THandler, TQuery>
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailure_WhenBuildDirNameDoesNotExist()
@@ -74,7 +74,7 @@ public abstract class AImgQryHandlerTestBase<THandler, TQuery>
         result.Exception.ShouldBeOfType<MyIdDirectoryNotFoundException>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailure_WhenBuildDirDoesNotExist()
@@ -93,7 +93,7 @@ public abstract class AImgQryHandlerTestBase<THandler, TQuery>
         result.Exception.ShouldBeOfType<MyIdDirectoryNotFoundException>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailure_WhenImageDoesNotExist()
@@ -117,6 +117,6 @@ public abstract class AImgQryHandlerTestBase<THandler, TQuery>
         result.Exception.ShouldBeOfType<MyIdFileNotFoundException>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }

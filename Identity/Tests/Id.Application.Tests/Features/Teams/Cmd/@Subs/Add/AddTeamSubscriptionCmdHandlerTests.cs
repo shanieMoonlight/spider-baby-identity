@@ -20,7 +20,7 @@ public class AddTeamSubscriptionCmdHandlerTests
         _handler = new AddTeamSubscriptionCmdHandler(_mockSubsServiceFactory.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailureResult_WhenGetServiceFails()
@@ -39,7 +39,7 @@ public class AddTeamSubscriptionCmdHandlerTests
         result.Info.ShouldBe("Service not found");
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccessResult_WhenAddSubscriptionSucceeds()
@@ -71,6 +71,6 @@ public class AddTeamSubscriptionCmdHandlerTests
         result.Value.ShouldNotBeNull();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

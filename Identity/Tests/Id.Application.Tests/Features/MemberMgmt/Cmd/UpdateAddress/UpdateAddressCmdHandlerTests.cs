@@ -24,7 +24,7 @@ public class UpdateAddressCmdHandlerTests
         _handler = new UpdateAddressCmdHandler(_mockTeamManager.Object, _mockAppPermissionService.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccessResult_WhenUpdateIsSuccessful()
@@ -54,7 +54,7 @@ public class UpdateAddressCmdHandlerTests
         result.Value.Address.ShouldBeEquivalentTo(appUser.Address.ToDto());
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailureResult_WhenPermissionCheckFails()
@@ -79,7 +79,7 @@ public class UpdateAddressCmdHandlerTests
         result.Info.ShouldBe("Permission denied");
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailureResult_WhenUpdateFails()
@@ -107,6 +107,6 @@ public class UpdateAddressCmdHandlerTests
         result.Info.ShouldBe("Update failed");
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }

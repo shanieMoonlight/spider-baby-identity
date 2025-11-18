@@ -16,7 +16,7 @@ public class GetOutboxMessageByIdQryHandlerTests
     public GetOutboxMessageByIdQryHandlerTests() =>
         _mockRepo = new Mock<IIdentityOutboxMsgsService>();
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnOutboxMessageDto_WhenExists()
@@ -39,7 +39,7 @@ public class GetOutboxMessageByIdQryHandlerTests
         result.Value.Id.ShouldBe(outboxMsgId); // Assuming Id is mapped to Dto
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNotFound_WhenOutboxMessageDoesNotExist()

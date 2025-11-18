@@ -8,7 +8,7 @@ using Shouldly;
 namespace ID.Application.Tests.Features.SubscriptionPlans.Cmd.FeatureFlags.AddFeature;
 public class AddFeaturesToPlanCmdValidatorTests
 {
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenDtoIsNull()
@@ -29,7 +29,7 @@ public class AddFeaturesToPlanCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsNotNull()
@@ -46,7 +46,7 @@ public class AddFeaturesToPlanCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -56,6 +56,6 @@ public class AddFeaturesToPlanCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<AddFeatureToSubscriptionPlanCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

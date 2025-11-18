@@ -14,7 +14,7 @@ public class TwoFactorAuthyCompleteRegCmdValidatorTests
         _validator = new TwoFactorAuthyCompleteCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -30,7 +30,7 @@ public class TwoFactorAuthyCompleteRegCmdValidatorTests
         result.ShouldHaveValidationErrorFor(cmd => cmd.TwoFactorCode);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -46,7 +46,7 @@ public class TwoFactorAuthyCompleteRegCmdValidatorTests
         result.ShouldNotHaveValidationErrorFor(cmd => cmd.TwoFactorCode);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -62,7 +62,7 @@ public class TwoFactorAuthyCompleteRegCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<TwoFactorAuthyCompleteRegCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }
 

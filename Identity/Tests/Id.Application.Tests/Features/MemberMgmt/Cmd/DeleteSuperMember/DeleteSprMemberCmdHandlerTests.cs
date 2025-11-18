@@ -28,7 +28,7 @@ public class DeleteSprMemberCmdHandlerTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailure_When_CanDeleteFails()
@@ -51,7 +51,7 @@ public class DeleteSprMemberCmdHandlerTests
         result.Succeeded.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNotFoundResult_WhenSuperTeamIsNull()
@@ -74,7 +74,7 @@ public class DeleteSprMemberCmdHandlerTests
         result.NotFound.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccessResult_WhenMemberIsDeleted()
@@ -99,6 +99,6 @@ public class DeleteSprMemberCmdHandlerTests
         result.Succeeded.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

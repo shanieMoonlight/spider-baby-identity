@@ -12,7 +12,7 @@ public class IdBasicValidationPipelineBehaviourTests
     private readonly Mock<IValidator<TestBasicRequest>> _validatorMock;
     private readonly IdValidationPipelineBehaviour<TestBasicRequest, BasicResult> _pipelineBehaviour;
 
-    //------------------------------------//
+    //--------------------------//
 
     public IdBasicValidationPipelineBehaviourTests()
     {
@@ -21,7 +21,7 @@ public class IdBasicValidationPipelineBehaviourTests
         _pipelineBehaviour = new IdValidationPipelineBehaviour<TestBasicRequest, BasicResult>(validators);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNext_WhenNoValidationFailures()
@@ -43,7 +43,7 @@ public class IdBasicValidationPipelineBehaviourTests
         next.Verify(n => n(It.IsAny<CancellationToken>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnValidationResult_WhenValidationFailuresExist()
@@ -69,7 +69,7 @@ public class IdBasicValidationPipelineBehaviourTests
         next.Verify(n => n(It.IsAny<CancellationToken>()), Times.Never);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturn_BadRequest_When_StateIsNotForbiddenOrUnathorize()
@@ -95,7 +95,7 @@ public class IdBasicValidationPipelineBehaviourTests
         next.Verify(n => n(It.IsAny<CancellationToken>()), Times.Never);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturn_Forbidden_When_StateForbidden()
@@ -122,7 +122,7 @@ public class IdBasicValidationPipelineBehaviourTests
         next.Verify(n => n(It.IsAny<CancellationToken>()), Times.Never);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturn_Unauthorized_When_StateUnauthorized()
@@ -149,7 +149,7 @@ public class IdBasicValidationPipelineBehaviourTests
         next.Verify(n => n(It.IsAny<CancellationToken>()), Times.Never);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 

@@ -25,7 +25,7 @@ public class TeamPositionRangeUpdatedDomainEventHandlerTests
         _handler = new TeamPositionRangeUpdatedDomainEventHandler(_mockTeamManager.Object, _mockLogger.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_TeamNotFound_LogsError()
@@ -52,7 +52,7 @@ public class TeamPositionRangeUpdatedDomainEventHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_TeamFound_EnsuresMembersHaveValidTeamPositions()
@@ -89,5 +89,5 @@ public class TeamPositionRangeUpdatedDomainEventHandlerTests
         appUser3.TeamPosition.ShouldBe(3); // Should be adjusted to MaxPosition
     }
 
-    //------------------------------------//
+    //--------------------------//
 }

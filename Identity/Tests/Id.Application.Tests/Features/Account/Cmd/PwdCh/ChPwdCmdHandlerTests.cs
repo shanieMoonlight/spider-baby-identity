@@ -15,7 +15,7 @@ public class ChPwdCmdHandlerTests
 {
     public ChPwdCmdHandlerTests() { }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -52,7 +52,7 @@ public class ChPwdCmdHandlerTests
             );
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_CallChangePasswordAsyncWhenPasswordIsCorrect()
@@ -89,7 +89,7 @@ public class ChPwdCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_ReturnBadRequestWhenChangeFails()
@@ -146,7 +146,7 @@ public class ChPwdCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_ReturnSuccessWhenChangeSucceeds()
@@ -186,7 +186,7 @@ public class ChPwdCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

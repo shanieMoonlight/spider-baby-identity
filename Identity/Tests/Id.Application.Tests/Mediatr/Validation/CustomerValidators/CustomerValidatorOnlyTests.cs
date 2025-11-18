@@ -8,7 +8,7 @@ public class CustomerValidatorOnlyTests
 {
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void CustomerMinimumValidator_Should_Have_Error_When_IsCustomerMinimum_Is_False()
@@ -25,7 +25,7 @@ public class CustomerValidatorOnlyTests
         result.Errors.First().CustomState.ShouldBe(ValidationError.Forbidden);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void CustomerMinimumValidator_Should_Not_Have_Error_When_IsCustomerMinimum_Is_True()
@@ -40,7 +40,7 @@ public class CustomerValidatorOnlyTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void CustomerMinimumValidator_With_Position_Should_Have_Error_When_TeamPosition_Is_Less_Than_Position()
@@ -57,7 +57,7 @@ public class CustomerValidatorOnlyTests
         result.Errors.First().CustomState.ShouldBe(ValidationError.Forbidden);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void CustomerMinimumValidator_With_Position_Should_Not_Have_Error_When_TeamPosition_Is_Greater_Than_Or_Equal_To_Position()
@@ -72,6 +72,6 @@ public class CustomerValidatorOnlyTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

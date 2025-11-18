@@ -19,7 +19,7 @@ public class GetSubscriptionPlanByNameQryHandlerTests
         _handler = new GetSubscriptionPlanByNameQryHandler(_mockRepo.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSubscriptionPlanDto_WhenExists()
@@ -45,7 +45,7 @@ public class GetSubscriptionPlanByNameQryHandlerTests
         Assert.Equal(subscriptionPlanName, result.Value.Name);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNotFound_WhenSubscriptionPlanDoesNotExist()
@@ -64,7 +64,7 @@ public class GetSubscriptionPlanByNameQryHandlerTests
         Assert.Equal(IDMsgs.Error.NotFound<SubscriptionPlan>(subscriptionPlanName), result.Info);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnBadRequest_WhenNameIsEmpty()

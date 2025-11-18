@@ -29,7 +29,7 @@ public class UpdateMemberCmdHandlerTests
         _handler = new UpdateSelfCmdHandler(_mockTeamManager.Object, _mockAppPermissionService.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -66,7 +66,7 @@ public class UpdateMemberCmdHandlerTests
         _mockCanUpdatePermissionService.Verify(x => x.CanUpdateAsync(appUser.Id, request), Times.AtLeastOnce);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldUpdateMember_WhenUserHasPermission()
@@ -107,7 +107,7 @@ public class UpdateMemberCmdHandlerTests
         _mockTeamManager.Verify(x => x.UpdateMemberAsync(expectedTeam, appUser), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailure_WhenUserHasNoPermission()
@@ -141,6 +141,6 @@ public class UpdateMemberCmdHandlerTests
         result.Value.ShouldBeNull();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

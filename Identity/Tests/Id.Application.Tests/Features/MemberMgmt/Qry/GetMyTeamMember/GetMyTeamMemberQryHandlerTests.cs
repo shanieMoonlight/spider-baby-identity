@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.MemberMgmt.Qry.GetTeamMember;
 public class GetMyTeamMemberQryHandlerTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_MemberExists_ReturnsMember()
@@ -32,7 +32,7 @@ public class GetMyTeamMemberQryHandlerTests
         result.Value.Id.ShouldBe(memberId);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_MemberDoesNotExist_ReturnsNotFound()
@@ -57,6 +57,6 @@ public class GetMyTeamMemberQryHandlerTests
         result.NotFound.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

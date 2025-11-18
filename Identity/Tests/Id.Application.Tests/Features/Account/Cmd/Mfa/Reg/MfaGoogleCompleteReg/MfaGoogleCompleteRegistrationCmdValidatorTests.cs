@@ -14,7 +14,7 @@ public class MfaGoogleCompleteRegistrationCmdValidatorTests
         _validator = new MfaGoogleCompleteRegistrationCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -30,7 +30,7 @@ public class MfaGoogleCompleteRegistrationCmdValidatorTests
         result.ShouldHaveValidationErrorFor(cmd => cmd.TwoFactorCode);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -46,7 +46,7 @@ public class MfaGoogleCompleteRegistrationCmdValidatorTests
         result.ShouldNotHaveValidationErrorFor(cmd => cmd.TwoFactorCode);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -62,7 +62,7 @@ public class MfaGoogleCompleteRegistrationCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<MfaGoogleCompleteRegistrationCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }
 

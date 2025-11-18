@@ -20,7 +20,7 @@ public class RemoveFeaturesFromPlanCmdHandlerTests
         _handler = new RemoveFeaturesFromSubscriptionPlanCmdHandler(_serviceMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNotFound_WhenSubscriptionPlanDoesNotExist()
@@ -41,7 +41,7 @@ public class RemoveFeaturesFromPlanCmdHandlerTests
         result.Info.ShouldBe(IDMsgs.Error.NotFound<SubscriptionPlan>(planId));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldRemoveFeaturesFromPlan_WhenSubscriptionPlanExists()
@@ -80,6 +80,6 @@ public class RemoveFeaturesFromPlanCmdHandlerTests
         _serviceMock.Verify(s => s.RemoveFeaturesFromPlanAsync(plan, featureIdsToRemove, It.IsAny<CancellationToken>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

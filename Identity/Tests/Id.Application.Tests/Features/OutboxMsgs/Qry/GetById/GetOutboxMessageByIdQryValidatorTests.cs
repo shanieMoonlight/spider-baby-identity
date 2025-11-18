@@ -7,7 +7,7 @@ public class GetOutboxMessageByIdQryValidatorTests
 {
     private readonly GetOutboxMessageByIdQryValidator _validator = new();
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_Id_is_null()
@@ -25,7 +25,7 @@ public class GetOutboxMessageByIdQryValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()

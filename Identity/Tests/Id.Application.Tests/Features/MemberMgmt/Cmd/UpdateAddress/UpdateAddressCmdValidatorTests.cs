@@ -18,7 +18,7 @@ public class UpdateAddressCmdValidatorTests
         _validator = new UpdateAddressCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_Dto_Is_Null()
@@ -37,7 +37,7 @@ public class UpdateAddressCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_Line1_Is_Empty()
@@ -54,7 +54,7 @@ public class UpdateAddressCmdValidatorTests
         result.ShouldHaveValidationErrorFor(cmd => cmd.Dto.Line1);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_Line2_Is_Empty()
@@ -71,7 +71,7 @@ public class UpdateAddressCmdValidatorTests
         result.ShouldHaveValidationErrorFor(cmd => cmd.Dto.Line2);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Not_Have_Error_When_Dto_Is_Valid()
@@ -88,7 +88,7 @@ public class UpdateAddressCmdValidatorTests
         result.ShouldNotHaveAnyValidationErrors();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -100,6 +100,6 @@ public class UpdateAddressCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<UpdateSelfCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

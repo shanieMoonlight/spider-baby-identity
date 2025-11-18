@@ -10,7 +10,7 @@ public class ResendEmailConfPrincipalCmdValidatorTests
     public ResendEmailConfPrincipalCmdValidatorTests() =>
         _validator = new ResendEmailConfirmationPrincipalValidator();
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -21,7 +21,7 @@ public class ResendEmailConfPrincipalCmdValidatorTests
         _validator.ShouldBeAssignableTo<IsAuthenticatedValidator<ResendEmailConfirmationPrincipalCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

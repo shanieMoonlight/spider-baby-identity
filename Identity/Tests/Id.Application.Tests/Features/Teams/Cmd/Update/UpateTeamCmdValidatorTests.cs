@@ -12,7 +12,7 @@ namespace ID.Application.Tests.Features.Teams.Cmd.Update;
 public class UpateTeamCmdValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenDtoIsNull()
@@ -32,7 +32,7 @@ public class UpateTeamCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenIdIsNull()
@@ -49,7 +49,7 @@ public class UpateTeamCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto.Id);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoIsNotValid()
@@ -65,7 +65,7 @@ public class UpateTeamCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsValid()
@@ -82,7 +82,7 @@ public class UpateTeamCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -96,7 +96,7 @@ public class UpateTeamCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.Teams.ONlY_LEADER_CAN_UPDATE);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -108,6 +108,6 @@ public class UpateTeamCmdValidatorTests
         validator.ShouldBeAssignableTo<IsLeaderValidator<UpdateTeamCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

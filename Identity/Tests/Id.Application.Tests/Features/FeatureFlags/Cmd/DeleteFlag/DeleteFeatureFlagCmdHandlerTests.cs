@@ -21,7 +21,7 @@ public class DeleteFeatureFlagCmdHandlerTests
         _handler = new DeleteFeatureFlagCmdHandler(_mockRepo.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WhenDeletesSuccessfully()
@@ -40,7 +40,7 @@ public class DeleteFeatureFlagCmdHandlerTests
         result.Info.ShouldBe(IDMsgs.Info.Deleted<FeatureFlag>(featureFlagId));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     //[Fact]
     //public async Task Handle_ShouldReturnInternalServerError_WhenExceptionIsThrown()
@@ -59,6 +59,6 @@ public class DeleteFeatureFlagCmdHandlerTests
     //    result.StatusCode.ShouldBe(StatusCodes.InternalServerError);
     //}
 
-    //------------------------------------//
+    //--------------------------//
 
 }

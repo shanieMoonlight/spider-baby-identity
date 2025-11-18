@@ -29,7 +29,7 @@ public class AddTeamSubscriptionCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoTeamID()
@@ -45,7 +45,7 @@ public class AddTeamSubscriptionCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoSubscriptionPlanId()
@@ -61,7 +61,7 @@ public class AddTeamSubscriptionCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsValid()
@@ -78,7 +78,7 @@ public class AddTeamSubscriptionCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -90,6 +90,6 @@ public class AddTeamSubscriptionCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<AddTeamSubscriptionCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

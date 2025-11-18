@@ -8,7 +8,7 @@ public class CustomerValidatorMinimumTests
 {
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void CustomerOnlyValidator_Should_Have_Error_When_IsCustomer_Is_False()
@@ -26,7 +26,7 @@ public class CustomerValidatorMinimumTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void CustomerOnlyValidator_Should_Not_Have_Error_When_IsCustomer_Is_True()
@@ -41,7 +41,7 @@ public class CustomerValidatorMinimumTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls
 

@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.Teams.Qry.GetById;
 public class GetTeamByIdQryValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -19,6 +19,6 @@ public class GetTeamByIdQryValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<GetTeamByIdQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

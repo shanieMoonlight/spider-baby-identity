@@ -19,7 +19,7 @@ public class GetAllTeamsQryHandlerTests
         _handler = new GetAllTeamsQryHandler(_mockTeamManager.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnAllTeams_IsMntc_IsNotSuper()
@@ -49,7 +49,7 @@ public class GetAllTeamsQryHandlerTests
         _mockTeamManager.Verify(mgr => mgr.GetAllTeams(true, false, It.IsAny<CancellationToken>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnAllTeams_IsSuper_INcludesIsMntc()
@@ -79,7 +79,7 @@ public class GetAllTeamsQryHandlerTests
         _mockTeamManager.Verify(mgr => mgr.GetAllTeams(true, true, It.IsAny<CancellationToken>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnAllTeams_IsSuper_AND_IsMntc()
@@ -109,6 +109,6 @@ public class GetAllTeamsQryHandlerTests
         _mockTeamManager.Verify(mgr => mgr.GetAllTeams(true, true, It.IsAny<CancellationToken>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -24,7 +24,7 @@ public class EmailConfirmationBusTests
         _emailConfirmationBus = new EmailConfirmationBus(_emailConfServiceMock.Object, _eventBusMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task GenerateTokenAndPublishEventAsync_ShouldNotPublishEvent_WhenEmailIsAlreadyConfirmed()
@@ -42,7 +42,7 @@ public class EmailConfirmationBusTests
         _eventBusMock.Verify(x => x.Publish(It.IsAny<IIdIntegrationEvent>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task GenerateTokenAndPublishEventAsync_ShouldPublishEventRequiringPassword_WhenPasswordHashIsNullOrWhiteSpace()
@@ -63,7 +63,7 @@ public class EmailConfirmationBusTests
         _eventBusMock.Verify(x => x.Publish(It.Is<EmailConfirmationRequiringPasswordIntegrationEvent>(e => e.UserId == user.Id && e.ConfirmationToken == token), cancellationToken), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task GenerateTokenAndPublishEventAsync_ShouldPublishEvent_WhenPasswordHashIsNotNullOrWhiteSpace()
@@ -85,7 +85,7 @@ public class EmailConfirmationBusTests
         _eventBusMock.Verify(x => x.Publish(It.Is<EmailConfirmationIntegrationEvent>(e => e.UserId == user.Id && e.ConfirmationToken == token), cancellationToken), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 

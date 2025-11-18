@@ -21,7 +21,7 @@ public class GetSprMembersPageQryHandlerTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnPagedResponseOfAppUserDto()
@@ -46,7 +46,7 @@ public class GetSprMembersPageQryHandlerTests
         result.Value.Data.Count().ShouldNotBe(appUsers.Count);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShoulCallGetSuperPageAsync_WithPrincipalTeamPosition()
@@ -72,6 +72,6 @@ public class GetSprMembersPageQryHandlerTests
         _mbrServiceMock.Verify(mgr => mgr.GetSuperPageAsync(It.IsAny<PagedRequest>(), teamPosition));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

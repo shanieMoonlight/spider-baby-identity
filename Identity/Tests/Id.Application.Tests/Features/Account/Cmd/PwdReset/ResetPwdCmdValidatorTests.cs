@@ -14,7 +14,7 @@ public class ResetPwdCmdValidatorTests
         _validator = new ResetPwdCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_DTO_is_null()
@@ -34,7 +34,7 @@ public class ResetPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_ResetToken_Missing()
@@ -61,7 +61,7 @@ public class ResetPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_ConfirmPassword_Missing()
@@ -88,7 +88,7 @@ public class ResetPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_NewPassword_Missing()
@@ -115,7 +115,7 @@ public class ResetPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_PasswordsDoNotMatch()
@@ -143,7 +143,7 @@ public class ResetPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_AllIdentifiersAreMissing()
@@ -162,7 +162,7 @@ public class ResetPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Succeed_when_EmailSupplied()
@@ -187,7 +187,7 @@ public class ResetPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Succeed_when_UsernameSupplied()
@@ -212,7 +212,7 @@ public class ResetPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Succeed_when_UserIdSupplied()
@@ -237,7 +237,7 @@ public class ResetPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

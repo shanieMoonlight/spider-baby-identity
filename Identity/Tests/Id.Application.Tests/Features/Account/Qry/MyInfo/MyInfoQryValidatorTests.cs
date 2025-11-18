@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.Account.Qry.MyInfo;
 public class MyInfoQryValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -19,6 +19,6 @@ public class MyInfoQryValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<MyInfoQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -23,7 +23,7 @@ public class UserAwarePipelineBehaviorTests
         _behavior = new IdUserAwarePipelineBehavior<TestUserAwareCommand<AppUser, object>, BasicResult>(_teamManagerMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_TeamNotFound_ReturnsNotFoundResponse()
@@ -46,7 +46,7 @@ public class UserAwarePipelineBehaviorTests
         result.Unauthorized.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_TeamFound_SetsPrincipalTeamAndCallsNext()
@@ -77,7 +77,7 @@ public class UserAwarePipelineBehaviorTests
         next.Verify(n => n(It.IsAny<CancellationToken>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls
 

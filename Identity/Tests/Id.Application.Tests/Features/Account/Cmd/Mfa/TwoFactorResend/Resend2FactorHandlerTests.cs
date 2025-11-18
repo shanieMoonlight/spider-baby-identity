@@ -28,7 +28,7 @@ public class Resend2FactorHandlerTests
             _mock2FactorService.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_TwoFactorNotEnabled_ShouldReturnBadRequestResult()
@@ -50,7 +50,7 @@ public class Resend2FactorHandlerTests
         result.Info.ShouldNotBeNull();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Success_ShouldReturnTotpResultData()
@@ -82,7 +82,7 @@ public class Resend2FactorHandlerTests
         result.Value.ShouldBe(totpResultData);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_UserOrTeamIsNull_ShouldReturnBadRequestResult()
@@ -103,7 +103,7 @@ public class Resend2FactorHandlerTests
         result.Info.ShouldNotBeNull();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_TeamIsNull_ShouldReturnBadRequestResult()

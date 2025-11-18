@@ -20,7 +20,7 @@ public class CanUpdatePermissions_UserTeam_Tests
         _canUpdatePermissions = new CanUpdatePermissions<AppUser>(_mockTeamManager.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanUpdateAsync_UserNotFound_ReturnsNotFoundResult()
@@ -42,7 +42,7 @@ public class CanUpdatePermissions_UserTeam_Tests
         result.NotFound.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanUpdateAsync_UserCannotUpdateOthers_ReturnsBadRequestResult()
@@ -63,7 +63,7 @@ public class CanUpdatePermissions_UserTeam_Tests
         result.BadRequest.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanUpdateAsync_UserCanUpdateSelf_ReturnsSuccessResult()
@@ -85,6 +85,6 @@ public class CanUpdatePermissions_UserTeam_Tests
         result.Value.ShouldBe(principalUser);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }

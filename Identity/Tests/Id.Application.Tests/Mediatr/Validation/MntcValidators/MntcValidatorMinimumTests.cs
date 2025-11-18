@@ -9,7 +9,7 @@ public class MntcValidatorMinimumTests
 
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void MntcMinimumValidator_Should_Have_Error_When_IsMntcMinimum_Is_False()
@@ -26,7 +26,7 @@ public class MntcValidatorMinimumTests
         result.Errors.First().CustomState.ShouldBe(ValidationError.Forbidden);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void MntcMinimumValidator_Should_Not_Have_Error_When_IsMntcMinimum_Is_True()
@@ -41,7 +41,7 @@ public class MntcValidatorMinimumTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void MntcMinimumValidator_With_Position_Should_Have_Error_When_TeamPosition_Is_Less_Than_Position()
@@ -58,7 +58,7 @@ public class MntcValidatorMinimumTests
         result.Errors.First().CustomState.ShouldBe(ValidationError.Forbidden);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void MntcMinimumValidator_With_Position_Should_Not_Have_Error_When_TeamPosition_Is_Greater_Than_Or_Equal_To_Position()
@@ -73,6 +73,6 @@ public class MntcValidatorMinimumTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

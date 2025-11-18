@@ -46,7 +46,7 @@ public class GetFeatureFlagsPageQryHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnEmptyPagedResponse_WhenNoFeaturesExist()
@@ -71,7 +71,7 @@ public class GetFeatureFlagsPageQryHandlerTests
         result.Value?.PageSize.ShouldBe(pagedRequest.PageSize);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldUseDefaultPagedRequest_WhenNotProvided()
@@ -96,6 +96,6 @@ public class GetFeatureFlagsPageQryHandlerTests
         result.Value?.PageSize.ShouldBe(defaultPagedRequest.PageSize);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

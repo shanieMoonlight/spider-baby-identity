@@ -28,7 +28,7 @@ public class RemoveDeviceFromTeamCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoDeviceOrSub()
@@ -46,7 +46,7 @@ public class RemoveDeviceFromTeamCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto.SubscriptionId);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoSubscriptionId()
@@ -62,7 +62,7 @@ public class RemoveDeviceFromTeamCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto.SubscriptionId);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsValid()
@@ -80,7 +80,7 @@ public class RemoveDeviceFromTeamCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenDtoIs_Without_DeviceId()
@@ -97,7 +97,7 @@ public class RemoveDeviceFromTeamCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -109,5 +109,5 @@ public class RemoveDeviceFromTeamCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<RemoveDeviceFromTeamSubscriptionCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 }//Cls

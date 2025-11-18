@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.Account.Qry.GetProviders;
 public class GetProvidersQryValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidatorr()
@@ -19,6 +19,6 @@ public class GetProvidersQryValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<GetProvidersQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

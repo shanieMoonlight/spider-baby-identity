@@ -25,7 +25,7 @@ public class TeamAwarePipelineBehaviorTests
         _behavior = new IdTeamAwarePipelineBehavior<TestUserAndTeamAwareCommand<AppUser, object>, BasicResult>(_teamManagerMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_TeamNotFound_ReturnsNotFoundResponse()
@@ -49,7 +49,7 @@ public class TeamAwarePipelineBehaviorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -81,7 +81,7 @@ public class TeamAwarePipelineBehaviorTests
         next.Verify(n => n(It.IsAny<CancellationToken>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_TeamFound_SetsLeaderID_IfPrincipalIsLeader()
@@ -111,7 +111,7 @@ public class TeamAwarePipelineBehaviorTests
         request.IsLeader.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_TeamFound_DOES_NOT_SetLeaderID_IfPrincipalIsLeader()
@@ -141,7 +141,7 @@ public class TeamAwarePipelineBehaviorTests
         request.IsLeader.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls
 

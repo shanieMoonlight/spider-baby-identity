@@ -28,7 +28,7 @@ public class UpdateMemberCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenIdIsNull()
     {
@@ -49,7 +49,7 @@ public class UpdateMemberCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto.Id);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenIdIsValid()
@@ -70,7 +70,7 @@ public class UpdateMemberCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -82,6 +82,6 @@ public class UpdateMemberCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<UpdateSelfCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

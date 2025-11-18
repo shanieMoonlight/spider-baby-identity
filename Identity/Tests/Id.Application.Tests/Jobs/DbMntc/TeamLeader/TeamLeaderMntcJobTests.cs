@@ -26,7 +26,7 @@ public class TeamLeaderMntcJobTests : ServiceProviderTestBase
         _job = new TeamLeaderMntcJob(MockServiceProvider.Object, _mockLogger.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -68,7 +68,7 @@ public class TeamLeaderMntcJobTests : ServiceProviderTestBase
         _mockUnitOfWork.Verify(uow => uow.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -94,7 +94,7 @@ public class TeamLeaderMntcJobTests : ServiceProviderTestBase
             Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task HandleAsync_Should_LogGenResultFailure_When_ValidationFails()

@@ -28,7 +28,7 @@ public class AddDeviceToTeamCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoSubscriptionId()
@@ -46,7 +46,7 @@ public class AddDeviceToTeamCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto.SubscriptionId);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoName()
@@ -66,7 +66,7 @@ public class AddDeviceToTeamCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoName2()
@@ -84,7 +84,7 @@ public class AddDeviceToTeamCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoNoUniqueId()
@@ -104,7 +104,7 @@ public class AddDeviceToTeamCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoUniqueId2()
@@ -122,7 +122,7 @@ public class AddDeviceToTeamCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsValid()
@@ -140,7 +140,7 @@ public class AddDeviceToTeamCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -152,6 +152,6 @@ public class AddDeviceToTeamCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<AddDeviceToTeamCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

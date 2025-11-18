@@ -8,7 +8,7 @@ namespace ID.Application.Tests.Features.FeatureFlags.Qry.GetByName;
 public class GetFeatureFlagByNameQryValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -20,6 +20,6 @@ public class GetFeatureFlagByNameQryValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<GetFeatureFlagByNameQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

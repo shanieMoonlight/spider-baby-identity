@@ -12,7 +12,7 @@ public class TwoFactorUpdateMethodCmdHandlerTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -43,7 +43,7 @@ public class TwoFactorUpdateMethodCmdHandlerTests
         _teamManagerMock.Verify(x => x.UpdateMemberAsync(team, user), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -72,6 +72,6 @@ public class TwoFactorUpdateMethodCmdHandlerTests
         _teamManagerMock.Verify(x => x.UpdateMemberAsync(team, user), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

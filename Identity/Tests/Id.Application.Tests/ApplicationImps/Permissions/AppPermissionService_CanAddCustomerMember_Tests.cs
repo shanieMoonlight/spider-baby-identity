@@ -17,7 +17,7 @@ public class AppPermissionService_CanAddCustomerMember_Tests
         _appPermissionService = new CanAddPermissions();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanAddCustomerTeamMember_NotCustomer_ReturnsForbidden()
@@ -37,7 +37,7 @@ public class AppPermissionService_CanAddCustomerMember_Tests
         result.Forbidden.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanAddCustomerTeamMember_PrincipalPositionHigherOrEqual_ReturnsSuccess()
@@ -55,7 +55,7 @@ public class AppPermissionService_CanAddCustomerMember_Tests
         result.Succeeded.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanAddCustomerTeamMember_PrincipalPositionLower_ReturnsForbidden()
@@ -76,7 +76,7 @@ public class AppPermissionService_CanAddCustomerMember_Tests
         result.Info.ShouldBe(IDMsgs.Error.Authorization.UNAUTHORIZED_FOR_POSITION(newMemberPosition));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanAddTeamMember_PrincipalPositionLower_But_LEader_ReturnsSuccess()
@@ -95,7 +95,7 @@ public class AppPermissionService_CanAddCustomerMember_Tests
         result.Succeeded.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanAddTeamMember_NonCustomer_But_Leader_ReturnsForbidden()
@@ -115,6 +115,6 @@ public class AppPermissionService_CanAddCustomerMember_Tests
         result.Forbidden.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

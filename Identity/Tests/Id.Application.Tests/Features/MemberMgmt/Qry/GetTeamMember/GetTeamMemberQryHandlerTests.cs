@@ -24,7 +24,7 @@ public class GetTeamMemberQryHandlerTests
         _handler = new GetTeamMemberQryHandler(_mockAppPermissionService.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnAppUserDto_WhenUserHasPermission()
@@ -49,7 +49,7 @@ public class GetTeamMemberQryHandlerTests
         result.Value.ShouldBeEquivalentTo(appUserDto);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailure_WhenUserDoesNotHavePermission()
@@ -72,6 +72,6 @@ public class GetTeamMemberQryHandlerTests
         result.Unauthorized.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }

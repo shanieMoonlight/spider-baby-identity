@@ -31,7 +31,7 @@ public class AtLeastOnePropertyAttributeTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Theory]
@@ -63,7 +63,7 @@ public class AtLeastOnePropertyAttributeTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [AtLeastOneProperty(nameof(PropertyA), nameof(PropertyB), nameof(PropertyC))]

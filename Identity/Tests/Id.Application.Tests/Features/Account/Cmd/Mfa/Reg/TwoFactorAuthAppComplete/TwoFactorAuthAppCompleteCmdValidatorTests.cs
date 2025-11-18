@@ -15,7 +15,7 @@ public class TwoFactorAuthAppCompleteCmdValidatorTests
         _validator = new TwoFactorAuthAppCompleteRegCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_PROVIDER_Is_Null()
@@ -32,7 +32,7 @@ public class TwoFactorAuthAppCompleteCmdValidatorTests
         result.ShouldHaveValidationErrorFor(cmd => cmd.Dto);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_TwoFactorCode_Is_Empty()
@@ -48,7 +48,7 @@ public class TwoFactorAuthAppCompleteCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto.TwoFactorCode);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_CustomerSecretKey_Is_Empty()
@@ -64,7 +64,7 @@ public class TwoFactorAuthAppCompleteCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto.CustomerSecretKey);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Not_Have_Error_When_Dto_Is_Valid()
@@ -82,7 +82,7 @@ public class TwoFactorAuthAppCompleteCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -93,7 +93,7 @@ public class TwoFactorAuthAppCompleteCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<TwoFactorAuthAppCompleteRegCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }

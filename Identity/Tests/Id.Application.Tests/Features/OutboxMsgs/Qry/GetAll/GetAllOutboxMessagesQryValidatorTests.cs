@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.OutboxMsgs.Qry.GetAll;
 public class GetAllOutboxMessagesQryValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -19,6 +19,6 @@ public class GetAllOutboxMessagesQryValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<GetAllOutboxMessagesQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -16,7 +16,7 @@ public class IdGenValidationPipelineBehaviourTests
     private readonly Mock<IValidator<TestGenRequest>> _validatorMock;
     private readonly IdValidationPipelineBehaviour<TestGenRequest, GenResult<int>> _pipelineBehaviour;
 
-    //------------------------------------//
+    //--------------------------//
 
     public IdGenValidationPipelineBehaviourTests()
     {
@@ -25,7 +25,7 @@ public class IdGenValidationPipelineBehaviourTests
         _pipelineBehaviour = new IdValidationPipelineBehaviour<TestGenRequest, GenResult<int>>(validators);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNext_WhenNoValidationFailures()
@@ -48,7 +48,7 @@ public class IdGenValidationPipelineBehaviourTests
         next.Verify(n => n(CancellationToken.None), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnValidationResult_WhenValidationFailuresExist()
@@ -74,7 +74,7 @@ public class IdGenValidationPipelineBehaviourTests
         next.Verify(n => n(It.IsAny<CancellationToken>()), Times.Never);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturn_BadRequest_When_StateIsNotForbiddenOrUnathorize()
@@ -100,7 +100,7 @@ public class IdGenValidationPipelineBehaviourTests
         next.Verify(n => n(It.IsAny<CancellationToken>()), Times.Never);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturn_Forbidden_When_StateForbidden()
@@ -127,7 +127,7 @@ public class IdGenValidationPipelineBehaviourTests
         next.Verify(n => n(It.IsAny<CancellationToken>()), Times.Never);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturn_Unauthorized_When_StateUnauthorized()
@@ -154,7 +154,7 @@ public class IdGenValidationPipelineBehaviourTests
         next.Verify(n => n(It.IsAny<CancellationToken>()), Times.Never);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 

@@ -18,7 +18,7 @@ public class AppPermissionServiceTests
         _appPermissionService = new CanChangePositionPermissions<AppUser>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangePositionAsync_PrincipalHasLowerPosition_ReturnsBadRequest()
@@ -42,7 +42,7 @@ public class AppPermissionServiceTests
         result.BadRequest.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangePositionAsync_UserNotInTeam_ReturnsForbidden()
@@ -63,7 +63,7 @@ public class AppPermissionServiceTests
         result.Forbidden.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangePositionAsync_PrincipalHasLowerPositionThanUser_ReturnsBadRequest()
@@ -86,7 +86,7 @@ public class AppPermissionServiceTests
         result.BadRequest.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangePositionAsync_Should_Return_BadRequest_When_User_Is_Leader()
@@ -112,7 +112,7 @@ public class AppPermissionServiceTests
         result.Info.ShouldBe(IDMsgs.Error.Teams.CANT_CHANGE_POSITION_OF_LEADER);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangePositionAsync_ValidRequest_ReturnsSuccess()
@@ -137,7 +137,7 @@ public class AppPermissionServiceTests
         result.Value.ShouldBe(newPositionUser);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangePositionAsync_ValidRequest_ReturnsSuccess_NOT_LEADER()
@@ -163,6 +163,6 @@ public class AppPermissionServiceTests
         result.Value.ShouldBe(newPositionUser);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

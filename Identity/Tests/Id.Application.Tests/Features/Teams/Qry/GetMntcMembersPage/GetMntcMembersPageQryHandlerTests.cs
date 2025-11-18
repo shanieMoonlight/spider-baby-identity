@@ -22,7 +22,7 @@ public class GetMntcMembersPageQryHandlerTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnPagedResponseOfAppUserDto()
@@ -47,7 +47,7 @@ public class GetMntcMembersPageQryHandlerTests
         result.Value.Data.Count().ShouldNotBe(appUsers.Count);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShoulCallGetMntcPageAsync_With10000_ifIsSuper()
@@ -73,7 +73,7 @@ public class GetMntcMembersPageQryHandlerTests
         _mbrServiceMock.Verify(mgr => mgr.GetMntcPageAsync(It.IsAny<PagedRequest>(), IdGlobalConstants.Teams.CATCH_ALL_MAX_POSITION));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShoulCallGetMntcPageAsync_WithPrincipalTeamPosition_IfIsMntc()
@@ -99,6 +99,6 @@ public class GetMntcMembersPageQryHandlerTests
         _mbrServiceMock.Verify(mgr => mgr.GetMntcPageAsync(It.IsAny<PagedRequest>(), teamPosition));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

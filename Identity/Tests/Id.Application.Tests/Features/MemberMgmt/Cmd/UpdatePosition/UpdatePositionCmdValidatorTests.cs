@@ -26,7 +26,7 @@ public class UpdatePositionCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto.UserId);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenIdIsNull()
@@ -46,7 +46,7 @@ public class UpdatePositionCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto.UserId);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenIdIsValid()
@@ -65,7 +65,7 @@ public class UpdatePositionCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -77,6 +77,6 @@ public class UpdatePositionCmdValidatorTests
         validator.ShouldBeAssignableTo<IsMntcMinimumLeaderValidator<UpdatePositionCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

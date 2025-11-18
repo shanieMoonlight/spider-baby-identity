@@ -20,7 +20,7 @@ public class GetMntcTeamQryHandlerTests
         _handler = new GetMntcTeamQryHandler(_mockTeamManager.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnTeamDto_WhenTeamExists()
@@ -40,7 +40,7 @@ public class GetMntcTeamQryHandlerTests
         result.Value.ShouldBeOfType<TeamDto>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNotFoundResult_WhenTeamDoesNotExist()
@@ -62,7 +62,7 @@ public class GetMntcTeamQryHandlerTests
         _mockTeamManager.Verify(mgr => mgr.GetMntcTeamWithMembersAsync(teamPosition));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShoulCallGetMntcTeamWithMembersAsync_With10000_ifIsSuper()
@@ -82,5 +82,5 @@ public class GetMntcTeamQryHandlerTests
         _mockTeamManager.Verify(mgr => mgr.GetMntcTeamWithMembersAsync(10000));
     }
 
-    //------------------------------------//
+    //--------------------------//
 }//Cls

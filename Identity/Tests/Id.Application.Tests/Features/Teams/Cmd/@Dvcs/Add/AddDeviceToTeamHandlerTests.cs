@@ -26,7 +26,7 @@ public class AddDeviceToTeamHandlerTests
         _handler = new AddDeviceToTeamHandler(_deviceServiceFactoryMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailureResult_WhenGetServiceFails()
@@ -52,7 +52,7 @@ public class AddDeviceToTeamHandlerTests
         _deviceServiceMock.Verify(x => x.AddDeviceAsync(It.IsAny<Name>(), It.IsAny<DescriptionNullable>(), It.IsAny<UniqueId>()), Times.Never);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccessResult_WhenDeviceIsAddedSuccessfully()
@@ -86,7 +86,7 @@ public class AddDeviceToTeamHandlerTests
         result.Value.ShouldBeAssignableTo<SubscriptionDto>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailureResult_WhenAddDeviceFails()
@@ -119,6 +119,6 @@ public class AddDeviceToTeamHandlerTests
         result.Info.ShouldBe("Add device failed");
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

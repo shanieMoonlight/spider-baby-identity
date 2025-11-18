@@ -19,7 +19,7 @@ public class IdApplicationSetupExtensionsTests
         FromAppHeaderValue = "DefaultFromAppHeaderValue",
     };
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void AddIdApplication_RegistersIdUnitOfWorkPipelineBehaviour()
@@ -34,7 +34,7 @@ public class IdApplicationSetupExtensionsTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void AddIdApplication_Registers_IdValidationPipelineBehaviour()
@@ -49,7 +49,7 @@ public class IdApplicationSetupExtensionsTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     public static TheoryData<Type[]> BehavioursInCorrectOrder()
     {
@@ -103,7 +103,7 @@ public class IdApplicationSetupExtensionsTests
         }
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void AddIdApplication_Registers_UserAndTeamInfo_BehaviorsInCorrectOrder()
@@ -141,7 +141,7 @@ public class IdApplicationSetupExtensionsTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void AddIdApplication_ShouldRegisterValidators()

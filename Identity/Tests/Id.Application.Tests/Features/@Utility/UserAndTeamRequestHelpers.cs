@@ -34,7 +34,7 @@ internal static class UserAndTeamRequestHelpers
         return request;
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     /// <summary>
     /// Set the request to be authenticated as a SUPER user.
@@ -62,7 +62,7 @@ internal static class UserAndTeamRequestHelpers
         return request;
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     /// <summary>
     /// Set the request to be authenticated as a CUSTOMER user.
@@ -91,6 +91,6 @@ internal static class UserAndTeamRequestHelpers
         return request;
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }

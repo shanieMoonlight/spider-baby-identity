@@ -22,7 +22,7 @@ public class GetSubscriptionPlanByIdQryHandlerTests
         _handler = new GetSubscriptionPlanByIdQryHandler(_mockRepo.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSubscriptionPlanDto_WhenExists()
@@ -42,7 +42,7 @@ public class GetSubscriptionPlanByIdQryHandlerTests
         Assert.Equal(subscriptionPlanId, result.Value.Id); // Assuming Id is mapped to Dto
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNotFound_WhenSubscriptionPlanDoesNotExist()
@@ -64,6 +64,6 @@ public class GetSubscriptionPlanByIdQryHandlerTests
         Assert.Equal(IDMsgs.Error.NotFound<SubscriptionPlan>(subscriptionPlanId), result.Info);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -19,7 +19,7 @@ public class MfaGoogleCompleteRegistrationCmdHandlerTests
         _handler = new MfaGoogleCompleteRegistrationCmdHandler(_googleAuthMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WhenEnableAsyncSucceeds()
@@ -42,7 +42,7 @@ public class MfaGoogleCompleteRegistrationCmdHandlerTests
         result.Value.UserName.ShouldBe(user.UserName);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailure_WhenEnableAsyncFails()
@@ -64,6 +64,6 @@ public class MfaGoogleCompleteRegistrationCmdHandlerTests
         result.Info.ShouldBe(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_CODE);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

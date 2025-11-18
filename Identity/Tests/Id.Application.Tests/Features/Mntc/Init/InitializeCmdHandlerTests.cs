@@ -15,7 +15,7 @@ public class InitializeCmdHandlerTests
         _handler = new InitializeCmdHandler(_mockIdInitializationService.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnInitializedMessage_WhenInitializationIsSuccessful()

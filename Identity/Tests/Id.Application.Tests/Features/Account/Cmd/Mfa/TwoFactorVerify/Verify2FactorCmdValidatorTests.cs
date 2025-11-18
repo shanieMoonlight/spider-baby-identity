@@ -16,7 +16,7 @@ public class Verify2FactorCmdValidatorTests
         _validator = new Verify2FactorCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_Dto_Is_Null()
@@ -34,7 +34,7 @@ public class Verify2FactorCmdValidatorTests
             .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Not_Have_Error_When_Dto_Has_Valid_CodeAndToken()
@@ -54,7 +54,7 @@ public class Verify2FactorCmdValidatorTests
         result.ShouldNotHaveAnyValidationErrors();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_Dto_Code_Is_Null()
@@ -76,7 +76,7 @@ public class Verify2FactorCmdValidatorTests
         result.ShouldHaveValidationErrors();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_Dto_Code_Is_Empty()
@@ -96,7 +96,7 @@ public class Verify2FactorCmdValidatorTests
         result.ShouldHaveValidationErrors();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_Dto_Token_Is_Null()
@@ -118,7 +118,7 @@ public class Verify2FactorCmdValidatorTests
         result.ShouldHaveValidationErrors();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_Dto_Token_Is_Empty()
@@ -138,7 +138,7 @@ public class Verify2FactorCmdValidatorTests
         result.ShouldHaveValidationErrors();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()

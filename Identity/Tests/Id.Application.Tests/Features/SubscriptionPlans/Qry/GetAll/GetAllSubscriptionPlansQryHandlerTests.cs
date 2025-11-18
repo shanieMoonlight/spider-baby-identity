@@ -18,7 +18,7 @@ public class GetAllSubscriptionPlansQryHandlerTests
         _repoMock = new Mock<IIdentitySubscriptionPlanService>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnAllSubscriptionPlans_WhenSuccessful()
@@ -40,7 +40,7 @@ public class GetAllSubscriptionPlansQryHandlerTests
         _repoMock.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnEmptyList_WhenNoSubscriptionPlansExist()
@@ -61,6 +61,6 @@ public class GetAllSubscriptionPlansQryHandlerTests
         _repoMock.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -21,7 +21,7 @@ public class GetTeamPageQryHandlerTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnPagedResponseOfTeamDto()
@@ -47,5 +47,5 @@ public class GetTeamPageQryHandlerTests
         _mbrServiceMock.Verify(mgr => mgr.GetPageAsync(It.IsAny<PagedRequest>()));
     }
 
-    //------------------------------------//
+    //--------------------------//
 }//Cls

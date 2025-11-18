@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.FeatureFlags.Qry.GetAll;
 public class GetAllFeatureFlagsQryValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -19,6 +19,6 @@ public class GetAllFeatureFlagsQryValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<GetAllFeatureFlagsQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

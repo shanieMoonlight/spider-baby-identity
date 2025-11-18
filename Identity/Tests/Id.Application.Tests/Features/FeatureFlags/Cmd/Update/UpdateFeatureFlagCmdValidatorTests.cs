@@ -10,16 +10,12 @@ namespace ID.Application.Tests.Features.FeatureFlags.Cmd.Update;
 public class UpdateFeatureFlagCmdValidatorTests
 {
 
-    //------------------------------------//
-
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenDtoIsNull()
     {
         // Arrange
         var validator = new UpdateFeatureFlagCmdValidator();
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-        var command = new UpdateFeatureFlagCmd(null);
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+        var command = new UpdateFeatureFlagCmd(null!);
         command.SetAuthenticated_MNTC();
 
         // Act
@@ -30,7 +26,7 @@ public class UpdateFeatureFlagCmdValidatorTests
         result.ShouldHaveValidationErrorFor(cmd => cmd.Dto);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsNotNull()
@@ -47,7 +43,7 @@ public class UpdateFeatureFlagCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -59,6 +55,5 @@ public class UpdateFeatureFlagCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<UpdateFeatureFlagCmd>>();
     }
 
-    //------------------------------------//
 
 }//Cls

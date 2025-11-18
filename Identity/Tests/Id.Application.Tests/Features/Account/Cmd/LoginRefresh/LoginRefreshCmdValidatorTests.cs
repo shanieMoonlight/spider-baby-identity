@@ -8,7 +8,7 @@ public class LoginRefreshCmdValidatorTests
     private readonly LoginRefreshCmdValidator _validator = new();
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_DTO_is_null()
@@ -29,7 +29,7 @@ public class LoginRefreshCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

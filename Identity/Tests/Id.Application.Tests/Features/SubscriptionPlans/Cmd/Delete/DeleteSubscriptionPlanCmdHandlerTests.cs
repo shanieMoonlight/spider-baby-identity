@@ -21,7 +21,7 @@ public class DeleteSubscriptionPlanCmdHandlerTests
         _handler = new DeleteSubscriptionPlanCmdHandler(_mockRepo.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WhenDeletesSuccessfully()
@@ -40,7 +40,7 @@ public class DeleteSubscriptionPlanCmdHandlerTests
         result.Info.ShouldBe(IDMsgs.Info.Deleted<SubscriptionPlan>(Id));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     //[Fact]
     //public async Task Handle_ShouldReturnInternalServerError_WhenExceptionIsThrown()
@@ -59,6 +59,6 @@ public class DeleteSubscriptionPlanCmdHandlerTests
     //    result.StatusCode.ShouldBe(StatusCodes.InternalServerError);
     //}
 
-    //------------------------------------//
+    //--------------------------//
 
 }

@@ -27,7 +27,7 @@ public class UpdateTeamLeader_MNTC_CmdHandlerTests
         _handler = new UpdateTeamLeaderCmdHandler(_mockTeamManager.Object, _appPermissionsMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Should_Update_Team_Leader_When_Permission_Granted()
@@ -56,7 +56,7 @@ public class UpdateTeamLeader_MNTC_CmdHandlerTests
         result.Value.Id.ShouldBe(expectedTeam.Id);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Should_Return_Failure_When_Permission_Denied()
@@ -79,5 +79,5 @@ public class UpdateTeamLeader_MNTC_CmdHandlerTests
         result.Info.ShouldBe("Permission denied");
     }
 
-    //------------------------------------//
+    //--------------------------//
 }

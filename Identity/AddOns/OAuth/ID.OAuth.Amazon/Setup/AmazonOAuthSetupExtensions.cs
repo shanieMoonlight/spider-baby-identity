@@ -31,11 +31,15 @@ public static class AmazonOAuthSetupExtensions
         services.AddAmazonOAuthHttpClient();
         services.AddAmazonOAuthServices();
 
+
         var assembly = typeof(IdOAuthAmazonOptions).Assembly;
+
         services.AddMediatR(config => config.RegisterServicesFromAssembly(assembly));
+        
         services.AddValidatorsFromAssembly(assembly);
+
         services.AddControllers().PartManager.ApplicationParts.Add(new AssemblyPart(typeof(IdOAuthAmazonOptions).Assembly));
 
         return services;
     }
-}
+}//Cls

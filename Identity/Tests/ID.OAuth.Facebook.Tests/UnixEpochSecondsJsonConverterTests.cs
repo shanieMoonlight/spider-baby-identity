@@ -1,4 +1,4 @@
-using System.Text.Json;
+using ID.OAuth.Utils.Serialization;
 
 namespace ID.OAuth.Facebook.Tests;
 

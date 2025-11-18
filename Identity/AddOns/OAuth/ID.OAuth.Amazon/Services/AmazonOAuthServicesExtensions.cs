@@ -18,9 +18,7 @@ public static class AmazonOAuthServicesExtensions
 
         // Register Amazon OAuth services
         services.AddScoped<IAmazonAuthenticationService, AmazonAuthenticationService>();
-
-        //TODO: Implement FindOrCreateService for Amazon OAuth  or move to Shared Utils????
-        //services.AddScoped<IFindOrCreateService<AppUser>, FindOrCreateService<AppUser>>();
+        services.AddScoped<IFindOrCreateService<AppUser>, FindOrCreateService<AppUser>>();
 
         return services;
     }

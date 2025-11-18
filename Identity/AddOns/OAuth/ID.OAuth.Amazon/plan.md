@@ -7,74 +7,65 @@ High-level approach
 - Reuse shared utils from `ID.OAuth.Utils`: `IOAuthHttpClientUtils.MapResponseToResult<T>`, shared `JsonSerializerOptions`, and `GenResult<T>` factories.
 - Mirror Facebook add-on structure: HttpService (Imps + Abs), Services (verifier/auth), Setup/DI, models, unit tests.
 
-Step-by-step tasks
-
-1) Project scaffolding
-- Ensure `ID.OAuth.Amazon` project exists (done).
-- Ensure `ID.OAuth.Amazon.Tests` project exists (done).
-- Add `InternalsVisibleTo` attributes in the Amazon csproj for tests and Moq if needed. (DONe, Done and Done!)
-
-2) Options and DI setup
-- Create `IdOAuthAmazonOptions` with properties: `ClientId`, `ClientSecret` (optional for LWA), `ApiBaseUrl` (default `https://api.amazon.com/`), `RequestTimeoutSeconds`.
-- Add `AmazonOAuthSetupExtensions` with `AddMyIdAmazonOAuth(IConfiguration)` and `AddMyIdAmazonOAuth(Action<IdOAuthAmazonOptions>)` methods mirroring `FacebookOAuthSetupExtensions` and calling:
-  - `services.AddMyIdOAuthUtils()` to register `IOAuthHttpClientUtils` and `JsonSerializerOptions`.
-  - `services.AddAmazonOAuthHttpClient()` (named HttpClient registration with base address & resilience, see FacebookHttpClientConfiguration).
-  - `services.AddAmazonOAuthServices()` to register `IAmazonHttpClient`, `IAmazonAuthenticationService` implementations.
-
-3) Models
-- `AmazonTokenInfo` (properties matching tokeninfo response): `client_id`, `expires_in` (int?), `scope`, `user_id`. Add computed `DateTimeOffset? ExpiresAt` set after deserialization: `UtcNow + TimeSpan.FromSeconds(expires_in)`.
-- `AmazonUserProfile` matching `user/profile`: `user_id`, `name`, `email`, `postal_code`, etc. Keep email optional and mark as unverified by default unless provider claims otherwise.
-
-4) HttpService
-- Add abstraction `IAmazonHttpClient` with methods:
-  - `Task<GenResult<AmazonTokenInfo>> GetTokenInfoAsync(string accessToken, CancellationToken ct = default)`
-  - `Task<GenResult<AmazonUserProfile>> GetUserProfileAsync(string accessToken, CancellationToken ct = default)`
-- Implement `HttpService.Imps.AmazonHttpClient`:
-  - Inject `HttpClient`, `IOAuthHttpClientUtils`, `IOptions<IdOAuthAmazonOptions>`, `ILogger<>`, and `JsonSerializerOptions`.
-  - `GetTokenInfoAsync` -> GET `auth/o2/tokeninfo?access_token={token}` (use `MapResponseToResult<T>` for non-200).
-  - `GetUserProfileAsync` -> GET `user/profile` with `Authorization: Bearer {token}` (use `MapResponseToResult<T>`).
-  - Deserialize with injected `JsonSerializerOptions`.
-
-5) Services
-- Add `IAmazonAuthenticationService` with `VerifyTokenAsync`, `GetUserProfileAsync`, `VerifyAndGetProfileAsync` similar to Facebook's service signatures.
-- Implement `AmazonAuthenticationService`:
-  - `VerifyTokenAsync` calls `GetTokenInfoAsync`, checks `client_id` matches configured `ClientId`, calculates expiry from `expires_in`, returns typed `GenResult` status (Unauthorized/BadRequest/RateLimit/etc.).
-  - `VerifyAndGetProfileAsync` orchestrates verify -> profile -> id match and uses `Convert<T>` to propagate status where appropriate.
-
-6) DI wiring
-- Register the named HttpClient with resilience (mirroring FacebookHttpClientConfiguration) in `AddAmazonOAuthHttpClient()`.
-- Register services and validators in `AddAmazonOAuthDI()`.
-
-7) Unit tests
-- Add tests in `ID.OAuth.Amazon.Tests` mirroring Facebook tests:
-  - `AmazonHttpClientTests` (tokeninfo success, invalid token, expired token, 429 rate-limit, deserialization failure, log warnings).
-  - `AmazonAuthenticationServiceTests` (verify+get profile success, invalid token -> Unauthorized status, profile id mismatch -> Unauthorized, expired token -> Unauthorized).
-- Reuse `TestHttpMessageHandler`, `VerifyWarningLogging`, shared `JsonSerializerOptions` registration from `ID.OAuth.Utils`.
-
-8) Integration / Manual verification (later)
-- Optional: create an integration harness that calls real Amazon LWA endpoints with a test app.
-
-9) Docs & plan
-- Add `plan.md` (this file) to `ID.OAuth.Amazon` and add a short README with required configuration keys and scopes (`profile`, `postal_code`, `profile` + `email` if needed).
-
-Implementation notes & gotchas
-- `tokeninfo` returns `expires_in` (relative seconds) not Unix epoch. Compute `ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(expires_in)`.
-- Email on Amazon may be absent unless the `email` scope is granted. Treat email as optional/unverified.
+Decisions
+- Use LWA tokeninfo + `/user/profile` (no local JWT validation for now).
 - Reuse `IOAuthHttpClientUtils.MapResponseToResult<T>` for consistent error mapping and logging.
-- Respect `429` responses as rate-limited; currently map to `GenResult<T>.RateLimitExceededResult(...)` and do not retry by default. If you later want retries, implement a resilience policy in the named HttpClient.
+- Use `AddMyIdOauthStandardResilienceHandler` (from `ID.OAuth.Utils.HttpClient`) for HttpClient resilience policies.
+- Defer provider-specific `FindOrCreateService` implementation — prefer a shared FindOrCreate service in a later change unless provider needs unique behavior.
 
-Order of implementation (minimal incremental commits)
-1. Create options + DI setup skeleton (AddAmazonOAuthSetupExtensions, options class)
-2. Add models and interfaces (`IAmazonHttpClient`, `IAmazonAuthenticationService`)
-3. Implement `AmazonHttpClient` and wire named HttpClient
-4. Implement `AmazonAuthenticationService`
-5. Add unit tests for HttpClient and Service
-6. Polish DI, validators, README, and register tests in CI
+Step-by-step tasks (current)
+1) Project scaffolding (done)
+   - `ID.OAuth.Amazon` project exists and has test project with InternalsVisibleTo configured.
 
-If you want I can scaffold the files now (options, models, interfaces, http client, service, setup) and add the first unit tests. Proceed to scaffold?"
+2) Options and DI setup (done)
+   - `IdOAuthAmazonOptions` created; setup extensions scaffolded (`AddMyIdAmazonOAuth`, `AddAmazonOAuthDI`).
+   - `AddMyIdOAuthUtils()` is called to register shared serialization and utils.
+   - `AddAmazonOAuthHttpClient()` registers typed `IAmazonHttpClient` with resilience handler and `User-Agent` header.
 
+3) Models (done)
+   - `AmazonTokenInfo` and `AmazonUserProfile` added. `ExpiresAt` computed from `expires_in`.
 
+4) HttpService (done)
+   - `IAmazonHttpClient` and `AmazonHttpClient` implemented, using injected `JsonSerializerOptions` and `IOAuthHttpClientUtils.MapResponseToResult<T>`.
 
- Implement FindOrCreateService for Amazon OAuth  or move to Shared Utils????
-What about Amazon Api versioning???
-Fix broken tests : FacebookClientRateLimitTests, FacebookHttpClientTests
+5) Services (done)
+   - `IAmazonAuthenticationService` and `AmazonAuthenticationService` implemented mirroring Facebook patterns and using `GenResult<T>` typed factories.
+
+6) DI wiring (done)
+   - Services and HttpClient registered; `AddMyIdOauthStandardResilienceHandler` applied to the typed client.
+
+Remaining tasks
+- Validation & DI checklist
+  - Add `AmazonOauthSetupOptionsValidator` to validate `ClientId` (required) and `ApiBaseUrl` format optionally.
+  - Ensure `AddAmazonOAuthHttpClient()` uses `IOptions<IdOAuthAmazonOptions>` when configuring base address/timeouts (already wired).
+
+- Testing tasks
+  - Fix broken Facebook tests (if any regressions): investigate duplicate `TestHttpMessageHandler` and missing `using` statements; ensure `ID.OAuth.Facebook.Tests` compiles and runs.
+  - Add Amazon unit tests (in `ID.OAuth.Amazon.Tests`):
+    - `AmazonHttpClientTests`: tokeninfo success, invalid (400/401), expired token, 429 rate-limit mapping, deserialization failure, log warnings.
+    - `AmazonAuthenticationServiceTests`: verify success, wrong `client_id` -> Unauthorized, user id mismatch -> Unauthorized, expired token -> Unauthorized.
+    - Reuse `TestHttpMessageHandler` and `VerifyWarningLogging` from shared test utilities.
+
+- API & behavior notes
+  - `tokeninfo` returns `expires_in` (relative seconds) not Unix epoch. Compute `ExpiresAt = DateTimeOffset.UtcNow.AddSeconds(expires_in)`.
+  - Amazon LWA profile may omit `email` unless `email` scope was requested; treat email as optional/unverified.
+  - No API versioning required for Amazon base endpoints; `ApiBaseUrl` option allows overrides if needed.
+  - Respect `429` as rate-limited (map to `GenResult<T>.RateLimitExceededResult`), do not retry by default at application level — rely on HttpClient resilience policies.
+
+- FindOrCreateService strategy
+  - Recommendation: keep a shared `FindOrCreateService` in a common place (used by all providers) unless a provider needs unique behavior. Implement provider adapter if differences arise. Defer until Amazon sign-in flow wiring is complete.
+
+Deliverables & acceptance criteria
+- All unit tests for Facebook and Amazon pass locally.
+- `ID.OAuth.Amazon` exposes `AddMyIdAmazonOAuth` setup method and registers HttpClient + services.
+- `AmazonAuthenticationService.VerifyAndGetProfileAsync` returns appropriate typed `GenResult` values (Success/Unauthorized/BadRequest/RateLimit) and propagates statuses via `Convert<T>`.
+- README/snippet documenting required config keys and scopes added to the add-on project.
+
+Order of implementation (recommended)
+1. Add `AmazonOauthSetupOptionsValidator` and wire validation-on-start.
+2. Add unit tests for `AmazonHttpClient` and `AmazonAuthenticationService` and get them passing.
+3. Fix any Facebook test regressions and ensure all tests in the solution pass.
+4. Add README and CI updates.
+
+Notes
+- If you want, I can implement validators and the first set of unit tests now. Which should I do next?

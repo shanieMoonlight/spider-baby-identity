@@ -26,22 +26,22 @@ public static class FacebookHttpClientConfiguration
         services.AddScoped<IFacebookClientUtilities, FacebookClientUtilities>();
 
 
-        // Register a shared JsonSerializerOptions for Facebook deserialization
-        services.AddSingleton(provider =>
-        {
-            var opts = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                AllowTrailingCommas = true,
-                ReadCommentHandling = JsonCommentHandling.Skip,
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-            };
+        //// Register a shared JsonSerializerOptions for Facebook deserialization
+        //services.AddSingleton(provider =>
+        //{
+        //    var opts = new JsonSerializerOptions
+        //    {
+        //        PropertyNameCaseInsensitive = true,
+        //        AllowTrailingCommas = true,
+        //        ReadCommentHandling = JsonCommentHandling.Skip,
+        //        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+        //    };
 
-            // Register the Unix epoch converter for timestamps
-            opts.Converters.Add(new UnixEpochSecondsJsonConverter());
+        //    // Register the Unix epoch converter for timestamps
+        //    opts.Converters.Add(new UnixEpochSecondsJsonConverter());
 
-            return opts;
-        });
+        //    return opts;
+        //});
 
 
 

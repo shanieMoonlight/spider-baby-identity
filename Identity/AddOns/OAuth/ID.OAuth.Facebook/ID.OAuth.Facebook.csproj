@@ -29,6 +29,7 @@
     <ProjectReference Include="..\..\..\Core\ID.Application\ID.Application.csproj" />
     <ProjectReference Include="..\..\..\Core\ID.Domain\ID.Domain.csproj" />
     <ProjectReference Include="..\..\..\Core\ID.GlobalSettings\ID.GlobalSettings.csproj" />
+    <ProjectReference Include="..\ID.OAuth.Utils\ID.OAuth.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>

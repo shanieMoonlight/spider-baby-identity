@@ -37,6 +37,15 @@ public static class ObjectResultExtensions
     //- - - - - - - - - - - - - - - - - -//
 
     /// <summary>
+    /// Generates an RateLimitExceeded Result including the data:  {message: msg}
+    /// </summary>
+    /// <returns>RateLimitExceeded Error Result (401)</returns>
+    public static ObjectResult RateLimitExceededWithMessageDto(this ControllerBase controller, string msg) =>
+        new RateLimitExceededResponse(MessageResponseDto.Generate(msg));
+
+    //- - - - - - - - - - - - - - - - - -//
+
+    /// <summary>
     /// Generates an Forbidden Result including the value
     /// </summary>
     /// <returns>Forbidden Error Result (403)</returns>

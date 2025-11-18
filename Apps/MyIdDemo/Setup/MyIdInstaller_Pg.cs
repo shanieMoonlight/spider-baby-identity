@@ -5,6 +5,8 @@ using ID.Email.SG.Setup;
 using ID.Email.SMTP.Setup;
 using ID.Infrastructure.Auth.JWT.Setup;
 using ID.Msg.Twilio.Setup;
+using ID.OAuth.Facebook.Services;
+using ID.OAuth.Facebook.Setup;
 using ID.OAuth.Google.Setup;
 using ID.PhoneConfirmation.Setup;
 using MyIdDemo.Setup.Data;
@@ -86,6 +88,11 @@ public class MyIdInstaller_Pg : IServiceInstaller
            {
                config.ClientId = startupData.OAuthSection.GoogleSection.GetClientId()!;
                config.ClientSecret = startupData.OAuthSection.GoogleSection.GetClientSecret()!;
+           })
+           .AddMyIdFacebookOAuth(config =>
+           {
+               config.AppId = startupData.OAuthSection.FacebookSection.GetAppId()!;
+               config.AppSecret = startupData.OAuthSection.FacebookSection.GetAppSecret()!;
            })
            //.AddTeamRolesUserToAdmin()// Uncomment this to add the TeamRoles User to Admin Policies
            ;

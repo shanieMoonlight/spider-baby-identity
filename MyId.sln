@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{415A4D90-9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		Directory.Packages.props = Directory.Packages.props
 		PRIVACY-NOTICE.md = PRIVACY-NOTICE.md
 		README.md = README.md
@@ -224,6 +225,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ID.Jobs.Quartz.Tests", "Identity\Tests\ID.Jobs.Quartz.Tests\ID.Jobs.Quartz.Tests.csproj", "{D0E71065-60E1-4791-BECB-7C51E4BC22D5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{A10CC2E2-069F-4FFF-8351-71B6D09C8CC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ID.OAuth.Facebook.Tests", "Identity\Tests\ID.OAuth.Facebook.Tests\ID.OAuth.Facebook.Tests.csproj", "{360776A9-6AC4-4261-9848-96C9C470B958}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -531,6 +534,10 @@ Global
 		{D0E71065-60E1-4791-BECB-7C51E4BC22D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0E71065-60E1-4791-BECB-7C51E4BC22D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0E71065-60E1-4791-BECB-7C51E4BC22D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{360776A9-6AC4-4261-9848-96C9C470B958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{360776A9-6AC4-4261-9848-96C9C470B958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{360776A9-6AC4-4261-9848-96C9C470B958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{360776A9-6AC4-4261-9848-96C9C470B958}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -638,6 +645,7 @@ Global
 		{4769826D-F83E-4652-8A55-E2C0E16727FE} = {726CB091-4795-49ED-8D30-5A3FCADE5F61}
 		{D0E71065-60E1-4791-BECB-7C51E4BC22D5} = {5EFB6D7C-41DD-4C63-B618-9512E0A852BA}
 		{A10CC2E2-069F-4FFF-8351-71B6D09C8CC3} = {243C9E4C-FCA9-4041-A578-F957DB5C0AC0}
+		{360776A9-6AC4-4261-9848-96C9C470B958} = {5EFB6D7C-41DD-4C63-B618-9512E0A852BA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32CD658E-91A7-4238-A40D-2FCD8CC81535}

@@ -58,6 +58,20 @@ public partial class BasicResult
     //------------------------------------// 
 
     /// <summary>
+    /// Generates a BasicResult with RateLimitExceeded status
+    /// </summary>
+    /// <param name="info">What is wrong with request</param>
+    /// <returns>Result with RateLimitExceeded status</returns>
+    public static BasicResult RateLimitExceededResult(string? info = null) =>
+        new(
+            succeeded: false,
+            info: info ?? _unknownErrorMessage,
+            status: ResultStatus.RateLimitExceeded
+        );
+
+    //------------------------------------// 
+
+    /// <summary>
     /// Generates a BasicResult with BadRequest status
     /// </summary>
     /// <param name="badRequestResponse">Detailed response about the bad request</param>

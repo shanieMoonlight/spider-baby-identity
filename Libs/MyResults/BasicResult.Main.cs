@@ -68,6 +68,13 @@ public partial class BasicResult
     /// </summary>
     public bool Forbidden => Status == ResultStatus.Forbidden;
 
+
+    /// <summary>
+    /// Whether RateLimitExceeded
+    /// </summary>
+    public bool RateLimitExceeded => Status == ResultStatus.RateLimitExceeded;
+
+
     /// <summary>
     /// Whether the request was malformed
     /// </summary>

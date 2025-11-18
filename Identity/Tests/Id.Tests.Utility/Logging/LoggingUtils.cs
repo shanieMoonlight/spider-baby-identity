@@ -231,4 +231,31 @@ public static class LoggingUtils
             times ?? Times.Once);
     }
 
+    // Add helper to verify Warning level logs with message predicate
+    public static void VerifyWarningLogging<TClass>(
+        this Mock<ILogger<TClass>> mockLogger,
+        Func<object, bool> msgPredicate,
+        Func<Times>? times = null)
+        where TClass : class => mockLogger.Verify(
+            l => l.Log(
+                LogLevel.Warning,
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) => msgPredicate.Invoke(v)),
+                It.IsAny<Exception?>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+            times ?? Times.Once);
+
+    // Optionally verify any warning was logged
+    public static void VerifyWarningLogging<TClass>(
+        this Mock<ILogger<TClass>> mockLogger,
+        Func<Times>? times = null)
+        where TClass : class => mockLogger.Verify(
+            l => l.Log(
+                LogLevel.Warning,
+                It.IsAny<EventId>(),
+                It.IsAny<It.IsAnyType>(),
+                It.IsAny<Exception?>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+            times ?? Times.Once);
+
 }//Cls

@@ -1,271 +1,173 @@
-//using ID.OAuth.Facebook.HttpService.Imps;
-//using ID.OAuth.Utils.Serialization;
-//using static MyResults.BasicResult;
+using ID.OAuth.Facebook.HttpService.Imps;
+using ID.OAuth.Utils.Abs;
+using ID.OAuth.Utils.Serialization;
 
-//namespace ID.OAuth.Facebook.Tests;
+namespace ID.OAuth.Facebook.Tests.HttpService;
 
-////###########################################################///
+public class FacebookHttpClientTests
+{
+    private static JsonSerializerOptions CreateJsonOptionsWithConverter()
+    {
+        var jsonOpts = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+            AllowTrailingCommas = true,
+            ReadCommentHandling = JsonCommentHandling.Skip
+        };
 
-//internal class TestHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> responder) : HttpMessageHandler
-//{
-//    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-//    {
-//        return Task.FromResult(responder(request));
-//    }
-//}
+        jsonOpts.Converters.Add(new UnixEpochSecondsJsonConverter());
 
-////###########################################################///
+        return jsonOpts;
+    }
 
-//public class FacebookHttpClientTests
-//{
-//    private static JsonSerializerOptions CreateJsonOptionsWithConverter()
-//    {
-//        var jsonOpts = new JsonSerializerOptions
-//        {
-//            PropertyNameCaseInsensitive = true,
-//            AllowTrailingCommas = true,
-//            ReadCommentHandling = JsonCommentHandling.Skip
-//        };
+    //--------------------------//
 
-//        // Add internal converter via reflection
+    [Fact]
+    public async Task GetDebugTokenAsync_ReturnsSuccess_WhenResponseIs200AndValidJson()
+    {
+        // Arrange
+        var userToken = "some_user_token";
+        var debugJson = "{\"data\":{\"app_id\":\"app123\",\"is_valid\":true,\"user_id\":\"user_1\",\"expires_at\":9999999999}}";
 
-//        jsonOpts.Converters.Add(new UnixEpochSecondsJsonConverter());
+        var handler = new TestHttpMessageHandler(req => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(debugJson) });
+        var client = new HttpClient(handler) { BaseAddress = new Uri("https://graph.facebook.com/v18.0/") };
 
-//        return jsonOpts;
-//    }
+        var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
+        var utilities = new FacebookClientUtilities(opts);
+        var logger = Mock.Of<ILogger<FacebookHttpClient>>();
+        var mockOAuthUtils = new Mock<IOAuthHttpClientUtils>();
 
-//    //----------------------//
+        var jsonOpts = CreateJsonOptionsWithConverter();
 
-//    [Fact]
-//    public async Task GetDebugTokenAsync_ReturnsSuccess_WhenResponseIs200AndValidJson()
-//    {
-//        // Arrange
-//        var userToken = "some_user_token";
-//        var debugJson = "{\"data\":{\"app_id\":\"app123\",\"is_valid\":true,\"user_id\":\"user_1\",\"expires_at\":9999999999}}";
+        var fb = new FacebookHttpClient(client, utilities, mockOAuthUtils.Object, opts, logger, jsonOpts);
 
-//        var handler = new TestHttpMessageHandler(req =>
-//        {
-//            var resp = new HttpResponseMessage(HttpStatusCode.OK)
-//            {
-//                Content = new StringContent(debugJson)
-//            };
-//            return resp;
-//        });
+        // Act
+        var result = await fb.GetDebugTokenAsync(userToken);
 
-//        var client = new HttpClient(handler)
-//        {
-//            BaseAddress = new Uri("https://graph.facebook.com/v18.0/")
-//        };
+        // Assert
+        result.Succeeded.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Value.AppId.ShouldBe("app123");
+        result.Value.IsValid.ShouldBeTrue();
+        result.Value.UserId.ShouldBe("user_1");
+    }
 
-//        var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
-//        var utilities = new FacebookClientUtilities(opts);
-//        var logger = Mock.Of<ILogger<FacebookHttpClient>>();
+    //--------------------------//
 
-//        var jsonOpts = CreateJsonOptionsWithConverter();
+    [Fact]
+    public async Task GetUserProfileAsync_ReturnsSuccess_WhenResponseIs200AndValidJson()
+    {
+        // Arrange
+        var userToken = "some_user_token";
+        var profileJson = @"{""id"": ""101"", ""email"": ""me@example.com"", ""name"": ""Test Me"", ""first_name"": ""Test"", ""last_name"": ""Me"", ""picture"": { ""data"": { ""height"": 50, ""is_silhouette"": false, ""url"": ""https://example.com/p.jpg"", ""width"": 50 } }, ""verified"": true}";
 
-//        var fb = new FacebookHttpClient(client, utilities, opts, logger, jsonOpts);
+        var handler = new TestHttpMessageHandler(req => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(profileJson) });
+        var client = new HttpClient(handler) { BaseAddress = new Uri("https://graph.facebook.com/v18.0/") };
 
-//        // Act
-//        var result = await fb.GetDebugTokenAsync(userToken);
+        var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
+        var utilities = new FacebookClientUtilities(opts);
+        var logger = Mock.Of<ILogger<FacebookHttpClient>>();
+        var mockOAuthUtils = new Mock<IOAuthHttpClientUtils>();
 
-//        // Assert
-//        result.Succeeded.ShouldBeTrue();
-//        result.Value.ShouldNotBeNull();
-//        result.Value.AppId.ShouldBe("app123");
-//        result.Value.IsValid.ShouldBeTrue();
-//        result.Value.UserId.ShouldBe("user_1");
-//    }
+        var jsonOpts = CreateJsonOptionsWithConverter();
 
-//    //----------------------//
+        var fb = new FacebookHttpClient(client, utilities, mockOAuthUtils.Object, opts, logger, jsonOpts);
 
-//[Fact]
-//public async Task GetUserProfileAsync_ReturnsSuccess_WhenResponseIs200AndValidJson()
-//{
-//    // Arrange
-//    var userToken = "some_user_token";
-//    var profileJson = @"{""id"": ""101"", ""email"": ""me@example.com"", ""name"": ""Test Me"", ""first_name"": ""Test"", ""last_name"": ""Me"", ""picture"": { ""data"": { ""height"": 50, ""is_silhouette"": false, ""url"": ""https://example.com/p.jpg"", ""width"": 50 } }, ""verified"": true}";
+        // Act
+        var result = await fb.GetUserProfileAsync(userToken);
 
-//    var handler = new TestHttpMessageHandler(req =>
-//    {
-//        var resp = new HttpResponseMessage(HttpStatusCode.OK)
-//        {
-//            Content = new StringContent(profileJson)
-//        };
-//        return resp;
-//    });
+        // Assert
+        result.Succeeded.ShouldBeTrue();
+        result.Value.ShouldNotBeNull();
+        result.Value.Id.ShouldBe("101");
+        result.Value.Email.ShouldBe("me@example.com");
+        result.Value.Picture.ShouldNotBeNull();
+        result.Value.Picture.Data?.Url.ShouldBe("https://example.com/p.jpg");
+    }
 
-//    var client = new HttpClient(handler)
-//    {
-//        BaseAddress = new Uri("https://graph.facebook.com/v18.0/")
-//    };
+    //--------------------------//
 
-//    var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
-//    var utilities = new FacebookClientUtilities(opts);
-//    var logger = Mock.Of<ILogger<FacebookHttpClient>>();
+    [Fact]
+    public async Task GetDebugTokenAsync_ReturnsFailure_WhenResponseIsNon200()
+    {
+        // Arrange
+        var userToken = "some_user_token";
+        var handler = new TestHttpMessageHandler(req => new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("bad request") });
 
-//    var jsonOpts = CreateJsonOptionsWithConverter();
+        var client = new HttpClient(handler) { BaseAddress = new Uri("https://graph.facebook.com/v18.0/") };
+        var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
+        var utilities = new FacebookClientUtilities(opts);
+        var logger = Mock.Of<ILogger<FacebookHttpClient>>();
+        var mockOAuthUtils = new Mock<IOAuthHttpClientUtils>();
+        mockOAuthUtils.Setup(u => u.MapResponseToResult<FacebookDebugTokenData>(It.IsAny<HttpResponseMessage>(), "Facebook", It.IsAny<string>(), It.IsAny<string>()))
+            .Returns(GenResult<FacebookDebugTokenData>.BadRequestResult("bad request"));
 
-//    var fb = new FacebookHttpClient(client, utilities, opts, logger, jsonOpts);
+        var jsonOpts = CreateJsonOptionsWithConverter();
+        var fb = new FacebookHttpClient(client, utilities, mockOAuthUtils.Object, opts, logger, jsonOpts);
 
-//    // Act
-//    var result = await fb.GetUserProfileAsync(userToken);
+        // Act
+        var result = await fb.GetDebugTokenAsync(userToken);
 
-//    // Assert
-//    result.Succeeded.ShouldBeTrue();
-//    result.Value.ShouldNotBeNull();
-//    result.Value.Id.ShouldBe("101");
-//    result.Value.Email.ShouldBe("me@example.com");
-//    result.Value.Picture.ShouldNotBeNull();
-//    result.Value.Picture.Data?.Url.ShouldBe("https://example.com/p.jpg");
-//}
+        // Assert
+        result.Succeeded.ShouldBeFalse();
+        result.Status.ShouldBe(BasicResult.ResultStatus.BadRequest);
+        result.Info.ShouldContain("bad request");
+    }
 
-//    //----------------------//
+    //--------------------------//
 
-//    [Fact]
-//    public async Task GetDebugTokenAsync_ReturnsFailure_WhenResponseIsNon200()
-//    {
-//        // Arrange
-//        var userToken = "some_user_token";
-//        var handler = new TestHttpMessageHandler(req =>
-//        {
-//            return new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("bad request") };
-//        });
+    [Fact]
+    public async Task GetUserProfileAsync_ReturnsFailure_WhenResponseIsNon200()
+    {
+        // Arrange
+        var userToken = "some_user_token";
+        var handler = new TestHttpMessageHandler(req => new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent("oops") });
 
-//        var client = new HttpClient(handler) { BaseAddress = new Uri("https://graph.facebook.com/v18.0/") };
-//        var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
-//        var utilities = new FacebookClientUtilities(opts);
-//        var logger = Mock.Of<ILogger<FacebookHttpClient>>();
-//        var jsonOpts = CreateJsonOptionsWithConverter();
-//        var fb = new FacebookHttpClient(client, utilities, opts, logger, jsonOpts);
+        var client = new HttpClient(handler) { BaseAddress = new Uri("https://graph.facebook.com/v18.0/") };
+        var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
+        var utilities = new FacebookClientUtilities(opts);
+        var logger = Mock.Of<ILogger<FacebookHttpClient>>();
+        var mockOAuthUtils = new Mock<IOAuthHttpClientUtils>();
+        mockOAuthUtils.Setup(u => u.MapResponseToResult<FacebookUserProfile>(It.IsAny<HttpResponseMessage>(), "Facebook", It.IsAny<string>(), It.IsAny<string>()))
+            .Returns(GenResult<FacebookUserProfile>.Failure("oops"));
 
-//        // Act
-//        var result = await fb.GetDebugTokenAsync(userToken);
+        var jsonOpts = CreateJsonOptionsWithConverter();
+        var fb = new FacebookHttpClient(client, utilities, mockOAuthUtils.Object, opts, logger, jsonOpts);
 
-//        // Assert
-//        result.Succeeded.ShouldBeFalse();
-//        result.Status.ShouldBe(ResultStatus.BadRequest);
-//        result.Info.ShouldContain("bad request");
-//    }
+        // Act
+        var result = await fb.GetUserProfileAsync(userToken);
 
-//    //----------------------//
+        // Assert
+        result.Succeeded.ShouldBeFalse();
+        result.Status.ShouldBe(BasicResult.ResultStatus.Failure);
+        result.Info.ShouldContain("oops");
+    }
 
-//    [Fact]
-//    public async Task GetUserProfileAsync_ReturnsFailure_WhenResponseIsNon200()
-//    {
-//        // Arrange
-//        var userToken = "some_user_token";
-//        var handler = new TestHttpMessageHandler(req =>
-//        {
-//            return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent("oops") };
-//        });
+    //--------------------------//
 
-//        var client = new HttpClient(handler) { BaseAddress = new Uri("https://graph.facebook.com/v18.0/") };
-//        var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
-//        var utilities = new FacebookClientUtilities(opts);
-//        var logger = Mock.Of<ILogger<FacebookHttpClient>>();
-//        var jsonOpts = CreateJsonOptionsWithConverter();
-//        var fb = new FacebookHttpClient(client, utilities, opts, logger, jsonOpts);
+    [Fact]
+    public async Task GetDebugTokenAsync_DeserializationFailure_LogsWarningAndReturnsFailure()
+    {
+        // Arrange: return invalid JSON that will cause deserialization to throw
+        var handler = new TestHttpMessageHandler(req => new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{notjson}") });
 
-//        // Act
-//        var result = await fb.GetUserProfileAsync(userToken);
+        var client = new HttpClient(handler) { BaseAddress = new Uri("https://graph.facebook.com/v18.0/") };
+        var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
+        var utilities = new FacebookClientUtilities(opts);
+        var mockLogger = new Mock<ILogger<FacebookHttpClient>>();
+        var mockOAuthUtils = new Mock<IOAuthHttpClientUtils>();
+        var jsonOpts = CreateJsonOptionsWithConverter();
+        var fb = new FacebookHttpClient(client, utilities, mockOAuthUtils.Object, opts, mockLogger.Object, jsonOpts);
 
-//        // Assert
-//        result.Succeeded.ShouldBeFalse();
-//        result.Status.ShouldBe(ResultStatus.Failure);
-//        result.Info.ShouldContain("oops");
-//    }
+        // Act
+        var result = await fb.GetDebugTokenAsync("token");
 
-//    //----------------------//
+        // Assert
+        result.Succeeded.ShouldBeFalse();
+        result.Status.ShouldBe(BasicResult.ResultStatus.Failure);
+        result.Info.ShouldContain("Failed to parse debug token response");
 
-//    [Fact]
-//    public async Task GetDebugTokenAsync_ReturnsFailure_WhenResponseIsNon200_And_LogsWarning()
-//    {
-//        // Arrange
-//        var userToken = "some_user_token";
-//        var handler = new TestHttpMessageHandler(req =>
-//        {
-//            return new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("bad request") };
-//        });
+        mockLogger.VerifyWarningLogging(msg => msg.ToString()?.Contains("Failed to deserialize debug_token response") == true, Times.Once);
+    }
 
-//        var client = new HttpClient(handler) { BaseAddress = new Uri("https://graph.facebook.com/v18.0/") };
-//        var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
-//        var utilities = new FacebookClientUtilities(opts);
-//        var mockLogger = new Mock<ILogger<FacebookHttpClient>>();
-//        var jsonOpts = CreateJsonOptionsWithConverter();
-//        var fb = new FacebookHttpClient(client, utilities, opts, mockLogger.Object, jsonOpts);
-
-//        // Act
-//        var result = await fb.GetDebugTokenAsync(userToken);
-
-//        // Assert
-//        result.Succeeded.ShouldBeFalse();
-//        result.Status.ShouldBe(ResultStatus.BadRequest);
-//        result.Info.ShouldContain("bad request");
-
-//        // Verify warning logged
-//        mockLogger.VerifyWarningLogging(msg => msg.ToString()?.Contains(ResultStatus.BadRequest.ToString()) == true, Times.Once);
-//    }
-
-//    //----------------------//
-
-//    [Fact]
-//    public async Task GetUserProfileAsync_ReturnsFailure_WhenResponseIsNon200_And_LogsWarning()
-//    {
-//        // Arrange
-//        var userToken = "some_user_token";
-//        var handler = new TestHttpMessageHandler(req =>
-//        {
-//            return new HttpResponseMessage(HttpStatusCode.InternalServerError) { Content = new StringContent("oops") };
-//        });
-
-//        var client = new HttpClient(handler) { BaseAddress = new Uri("https://graph.facebook.com/v18.0/") };
-//        var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
-//        var utilities = new FacebookClientUtilities(opts);
-//        var mockLogger = new Mock<ILogger<FacebookHttpClient>>();
-//        var jsonOpts = CreateJsonOptionsWithConverter();
-//        var fb = new FacebookHttpClient(client, utilities, opts, mockLogger.Object, jsonOpts);
-
-//        // Act
-//        var result = await fb.GetUserProfileAsync(userToken);
-
-//        // Assert
-//        result.Succeeded.ShouldBeFalse();
-//        result.Status.ShouldBe(ResultStatus.Failure);
-//        result.Info.ShouldContain("oops");
-
-
-//        // Verify warning logged
-//        mockLogger.VerifyWarningLogging(
-//            msg => msg.ToString()?.Contains("Request failed", StringComparison.CurrentCultureIgnoreCase) == true
-//        , Times.Once);
-//    }
-
-//    //----------------------//
-
-//    [Fact]
-//    public async Task GetDebugTokenAsync_DeserializationFailure_LogsWarningAndReturnsFailure()
-//    {
-//        // Arrange: return invalid JSON that will cause deserialization to throw
-//        var handler = new TestHttpMessageHandler(req =>
-//        {
-//            return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent("{notjson}") };
-//        });
-
-//        var client = new HttpClient(handler) { BaseAddress = new Uri("https://graph.facebook.com/v18.0/") };
-//        var opts = Options.Create(new IdOAuthFacebookOptions { AppId = "app123", AppSecret = "secret" });
-//        var utilities = new FacebookClientUtilities(opts);
-//        var mockLogger = new Mock<ILogger<FacebookHttpClient>>();
-//        var jsonOpts = CreateJsonOptionsWithConverter();
-//        var fb = new FacebookHttpClient(client, utilities, opts, mockLogger.Object, jsonOpts);
-
-//        // Act
-//        var result = await fb.GetDebugTokenAsync("token");
-
-//        // Assert
-//        result.Succeeded.ShouldBeFalse();
-//        result.Status.ShouldBe(ResultStatus.Failure);
-//        result.Info.ShouldContain("Failed to parse debug token response");
-
-//        mockLogger.VerifyWarningLogging(msg => msg.ToString()?.Contains("Failed to deserialize debug_token response") == true, Times.Once);
-//    }
-//}
+}//Cls

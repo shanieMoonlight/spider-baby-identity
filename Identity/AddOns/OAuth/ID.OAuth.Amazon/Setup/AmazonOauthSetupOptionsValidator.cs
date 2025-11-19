@@ -14,8 +14,8 @@ internal class AmazonOauthSetupOptionsValidator : IValidateOptions<IdOAuthAmazon
         if (string.IsNullOrWhiteSpace(options.ClientId))
             failures.Add("ClientId is required.");
 
-        if (string.IsNullOrWhiteSpace(options.ClientSecret))
-            failures.Add("ClientSecret is required.");
+        //if (string.IsNullOrWhiteSpace(options.ClientSecret))
+        //    failures.Add("ClientSecret is required.");
 
         if (options.RequestTimeoutSeconds <= 0)
             failures.Add("RequestTimeoutSeconds must be greater than zero.");

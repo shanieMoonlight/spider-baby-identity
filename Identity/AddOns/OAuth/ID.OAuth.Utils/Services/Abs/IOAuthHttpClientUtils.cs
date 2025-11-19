@@ -1,4 +1,4 @@
-﻿namespace ID.OAuth.Utils.Abs;
+﻿namespace ID.OAuth.Utils.Services.Abs;
 
 public interface IOAuthHttpClientUtils
 {

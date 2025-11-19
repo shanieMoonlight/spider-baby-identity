@@ -2,7 +2,7 @@
 using ID.OAuth.Facebook.Data;
 using ID.OAuth.Facebook.HttpService.Abs;
 using ID.OAuth.Facebook.Setup;
-using ID.OAuth.Utils.Abs;
+using ID.OAuth.Utils.Services.Abs;
 using LoggingHelpers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

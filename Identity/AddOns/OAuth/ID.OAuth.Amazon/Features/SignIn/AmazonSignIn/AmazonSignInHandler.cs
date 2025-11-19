@@ -40,11 +40,15 @@ public class AmazonSignInHandler(
             : await ReturnStandardJwtPackageAsync(user: user, team: user.Team!, currentDeviceId: dto.DeviceId, cancellationToken: cancellationToken);
     }
 
+    //---------------------//
+
     private async Task<GenResult<JwtPackage>> ReturnStandardJwtPackageAsync(AppUser user, Team team, string? currentDeviceId, CancellationToken cancellationToken)
     {
         var jwt = await _jwtPackageProvider.CreateJwtPackageAsync(user: user, team: team, currentDeviceId: currentDeviceId, cancellationToken: cancellationToken);
         return GenResult<JwtPackage>.Success(jwt);
     }
+
+    //---------------------//
 
     private async Task<GenResult<JwtPackage>> SendTwoFactorAndReturnJwtPackageAsync(AppUser user, Team team, CancellationToken cancellationToken)
     {

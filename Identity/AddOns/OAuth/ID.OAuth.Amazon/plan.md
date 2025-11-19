@@ -31,9 +31,6 @@ Files added (high level)
 - `AccountController` (stub) under `ID.OAuth.Amazon` (needs wiring to commands)
 
 Remaining tasks
-- Controller wiring
-  - Wire `Identity/AddOns/OAuth/ID.OAuth.Amazon/AccountController` to dispatch `AmazonSignInCmd` and `AmazonCookieSignInCmd` via MediatR (send commands).
-
 - Validation & DI cleanup
   - Consider relaxing `AmazonOauthSetupOptionsValidator` requirement for `ClientSecret` if not needed for LWA.
   - Confirm `ApiBaseUrl` and `AmazonApi.BaseUrl` consistency (base URL currently set; endpoints are relative).
@@ -61,6 +58,10 @@ Next immediate steps I can take for you
 2. Add unit tests for `AmazonHttpClient` and `AmazonAuthenticationService`.
 3. Add a README with configuration examples and required scopes.
 
-Which of these would you like me to do next?
+1. 
 Make validator test more comprehensive .
-Add facebook features tests
+
+
+•	A. Implement full AmazonAuthenticationService tests (recommended first).
+•	B. Implement FindOrCreateService tests (requires stubbing app-layer repos/services).
+•	C. Implement both.

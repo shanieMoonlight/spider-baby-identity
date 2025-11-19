@@ -1,6 +1,6 @@
 using ID.OAuth.Facebook.HttpService.Imps;
 using ID.OAuth.Facebook.Tests.HttpService;
-using ID.OAuth.Utils.Abs;
+using ID.OAuth.Utils.Services.Abs;
 
 namespace ID.OAuth.Facebook.Tests;
 
@@ -12,6 +12,8 @@ public class FacebookClientRateLimitTests
         AllowTrailingCommas = true,
         ReadCommentHandling = JsonCommentHandling.Skip
     };
+
+    //--------------------------//
 
     [Fact]
     public async Task GetDebugTokenAsync_ReturnsRateLimitResult_When429()
@@ -25,8 +27,8 @@ public class FacebookClientRateLimitTests
         var mockGenUtils = new Mock<IOAuthHttpClientUtils>();
 
         // Map any non-success response to RateLimitExceeded
-        mockGenUtils.Setup(u => u.MapResponseToResult<ID.OAuth.Facebook.Data.FacebookDebugTokenData>(It.IsAny<HttpResponseMessage>(), "Facebook", It.IsAny<string>(), It.IsAny<string>()))
-            .Returns(MyResults.GenResult<ID.OAuth.Facebook.Data.FacebookDebugTokenData>.RateLimitExceededResult("rate_limited: too many"));
+        mockGenUtils.Setup(u => u.MapResponseToResult<FacebookDebugTokenData>(It.IsAny<HttpResponseMessage>(), "Facebook", It.IsAny<string>(), It.IsAny<string>()))
+            .Returns(GenResult<FacebookDebugTokenData>.RateLimitExceededResult("rate_limited: too many"));
 
         var logger = Mock.Of<ILogger<FacebookHttpClient>>();
         var jsonOpts = CreateJsonOptions();
@@ -38,9 +40,11 @@ public class FacebookClientRateLimitTests
 
         // Assert
         result.Succeeded.ShouldBeFalse();
-        result.Status.ShouldBe(MyResults.BasicResult.ResultStatus.RateLimitExceeded);
+        result.Status.ShouldBe(BasicResult.ResultStatus.RateLimitExceeded);
         result.Info.ShouldContain("rate_limited", Case.Insensitive);
     }
+
+    //--------------------------//
 
     [Fact]
     public async Task GetDebugTokenAsync_DoesNotRetry_On429()
@@ -64,8 +68,8 @@ public class FacebookClientRateLimitTests
         var jsonOpts = CreateJsonOptions();
 
         var mockGenUtils = new Mock<IOAuthHttpClientUtils>();
-        mockGenUtils.Setup(u => u.MapResponseToResult<ID.OAuth.Facebook.Data.FacebookDebugTokenData>(It.IsAny<HttpResponseMessage>(), "Facebook", It.IsAny<string>(), It.IsAny<string>()))
-            .Returns(MyResults.GenResult<ID.OAuth.Facebook.Data.FacebookDebugTokenData>.RateLimitExceededResult("rate_limited: too many"));
+        mockGenUtils.Setup(u => u.MapResponseToResult<FacebookDebugTokenData>(It.IsAny<HttpResponseMessage>(), "Facebook", It.IsAny<string>(), It.IsAny<string>()))
+            .Returns(GenResult<FacebookDebugTokenData>.RateLimitExceededResult("rate_limited: too many"));
 
         var fb = new FacebookHttpClient(client, utilities, mockGenUtils.Object, opts, logger, jsonOpts);
 
@@ -75,8 +79,10 @@ public class FacebookClientRateLimitTests
         // Assert - ensure only one call was made (no retry) and rate-limit result returned
         calls.ShouldBe(1);
         result.Succeeded.ShouldBeFalse();
-        result.Status.ShouldBe(MyResults.BasicResult.ResultStatus.RateLimitExceeded);
+        result.Status.ShouldBe(BasicResult.ResultStatus.RateLimitExceeded);
     }
+
+    //--------------------------//
 
     [Fact]
     public async Task GetUserProfileAsync_ReturnsRateLimitResult_When429()
@@ -91,8 +97,8 @@ public class FacebookClientRateLimitTests
         var jsonOpts = CreateJsonOptions();
 
         var mockGenUtils = new Mock<IOAuthHttpClientUtils>();
-        mockGenUtils.Setup(u => u.MapResponseToResult<ID.OAuth.Facebook.Data.FacebookUserProfile>(It.IsAny<HttpResponseMessage>(), "Facebook", It.IsAny<string>(), It.IsAny<string>()))
-            .Returns(MyResults.GenResult<ID.OAuth.Facebook.Data.FacebookUserProfile>.RateLimitExceededResult("rate_limited: too many"));
+        mockGenUtils.Setup(u => u.MapResponseToResult<FacebookUserProfile>(It.IsAny<HttpResponseMessage>(), "Facebook", It.IsAny<string>(), It.IsAny<string>()))
+            .Returns(GenResult<FacebookUserProfile>.RateLimitExceededResult("rate_limited: too many"));
 
         var fb = new FacebookHttpClient(client, utilities, mockGenUtils.Object, opts, logger, jsonOpts);
 
@@ -101,7 +107,8 @@ public class FacebookClientRateLimitTests
 
         // Assert
         result.Succeeded.ShouldBeFalse();
-        result.Status.ShouldBe(MyResults.BasicResult.ResultStatus.RateLimitExceeded);
+        result.Status.ShouldBe(BasicResult.ResultStatus.RateLimitExceeded);
         result.Info.ShouldContain("rate_limited", Case.Insensitive);
     }
-}
+
+}//Cls

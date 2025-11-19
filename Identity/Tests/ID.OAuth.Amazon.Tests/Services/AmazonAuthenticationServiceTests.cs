@@ -164,4 +164,108 @@ public class AmazonAuthenticationServiceTests
         res.Status.ShouldBe(BasicResult.ResultStatus.Unauthorized);
     }
 
+    //--------------------------//
+
+    // New tests added below
+
+    [Fact]
+    public async Task VerifyTokenAsync_ReturnsBadRequest_WhenEmptyToken()
+    {
+        var mockHttp = new Mock<IAmazonHttpClient>();
+        var opts = Options.Create(new IdOAuthAmazonOptions { ClientId = "cid" });
+        var svc = new AmazonAuthenticationService(mockHttp.Object, opts, Mock.Of<ILogger<AmazonAuthenticationService>>());
+
+        var res = await svc.VerifyTokenAsync(string.Empty, string.Empty);
+
+        res.Succeeded.ShouldBeFalse();
+        res.Status.ShouldBe(BasicResult.ResultStatus.BadRequest);
+    }
+
+    //---------------------//
+
+    [Fact]
+    public async Task VerifyTokenAsync_ReturnsFailure_WhenMissingServerClientId()
+    {
+        var mockHttp = new Mock<IAmazonHttpClient>();
+        var opts = Options.Create(new IdOAuthAmazonOptions { ClientId = string.Empty });
+        var svc = new AmazonAuthenticationService(mockHttp.Object, opts, Mock.Of<ILogger<AmazonAuthenticationService>>());
+
+        var res = await svc.VerifyTokenAsync("token", string.Empty);
+
+        res.Succeeded.ShouldBeFalse();
+        res.Status.ShouldBe(BasicResult.ResultStatus.Failure);
+        res.Info.ShouldContain("missing_server_credentials");
+    }
+
+    //---------------------//
+
+    [Fact]
+    public async Task GetUserProfileAsync_ReturnsBadRequest_WhenEmptyToken()
+    {
+        var mockHttp = new Mock<IAmazonHttpClient>();
+        var opts = Options.Create(new IdOAuthAmazonOptions { ClientId = "cid" });
+        var svc = new AmazonAuthenticationService(mockHttp.Object, opts, Mock.Of<ILogger<AmazonAuthenticationService>>());
+
+        var res = await svc.GetUserProfileAsync(string.Empty);
+
+        res.Succeeded.ShouldBeFalse();
+        res.Status.ShouldBe(BasicResult.ResultStatus.BadRequest);
+    }
+
+    //---------------------//
+
+    [Fact]
+    public async Task GetUserProfileAsync_ReturnsFailure_WhenProfileMissingUserId()
+    {
+        var profile = new AmazonUserProfile { UserId = string.Empty, Email = "me@example.com", Name = "Me" };
+        var mockHttp = new Mock<IAmazonHttpClient>();
+        mockHttp.Setup(h => h.GetUserProfileAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(GenResult<AmazonUserProfile>.Success(profile));
+
+        var opts = Options.Create(new IdOAuthAmazonOptions { ClientId = "cid" });
+        var svc = new AmazonAuthenticationService(mockHttp.Object, opts, Mock.Of<ILogger<AmazonAuthenticationService>>());
+
+        var res = await svc.GetUserProfileAsync("token");
+
+        res.Succeeded.ShouldBeFalse();
+        res.Status.ShouldBe(BasicResult.ResultStatus.Failure);
+    }
+
+    //---------------------//
+
+    [Fact]
+    public async Task VerifyAndGetProfileAsync_PropagatesTokenVerifyFailure_WhenTokenInvalid()
+    {
+        var mockHttp = new Mock<IAmazonHttpClient>();
+        mockHttp.Setup(h => h.GetTokenInfoAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(GenResult<AmazonTokenInfo>.UnauthorizedResult("nope"));
+
+        var opts = Options.Create(new IdOAuthAmazonOptions { ClientId = "cid" });
+        var svc = new AmazonAuthenticationService(mockHttp.Object, opts, Mock.Of<ILogger<AmazonAuthenticationService>>());
+
+        var res = await svc.VerifyAndGetProfileAsync("token");
+
+        res.Succeeded.ShouldBeFalse();
+        res.Status.ShouldBe(BasicResult.ResultStatus.Unauthorized);
+    }
+
+    [Fact]
+    public async Task VerifyAndGetProfileAsync_PropagatesProfileFailure_WhenProfileCallFails()
+    {
+        var tokenInfo = new AmazonTokenInfo { ClientId = "cid", UserId = "uid", ExpiresIn = 1000 };
+        var mockHttp = new Mock<IAmazonHttpClient>();
+        mockHttp.Setup(h => h.GetTokenInfoAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(GenResult<AmazonTokenInfo>.Success(tokenInfo));
+        mockHttp.Setup(h => h.GetUserProfileAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(GenResult<AmazonUserProfile>.RateLimitExceededResult("rate_limited"));
+
+        var opts = Options.Create(new IdOAuthAmazonOptions { ClientId = "cid" });
+        var svc = new AmazonAuthenticationService(mockHttp.Object, opts, Mock.Of<ILogger<AmazonAuthenticationService>>());
+
+        var res = await svc.VerifyAndGetProfileAsync("token");
+
+        res.Succeeded.ShouldBeFalse();
+        res.Status.ShouldBe(BasicResult.ResultStatus.RateLimitExceeded);
+    }
+
 }//Cls

@@ -8,7 +8,7 @@ internal class AmazonApi
     internal class Endpoints
     {
 
-        public static string TokenInfo => "debug_token";
+        public static string TokenInfo => "tokeninfo";
         public static string UserProfile => "user/profile";
 
     }

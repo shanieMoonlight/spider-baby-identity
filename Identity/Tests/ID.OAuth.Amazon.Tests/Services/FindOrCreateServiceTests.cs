@@ -135,6 +135,78 @@ public class FindOrCreateServiceTests
         capturedOAuth.ShouldNotBeNull();
         capturedOAuth!.Provider.ShouldBe(OAuthProvider.Amazon);
         capturedOAuth.Issuer.ShouldNotBeNull();
+        // EmailVerified should be explicitly set to false for Amazon until semantics confirmed
+        capturedOAuth.EmailVerified.HasValue.ShouldBeTrue();
+        capturedOAuth.EmailVerified!.Value.ShouldBeFalse();
+    }
+
+    //-----------------------//
+
+    [Fact]
+    public async Task FindOrCreateUserAsync_ReturnsFailure_WhenRegisterOAuthFails()
+    {
+        // Arrange
+        var mockFind = new Mock<IFindUserService<AppUser>>();
+        mockFind.Setup(f => f.FindUserWithTeamDetailsAsync(It.IsAny<string?>(), It.IsAny<string?>(), It.IsAny<Guid?>()))
+            .ReturnsAsync((AppUser?)null);
+
+        var mockSignup = new Mock<IIdCustomerRegistrationService>();
+        mockSignup.Setup(s => s.RegisterOAuthAsync(
+            It.IsAny<EmailAddress>(),
+            It.IsAny<UsernameNullable>(),
+            It.IsAny<PhoneNullable>(),
+            It.IsAny<FirstNameNullable>(),
+            It.IsAny<LastNameNullable>(),
+            It.IsAny<TeamPositionNullable>(),
+            It.IsAny<OAuthInfo>(),
+            It.IsAny<Guid?>(),
+            It.IsAny<CancellationToken>()))
+            .ReturnsAsync(GenResult<AppUser>.Failure("email_in_use"));
+
+        var svc = new FindOrCreateService<AppUser>(mockFind.Object, mockSignup.Object);
+
+        var profile = new AmazonUserProfile { Email = "me@example.com", Name = "Given", UserId = "uid" };
+        var dto = new AmazonSignInDto { Email = null, SubscriptionPlanId = null };
+
+        // Act
+        var res = await svc.FindOrCreateUserAsync(profile, dto, CancellationToken.None);
+
+        // Assert
+        res.Succeeded.ShouldBeFalse();
+        res.Status.ShouldBe(BasicResult.ResultStatus.Failure);
+        res.Info.ShouldContain("email_in_use");
+    }
+
+    //-----------------------//
+
+    [Fact]
+    public async Task FindOrCreateUserAsync_ThrowsException_WhenRegisterThrows()
+    {
+        // Arrange
+        var mockFind = new Mock<IFindUserService<AppUser>>();
+        mockFind.Setup(f => f.FindUserWithTeamDetailsAsync(It.IsAny<string?>(), It.IsAny<string?>(), It.IsAny<Guid?>()))
+            .ReturnsAsync((AppUser?)null);
+
+        var mockSignup = new Mock<IIdCustomerRegistrationService>();
+        mockSignup.Setup(s => s.RegisterOAuthAsync(
+            It.IsAny<EmailAddress>(),
+            It.IsAny<UsernameNullable>(),
+            It.IsAny<PhoneNullable>(),
+            It.IsAny<FirstNameNullable>(),
+            It.IsAny<LastNameNullable>(),
+            It.IsAny<TeamPositionNullable>(),
+            It.IsAny<OAuthInfo>(),
+            It.IsAny<Guid?>(),
+            It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new InvalidOperationException("boom"));
+
+        var svc = new FindOrCreateService<AppUser>(mockFind.Object, mockSignup.Object);
+
+        var profile = new AmazonUserProfile { Email = "me@example.com", Name = "Given", UserId = "uid" };
+        var dto = new AmazonSignInDto { Email = null, SubscriptionPlanId = null };
+
+        // Act & Assert
+        await Should.ThrowAsync<InvalidOperationException>(async () => await svc.FindOrCreateUserAsync(profile, dto, CancellationToken.None));
     }
 
 }//Cls

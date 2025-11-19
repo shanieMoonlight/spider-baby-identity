@@ -1,3 +1,5 @@
+using ID.OAuth.Amazon.Features.SignIn.AmazonCookieSignIn;
+
 namespace ID.OAuth.Amazon.Tests.Features.SignIn.AmazonCookieSignIn;
 
 public class AmazonCookieSignInCmdHandlerTests

@@ -8,10 +8,10 @@ using Xunit;
 using ID.OAuth.Amazon.HttpService.Imps;
 using ID.OAuth.Amazon.Setup;
 using ID.OAuth.Amazon.Data;
-using ID.OAuth.Utils.Abs;
 using Microsoft.Extensions.Logging;
 using ID.OAuth.Utils.Serialization;
 using MyResults;
+using ID.OAuth.Utils.Services.Abs;
 
 namespace ID.OAuth.Amazon.Tests.HttpService;
 

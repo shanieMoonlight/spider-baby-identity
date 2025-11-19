@@ -1,7 +1,7 @@
-﻿using ID.OAuth.Utils.Abs;
+﻿using ID.OAuth.Utils.Services.Abs;
 using Microsoft.Extensions.Logging;
 
-namespace ID.OAuth.Utils.Imps;
+namespace ID.OAuth.Utils.Services.Imps;
 
 public class OAuthHttpClientUtils(ILogger<OAuthHttpClientUtils> _logger) : IOAuthHttpClientUtils
 {

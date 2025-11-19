@@ -1,0 +1,1 @@
+import{aa as O}from"./chunk-JU3D2MC5.js";var I=new O("MYID_HAS_GOOGLE"),A=new O("MYID_HAS_FACEBOOK"),D=new O("MYID_HAS_AMAZON"),o=new O("MYID_GOOGLE_PROVIDER"),M=new O("MYID_FACEBOOK_PROVIDER"),n=new O("MYID_AMAZON_PROVIDER");export{I as a,A as b,D as c,o as d,M as e,n as f};

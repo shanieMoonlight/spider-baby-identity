@@ -29,7 +29,7 @@ public class CreateCustomerTeamsCmdHandlerTests
         _handler = new CreateCustomerTeamsCmdHandler(_teamMgrMock.Object, _teamBuilderMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task OnAuthenticated_ValidRequest_ReturnsTeamDto()
@@ -63,6 +63,6 @@ public class CreateCustomerTeamsCmdHandlerTests
         _teamMgrMock.Verify(tm => tm.AddTeamAsync(It.IsAny<Team>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

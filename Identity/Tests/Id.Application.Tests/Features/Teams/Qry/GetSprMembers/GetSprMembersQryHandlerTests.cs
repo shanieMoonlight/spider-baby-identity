@@ -19,7 +19,7 @@ public class GetSprMembersQryHandlerTests
         _handler = new GetSprMembersQryHandler(_mockTeamManager.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShoulCallGetSuperTeamWithMembersAsync_WithPrincipalTeamPosition_IfIsMntc()
@@ -39,7 +39,7 @@ public class GetSprMembersQryHandlerTests
         _mockTeamManager.Verify(mgr => mgr.GetSuperTeamWithMembersAsync(teamPosition));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldCallGetCustomerTeamsByNameAsync_WithRequestName()
@@ -67,6 +67,6 @@ public class GetSprMembersQryHandlerTests
         result.Succeeded.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

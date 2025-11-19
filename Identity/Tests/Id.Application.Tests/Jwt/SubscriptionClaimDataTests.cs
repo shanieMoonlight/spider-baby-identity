@@ -27,7 +27,7 @@ public class SubscriptionClaimDataTests
         claimData.Expiry.ShouldBe(new DateTimeOffset(teamSubscription.EndDate ?? DateTime.MaxValue).ToUnixTimeSeconds().ToString().ToLower());
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Serialize_Should_Return_Correct_Json()
@@ -50,7 +50,7 @@ public class SubscriptionClaimDataTests
         json.ShouldBe(expectedJson);
     }
 
-    //------------------------------------//
+    //--------------------------//
 }
 
 public class SubscriptionClaimDataExtensionsTests
@@ -77,7 +77,7 @@ public class SubscriptionClaimDataExtensionsTests
         deserializedData.Name.ShouldBe(teamSubscription.SubscriptionPlan?.Name.ToLower());
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void ToClaims_Should_Return_List_Of_Claims()

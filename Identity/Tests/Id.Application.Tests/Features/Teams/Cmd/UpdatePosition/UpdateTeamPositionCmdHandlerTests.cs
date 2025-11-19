@@ -21,7 +21,7 @@ public class UpdateTeamPositionCmdHandlerTests
         _handler = new UpdateTeamPositionRangeCmdHandler(_teamManagerMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Should_Update_Team_Position_Range()
@@ -48,6 +48,6 @@ public class UpdateTeamPositionCmdHandlerTests
         _teamManagerMock.Verify(m => m.UpdateAsync(It.Is<Team>(t => t.MinPosition == dto.MinPosition && t.MaxPosition == dto.MaxPosition)), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

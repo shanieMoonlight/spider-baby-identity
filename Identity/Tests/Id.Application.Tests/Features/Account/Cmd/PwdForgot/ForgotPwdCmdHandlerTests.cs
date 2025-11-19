@@ -16,7 +16,7 @@
 //{
 //    public ForgotPwdCmdHandlerTests() { }
 
-//    //------------------------------------//
+//    //--------------------------//
 
 //    [Fact]
 //    public async Task Should_ReturnFailureWhenNotDataSupplied()
@@ -49,7 +49,7 @@
 
 //    }
 
-//    //------------------------------------//
+//    //--------------------------//
 
 //    [Fact]
 //    public async Task Should_ReturnNotFoundResultWhenUserNotFound()
@@ -85,7 +85,7 @@
 
 //    }
 
-//    //------------------------------------//
+//    //--------------------------//
 
 //    [Fact]
 //    public async Task Should_ReturnSuccessWhenChangeSucceeds()
@@ -130,7 +130,7 @@
 
 //    }
 
-//    //------------------------------------//
+//    //--------------------------//
 
 
 //}//Cls

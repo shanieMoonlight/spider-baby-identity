@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.Teams.Qry.GetSprMembers;
 public class GetSprMembersQryValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -19,6 +19,6 @@ public class GetSprMembersQryValidatorTests
         validator.ShouldBeAssignableTo<ASuperMinimumValidator<GetSprMembersQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

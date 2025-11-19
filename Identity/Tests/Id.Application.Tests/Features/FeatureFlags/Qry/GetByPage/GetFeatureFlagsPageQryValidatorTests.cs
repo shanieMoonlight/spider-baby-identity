@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.FeatureFlags.Qry.GetByPage;
 public class GetFeatureFlagsPageQryValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -19,6 +19,6 @@ public class GetFeatureFlagsPageQryValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<GetFeatureFlagsPageQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

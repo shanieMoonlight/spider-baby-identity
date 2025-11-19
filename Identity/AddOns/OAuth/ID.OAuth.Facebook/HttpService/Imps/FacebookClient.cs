@@ -2,6 +2,7 @@
 using ID.OAuth.Facebook.Data;
 using ID.OAuth.Facebook.HttpService.Abs;
 using ID.OAuth.Facebook.Setup;
+using ID.OAuth.Utils.Services.Abs;
 using LoggingHelpers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -13,6 +14,7 @@ namespace ID.OAuth.Facebook.HttpService.Imps;
 internal class FacebookHttpClient(
     HttpClient _client,
     IFacebookClientUtilities _utilities,
+    IOAuthHttpClientUtils oAuthHttpClientUtils,
     IOptions<IdOAuthFacebookOptions> _optsProvider,
     ILogger<FacebookHttpClient> _logger,
     JsonSerializerOptions _jsonOptions)
@@ -55,7 +57,11 @@ internal class FacebookHttpClient(
             var jsonResponse = await response.Content.ReadAsStringAsync(cancellationToken);
 
             if (!response.IsSuccessStatusCode)
-                return MapResponseToResult<FacebookDebugTokenData>(response, relative, jsonResponse);
+                return oAuthHttpClientUtils.MapResponseToResult<FacebookDebugTokenData>(
+                    response: response,
+                    provider: "Facebook",
+                    endpoint: relative,
+                    body: jsonResponse);
 
             // Deserialize the response into a C# class (you'll define this struct)
 
@@ -125,7 +131,11 @@ internal class FacebookHttpClient(
             var json = await response.Content.ReadAsStringAsync(cancellationToken);
 
             if (!response.IsSuccessStatusCode)
-                return MapResponseToResult<FacebookUserProfile>(response, relative, json);
+                return oAuthHttpClientUtils.MapResponseToResult<FacebookUserProfile>(
+                    response: response, 
+                    provider: "Facebook",
+                    endpoint: relative,
+                    body: json);
 
             FacebookUserProfile? profile = null;
             try
@@ -156,28 +166,28 @@ internal class FacebookHttpClient(
     //----------------------//
 
 
-    // Helper to map non-success HTTP responses to GenResult<T>
-    private GenResult<T> MapResponseToResult<T>(HttpResponseMessage response, string endpoint, string body)
-    {
-        // Log details to aid debugging
-        _logger.LogWarning("Facebook request failed. StatusCode: {StatusCode}, Endpoint: {Endpoint}, Response: {Response}", response.StatusCode, endpoint, body);
+    //// Helper to map non-success HTTP responses to GenResult<T>
+    //private GenResult<T> MapResponseToResult<T>(HttpResponseMessage response, string endpoint, string body)
+    //{
+    //    // Log details to aid debugging
+    //    _logger.LogWarning("Facebook request failed. StatusCode: {StatusCode}, Endpoint: {Endpoint}, Response: {Response}", response.StatusCode, endpoint, body);
 
-        var info = $"StatusCode: {(int)response.StatusCode}. Body: {body}";
+    //    var info = $"StatusCode: {(int)response.StatusCode}. Body: {body}";
 
-        if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-            return GenResult<T>.UnauthorizedResult(info);
+    //    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+    //        return GenResult<T>.UnauthorizedResult(info);
 
-        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
-            return GenResult<T>.ForbiddenResult(info);
+    //    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+    //        return GenResult<T>.ForbiddenResult(info);
 
-        if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
-            return GenResult<T>.RateLimitExceededResult($"rate_limited: {info}");
+    //    if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
+    //        return GenResult<T>.RateLimitExceededResult($"rate_limited: {info}");
 
-        if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
-            return GenResult<T>.BadRequestResult(info);
+    //    if ((int)response.StatusCode >= 400 && (int)response.StatusCode < 500)
+    //        return GenResult<T>.BadRequestResult(info);
 
-        return GenResult<T>.Failure($"Request failed. {info}");
-    }
+    //    return GenResult<T>.Failure($"Request failed. {info}");
+    //}
 
 
 }//Cls

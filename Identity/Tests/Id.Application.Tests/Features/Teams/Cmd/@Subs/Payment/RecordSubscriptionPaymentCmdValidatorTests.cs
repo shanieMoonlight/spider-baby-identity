@@ -28,7 +28,7 @@ public class RecordSubscriptionPaymentCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoTeamID()
@@ -43,7 +43,7 @@ public class RecordSubscriptionPaymentCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoSubscriptionPlanId()
@@ -58,7 +58,7 @@ public class RecordSubscriptionPaymentCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsValid()
@@ -75,7 +75,7 @@ public class RecordSubscriptionPaymentCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -87,7 +87,7 @@ public class RecordSubscriptionPaymentCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<RecordSubscriptionPaymentCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

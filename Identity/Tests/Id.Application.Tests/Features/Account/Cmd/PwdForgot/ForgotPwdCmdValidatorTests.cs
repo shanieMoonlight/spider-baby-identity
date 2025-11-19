@@ -12,7 +12,7 @@ public class ForgotPwdCmdValidatorTests
         _validator = new ForgotPwdCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_DTO_is_null()
@@ -32,7 +32,7 @@ public class ForgotPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_AllIdentifiersAreMissing()
@@ -51,7 +51,7 @@ public class ForgotPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Succeed_when_EmailSupplied()
@@ -73,7 +73,7 @@ public class ForgotPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Succeed_when_UsernameSupplied()
@@ -95,7 +95,7 @@ public class ForgotPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Succeed_when_UserIdSupplied()
@@ -117,7 +117,7 @@ public class ForgotPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

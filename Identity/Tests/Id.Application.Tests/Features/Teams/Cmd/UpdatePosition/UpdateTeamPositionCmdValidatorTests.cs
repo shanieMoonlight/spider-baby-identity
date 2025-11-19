@@ -11,7 +11,7 @@ namespace ID.Application.Tests.Features.Teams.Cmd.UpdatePosition;
 public class UpdateTeamPositionCmdValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenDtoIsNull()
@@ -31,7 +31,7 @@ public class UpdateTeamPositionCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_Min_GREATER_THAN_Max()
@@ -48,7 +48,7 @@ public class UpdateTeamPositionCmdValidatorTests
         result.ShouldHaveValidationErrorFor(v => v.IsLeader);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsValid()
@@ -66,7 +66,7 @@ public class UpdateTeamPositionCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -78,6 +78,6 @@ public class UpdateTeamPositionCmdValidatorTests
         validator.ShouldBeAssignableTo<IsLeaderValidator<UpdateTeamPositionRangeCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

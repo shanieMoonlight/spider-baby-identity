@@ -26,7 +26,7 @@ public class DeleteCustomerTeamCmdHandlerTests
         _handler = new DeleteCustomerTeamCmdHandler(_mockTeamManager.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Theory]
@@ -48,7 +48,7 @@ public class DeleteCustomerTeamCmdHandlerTests
         result.Info.ShouldBe(IDMsgs.Error.Teams.CAN_ONLY_REMOVE_CUSTOMER_TEAM);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -69,7 +69,7 @@ public class DeleteCustomerTeamCmdHandlerTests
         result.Info.ShouldBe(IDMsgs.Error.NotFound<Team>(command.Id));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ValidRequest_DeletesTeam()
@@ -90,6 +90,6 @@ public class DeleteCustomerTeamCmdHandlerTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -20,7 +20,7 @@ public class AppPermissionService_CanUpdate_Tests
         _appPermissionService = new CanUpdatePermissions<AppUser>(_teamManagerMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanUpdateAsync_UserDoesNotExist_ReturnsNotFoundResult()
@@ -43,7 +43,7 @@ public class AppPermissionService_CanUpdate_Tests
         result.NotFound.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanUpdateAsync_CannotUpdateOtherUser_ReturnsBadRequestResult()
@@ -67,7 +67,7 @@ public class AppPermissionService_CanUpdate_Tests
         result.BadRequest.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanUpdateAsync_ValidRequest_ReturnsSuccessResult()
@@ -91,6 +91,6 @@ public class AppPermissionService_CanUpdate_Tests
         result.Succeeded.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

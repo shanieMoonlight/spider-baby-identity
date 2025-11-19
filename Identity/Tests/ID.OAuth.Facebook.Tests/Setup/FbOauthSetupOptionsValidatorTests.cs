@@ -1,4 +1,4 @@
-namespace ID.OAuth.Facebook.Tests;
+namespace ID.OAuth.Facebook.Tests.Setup;
 
 public class FbOauthSetupOptionsValidatorTests
 {
@@ -47,4 +47,6 @@ public class FbOauthSetupOptionsValidatorTests
         // Assert
         result.ShouldNotBe(ValidateOptionsResult.Success);
     }
+
+
 }//Cls

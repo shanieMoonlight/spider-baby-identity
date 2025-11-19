@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.Teams.Qry.GetMntcTeam;
 public class GetMntcTeamCmdValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -19,6 +19,6 @@ public class GetMntcTeamCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<GetMntcTeamQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

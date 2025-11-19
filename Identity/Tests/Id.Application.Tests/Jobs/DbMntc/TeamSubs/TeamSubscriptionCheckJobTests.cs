@@ -30,7 +30,7 @@ public class TeamSubscriptionCheckJobTests : ServiceProviderTestBase
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -62,7 +62,7 @@ public class TeamSubscriptionCheckJobTests : ServiceProviderTestBase
         transactionMock.Verify(t => t.CommitAsync(cancellationToken), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task HandleAsync_Should_LogException_And_RollbackTransaction_On_Exception()

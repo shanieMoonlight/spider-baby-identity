@@ -15,7 +15,7 @@ public class ConfirmEmailWithPwdCmdHandlerTests
 {
     public ConfirmEmailWithPwdCmdHandlerTests() { }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_ReturnNotFoundResultWhenUserNotFound()
@@ -40,7 +40,7 @@ public class ConfirmEmailWithPwdCmdHandlerTests
         result.Info.ShouldBe(IDMsgs.Error.Authorization.INVALID_AUTH);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_CallConfirmEmailAsyncWhenUerFound()
@@ -69,7 +69,7 @@ public class ConfirmEmailWithPwdCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_ReturnSuccessWhenConfirmSucceeds()
@@ -96,7 +96,7 @@ public class ConfirmEmailWithPwdCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_ReturnFailureWhenConfirmFails()
@@ -123,7 +123,7 @@ public class ConfirmEmailWithPwdCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

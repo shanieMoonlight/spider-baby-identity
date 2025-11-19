@@ -14,7 +14,7 @@ public class ConfirmEmailCmdHandlerTests
     public ConfirmEmailCmdHandlerTests()
     { }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_ReturnNotFoundResultWhenUserNotFound()
@@ -40,7 +40,7 @@ public class ConfirmEmailCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_CallConfirmEmailAsyncWhenUerFound()
@@ -67,7 +67,7 @@ public class ConfirmEmailCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_ReturnSuccessWhenConfirmSucceeds()
@@ -94,7 +94,7 @@ public class ConfirmEmailCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_ReturnFailureWhenConfirmFails()
@@ -121,7 +121,7 @@ public class ConfirmEmailCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

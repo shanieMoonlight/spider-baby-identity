@@ -18,7 +18,7 @@ public class AddMntcMemberCmdValidatorTests
         _validator = new AddMntcMemberCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_Dto_Is_Null()
@@ -31,7 +31,7 @@ public class AddMntcMemberCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_Email_Is_Empty()
@@ -42,7 +42,7 @@ public class AddMntcMemberCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto.Email);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Not_Have_Error_When_Dto_And_Email_Are_Valid()
@@ -54,7 +54,7 @@ public class AddMntcMemberCmdValidatorTests
         result.ShouldNotHaveValidationErrorFor(x => x.Dto.Email);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void AddMntcMemberCmd_Implements_AMntcMinimumValidator()
@@ -66,6 +66,6 @@ public class AddMntcMemberCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<AddMntcMemberCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

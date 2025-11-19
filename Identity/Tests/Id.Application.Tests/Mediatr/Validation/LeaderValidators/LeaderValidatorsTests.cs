@@ -8,7 +8,7 @@ public class LeaderValidatorsTests
 {
     private readonly TestIsLeaderValidator validator = new();
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void IsLeaderValidator_Should_Have_Error_When_IsLeader_Is_False()
@@ -26,7 +26,7 @@ public class LeaderValidatorsTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void IsLeaderValidator_Should_NOT_Have_Error_When_IsLeader_Is_True()
@@ -42,7 +42,7 @@ public class LeaderValidatorsTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

@@ -16,7 +16,7 @@ public class GetFeatureFlagByIdQryHandlerTests
         _mockRepo = new Mock<IIdentityFeatureFlagService>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFeatureFlagDto_WhenExists()
@@ -36,7 +36,7 @@ public class GetFeatureFlagByIdQryHandlerTests
         Assert.Equal(featureFlagId, result.Value.Id); // Assuming Id is mapped to Dto
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNotFound_WhenFeatureFlagDoesNotExist()

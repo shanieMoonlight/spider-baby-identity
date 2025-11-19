@@ -45,7 +45,7 @@
 //        nextMock.Verify(n => n(), Times.Never);
 //    }
 
-//    //------------------------------------//
+//    //--------------------------//
 
 //    [Fact]
 //    public async Task Handle_ShouldCallNext_WhenCustomerRegistrationIsAllowed()
@@ -65,6 +65,6 @@
 //        nextMock.Verify(n => n(), Times.Once);
 //    }
 
-//    //------------------------------------//
+//    //--------------------------//
 
 //}//Cls

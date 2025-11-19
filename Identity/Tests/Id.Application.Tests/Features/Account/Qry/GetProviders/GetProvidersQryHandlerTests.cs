@@ -8,7 +8,7 @@ namespace ID.Application.Tests.Features.Account.Qry.GetProviders;
 public class GetProvidersQryHandlerTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnProviders()
@@ -30,6 +30,6 @@ public class GetProvidersQryHandlerTests
         result.Value.ShouldBe(MyEnums.GetDescriptions<TwoFactorProvider>());
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

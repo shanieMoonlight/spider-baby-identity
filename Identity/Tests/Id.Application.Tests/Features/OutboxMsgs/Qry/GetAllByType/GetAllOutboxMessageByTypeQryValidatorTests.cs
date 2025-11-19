@@ -9,7 +9,7 @@ public class GetAllOutboxMessageByTypeQryValidatorTests
 {
     private readonly GetAllOutboxMessagesByTypeQryValidator _validator = new();
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_Id_is_null()
@@ -26,7 +26,7 @@ public class GetAllOutboxMessageByTypeQryValidatorTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -35,6 +35,6 @@ public class GetAllOutboxMessageByTypeQryValidatorTests
         _validator.ShouldBeAssignableTo<AMntcMinimumValidator<GetAllOutboxMessagesByTypeQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

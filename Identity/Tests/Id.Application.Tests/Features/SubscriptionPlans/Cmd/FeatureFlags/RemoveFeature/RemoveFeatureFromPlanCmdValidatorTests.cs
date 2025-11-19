@@ -8,7 +8,7 @@ using Shouldly;
 namespace ID.Application.Tests.Features.SubscriptionPlans.Cmd.FeatureFlags.RemoveFeature;
 public class RemoveFeatureFromPlanCmdValidatorTests
 {
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenDtoIsNull()
@@ -29,7 +29,7 @@ public class RemoveFeatureFromPlanCmdValidatorTests
         result.Errors.ShouldContain(e => e.ErrorMessage == IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsNotNull()
@@ -47,7 +47,7 @@ public class RemoveFeatureFromPlanCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -57,6 +57,6 @@ public class RemoveFeatureFromPlanCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<RemoveFeaturesFromSubscriptionPlanCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

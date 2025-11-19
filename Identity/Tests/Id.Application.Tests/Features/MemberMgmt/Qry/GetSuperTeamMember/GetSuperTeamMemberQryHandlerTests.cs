@@ -30,7 +30,7 @@ public class GetSuperTeamMemberQryHandlerTests
         result.Value.Id.ShouldBe(member.Id);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNotFoundResult_WhenMemberDoesNotExist()
@@ -52,6 +52,6 @@ public class GetSuperTeamMemberQryHandlerTests
         result.NotFound.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }

@@ -24,7 +24,7 @@ public class Update__modelClassName__CmdHandlerTests
         _handler = new UpdateSubscriptionPlanCmdHandler(_mockRepo.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WhenUpdateSucceeds()
@@ -61,7 +61,7 @@ public class Update__modelClassName__CmdHandlerTests
         result.Value!.Description.ShouldBeEquivalentTo(requestDto.Description);
     }
 
-    //------------------------------------//
+    //--------------------------//
     [Fact]
     public async Task Handle_ShouldReturnNotFound_WhenSubscriptionPlanNotFound()
     {
@@ -80,7 +80,7 @@ public class Update__modelClassName__CmdHandlerTests
         result.Info.ShouldBe(IDMsgs.Error.NotFound<SubscriptionPlan>(Dto.Id));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     // Add a test case for any specific error handling you have in the Update method.
 }

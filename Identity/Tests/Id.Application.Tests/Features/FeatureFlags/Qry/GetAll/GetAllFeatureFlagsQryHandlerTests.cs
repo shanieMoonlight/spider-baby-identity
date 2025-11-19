@@ -14,7 +14,7 @@ public class GetAllFeatureFlagsQryHandlerTests
     private readonly Mock<IIdentityFeatureFlagService> _repoMock;
     private readonly Mock<IMediator> _mediatorMock;
 
-    //------------------------------------//
+    //--------------------------//
 
     public GetAllFeatureFlagsQryHandlerTests()
     {
@@ -22,7 +22,7 @@ public class GetAllFeatureFlagsQryHandlerTests
         _mediatorMock = new Mock<IMediator>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnAllFeatureFlags_WhenSuccessful()
@@ -44,7 +44,7 @@ public class GetAllFeatureFlagsQryHandlerTests
         _repoMock.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnEmptyList_WhenNoFeatureFlagsExist()
@@ -65,6 +65,6 @@ public class GetAllFeatureFlagsQryHandlerTests
         _repoMock.Verify(r => r.GetAllAsync(), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

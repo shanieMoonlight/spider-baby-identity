@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.Teams.Qry.GetMntcMembersPage;
 public class GetMntcMembersQryValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -19,6 +19,6 @@ public class GetMntcMembersQryValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<GetMntcMembersQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -14,7 +14,7 @@ public class PublicSigningKeyCmdHandlerTests
         _handler = new GetPublicSigningKeyCmdHandler(_mockKeyService.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNotFoundResult_WhenKeyIsNull()
@@ -32,7 +32,7 @@ public class PublicSigningKeyCmdHandlerTests
         result.Info.ShouldBe(IDMsgs.Error.Jwt.SYMETRIC_CRYPTO_HAS_NO_PUBLIC_KEY);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnBasicResult_WhenKeyIsNotNull()
@@ -50,6 +50,6 @@ public class PublicSigningKeyCmdHandlerTests
         result.Value.ShouldBe(new PublicSigningKeyDto(publicKey));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -20,7 +20,7 @@ public class GetMntcMembersQryHandlerTests
         _handler = new GetMntcMembersQryHandler(_mockTeamManager.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShoulCallGetMntcTeamWithMembersAsync_With10000_ifIsSuper()
@@ -40,7 +40,7 @@ public class GetMntcMembersQryHandlerTests
         _mockTeamManager.Verify(mgr => mgr.GetMntcTeamWithMembersAsync(IdGlobalConstants.Teams.CATCH_ALL_MAX_POSITION));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShoulCallGetMntcTeamWithMembersAsync_WithPrincipalTeamPosition_IfIsMntc()
@@ -60,7 +60,7 @@ public class GetMntcMembersQryHandlerTests
         _mockTeamManager.Verify(mgr => mgr.GetMntcTeamWithMembersAsync(teamPosition));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldCallGetCustomerTeamsByNameAsync_WithRequestName()
@@ -88,6 +88,6 @@ public class GetMntcMembersQryHandlerTests
         result.Succeeded.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

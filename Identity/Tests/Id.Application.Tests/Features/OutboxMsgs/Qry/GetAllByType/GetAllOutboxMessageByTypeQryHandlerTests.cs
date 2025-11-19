@@ -18,7 +18,7 @@ public class GetAllOutboxMessageByTypeQryHandlerTests
         _handler = new GetAllOutboxMessagesFilteredQryHandler(_mockRepo.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnOutboxMessageDtos_WhenMatched()
@@ -39,7 +39,7 @@ public class GetAllOutboxMessageByTypeQryHandlerTests
         _mockRepo.Verify(r => r.GetAllByTypeAsync(outboxMsgType), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnEmptyEnumerable_WhenNoMatched()

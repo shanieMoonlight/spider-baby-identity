@@ -30,7 +30,7 @@ public class ForgotPwdHandlerTests
         _handler = new ForgotPwdHandler(_mockFindUserService.Object, _mockPwdResetService.Object, _mockEventBus.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_UserNotFound_ShouldReturnNotFoundResult()
@@ -54,7 +54,7 @@ public class ForgotPwdHandlerTests
         result.Info.ShouldBe(IDMsgs.Error.Authorization.INVALID_AUTH);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_UserWithoutEmail_ShouldReturnNotFoundResult()
@@ -75,7 +75,7 @@ public class ForgotPwdHandlerTests
         result.Info.ShouldBe(IDMsgs.Error.Email.USER_WITHOUT_EMAIL);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ValidUser_ShouldPublishEventAndReturnSuccessResult()
@@ -103,6 +103,6 @@ public class ForgotPwdHandlerTests
         _mockEventBus.Verify(x => x.Publish(It.IsAny<ForgotPwdEmailRequestIntegrationEvent>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

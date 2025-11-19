@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.Account.Qry.MyInfo;
 public class MyInfoQryHandlerTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnUserDto_WhenUserIsNotNull()
@@ -27,6 +27,6 @@ public class MyInfoQryHandlerTests
         result.Value.UserName.ShouldBe(user.UserName);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

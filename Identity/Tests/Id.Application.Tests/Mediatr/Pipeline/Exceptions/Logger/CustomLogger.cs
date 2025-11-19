@@ -6,16 +6,16 @@ public class CustomLogger<T> : ILogger<T>
 {
     private readonly Dictionary<Exception, int> _exceptionLogCount = [];
 
-    //------------------------------------//
+    //--------------------------//
 
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull
     => null;
 
-    //------------------------------------//
+    //--------------------------//
 
     public bool IsEnabled(LogLevel logLevel) => true;
 
-    //------------------------------------//
+    //--------------------------//
 
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
@@ -24,13 +24,13 @@ public class CustomLogger<T> : ILogger<T>
             RecordException(exception);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     public int GetExceptionCount<TException>() where TException : Exception =>
         _exceptionLogCount.Where(kvp => kvp.Key is TException).Sum(kvp => kvp.Value);
 
 
-    //------------------------------------//
+    //--------------------------//
 
     private void RecordException(Exception exception)
     {

@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.MemberMgmt.Qry.GetTeamMember;
 
 public class GetMyTeamMembersQryValidatorTests
 {
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_MemberId_is_null()
@@ -26,7 +26,7 @@ public class GetMyTeamMembersQryValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -38,6 +38,6 @@ public class GetMyTeamMembersQryValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<GetMyTeamMemberQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -20,7 +20,7 @@ public class AppPermissionService_CanDeleteTeamAware_Tests
         _service = new CanDeletePermissions<AppUser>(_teamManagerMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanDeleteAsync_ShouldReturnNotFound_WhenUserDoesNotExist()
@@ -40,7 +40,7 @@ public class AppPermissionService_CanDeleteTeamAware_Tests
         result.Info.ShouldBe(IDMsgs.Error.NotFound<AppUser>(deleteUserId));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanDeleteAsync_ShouldReturnBadRequest_WhenDeletingSelf()
@@ -63,7 +63,7 @@ public class AppPermissionService_CanDeleteTeamAware_Tests
         result.Succeeded.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanDeleteAsync_ShouldReturnNotFound_WhenUserIsFromAnotherTeam()
@@ -88,7 +88,7 @@ public class AppPermissionService_CanDeleteTeamAware_Tests
         result.Succeeded.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanDeleteAsync_ShouldReturnForbidden_WhenPrincipalHasEqualPosition()
@@ -115,7 +115,7 @@ public class AppPermissionService_CanDeleteTeamAware_Tests
         result.Succeeded.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanDeleteAsync_ShouldReturnForbidden_WhenPrincipalHasLowerPosition_AndNOtTheLeader()
@@ -141,7 +141,7 @@ public class AppPermissionService_CanDeleteTeamAware_Tests
         result.Succeeded.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanDeleteAsync_ShouldReturnSUccess_WhenPrincipalHasLowerPosition_But_IS_TheLeader()
@@ -171,7 +171,7 @@ public class AppPermissionService_CanDeleteTeamAware_Tests
         result.Value.ShouldBeEquivalentTo(deleteUser);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -198,5 +198,5 @@ public class AppPermissionService_CanDeleteTeamAware_Tests
         result.Value.ShouldBeEquivalentTo(deleteUser);
     }
 
-    //------------------------------------//
+    //--------------------------//
 }

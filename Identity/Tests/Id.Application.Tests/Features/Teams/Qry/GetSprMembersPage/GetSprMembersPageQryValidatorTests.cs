@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.Teams.Qry.GetSprMembersPage;
 public class GetSprMembersPageQryValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_ASuperMinimumValidator()
@@ -19,6 +19,6 @@ public class GetSprMembersPageQryValidatorTests
         validator.ShouldBeAssignableTo<ASuperMinimumValidator<GetSprMembersPageQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

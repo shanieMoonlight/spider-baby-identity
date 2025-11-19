@@ -23,7 +23,7 @@ public class IdPrincipalPipelineBehaviorTests
         _behavior = new IdPrincipalPipelineBehavior<TestUserAwareCommand, BasicResult>(_mockUserInfo.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldAttachUserInfoToRequest()

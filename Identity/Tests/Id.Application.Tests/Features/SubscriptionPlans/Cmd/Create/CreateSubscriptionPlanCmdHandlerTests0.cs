@@ -31,7 +31,7 @@
 //        _mockUnitOfWork.Setup(uow => uow.FeatureFlagRepo).Returns(_mockFeaturesRepo.Object);
 //    }
 
-//    //------------------------------------//
+//    //--------------------------//
 
 //    [Fact]
 //    public async Task Handle_ShouldCreateSubscriptionPlan_WhenDtoHasNoFeatures()
@@ -64,7 +64,7 @@
 //        _mockFeaturesRepo.Verify(repo => repo.GetRangeByIdsAsync(It.IsAny<IEnumerable<Guid>>()), Times.Never);
 //    }
 
-//    //------------------------------------//
+//    //--------------------------//
 
 //    [Fact]
 //    public async Task Handle_ShouldCreateSubscriptionPlanAndLinkFeatures_WhenDtoHasFeatureIds()
@@ -119,7 +119,7 @@
 //        _mockSubscriptionPlanRepo.Verify(repo => repo.UpdateAsync(It.IsAny<SubscriptionPlan>()), Times.Once);
 //    }
 
-//    //------------------------------------//
+//    //--------------------------//
 
 //    [Fact]
 //    public async Task Handle_ShouldCreateSubscriptionPlanAndLinkFeatures_WhenDtoHasFeatures()
@@ -178,7 +178,7 @@
 //        _mockSubscriptionPlanRepo.Verify(repo => repo.UpdateAsync(It.IsAny<SubscriptionPlan>()), Times.Once);
 //    }
 
-//    //------------------------------------//
+//    //--------------------------//
 
 //    [Fact]
 //    public async Task Handle_ShouldReturnNotFound_WhenFeatureIdsAreNotFound()
@@ -231,7 +231,7 @@
 //        result.Info.ShouldStartWith(IDMsgs.Error.NotFound<FeatureFlag>(missingFeatureDtoIds.JoinStr(", ")));
 //    }
 
-//    //------------------------------------//
+//    //--------------------------//
 
 //    [Fact]
 //    public async Task Handle_ShouldReturnNotFound_WhenFeaturesAreNotFound()
@@ -283,6 +283,6 @@
 //        result.Info.ShouldStartWith(IDMsgs.Error.NotFound<FeatureFlag>(missingFeatureDtoIds.JoinStr(", ")));
 //    }
 
-//    //------------------------------------//
+//    //--------------------------//
 
 //}//Cls

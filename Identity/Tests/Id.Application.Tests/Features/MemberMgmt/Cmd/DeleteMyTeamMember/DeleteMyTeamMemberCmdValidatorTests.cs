@@ -27,7 +27,7 @@ public class DeleteMyTeamMemberCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenIdIsValid()
@@ -44,7 +44,7 @@ public class DeleteMyTeamMemberCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -56,6 +56,6 @@ public class DeleteMyTeamMemberCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<DeleteMyTeamMemberCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

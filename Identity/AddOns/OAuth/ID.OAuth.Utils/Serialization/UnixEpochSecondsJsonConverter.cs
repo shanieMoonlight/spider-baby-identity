@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace ID.OAuth.Facebook.HttpService;
+namespace ID.OAuth.Utils.Serialization;
 
 internal class UnixEpochSecondsJsonConverter : JsonConverter<DateTimeOffset?>
 {

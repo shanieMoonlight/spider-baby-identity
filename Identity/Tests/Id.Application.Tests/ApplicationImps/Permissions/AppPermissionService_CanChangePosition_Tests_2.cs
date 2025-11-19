@@ -15,7 +15,7 @@ public class AppPermissionService_CanChangePosition_Tests_2
     {
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangePositionAsync_UserDoesNotExist_ReturnsForbiddenResult()
@@ -38,7 +38,7 @@ public class AppPermissionService_CanChangePosition_Tests_2
         result.Info.ShouldBe(IDMsgs.Error.Users.CantUpdateFromAnotherTeam);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangePositionAsync_PrincipalIsLeader_ReturnsSuccess()
@@ -62,7 +62,7 @@ public class AppPermissionService_CanChangePosition_Tests_2
         result.Value.ShouldBe(newPositionUser);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangePositionAsync_NewPositionUserIsLeader_ReturnsBadRequest()
@@ -86,7 +86,7 @@ public class AppPermissionService_CanChangePosition_Tests_2
         result.Info.ShouldBe(IDMsgs.Error.Teams.CANT_CHANGE_POSITION_OF_LEADER);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangePositionAsync_PrincipalHasLowerPosition_ReturnsBadRequest()
@@ -110,7 +110,7 @@ public class AppPermissionService_CanChangePosition_Tests_2
         result.Info.ShouldBe(IDMsgs.Error.Teams.CANT_ADMINISTER_HIGHER_POSITIONS(3));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangePositionAsync_PrincipalHasHigherPosition_ReturnsSuccess()
@@ -134,6 +134,6 @@ public class AppPermissionService_CanChangePosition_Tests_2
         result.Value.ShouldBe(newPositionUser);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

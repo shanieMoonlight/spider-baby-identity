@@ -20,7 +20,7 @@ public class TwoFactorAuthAppCompleteRegCmdHandlerTests
         _handler = new TwoFactorAuthAppCompleteRegCmdHandler(_mockRegCompleteHandler.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Should_Return_Success_When_TwoFactorCode_Is_Valid()
@@ -46,7 +46,7 @@ public class TwoFactorAuthAppCompleteRegCmdHandlerTests
         result.Value.UserName.ShouldBe(user.UserName);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Should_Return_Failure_When_TwoFactorCode_Is_Invalid()
@@ -70,6 +70,6 @@ public class TwoFactorAuthAppCompleteRegCmdHandlerTests
         result.Info.ShouldBe(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_CODE);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

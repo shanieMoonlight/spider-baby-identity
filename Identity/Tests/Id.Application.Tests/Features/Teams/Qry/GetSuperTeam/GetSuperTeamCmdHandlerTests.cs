@@ -26,7 +26,7 @@ public class GetSuperTeamQryHandlerTests
         _handler = new GetSuperTeamQryHandler();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNotFound_WhenSuperTeamDoesNotExist()
@@ -47,7 +47,7 @@ public class GetSuperTeamQryHandlerTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task OnAuthenticated_ValidRequest_ReturnsTeamDto()
@@ -77,6 +77,6 @@ public class GetSuperTeamQryHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

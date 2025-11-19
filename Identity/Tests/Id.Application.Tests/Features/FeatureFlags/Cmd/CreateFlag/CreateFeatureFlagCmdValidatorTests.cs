@@ -10,7 +10,7 @@ namespace ID.Application.Tests.Features.FeatureFlags.Cmd.CreateFlag;
 public class CreateFeatureFlagCmdValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenDtoIsNull()
@@ -29,7 +29,7 @@ public class CreateFeatureFlagCmdValidatorTests
         result.ShouldHaveValidationErrorFor(cmd => cmd.Dto);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsNotNull()
@@ -46,7 +46,7 @@ public class CreateFeatureFlagCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -59,6 +59,6 @@ public class CreateFeatureFlagCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<CreateFeatureFlagCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

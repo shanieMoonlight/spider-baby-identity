@@ -61,7 +61,7 @@ public class IdMediatrSetupExtensionsTests
         }
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void AddIdApplication_Registers_UserAndTeamInfo_BehaviorsInCorrectOrder()
@@ -101,7 +101,7 @@ public class IdMediatrSetupExtensionsTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls
 

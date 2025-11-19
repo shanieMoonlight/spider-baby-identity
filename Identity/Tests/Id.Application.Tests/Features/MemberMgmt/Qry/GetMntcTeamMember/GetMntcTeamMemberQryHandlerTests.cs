@@ -18,7 +18,7 @@ public class GetMntcTeamMemberQryHandlerTests
         _handler = new GetMntcTeamMemberQryHandler(_teamManagerMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccessResult_WhenMemberExists()
@@ -44,7 +44,7 @@ public class GetMntcTeamMemberQryHandlerTests
         result.Value.Id.ShouldBe(memberId);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNotFoundResult_WhenMemberDoesNotExist()
@@ -67,7 +67,7 @@ public class GetMntcTeamMemberQryHandlerTests
         result.NotFound.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Should_Call_GetMntcTeamWithMemberAsync_With_Position_1000_When_IsSuper()
@@ -87,6 +87,6 @@ public class GetMntcTeamMemberQryHandlerTests
         _teamManagerMock.Verify(mgr => mgr.GetMntcTeamWithMemberAsync(request.MemberId, 1000), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

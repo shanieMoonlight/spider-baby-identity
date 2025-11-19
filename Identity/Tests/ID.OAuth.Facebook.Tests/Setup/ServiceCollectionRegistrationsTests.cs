@@ -1,13 +1,10 @@
 using FluentValidation;
-using ID.Application.Customers.Setup;
-using ID.Domain.Entities.AppUsers;
 using ID.OAuth.Facebook.HttpService.Abs;
 using ID.OAuth.Facebook.Services.Abs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json;
 
-namespace ID.OAuth.Facebook.Tests;
+namespace ID.OAuth.Facebook.Tests.Setup;
 
 public class ServiceCollectionRegistrationsTests
 {
@@ -62,7 +59,7 @@ public class ServiceCollectionRegistrationsTests
 
 
     [Fact]
-    public void AddIdApplication_ShouldRegisterValidators()
+    public void AddMyIdFacebookOAuth_ShouldRegisterValidators()
     {
         // Arrange
         var services = new ServiceCollection();

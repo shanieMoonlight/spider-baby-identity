@@ -31,7 +31,7 @@ public class IdTeamAwarePipelineBehaviorTests
         _behavior = new IdTeamAwarePipelineBehavior<ITestUserAndTeamRequest, TestResponse>(_teamManagerMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -55,7 +55,7 @@ public class IdTeamAwarePipelineBehaviorTests
         _teamManagerMock.Verify(m => m.GetByIdWithEverythingAsync(teamId, teamPosition), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -77,7 +77,7 @@ public class IdTeamAwarePipelineBehaviorTests
         _requestMock.Verify(r => r.SetTeam(team), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -101,7 +101,7 @@ public class IdTeamAwarePipelineBehaviorTests
         result.ShouldBe(expectedResponse);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     // Test with BasicResult (not your custom TestResponse)
     [Fact]
@@ -127,7 +127,7 @@ public class IdTeamAwarePipelineBehaviorTests
         result.Info.ShouldContain(teamId.ToString());
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     // Test with GenResult<Team>
     public interface IGenericTestRequest : IIdUserAndTeamAwareRequest<AppUser>, IRequest<GenResult<Team>> { }
@@ -154,7 +154,7 @@ public class IdTeamAwarePipelineBehaviorTests
         result.Info.ShouldContain(teamId.ToString());
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     // Helper class for test responses

@@ -19,7 +19,7 @@ public class InitializeCmdValidatorTests
         _validator = new InitializeCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void ShouldHaveValidationErrorWhenDtoIsNull()
@@ -33,7 +33,7 @@ public class InitializeCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void ShouldHaveValidationErrorWhenDtoPasswordIsNull()
@@ -48,7 +48,7 @@ public class InitializeCmdValidatorTests
         result.ShouldHaveValidationErrors();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void ShouldHaveValidationErrorWhenDtoPasswordIsWhitespace()
@@ -63,7 +63,7 @@ public class InitializeCmdValidatorTests
         result.ShouldHaveValidationErrors();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void DowsNotRequireAuthentication()
@@ -75,6 +75,6 @@ public class InitializeCmdValidatorTests
         validator.ShouldNotBeAssignableTo<IsAuthenticatedValidator<InitializeCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -21,7 +21,7 @@ public class RemoveDeviceFromTeamSubscriptionHandlerTests
         _handler = new RemoveDeviceFromTeamSubscriptionHandler(_deviceServiceFactoryMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_SuccessfullyRemovesDeviceFromSubscription()
@@ -60,7 +60,7 @@ public class RemoveDeviceFromTeamSubscriptionHandlerTests
         _deviceServiceMock.Verify(m => m.RemoveDeviceAsync(It.IsAny<Guid>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailureResult_WhenServiceNotFound()
@@ -88,7 +88,7 @@ public class RemoveDeviceFromTeamSubscriptionHandlerTests
         result.NotFound.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailureResult_WhenRemoveDeviceFails()
@@ -125,7 +125,7 @@ public class RemoveDeviceFromTeamSubscriptionHandlerTests
         result.Info.ShouldBe("Failed to remove device");
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

@@ -1,10 +1,8 @@
+using ID.OAuth.Facebook.HttpService.Imps;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Extensions.Options;
-using ID.OAuth.Facebook.HttpService.Imps;
-using ID.OAuth.Facebook.Setup;
 
-namespace ID.OAuth.Facebook.Tests;
+namespace ID.OAuth.Facebook.Tests.HttpService;
 
 public class FacebookClientUtilitiesTests
 {

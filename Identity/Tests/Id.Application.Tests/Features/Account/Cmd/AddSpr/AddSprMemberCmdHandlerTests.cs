@@ -35,7 +35,7 @@ public class AddSprMemberCmdHandlerTests
         _handler = new AddSprMemberCmdHandler(_mockTeamManager.Object, _mockAppPermissionService.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailure_WhenUAppPermisionFails()
@@ -62,7 +62,7 @@ public class AddSprMemberCmdHandlerTests
         result.Info.ShouldBe(expectedMsg);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WhenUserIsRegisteredSuccessfully()
@@ -127,7 +127,7 @@ public class AddSprMemberCmdHandlerTests
         result.Value.TeamPosition.ShouldBe(request.Dto.TeamPosition);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Should_Call_RegisterMemberAsync()
@@ -165,7 +165,7 @@ public class AddSprMemberCmdHandlerTests
         _mockTeamManager.Verify(m => m.RegisterMemberAsync(It.IsAny<Team>(), It.IsAny<AppUser>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

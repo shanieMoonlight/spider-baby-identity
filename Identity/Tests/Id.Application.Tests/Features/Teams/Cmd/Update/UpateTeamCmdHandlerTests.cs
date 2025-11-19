@@ -25,7 +25,7 @@ public class UpateTeamCmdHandlerTests
         _handler = new UpdateTeamCmdHandler(_teamMgrMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task OnAuthenticated_ValidRequest_ReturnsTeamDto()
@@ -60,6 +60,6 @@ public class UpateTeamCmdHandlerTests
         _teamMgrMock.Verify(tm => tm.UpdateAsync(It.IsAny<Team>()), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

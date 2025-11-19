@@ -20,7 +20,7 @@ public class AppPermission_CanDeleteAsync_ServiceTests
         _appPermissionService = new CanChangeLeaderPermissions<AppUser>(_teamManagerMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangeLeaderAsync_PrincipalNotLeader_ReturnsForbiddenResult()
@@ -43,7 +43,7 @@ public class AppPermission_CanDeleteAsync_ServiceTests
         result.Forbidden.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangeLeaderAsync_NewLeaderNotInTeam_ReturnsBadRequestResult()
@@ -68,7 +68,7 @@ public class AppPermission_CanDeleteAsync_ServiceTests
         result.BadRequest.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanChangeLeaderAsync_ValidRequest_ReturnsSuccessResult()
@@ -92,6 +92,6 @@ public class AppPermission_CanDeleteAsync_ServiceTests
         result.Value.ShouldBe(newLeader);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -12,7 +12,7 @@ public class LoginCmdValidatorTests
         _validator = new LoginCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_DTO_is_null()
@@ -33,7 +33,7 @@ public class LoginCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_AllIdentifiersAreMissing()
@@ -52,7 +52,7 @@ public class LoginCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
     [Fact]
     public void Should_have_error_when_NoPasswordSupplied()
     {
@@ -73,7 +73,7 @@ public class LoginCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_NOT_have_error_when_EmailSupplied()
@@ -96,7 +96,7 @@ public class LoginCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_NOT_have_error_when_UsernameSupplied()
@@ -119,7 +119,7 @@ public class LoginCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_NOT_have_error_when_UserIdSupplied()
@@ -142,7 +142,7 @@ public class LoginCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

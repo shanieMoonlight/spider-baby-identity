@@ -18,7 +18,7 @@ public class GetFeatureFlagByNameQryHandlerTests
         _handler = new GetFeatureFlagByNameQryHandler(_mockRepo.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFeatureFlagDto_WhenExists()
@@ -44,7 +44,7 @@ public class GetFeatureFlagByNameQryHandlerTests
         Assert.Equal(featureFlagName, result.Value.Name);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNotFound_WhenFeatureFlagDoesNotExist()
@@ -64,7 +64,7 @@ public class GetFeatureFlagByNameQryHandlerTests
         Assert.Equal(IDMsgs.Error.NotFound<FeatureFlag>(featureFlagName), result.Info);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnBadRequest_WhenNameIsEmpty()

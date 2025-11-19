@@ -9,7 +9,7 @@ namespace ID.Application.Tests.Features.SubscriptionPlans.Qry.GetByName;
 public class GetSubscriptionPlanByNameValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenDtoIsNull()
@@ -27,7 +27,7 @@ public class GetSubscriptionPlanByNameValidatorTests
             .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -37,7 +37,7 @@ public class GetSubscriptionPlanByNameValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<GetSubscriptionPlanByNameQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

@@ -51,6 +51,7 @@ public class IdErrorEvents
         public const int Verification = 15001;
         public const int Facebook = Verification + 1;
         public const int Google = Facebook + 1;
+        public const int Amazon = Google + 1;
     }
 
 }

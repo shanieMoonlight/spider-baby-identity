@@ -11,7 +11,7 @@ public class ConfirmEmailWithPwdCmdValidatorTests
         _validator = new ConfirmEmailWithPwdCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_DTO_is_null()
@@ -30,7 +30,7 @@ public class ConfirmEmailWithPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_AllIdentifiersAreMissing()
@@ -52,7 +52,7 @@ public class ConfirmEmailWithPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
     [Fact]
     public void Should_have_error_when_NoTokenSupplied()
     {
@@ -70,7 +70,7 @@ public class ConfirmEmailWithPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_NoIdSupplied()
@@ -89,7 +89,7 @@ public class ConfirmEmailWithPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
     [Fact]
     public void Should_have_error_when_NoPasswordSupplied()
     {
@@ -107,7 +107,7 @@ public class ConfirmEmailWithPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_NoConfirmPasswordSupplied()
@@ -126,7 +126,7 @@ public class ConfirmEmailWithPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_PasswordsDoNotMatch()
@@ -146,7 +146,7 @@ public class ConfirmEmailWithPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_NOT_have_error_when_PasswordsDoMatch()
@@ -165,7 +165,7 @@ public class ConfirmEmailWithPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_NOT_have_DTO_error_when_AllDataSupplied()
@@ -184,7 +184,7 @@ public class ConfirmEmailWithPwdCmdValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

@@ -17,7 +17,7 @@ public class AppPermissionService_CanAddMember_Tests
         _appPermissionService = new CanAddPermissions();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanAddTeamMember_PrincipalPositionLower_But_LEader_ReturnsSuccess()
@@ -35,7 +35,7 @@ public class AppPermissionService_CanAddMember_Tests
         result.Succeeded.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanAddTeamMember_PrincipalPositionHigherOrEqual_ReturnsSuccess()
@@ -52,7 +52,7 @@ public class AppPermissionService_CanAddMember_Tests
         result.Succeeded.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task CanAddTeamMember_PrincipalPositionLower_ReturnsForbidden()
@@ -72,6 +72,6 @@ public class AppPermissionService_CanAddMember_Tests
         result.Info.ShouldBe(IDMsgs.Error.Authorization.UNAUTHORIZED_FOR_POSITION(newMemberPosition));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -5,7 +5,7 @@ using ID.Application.Features.Account.Cmd.Mfa.TwoFactorDisable;
 namespace ID.Application.Tests.Features.Account.Cmd.Mfa.TwoFactorDisable;
 public class TwoFactorDisableCmdValidatorTests
 {
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -20,7 +20,7 @@ public class TwoFactorDisableCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<TwoFactorDisableCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

@@ -28,7 +28,7 @@ public class UpdateLeaderCmdHandlerTests
         _handler = new UpdateMyTeamLeaderCmdHandler(_mockTeamManager.Object, _appPermissionsMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldCall_CanChangeLeaderAsync()
@@ -51,7 +51,7 @@ public class UpdateLeaderCmdHandlerTests
         _canChangeLeaderPermissionService.Verify(x => x.CanChange_MyTeam_LeaderAsync(newLeaderId, request), Times.AtLeastOnce);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccessResult_WhenLeaderIsUpdated()
@@ -77,7 +77,7 @@ public class UpdateLeaderCmdHandlerTests
         result.Value.ShouldBeOfType<TeamDto>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailureResult_WhenPermissionCheckFails()
@@ -98,6 +98,6 @@ public class UpdateLeaderCmdHandlerTests
         result.Info.ShouldBe("Permission denied");
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

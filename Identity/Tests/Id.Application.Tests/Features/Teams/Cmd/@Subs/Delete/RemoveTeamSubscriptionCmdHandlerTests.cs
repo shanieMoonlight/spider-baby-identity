@@ -18,7 +18,7 @@ public class RemoveTeamSubscriptionCmdHandlerTests
         _handler = new RemoveTeamSubscriptionCmdHandler(_mockSubsServiceFactory.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnFailureResult_WhenGetServiceFails()
@@ -37,7 +37,7 @@ public class RemoveTeamSubscriptionCmdHandlerTests
         result.Info.ShouldBe("Service not found");
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccessResult_WhenAddSubscriptionSucceeds()
@@ -72,6 +72,6 @@ public class RemoveTeamSubscriptionCmdHandlerTests
         result.Value.Id.ShouldBe(teamId);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -17,7 +17,7 @@ public class GetByNameQryHandlerTests
         _handler = new GetTeamByIdQryHandler(_mockTeamManager.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldCallGetCustomerTeamsByNameAsync_WithRequestName()
@@ -35,6 +35,6 @@ public class GetByNameQryHandlerTests
         mockTeamManager.Verify(mgr => mgr.GetCustomerTeamsByNameAsync(request.Name), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -21,7 +21,7 @@ public class GetTeamByIdQryHandlerTests
         _handler = new GetTeamByIdQryHandler(_mockTeamManager.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_TeamNotFound_ReturnsNotFoundResult()
@@ -41,7 +41,7 @@ public class GetTeamByIdQryHandlerTests
         result.NotFound.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_TeamIsSuperAndUserNotSuper_ReturnsForbiddenResult()
@@ -60,7 +60,7 @@ public class GetTeamByIdQryHandlerTests
         result.Forbidden.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ValidRequest_ReturnsTeamDto()
@@ -83,6 +83,6 @@ public class GetTeamByIdQryHandlerTests
         result.Value.Members.Count.ShouldBe(team.Members.Count);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

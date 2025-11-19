@@ -9,7 +9,7 @@ namespace ID.Application.Tests.Features.Teams.Qry.GetPage;
 public class GetTeamPageQryValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_ASuperMinimumValidator()
@@ -22,6 +22,6 @@ public class GetTeamPageQryValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumOrDevValidator<GetTeamsPageQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

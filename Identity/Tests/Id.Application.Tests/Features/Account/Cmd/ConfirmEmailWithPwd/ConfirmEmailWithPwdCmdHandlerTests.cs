@@ -14,7 +14,7 @@ public class ConfirmEmailWithPwdWithPwdCmdHandlerTests
     public ConfirmEmailWithPwdWithPwdCmdHandlerTests()
     { }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_ReturnNotFoundResultWhenUserNotFound()
@@ -40,7 +40,7 @@ public class ConfirmEmailWithPwdWithPwdCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_CallConfirmEmailWithPasswordAsyncWhenUerFound()
@@ -69,7 +69,7 @@ public class ConfirmEmailWithPwdWithPwdCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_ReturnSuccessWhenChangeSucceeds()
@@ -98,7 +98,7 @@ public class ConfirmEmailWithPwdWithPwdCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Should_ReturnFailureWhenChangePwdFails()
@@ -122,7 +122,7 @@ public class ConfirmEmailWithPwdWithPwdCmdHandlerTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

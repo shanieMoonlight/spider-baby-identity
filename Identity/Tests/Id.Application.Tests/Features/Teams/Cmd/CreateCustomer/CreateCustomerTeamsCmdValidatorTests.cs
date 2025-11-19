@@ -11,7 +11,7 @@ namespace ID.Application.Tests.Features.Teams.Cmd.CreateCustomer;
 public class CreateCustomerTeamsCmdValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenDtoIsNull()
@@ -31,7 +31,7 @@ public class CreateCustomerTeamsCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoIsNotValid()
@@ -46,7 +46,7 @@ public class CreateCustomerTeamsCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsValid()
@@ -63,7 +63,7 @@ public class CreateCustomerTeamsCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -75,6 +75,6 @@ public class CreateCustomerTeamsCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<CreateCustomerTeamCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

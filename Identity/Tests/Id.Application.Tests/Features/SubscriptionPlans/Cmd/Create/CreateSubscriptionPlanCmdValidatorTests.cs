@@ -11,7 +11,7 @@ namespace ID.Application.Tests.Features.SubscriptionPlans.Cmd.Create;
 public class CreateSubscriptionPlanCmdValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenDtoIsNull()
@@ -31,7 +31,7 @@ public class CreateSubscriptionPlanCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED); 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsNotNull()
@@ -48,7 +48,7 @@ public class CreateSubscriptionPlanCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -58,7 +58,7 @@ public class CreateSubscriptionPlanCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<CreateSubscriptionPlanCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }//Cls

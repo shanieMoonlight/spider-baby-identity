@@ -17,7 +17,7 @@ public class UpdatePositionCmdHandlerTests
         _handler = new UpdatePositionCmdHandler(_teamMgrMock.Object, _appPermissionsMock.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldCall_CanChangePositionAsync()
@@ -45,7 +45,7 @@ public class UpdatePositionCmdHandlerTests
         _canUpdatePosiitonPermissionService.Verify(x => x.CanChangePositionAsync(newLeaderId, newPosition, request), Times.AtLeastOnce);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Should_Update_Position_When_Permission_Granted()
@@ -75,7 +75,7 @@ public class UpdatePositionCmdHandlerTests
         result.Value.TeamPosition.ShouldBe(2);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Should_Return_Failure_When_Permission_Denied()
@@ -100,7 +100,7 @@ public class UpdatePositionCmdHandlerTests
         result.Info.ShouldBe("Permission denied");
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_Should_Return_Failure_When_MemberPositionUpdate_Validation_Fails()

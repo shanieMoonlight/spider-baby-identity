@@ -2,7 +2,7 @@ using ID.OAuth.Facebook.HttpService.Abs;
 using ID.OAuth.Facebook.Services.Imps;
 using MyResults;
 
-namespace ID.OAuth.Facebook.Tests;
+namespace ID.OAuth.Facebook.Tests.Services;
 
 public class FacebookAuthenticationServiceTests
 {

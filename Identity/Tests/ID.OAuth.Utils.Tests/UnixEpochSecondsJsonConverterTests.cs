@@ -1,6 +1,6 @@
-using System.Text.Json;
+using ID.OAuth.Utils.Serialization;
 
-namespace ID.OAuth.Facebook.Tests;
+namespace ID.OAuth.Utils.Tests;
 
 public class UnixEpochSecondsJsonConverterTests
 {
@@ -9,12 +9,6 @@ public class UnixEpochSecondsJsonConverterTests
         var opts = new JsonSerializerOptions();
 
         opts.Converters.Add(new UnixEpochSecondsJsonConverter());
-        //// create converter instance via reflection because the converter is internal to the addon assembly
-        //var convType = Type.GetType("ID.OAuth.Facebook.Data.UnixEpochSecondsJsonConverter, ID.OAuth.Facebook");
-        //convType.ShouldNotBeNull();
-        //var convObj = Activator.CreateInstance(convType, nonPublic: true);
-        //convObj.ShouldNotBeNull();
-        //opts.Converters.Add((System.Text.Json.Serialization.JsonConverter)convObj);
         return opts;
     }
 

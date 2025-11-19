@@ -22,7 +22,7 @@ public class AppPermissionService_CanViewTeamMember_Tests
         _appPermissionService = new CanViewTeamMemberPermissions<AppUser>(_mockTeamManager.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     public static TheoryData<TeamType, TeamType, Func<GenResult<AppUser>, bool?>, Func<Team, AppUser, string>> GetPrincipalUserNotInHigherTeamData()
     {
@@ -103,6 +103,6 @@ public class AppPermissionService_CanViewTeamMember_Tests
         result.Info.ShouldBe(msg);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }

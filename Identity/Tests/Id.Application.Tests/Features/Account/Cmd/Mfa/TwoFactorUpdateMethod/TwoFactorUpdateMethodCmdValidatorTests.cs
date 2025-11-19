@@ -13,7 +13,7 @@ public class TwoFactorUpdateMethodCmdValidatorTests
         _validator = new TwoFactorUpdateMethodCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_DTO_Is_Null()
@@ -28,7 +28,7 @@ public class TwoFactorUpdateMethodCmdValidatorTests
         result.ShouldHaveValidationErrorFor(cmd => cmd.Dto);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenIdIsNull()
@@ -45,7 +45,7 @@ public class TwoFactorUpdateMethodCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto.Provider);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenProviderIsProvided()
@@ -62,7 +62,7 @@ public class TwoFactorUpdateMethodCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -74,7 +74,7 @@ public class TwoFactorUpdateMethodCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<UpdateTwoFactorProviderCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
 }

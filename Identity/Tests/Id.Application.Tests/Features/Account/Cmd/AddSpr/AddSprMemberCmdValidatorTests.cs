@@ -18,7 +18,7 @@ public class AddSprMemberCmdValidatorTests
         _validator = new AddSprMemberCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_Dto_Is_Null()
@@ -37,7 +37,7 @@ public class AddSprMemberCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Have_Error_When_Email_Is_Empty()
@@ -48,7 +48,7 @@ public class AddSprMemberCmdValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.Dto.Email);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_Not_Have_Error_When_Dto_And_Email_Are_Valid()
@@ -60,7 +60,7 @@ public class AddSprMemberCmdValidatorTests
         result.ShouldNotHaveValidationErrorFor(x => x.Dto.Email);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void AddSprMemberCmd_Implements_ASprMinimumValidator()
@@ -75,6 +75,6 @@ public class AddSprMemberCmdValidatorTests
         validator.ShouldBeAssignableTo<ASuperMinimumValidator<AddSprMemberCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

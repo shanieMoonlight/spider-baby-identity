@@ -8,7 +8,7 @@ public class SuperValidatorOnlyTests
 {
 
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void SuperOnlyValidator_Should_Have_Error_When_IsSuper_Is_False()
@@ -26,7 +26,7 @@ public class SuperValidatorOnlyTests
 
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void SuperOnlyValidator_Should_Not_Have_Error_When_IsSuper_Is_True()
@@ -41,7 +41,7 @@ public class SuperValidatorOnlyTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls
 

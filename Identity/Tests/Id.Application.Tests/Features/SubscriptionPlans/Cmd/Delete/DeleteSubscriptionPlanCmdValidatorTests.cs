@@ -11,7 +11,7 @@ namespace ID.Application.Tests.Features.SubscriptionPlans.Cmd.Delete;
 public class DeleteSubscriptionPlanCmdValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenDtoIsNull()
@@ -30,7 +30,7 @@ public class DeleteSubscriptionPlanCmdValidatorTests
         result.Errors.First().ErrorMessage.ShouldBe(IDMsgs.Error.IsRequired(nameof(SubscriptionPlan.Id)));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsNotNull()
@@ -47,7 +47,7 @@ public class DeleteSubscriptionPlanCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -57,6 +57,6 @@ public class DeleteSubscriptionPlanCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<DeleteSubscriptionPlanCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

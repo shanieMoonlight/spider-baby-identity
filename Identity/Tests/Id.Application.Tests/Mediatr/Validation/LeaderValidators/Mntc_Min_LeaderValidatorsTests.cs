@@ -8,7 +8,7 @@ public class Mntc_Min_LeaderValidatorsTests
 {
     private readonly TestIsMntc_MIN_LeaderValidator _validator = new();
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void IsMntcMinimumLeaderValidator_Should_Have_Error_When_IsMntcMinimum_Is_False()
@@ -19,7 +19,7 @@ public class Mntc_Min_LeaderValidatorsTests
               .WithErrorMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.maintenance));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void IsMntcMinimumLeaderValidator_Should_Not_Have_Error_When_IsMntcMinimum_Is_True()
@@ -29,7 +29,7 @@ public class Mntc_Min_LeaderValidatorsTests
         result.ShouldNotHaveValidationErrorFor(r => r.IsMntcMinimum);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls
 

@@ -9,7 +9,7 @@ namespace ID.Application.Tests.Features.FeatureFlags.Cmd.DeleteFlag;
 public class DeleteFeatureFlagCmdValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenDtoIsNull()
@@ -26,7 +26,7 @@ public class DeleteFeatureFlagCmdValidatorTests
         result.ShouldHaveValidationErrorFor(cmd => cmd.Id);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsNotNull()
@@ -43,7 +43,7 @@ public class DeleteFeatureFlagCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -55,6 +55,6 @@ public class DeleteFeatureFlagCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<DeleteFeatureFlagCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

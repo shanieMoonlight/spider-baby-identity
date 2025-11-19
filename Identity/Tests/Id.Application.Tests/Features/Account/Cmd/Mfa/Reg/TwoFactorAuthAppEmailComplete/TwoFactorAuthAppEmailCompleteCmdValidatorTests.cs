@@ -14,7 +14,7 @@ public class TwoFactorAuthAppEmailCompleteCmdValidatorTests
         _validator = new TwoFactorAuthAppEmailCompleteCmdValidator();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -30,7 +30,7 @@ public class TwoFactorAuthAppEmailCompleteCmdValidatorTests
         result.ShouldHaveValidationErrorFor(cmd => cmd.TwoFactorCode);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -46,7 +46,7 @@ public class TwoFactorAuthAppEmailCompleteCmdValidatorTests
         result.ShouldNotHaveValidationErrorFor(cmd => cmd.TwoFactorCode);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -62,6 +62,6 @@ public class TwoFactorAuthAppEmailCompleteCmdValidatorTests
         validator.ShouldBeAssignableTo<IsAuthenticatedValidator<TwoFactorAuthAppEmailCompleteCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

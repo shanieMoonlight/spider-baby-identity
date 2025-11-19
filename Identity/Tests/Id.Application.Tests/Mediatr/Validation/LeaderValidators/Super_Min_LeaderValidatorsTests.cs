@@ -8,7 +8,7 @@ public class Super_Min_LeaderValidatorsTests
 {
     private readonly TestIsSuper_MIN_LeaderValidator _validator = new();
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void IsSuperMinimumLeaderValidator_Should_Have_Error_When_IsSuperMinimum_Is_False()
@@ -19,7 +19,7 @@ public class Super_Min_LeaderValidatorsTests
               .WithErrorMessage(IDMsgs.Error.Teams.UNAUTHORIZED_FOR_TEAM_TYPE(TeamType.super));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void IsSuperMinimumLeaderValidator_Should_Not_Have_Error_When_IsSuperMinimum_Is_True()
@@ -29,7 +29,7 @@ public class Super_Min_LeaderValidatorsTests
         result.ShouldNotHaveValidationErrorFor(r => r.IsSuperMinimum);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls
 

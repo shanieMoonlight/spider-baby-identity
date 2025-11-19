@@ -27,7 +27,7 @@ public class RemoveTeamSubscriptionCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoTeamID()
@@ -42,7 +42,7 @@ public class RemoveTeamSubscriptionCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoHasNoSubscriptionPlanId()
@@ -57,7 +57,7 @@ public class RemoveTeamSubscriptionCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsValid()
@@ -74,7 +74,7 @@ public class RemoveTeamSubscriptionCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_AMntcMinimumValidator()
@@ -86,6 +86,6 @@ public class RemoveTeamSubscriptionCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<RemoveTeamSubscriptionCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

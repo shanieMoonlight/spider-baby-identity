@@ -22,7 +22,7 @@ public class CreateFeatureFlagCmdHandlerTests
         _handler = new CreateFeatureFlagCmdHandler(_mockRepo.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldCreateFeatureFlag_WhenDtoIsValid()
@@ -48,6 +48,6 @@ public class CreateFeatureFlagCmdHandlerTests
         result.Value!.Description.ShouldBeEquivalentTo(requestDto.Description);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

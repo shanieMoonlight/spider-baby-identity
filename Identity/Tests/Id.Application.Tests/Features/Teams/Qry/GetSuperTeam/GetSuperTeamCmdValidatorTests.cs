@@ -7,7 +7,7 @@ namespace ID.Application.Tests.Features.Teams.Qry.GetSuperTeam;
 public class GetSuperTeamCmdValidatorTests
 {
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_ASuperMinimumValidator()
@@ -19,6 +19,6 @@ public class GetSuperTeamCmdValidatorTests
         validator.ShouldBeAssignableTo<ASuperMinimumValidator<GetSuperTeamQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

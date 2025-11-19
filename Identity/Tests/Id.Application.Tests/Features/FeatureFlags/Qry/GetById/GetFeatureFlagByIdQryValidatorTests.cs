@@ -14,7 +14,7 @@ public class GetFeatureFlagByIdQryValidatorTests
         _validator = new();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Should_have_error_when_Id_is_null()
@@ -32,7 +32,7 @@ public class GetFeatureFlagByIdQryValidatorTests
     }
 
 
-    //------------------------------------//
+    //--------------------------//
 
 
     [Fact]
@@ -45,6 +45,6 @@ public class GetFeatureFlagByIdQryValidatorTests
         _validator.ShouldBeAssignableTo<AMntcMinimumValidator<GetFeatureFlagByIdQry>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

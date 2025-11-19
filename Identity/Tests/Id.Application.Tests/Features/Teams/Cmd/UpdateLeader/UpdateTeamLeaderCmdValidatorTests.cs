@@ -9,7 +9,7 @@ namespace ID.Application.Tests.Features.Teams.Cmd.UpdateLeader;
 
 public class UpateTeamLeaderCmdValidatorTests
 {
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationFailure_WhenDtoIsNull()
@@ -29,7 +29,7 @@ public class UpateTeamLeaderCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidatioFailure_WhenDtoIsMissingNewTheLeaderId()
@@ -45,7 +45,7 @@ public class UpateTeamLeaderCmdValidatorTests
         result.IsValid.ShouldBeFalse();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenDtoIsValid()
@@ -62,7 +62,7 @@ public class UpateTeamLeaderCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_IsAuthenticatedValidator()
@@ -74,6 +74,6 @@ public class UpateTeamLeaderCmdValidatorTests
         validator.ShouldBeAssignableTo<AMntcMinimumValidator<UpdateTeamLeaderCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

@@ -24,7 +24,7 @@ public class UpdateFeatureFlagCmdHandlerTests
         _handler = new UpdateFeatureFlagCmdHandler(_mockRepo.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnSuccess_WhenUpdateSucceeds()
@@ -62,7 +62,7 @@ public class UpdateFeatureFlagCmdHandlerTests
         result.Value!.Description.ShouldBeEquivalentTo(requestDto.Description);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnBadRequest_WhenDtoIsNull()
@@ -82,7 +82,7 @@ public class UpdateFeatureFlagCmdHandlerTests
         result.BadRequest.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldReturnNotFound_WhenFeatureFlagNotFound()
@@ -102,7 +102,7 @@ public class UpdateFeatureFlagCmdHandlerTests
         result.Info.ShouldBe(IDMsgs.Error.NotFound<FeatureFlag>(featureFlagDto.Id));
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     // Add a test case for any specific error handling you have in the Update method.
 }

@@ -28,7 +28,7 @@ public class DeleteSprMemberCmdValidatorTests
               .WithErrorMessage(IDMsgs.Error.NO_DATA_SUPPLIED);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Validate_ShouldReturnValidationSuccess_WhenIdIsValid()
@@ -45,7 +45,7 @@ public class DeleteSprMemberCmdValidatorTests
         result.IsValid.ShouldBeTrue();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public void Implements_ASuperMinimumValidator()
@@ -57,6 +57,6 @@ public class DeleteSprMemberCmdValidatorTests
         validator.ShouldBeAssignableTo<ASuperMinimumValidator<DeleteSprMemberCmd>>();
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

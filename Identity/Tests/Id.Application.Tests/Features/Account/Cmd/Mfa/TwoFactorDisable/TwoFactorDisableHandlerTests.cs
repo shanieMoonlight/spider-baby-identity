@@ -20,7 +20,7 @@ public class TwoFactorDisableHandlerTests
         _handler = new TwoFactorDisableHandler(_mockTwoFactorService.Object);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
     [Fact]
     public async Task Handle_ShouldDisableTwoFactorToken()
@@ -45,6 +45,6 @@ public class TwoFactorDisableHandlerTests
         _mockTwoFactorService.Verify(service => service.DisableTwoFactorTokenAsync(user), Times.Once);
     }
 
-    //------------------------------------//
+    //--------------------------//
 
 }//Cls

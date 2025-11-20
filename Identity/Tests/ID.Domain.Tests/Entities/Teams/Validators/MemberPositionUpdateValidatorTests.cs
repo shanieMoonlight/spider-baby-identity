@@ -194,7 +194,7 @@ public class MemberPositionUpdateValidatorTests
         // Assert
         result.Succeeded.ShouldBeTrue();
         var token = result.Value!;
-        token.ShouldBeAssignableTo<IValidationToken>();
+        token.ShouldBeAssignableTo<ITeamValidationToken>();
     }
 
     //------------------------// 

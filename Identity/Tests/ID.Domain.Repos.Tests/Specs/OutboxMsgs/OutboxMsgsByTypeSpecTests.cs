@@ -1,3 +1,5 @@
+using ID.Domain.Repos.Specs.OutboxMsgs;
+
 namespace ID.Domain.Repos.Tests.Specs.OutboxMsgs;
 
 public class OutboxMsgsByTypeSpecTests

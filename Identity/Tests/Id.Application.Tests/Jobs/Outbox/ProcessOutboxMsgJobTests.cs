@@ -1,6 +1,6 @@
 using ID.Application.Jobs.Abstractions;
 using ID.Application.Jobs.OutboxMsgs;
-using ID.Domain.Repos.Specs.NewFolder.OutboxMsgs;
+using ID.Domain.Repos.Specs.OutboxMsgs;
 using ID.Tests.Utility.Logging;
 using ID.Tests.Utility.ServiceProvider;
 

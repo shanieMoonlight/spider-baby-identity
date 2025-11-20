@@ -6,6 +6,7 @@ using ID.Domain.Entities.AppUsers.ValueObjects;
 using ID.Domain.Entities.Avatars;
 using ID.Domain.Entities.Common;
 using ID.Domain.Entities.Teams;
+using ID.Domain.Entities.TrustedDevices;
 using ID.Domain.Models;
 using ID.Domain.Utility.Exceptions;
 using ID.Domain.Utility.Extensions;
@@ -13,6 +14,7 @@ using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ID.Domain.Entities.AppUsers.Validators;
 
 namespace ID.Domain.Entities.AppUsers;
 
@@ -77,6 +79,14 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
 
 
     public OAuthInfo? OAuthInfo { get; set; }
+
+
+    /// <summary>
+    /// Trusted devices for this user
+    /// </summary>
+    private readonly HashSet<TrustedDevice> _trustedDevices = [];
+    public IReadOnlyCollection<TrustedDevice> TrustedDevices =>
+        _trustedDevices.ToList().AsReadOnly();
 
 
     //public IdRefreshToken? IdRefreshToken{ get; set; }
@@ -364,6 +374,45 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
     }
 
     //------------------------//
+
+    /// <summary>
+    /// Trust a device for this user. The validation token guarantees correctness.
+    /// </summary>
+    public TrustedDevice TrustDevice(TrustedDeviceValidators.Addition.Token additionToken)
+    {
+        var device = TrustedDevice.Create(this,
+            additionToken.DeviceFingerprint,
+            additionToken.DeviceName,
+            additionToken.UserAgent,
+            additionToken.TrustedUntil);
+
+        _trustedDevices.Add(device);
+
+        return device;
+    }
+
+    //- - - - - - - - - - - - // 
+
+    /// <summary>
+    /// Revoke a trusted device. Returns true if device belonged to user and was revoked.
+    /// </summary>
+    public bool RevokeTrustedDevice(TrustedDeviceValidators.Revocation.Token revocationToken)
+    {
+        var device = revocationToken.Device;
+        var found = _trustedDevices.FirstOrDefault(d => d.Id == device.Id);
+        if (found is null) return false;
+
+        found.Revoke();
+        return true;
+    }
+
+    /// <summary>
+    /// Find trusted device by fingerprint.
+    /// </summary>
+    public TrustedDevice? FindTrustedDevice(string deviceFingerprint)
+        => _trustedDevices.FirstOrDefault(d => d.DeviceFingerprint == deviceFingerprint);
+
+    //------------------------// 
 
     #region DomainEvents
     protected readonly List<IIdDomainEvent> _domainEvents = [];

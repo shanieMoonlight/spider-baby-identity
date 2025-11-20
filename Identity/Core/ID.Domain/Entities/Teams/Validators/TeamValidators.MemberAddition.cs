@@ -9,7 +9,7 @@ public partial class TeamValidators
 
     public sealed class MemberAddition
     {
-        public sealed class Token : IValidationToken
+        public sealed class Token : ITeamValidationToken
         {
             internal Token(Team team, AppUser member)
             {

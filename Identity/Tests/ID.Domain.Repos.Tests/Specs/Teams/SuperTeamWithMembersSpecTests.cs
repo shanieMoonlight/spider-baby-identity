@@ -1,8 +1,4 @@
-using ID.Domain.Entities.Teams;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
-using ID.Tests.Data.Factories;
-using Shouldly;
-using Xunit;
+using ID.Domain.Repos.Specs.Teams;
 
 namespace ID.Domain.Repos.Tests.Specs.Teams;
 

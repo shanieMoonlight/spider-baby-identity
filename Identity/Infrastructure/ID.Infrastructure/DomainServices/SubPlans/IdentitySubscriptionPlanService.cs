@@ -3,7 +3,7 @@ using ID.Domain.Abstractions.Services.SubPlans;
 using ID.Domain.Entities.SubscriptionPlans;
 using ID.Domain.Entities.SubscriptionPlans.FeatureFlags;
 using ID.Domain.Repos;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.SubPlans;
+using ID.Domain.Repos.Specs.SubPlans;
 using Pagination;
 
 namespace ID.Infrastructure.DomainServices.SubPlans;

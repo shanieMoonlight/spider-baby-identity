@@ -1,8 +1,8 @@
 ﻿using ID.Application.Jobs.Abstractions;
 using ID.Domain.Entities.Teams.Validators;
 using ID.Domain.Repos;
+using ID.Domain.Repos.Specs.Teams;
 using ID.GlobalSettings.Errors;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
 using LoggingHelpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

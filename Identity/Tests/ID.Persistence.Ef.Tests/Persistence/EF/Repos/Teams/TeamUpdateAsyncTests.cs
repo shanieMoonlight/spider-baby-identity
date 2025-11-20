@@ -1,10 +1,4 @@
-using ID.Domain.Entities.Teams;
-using ID.Infrastructure.Persistance.EF.Repos;
-using ID.Tests.Data.Factories;
-using Shouldly;
-using ClArch.ValueObjects;
-
-namespace ID.Infrastructure.Tests.Persistence.EF.Repos.Teams;
+namespace ID.Persistence.Ef.Tests.Persistence.EF.Repos.Teams;
 
 public class TeamUpdateAsyncTests : RepoTestBase, IAsyncLifetime
 {

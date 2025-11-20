@@ -1,12 +1,6 @@
-using ID.Domain.Entities.Teams;
-using ID.Domain.Utility.Exceptions;
-using ID.Infrastructure.Persistance.EF.Repos;
-using ID.Tests.Data.Factories;
-using MyResults;
-using Shouldly;
-using System.Reflection;
+using ID.Infrastructure.Tests.Persistence.EF.Repos.Teams;
 
-namespace ID.Infrastructure.Tests.Persistence.EF.Repos.Teams;
+namespace ID.Persistence.Ef.Tests.Persistence.EF.Repos.Teams;
 
 public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
 {
@@ -339,7 +333,7 @@ public class TeamDeleteAsyncTests : RepoTestBase, IAsyncLifetime
     public async Task RemoveRangeAsync_WithEmptyCollection_ShouldNotThrow()
     {
         // Arrange
-        var emptyTeams = new Team[0];
+        var emptyTeams = Array.Empty<Team>();
 
         // Act & Assert
         await Should.NotThrowAsync(async () =>

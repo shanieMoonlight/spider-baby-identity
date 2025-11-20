@@ -4,6 +4,7 @@ using ID.Domain.Repos;
 using ID.Persistence.Ef;
 using ID.Persistence.Ef.Interceptors;
 using ID.Persistence.Ef.Repos;
+using ID.Persistence.Ef.Repos.Abstractions;
 using ID.Persistence.Ef.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -74,6 +75,7 @@ public static class PersistenceSetup
         services.TryAddScoped<IIdentityOutboxMessageRepo, OutboxMessageRepo>();
         services.TryAddScoped<IIdentityFeatureFlagRepo, FeatureFlagRepo>();
         services.TryAddScoped<IIdentityRefreshTokenRepo, RefreshTokenRepo>();
+        services.TryAddScoped<IIdentityTrustedDeviceRepo, TrustedDeviceRepo >();
         services.TryAddScoped<IIdUnitOfWork, MyIdUnitOfWork>();
 
 

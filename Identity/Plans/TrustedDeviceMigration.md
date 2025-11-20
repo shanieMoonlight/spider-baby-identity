@@ -12,10 +12,10 @@
 **Location**: `Identity\Core\ID.Domain\Entities\AppUsers\TrustedDevices\ValueObjects\`
 
 Create the following value objects:
-- [ ] `DeviceFingerprint.cs` - validates device identifier (max 512 chars, non-empty)
-- [ ] `DeviceName.cs` - user-friendly device name (max 100 chars, non-empty)
-- [ ] `UserAgent.cs` - browser/OS info (max 500 chars, nullable)
-- [ ] `TrustedUntil.cs` - expiry date (nullable DateTime, must be future if set)
+- [x] `DeviceFingerprint.cs` - validates device identifier (max 512 chars, non-empty)
+- [x] `DeviceName.cs` - user-friendly device name (max 100 chars, non-empty)
+- [x] `UserAgent.cs` - browser/OS info (max 500 chars, nullable)
+- [x] `TrustedUntil.cs` - expiry date (nullable DateTime, must be future if set)
 
 **Pattern**: Follow `ClArch.ValueObjects` pattern (see `EmailAddress`, `Name` in existing code).
 
@@ -39,10 +39,10 @@ public class TrustedDevice : IdDomainEntity
 ```
 
 **Methods**:
-- [ ] `internal static TrustedDevice Create(AppUser user, DeviceFingerprint fingerprint, DeviceName name, UserAgent userAgent, TrustedUntil? trustedUntil)`
-- [ ] `internal TrustedDevice UpdateLastUsed()` - sets `LastUsedDate = DateTime.UtcNow`
-- [ ] `public bool IsExpired()` - checks if `TrustedUntil < DateTime.UtcNow`
-- [ ] `internal TrustedDevice Revoke()` - sets `TrustedUntil = DateTime.UtcNow` (soft delete pattern)
+- [x] `internal static TrustedDevice Create(AppUser user, DeviceFingerprint fingerprint, DeviceName name, UserAgent userAgent, TrustedUntil? trustedUntil)`
+- [x] `internal TrustedDevice UpdateLastUsed()` - sets `LastUsedDate = DateTime.UtcNow`
+- [x] `public bool IsExpired()` - checks if `TrustedUntil < DateTime.UtcNow`
+- [x] `internal TrustedDevice Revoke()` - sets `TrustedUntil = DateTime.UtcNow` (soft delete pattern)
 
 **Domain Events**:
 - Raise `TrustedDeviceAddedDomainEvent(UserId, TrustedDevice)` on create
@@ -527,3 +527,13 @@ Use in validators and handlers instead of hardcoded values.
 - All repo operations should be async with CancellationToken
 - Domain methods are `internal`, exposed via validators
 - Log warnings (not errors) if device trust fails - don't block login
+
+
+
+-create  GLobalSettings for MaxTrustedDevices
+- test AppUser.TrustDevice and AppUser.RevokeTrustedDevice
+- test TrustedDeviceValidators
+- test trustedDevice
+- test trustedDevice Specs
+- restrict ITrustedDeviceRepo ??? NO add delete etc?????  CanDeleteAsync??
+

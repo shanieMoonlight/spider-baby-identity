@@ -9,7 +9,7 @@ using ID.Domain.Repos;
 using ID.Domain.Repos.Specs;
 using ID.Domain.Utility.Messages;
 using ID.GlobalSettings.Constants;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
+using ID.Domain.Repos.Specs.Teams;
 using ID.Infrastructure.Utility.ExtensionMethods;
 using Microsoft.AspNetCore.Identity;
 using MyResults;

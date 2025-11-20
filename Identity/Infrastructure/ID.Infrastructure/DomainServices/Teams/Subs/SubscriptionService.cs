@@ -3,9 +3,9 @@ using ID.Domain.Entities.SubscriptionPlans;
 using ID.Domain.Entities.SubscriptionPlans.ValueObjects;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Entities.Teams.Validators;
-using ID.Domain.Utility.Messages;
 using ID.Domain.Repos;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.SubPlans;
+using ID.Domain.Repos.Specs.SubPlans;
+using ID.Domain.Utility.Messages;
 using MyResults;
 
 namespace ID.Infrastructure.DomainServices.Teams.Subs;

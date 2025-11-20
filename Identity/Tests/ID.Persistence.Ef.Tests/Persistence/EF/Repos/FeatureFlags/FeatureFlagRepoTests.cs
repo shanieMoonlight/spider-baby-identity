@@ -1,5 +1,7 @@
 
 
+using ID.Persistence.Ef.Repos.Abstractions;
+
 namespace ID.Infrastructure.Tests.Persistence.EF.Repos.FeatureFlags;
 
 public class FeatureFlagRepoTests : RepoTestBase, IAsyncLifetime

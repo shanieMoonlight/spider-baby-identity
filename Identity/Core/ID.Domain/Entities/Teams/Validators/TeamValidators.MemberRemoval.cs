@@ -8,7 +8,7 @@ public partial class TeamValidators
 {
     public sealed class MemberRemoval
     {
-        public sealed class Token : IValidationToken
+        public sealed class Token : ITeamValidationToken
         {
             internal Token(Team team, AppUser member)
             {

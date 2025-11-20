@@ -731,6 +731,70 @@ namespace ID.Persistence.Ef.Postgres.Migrations
                     b.ToTable("team_subscription", "MyId");
                 });
 
+            modelBuilder.Entity("ID.Domain.Entities.TrustedDevices.TrustedDevice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("AdministratorId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("administrator_id");
+
+                    b.Property<string>("AdministratorUsername")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("administrator_username");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date_created");
+
+                    b.Property<string>("DeviceFingerprint")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)")
+                        .HasColumnName("device_fingerprint");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified_date");
+
+                    b.Property<DateTime>("LastUsedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_used_date");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.Property<DateTime?>("TrustedUntil")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("trusted_until");
+
+                    b.Property<string>("UserAgent")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("user_agent");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_trusted_device");
+
+                    b.HasIndex("UserId", "DeviceFingerprint")
+                        .IsUnique()
+                        .HasDatabaseName("ix_trusted_device_user_id_device_fingerprint");
+
+                    b.ToTable("trusted_device", "MyId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -1024,6 +1088,18 @@ namespace ID.Persistence.Ef.Postgres.Migrations
                     b.Navigation("Team");
                 });
 
+            modelBuilder.Entity("ID.Domain.Entities.TrustedDevices.TrustedDevice", b =>
+                {
+                    b.HasOne("ID.Domain.Entities.AppUsers.AppUser", "User")
+                        .WithMany("TrustedDevices")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_trusted_device_users_user_id");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("ID.Domain.Entities.AppUsers.AppRole", null)
@@ -1084,6 +1160,8 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.AppUsers.AppUser", b =>
                 {
                     b.Navigation("OAuthInfo");
+
+                    b.Navigation("TrustedDevices");
                 });
 
             modelBuilder.Entity("ID.Domain.Entities.SubscriptionPlans.FeatureFlags.FeatureFlag", b =>

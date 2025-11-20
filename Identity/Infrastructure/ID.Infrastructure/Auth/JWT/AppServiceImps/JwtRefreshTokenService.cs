@@ -3,8 +3,8 @@ using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Refreshing;
 using ID.Domain.Entities.Refreshing.ValueObjects;
 using ID.Domain.Repos;
+using ID.Domain.Repos.Specs.RefreshTokens;
 using ID.Infrastructure.Auth.JWT.Setup;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.RefreshTokens;
 using ID.Infrastructure.Utility;
 using Microsoft.Extensions.Options;
 

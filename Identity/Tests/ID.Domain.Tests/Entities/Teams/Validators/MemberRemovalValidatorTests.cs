@@ -172,7 +172,7 @@ public class MemberRemovalValidatorTests
 
         // Assert
         result.Succeeded.ShouldBeTrue();
-        result.Value.ShouldBeAssignableTo<IValidationToken>();
+        result.Value.ShouldBeAssignableTo<ITeamValidationToken>();
     }
 
     //------------------------------------//

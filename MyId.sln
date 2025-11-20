@@ -242,6 +242,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tutorials", "Tutorials", "{
 		Tutorials\DirRgTesting.md = Tutorials\DirRgTesting.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plans", "Plans", "{1F93EF54-F641-4299-A83E-B78DE67A7010}"
+	ProjectSection(SolutionItems) = preProject
+		Identity\Plans\TrustedDeviceMigration.md = Identity\Plans\TrustedDeviceMigration.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -671,6 +676,7 @@ Global
 		{387397C5-2D76-4143-91D6-881F8B2210E3} = {7E05A465-77A0-479D-B4C7-F0BAC4FBEB91}
 		{7EFAEADB-E8C7-4C10-ABAF-7EFBCF16DE1C} = {5EFB6D7C-41DD-4C63-B618-9512E0A852BA}
 		{65A36A4D-FF6F-44E0-82B6-8491713FD01F} = {8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}
+		{1F93EF54-F641-4299-A83E-B78DE67A7010} = {243C9E4C-FCA9-4041-A578-F957DB5C0AC0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32CD658E-91A7-4238-A40D-2FCD8CC81535}

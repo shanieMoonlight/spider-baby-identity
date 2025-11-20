@@ -1,4 +1,4 @@
-using ID.Domain.Repos.Specs.NewFolder.OutboxMsgs;
+using ID.Domain.Repos.Specs.OutboxMsgs;
 using Xunit.Abstractions;
 
 namespace ID.Domain.Repos.Tests.Specs.OutboxMsgs;

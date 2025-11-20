@@ -9,7 +9,7 @@ public static partial class TeamValidators
         /// <summary>
         /// Token representing validated parameters for removing a subscription from a team.
         /// </summary>
-        public sealed class Token : IValidationToken
+        public sealed class Token : ITeamValidationToken
         {
             internal Token(Team team, TeamSubscription subscription)
             {

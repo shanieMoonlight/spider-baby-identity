@@ -8,6 +8,7 @@ using LoggingHelpers;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using ID.GlobalSettings.Errors;
+using ID.Domain.Entities.TrustedDevices.Events;
 
 
 namespace ID.PhoneConfirmation.Events.Domain;

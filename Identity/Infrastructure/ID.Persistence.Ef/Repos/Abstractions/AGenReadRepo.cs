@@ -216,8 +216,6 @@ internal abstract class AGenReadRepo<T>(IdDbContext _db) : IGenReadRepo<T> where
 
         return await Db.Set<T>()
             .BuildQuery(spec)
-            .Skip(spec.Skip)
-            .Take(spec.Count)
             .ToListAsync(cancellationToken);
     }
 

@@ -1,5 +1,6 @@
 using ClArch.ValueObjects;
 using ID.Domain.Entities.AppUsers.Events;
+using ID.Domain.Entities.TrustedDevices.Events;
 using ID.Tests.Data.Factories;
 using Shouldly;
 

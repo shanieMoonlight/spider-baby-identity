@@ -1,0 +1,106 @@
+using ClArch.ValueObjects;
+using ID.Domain.Entities.AppUsers;
+using ID.Domain.Entities.Common;
+using ID.Domain.Entities.TrustedDevices.ValueObjects;
+using ID.Domain.Abstractions.Events;
+using ID.Domain.Entities.TrustedDevices.Events;
+using MassTransit;
+
+namespace ID.Domain.Entities.TrustedDevices;
+
+public class TrustedDevice : IdDomainEntity
+{
+    public Guid UserId { get; private set; }
+    public AppUser? User { get; private set; }
+
+    public string DeviceFingerprint { get; private set; }
+    public string Name { get; private set; }
+    public string? UserAgent { get; private set; }
+    public DateTime? TrustedUntil { get; private set; }
+    public DateTime LastUsedDate { get; private set; }
+
+    #region EfCoreCtor
+    // Used by EF Core
+    #pragma warning disable CS8618
+    private TrustedDevice() { }
+    #pragma warning restore CS8618
+    #endregion
+
+    //- - - - - - - - - - - - //
+
+    private TrustedDevice(
+        AppUser user,
+        DeviceFingerprint fingerprint,
+        DeviceName name,
+        UserAgent userAgent,
+        TrustedUntil trustedUntil)
+        : base(NewId.NextSequentialGuid())
+    {
+        UserId = user.Id;
+        User = user;
+        DeviceFingerprint = fingerprint.Value;
+        Name = name.Value;
+        UserAgent = userAgent?.Value;
+        TrustedUntil = trustedUntil?.Value;
+        LastUsedDate = DateTime.UtcNow;
+    }
+
+    //- - - - - - - - - - - - //
+
+    internal static TrustedDevice Create(
+        AppUser user,
+        DeviceFingerprint fingerprint,
+        DeviceName name,
+        UserAgent userAgent,
+        TrustedUntil trustedUntil)
+    {
+        var device = new TrustedDevice(
+            user,
+            fingerprint,
+            name,
+            userAgent,
+            trustedUntil);
+
+        device.RaiseDomainEvent(new TrustedDeviceAddedDomainEvent(device, user));
+
+        return device;
+    }
+
+    //- - - - - - - - - - - - //
+
+    internal TrustedDevice UpdateLastUsed()
+    {
+        LastUsedDate = DateTime.UtcNow;
+        RaiseDomainEvent(new TrustedDeviceUsedDomainEvent(this, UserId));
+        return this;
+    }
+
+    //- - - - - - - - - - - - //
+
+    public bool IsExpired()
+    {
+        if (!TrustedUntil.HasValue) return false;
+        return TrustedUntil.Value < DateTime.UtcNow;
+    }
+
+    //- - - - - - - - - - - - //
+
+    internal TrustedDevice Revoke()
+    {
+        TrustedUntil = DateTime.UtcNow;
+        RaiseDomainEvent(new TrustedDeviceRevokedDomainEvent(this, UserId));
+        return this;
+    }
+
+    //- - - - - - - - - - - - //
+    
+    #region EqualsAndHashCode
+    public override bool Equals(object? obj) =>
+        obj is TrustedDevice td
+        && td.DeviceFingerprint == DeviceFingerprint
+        && td.UserId == UserId;
+
+    public override int GetHashCode() => HashCode.Combine(DeviceFingerprint, UserId);
+    #endregion
+
+}

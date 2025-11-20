@@ -84,7 +84,7 @@ public class PositionRangeUpdateValidatorTests
         // Assert
         result.Succeeded.ShouldBeTrue();
         var token = result.Value!;
-        token.ShouldBeAssignableTo<IValidationToken>();
+        token.ShouldBeAssignableTo<ITeamValidationToken>();
     }
 
     //------------------------// 

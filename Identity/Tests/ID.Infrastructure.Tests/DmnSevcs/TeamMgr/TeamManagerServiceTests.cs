@@ -1,6 +1,7 @@
 using ID.Domain.Abstractions.Services.Teams.Dvcs;
 using ID.Domain.Abstractions.Services.Teams.Subs;
 using ID.Domain.Entities.Teams;
+using ID.Domain.Repos.Specs.Teams;
 using ID.Infrastructure.DomainServices.Teams;
 using Microsoft.AspNetCore.Identity;
 

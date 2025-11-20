@@ -9,6 +9,7 @@ using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.AppUsers.Events;
 using ID.Domain.Abstractions.Services.Teams;
 using ID.GlobalSettings.Errors;
+using ID.Domain.Entities.TrustedDevices.Events;
 
 namespace ID.Application.Events.Users;
 

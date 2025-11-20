@@ -22,6 +22,5 @@ global using  Id.Tests.Utility.Exceptions;
 global using  ID.Application.Jobs.DbMntc;
 global using  ID.Domain.Repos;
 global using  ID.GlobalSettings.Errors;
-global using  ID.Infrastructure.Persistance.EF.Repos.Specs.RefreshTokens;
 global using  Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;

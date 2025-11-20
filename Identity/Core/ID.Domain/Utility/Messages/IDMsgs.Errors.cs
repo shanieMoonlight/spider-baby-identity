@@ -1,6 +1,7 @@
 ﻿using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.OutboxMessages;
 using ID.Domain.Entities.Teams;
+using ID.Domain.Entities.TrustedDevices;
 using ID.Domain.Models;
 using StringHelpers;
 
@@ -18,7 +19,7 @@ public partial class IDMsgs
         public static string IsRequired(string propertyName) => $"{propertyName} is required.";
 
 
-       
+
         public const string MISSING_APP_DATA = "Missing App Data";
         public const string MISSING_CUSTOMER_DATA = "Missing Customer Data";
         public const string MISSING_DEVICE_DATA = "Missing Device Data";
@@ -27,8 +28,8 @@ public partial class IDMsgs
         public static readonly string MISSING_HOST_USER_DATA = $"Missing Host Data.{NL}You must supply a host identifier when registering a guest.";
         public const string MISSING_USER_DATA = "Missing user data";
 
-        
-        
+
+
         public const string NO_APPS_FOUND = "User has no apps connected to the account.";
         public const string NO_DATA_SUPPLIED = "No data supplied";
         public const string NO_ID_SUPPLIED = "No id supplied";
@@ -180,6 +181,18 @@ public partial class IDMsgs
             public static string CAPACITY_EXCEEDED(Team team) => $"The Team capacity, {team.Capacity} has been reached for team, {team.Name} has already reached";
 
 
+
+        }
+
+        //-----------------------//
+
+        public static class TrustedDevices
+        {
+            public static string NOT_OWNED(TrustedDevice trustedDevice, AppUser user) => $"User with email, {user.Email} has ALREADY trusted the device with fingerprint, {trustedDevice.DeviceFingerprint}";
+            public static string NOT_FOUND(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.DeviceFingerprint} was not found for user, {user.Email}";
+            public static string ALREADY_TRUSTED(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.DeviceFingerprint} has already been trusted by user, {user.Email}";
+            public static string ALREADY_REVOKED(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.DeviceFingerprint} has already been revoked by user, {user.Email}";
+            public static string MAX_EXCEEDED(AppUser user, int max) => $"User with email, {user.Email} has reached the maximum number of trusted devices, {max}.";
 
         }
 

@@ -9,7 +9,7 @@ public static partial class TeamValidators
 {
     public static class MemberPositionUpdate
     {
-        public sealed class Token : IValidationToken
+        public sealed class Token : ITeamValidationToken
         {
             internal Token(Team team, AppUser member, TeamPosition clampedPosition)
             {

@@ -1,5 +1,5 @@
 using ID.Application.Jobs.Abstractions;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
+using ID.Domain.Repos.Specs.Teams;
 using ID.Tests.Utility.ServiceProvider;
 
 namespace ID.Application.Tests.Jobs.DbMntc.TeamLeader;

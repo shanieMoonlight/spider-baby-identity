@@ -1,5 +1,7 @@
 
 
+using ID.Domain.Repos.Specs.Teams;
+
 namespace ID.Infrastructure.Tests.Persistence.EF.Repos.Teams;
 
 public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime

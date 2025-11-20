@@ -1,10 +1,6 @@
-using ID.Domain.Entities.Refreshing;
 using ID.Domain.Entities.Refreshing.ValueObjects;
-using ID.Infrastructure.Persistance.EF.Repos;
-using ID.Tests.Data.Factories;
-using Shouldly;
 
-namespace ID.Infrastructure.Tests.Persistence.EF.Repos.RefreshTokens;
+namespace ID.Persistence.Ef.Tests.Persistence.EF.Repos.RefreshTokens;
 
 public class RefreshTokenGenCrudRepoTests : RepoTestBase, IAsyncLifetime
 {
@@ -203,7 +199,7 @@ public class RefreshTokenGenCrudRepoTests : RepoTestBase, IAsyncLifetime
         retrievedToken!.UserId.ShouldBe(userId);
         retrievedToken.Payload.ShouldBe(payload);
         retrievedToken.ExpiresOnUtc.ShouldBe(expiryDate);
-        var what = retrievedToken.DateCreated.Date;
+        //var what = retrievedToken.DateCreated.Date;
         retrievedToken.DateCreated.Date.ShouldBe(DateTime.UtcNow.Date);
     }
 

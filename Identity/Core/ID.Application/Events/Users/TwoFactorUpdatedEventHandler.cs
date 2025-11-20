@@ -13,6 +13,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using MyResults;
 using ID.GlobalSettings.Errors;
+using ID.Domain.Entities.TrustedDevices.Events;
 
 namespace ID.Application.Events.Users;
 

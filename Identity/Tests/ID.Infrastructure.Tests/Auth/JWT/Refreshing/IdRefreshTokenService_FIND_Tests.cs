@@ -1,4 +1,4 @@
-using ID.Infrastructure.Persistance.EF.Repos.Specs.RefreshTokens;
+using ID.Domain.Repos.Specs.RefreshTokens;
 using TestingHelpers.RandomData;
 
 namespace ID.Infrastructure.Tests.Auth.JWT.Refreshing;

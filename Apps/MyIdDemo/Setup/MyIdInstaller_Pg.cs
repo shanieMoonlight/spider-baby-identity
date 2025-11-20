@@ -105,7 +105,7 @@ public class MyIdInstaller_Pg : IServiceInstaller
 
 
 
-        if (builder.Environment.IsDevelopment())
+        if (!builder.Environment.IsDevelopment())
         {
             builder.Services.AddMyIdEmailSmtp(config =>
             {

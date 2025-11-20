@@ -19,8 +19,7 @@ public static class IdEmailBaseSetupExtensions
     /// </summary>
     /// <param name="services">The IServiceCollection to add services to.</param>
     /// <returns>The IServiceCollection with the ID Email Base services added.</returns>
-    internal static IServiceCollection AddIdEmailBase<TEmailService>(
-        this IServiceCollection services, IdEmailBaseOptions emailOptions)
+    internal static IServiceCollection AddIdEmailBase<TEmailService>(this IServiceCollection services, IdEmailBaseOptions emailOptions)
         where TEmailService : class, IIdEmailService
     {
         services.ConfigureEmailBaseOptions(emailOptions);

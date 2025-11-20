@@ -10,6 +10,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+		<!--Needed for the Email.Base project-->
+		<PackageReference Include="MassTransit.Abstractions" /> 
+		<PackageReference Include="MassTransit" /> 
         <PackageReference Include="coverlet.collector" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" />
         <PackageReference Include="xunit" />
@@ -21,6 +24,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\AddOns\Emails\ID.Email.SG\ID.Email.SG.csproj" />
+      <ProjectReference Include="..\Id.Tests.Utility\ID.Tests.Utility.csproj" />
     </ItemGroup>
 
     <ItemGroup>

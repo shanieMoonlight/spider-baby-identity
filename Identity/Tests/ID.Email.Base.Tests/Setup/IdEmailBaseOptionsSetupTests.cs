@@ -2,7 +2,6 @@ using ID.Domain.Utility.Exceptions;
 using ID.GlobalSettings.Setup.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace ID.Email.Base.Tests.Setup;
 

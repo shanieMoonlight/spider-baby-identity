@@ -15,7 +15,7 @@ public class IdEmailSgService(IOptions<IdEmailSgOptions> emailOptions) : IIdEmai
 {
     private readonly IdEmailSgOptions _emailOptions = emailOptions.Value;
 
-    //---------------------------------------//
+    //-----------------------//
 
     public async Task<BasicResult> SendEmailAsync(IEmailDetails eDetails) =>
         eDetails.Type switch
@@ -25,7 +25,7 @@ public class IdEmailSgService(IOptions<IdEmailSgOptions> emailOptions) : IIdEmai
             _ => throw new IdEmailException(IdEmailingMessages.Error.WRONG_TYPE),
         };
 
-    //------------------------------------//
+    //-----------------------//
 
     private static async Task<BasicResult> SendEmailBasicAsync(string apiKey, IEmailDetails eDetails)
     {
@@ -79,7 +79,7 @@ public class IdEmailSgService(IOptions<IdEmailSgOptions> emailOptions) : IIdEmai
 
     }
 
-    //------------------------------------//
+    //-----------------------//
 
     private static async Task<BasicResult> TrySendEmailAsync(SendGridClient client, SendGridMessage msg)
     {
@@ -104,7 +104,7 @@ public class IdEmailSgService(IOptions<IdEmailSgOptions> emailOptions) : IIdEmai
         }
     }
 
-    //------------------------------------//
+    //-----------------------//
 
     private static void AddInlineImages(SendGridMessage msg, IEnumerable<InlineImage> inlineImages)
     {
@@ -129,7 +129,7 @@ public class IdEmailSgService(IOptions<IdEmailSgOptions> emailOptions) : IIdEmai
 
     }
 
-    //------------------------------------//
+    //-----------------------//
 
     private static IEnumerable<string> SanitizeCcAddresses(IEnumerable<string> ccs, IEnumerable<string> tos)
     {
@@ -145,7 +145,7 @@ public class IdEmailSgService(IOptions<IdEmailSgOptions> emailOptions) : IIdEmai
 
     }
 
-    //------------------------------------//
+    //-----------------------//
 
     private static IEnumerable<string> SanitizeBccAddresses(IEnumerable<string> bccs, IEnumerable<string> tos, IEnumerable<string> ccs)
     {
@@ -166,6 +166,6 @@ public class IdEmailSgService(IOptions<IdEmailSgOptions> emailOptions) : IIdEmai
 
     }
 
-    //------------------------------------//
+    //-----------------------//
 
 }//Cls

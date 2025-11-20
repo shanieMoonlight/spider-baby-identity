@@ -1,16 +1,14 @@
 using FluentValidation;
-using ID.OAuth.Amazon.Setup;
+using ID.Tests.Utility.LibrarySetup;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shouldly;
-using System.Linq;
-using System.Reflection;
-using Xunit;
 
 namespace ID.OAuth.Amazon.Tests.Setup;
 
 public class ServiceCollectionReflectionTests
 {
+
+
     [Fact]
     public void AddMyIdAmazonOAuth_RegistersImplementationsForAllLocalInterfaces()
     {

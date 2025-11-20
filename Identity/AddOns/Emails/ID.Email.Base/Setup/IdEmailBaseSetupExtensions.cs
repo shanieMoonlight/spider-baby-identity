@@ -12,8 +12,6 @@ namespace ID.Email.Base.Setup;
 public static class IdEmailBaseSetupExtensions
 {
 
-    //------------------------------------//
-
     /// <summary>
     /// Adds the ID Email Base services to the specified IServiceCollection.
     /// </summary>
@@ -28,7 +26,7 @@ public static class IdEmailBaseSetupExtensions
         return services;
     }
 
-    //------------------------------------//
+    //-----------------------//
 
     /// <summary>
     /// Setup ID Email Base with configuration binding.
@@ -49,7 +47,7 @@ public static class IdEmailBaseSetupExtensions
         return services;
     }
 
-    //------------------------------------//
+    //-----------------------//
 
     internal static IServiceCollection RegisterServices<TEmailService>(this IServiceCollection services) where TEmailService : class, IIdEmailService
     {

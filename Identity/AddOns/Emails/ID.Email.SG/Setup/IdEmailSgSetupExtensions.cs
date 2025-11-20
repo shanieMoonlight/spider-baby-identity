@@ -14,7 +14,7 @@ public static class IdEmailSgSetupExtensions
     /// <param name="configuration"></param>
     /// <param name="sectionName"></param>
     /// <returns>The same services</returns>
-    public static IServiceCollection AddMyIdEmailSG(this IServiceCollection services, IConfiguration configuration, string sectionName = "SendGrid")
+    public static IServiceCollection AddMyIdEmailSG(this IServiceCollection services, IConfiguration configuration, string? sectionName = null)
     {
         ArgumentNullException.ThrowIfNull(configuration);
 

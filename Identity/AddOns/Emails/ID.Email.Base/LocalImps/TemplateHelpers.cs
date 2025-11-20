@@ -16,7 +16,7 @@ internal class TemplateHelpers(
     private readonly IdGlobalOptions _globalOptions = _globalOptionsProvider.Value;
     private readonly IdEmailBaseOptions _emailOptions = _emailOptionsProvider.Value;
 
-    //------------------------------------//   
+    //-----------------------//   
 
 
     //<inheritdoc />
@@ -45,7 +45,7 @@ internal class TemplateHelpers(
         );
     }
 
-    //------------------------------------//    
+    //-----------------------//    
     
     //<inheritdoc />
     public async Task<string> ReadAndReplaceTemplateAsync(string templatePath, Dictionary<string, string> placeholders)

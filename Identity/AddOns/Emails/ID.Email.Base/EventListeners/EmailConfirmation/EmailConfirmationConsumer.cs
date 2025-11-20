@@ -58,7 +58,7 @@ public class EmailConfirmationConsumer(
         }
     }
 
-    //------------------------------------//
+    //-----------------------//
 
     /// <summary>
     /// Sends a registration email to a customer.
@@ -76,7 +76,7 @@ public class EmailConfirmationConsumer(
         return await _emailService.SendEmailAsync(eDetails);
     }
 
-    //------------------------------------//
+    //-----------------------//
 
     /// <summary>
     /// Sends a registration email to a maintenance team.

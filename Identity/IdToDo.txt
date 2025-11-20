@@ -83,18 +83,6 @@ rename any GetByIdAsync to FirstByIdAsync for clarity and similar in all domain-
 Ensure your handler types are registered in DI (e.g. services.AddTransient<MyHandler>()) — adapter resolves them at job time.
 
 
-
-
-public static string EMAIL_CONFIRMATION_SENT(string? email) => $"A confirmation email will be sent to {email ?? "no-email"}. Make sure to check the Spam Folder if it's not in the inbox in a few minutes";
-
-
-
-Unit test UserInfo
-
-
-
-MOre OathLogins
-
 make IssuerNullable use OathProvider enum instead of string
 
 

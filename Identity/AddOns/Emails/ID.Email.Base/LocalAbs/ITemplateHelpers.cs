@@ -23,7 +23,7 @@ public interface ITemplateHelpers
         string templatePath,
         string subject);
 
-    //------------------------------------//
+    //-----------------------//
 
     /// <summary>
     /// Reads a template file and replaces placeholders with values.

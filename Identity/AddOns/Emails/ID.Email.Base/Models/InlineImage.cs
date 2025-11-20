@@ -35,7 +35,7 @@ public class InlineImage
     /// </summary>
     public static string Disposition { get => "inline"; }
 
-    //------------------------------------//
+    //-----------------------//
 
     /// <summary>
     ///  Constructor used when adding images in Base64 Format
@@ -51,7 +51,7 @@ public class InlineImage
         }
     }
 
-    //------------------------------------//
+    //-----------------------//
 
     /// <summary>
     ///  Constructor used when adding images in Base64 Format
@@ -61,6 +61,6 @@ public class InlineImage
     public InlineImage(string filename, string contentId) : this(filename) =>
         ContentId = contentId;
 
-    //------------------------------------//
+    //-----------------------//
 
 }//Cls

@@ -53,7 +53,7 @@ public class PhoneConfirmationConsumer(
     }
 
 
-    //-------------------------------------//
+    //-----------------------//
 
 
     public string CreateConfirmationMsgCustomer(Guid userId, string username, string token)
@@ -65,7 +65,7 @@ public class PhoneConfirmationConsumer(
     }
 
 
-    //-------------------------------------//
+    //-----------------------//
 
 
     public string CreateConfirmationMsgMntc(Guid userId, string username, string token)

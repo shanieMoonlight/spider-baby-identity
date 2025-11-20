@@ -2,101 +2,100 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using System.Reflection;
 
-namespace ID.Tests.Utility.LibrarySetup
+namespace ID.Tests.Utility.LibrarySetup;
+
+/// <summary>
+/// Helper for asserting that DI registration extension methods register implementations
+/// for all public interfaces in a given assembly/namespace prefix.
+/// </summary>
+public static class ServiceCollectionReflectionHelper
 {
     /// <summary>
-    /// Helper for asserting that DI registration extension methods register implementations
-    /// for all public interfaces in a given assembly/namespace prefix.
+    /// Asserts that after calling <paramref name="registerAction"/> the service collection contains
+    /// registrations for all public interfaces declared in <paramref name="assembly"/> whose namespace
+    /// starts with <paramref name="namespacePrefix"/>.
     /// </summary>
-    public static class ServiceCollectionReflectionHelper
+    /// <param name="assembly">Assembly to scan for interfaces.</param>
+    /// <param name="namespacePrefix">Namespace prefix to filter interfaces.</param>
+    /// <param name="registerAction">Action that performs registrations on an IServiceCollection.</param>
+    /// <param name="exclude">Optional predicate to exclude specific interfaces from the check.</param>
+    public static void AssertAllInterfacesRegistered(
+        Assembly assembly,
+        string namespacePrefix,
+        Func<IServiceCollection, IServiceCollection> registerAction,
+        Func<Type, bool>? exclude = null)
     {
-        /// <summary>
-        /// Asserts that after calling <paramref name="registerAction"/> the service collection contains
-        /// registrations for all public interfaces declared in <paramref name="assembly"/> whose namespace
-        /// starts with <paramref name="namespacePrefix"/>.
-        /// </summary>
-        /// <param name="assembly">Assembly to scan for interfaces.</param>
-        /// <param name="namespacePrefix">Namespace prefix to filter interfaces.</param>
-        /// <param name="registerAction">Action that performs registrations on an IServiceCollection.</param>
-        /// <param name="exclude">Optional predicate to exclude specific interfaces from the check.</param>
-        public static void AssertAllInterfacesRegistered(
-            Assembly assembly,
-            string namespacePrefix,
-            Func<IServiceCollection, IServiceCollection> registerAction,
-            Func<Type, bool>? exclude = null)
+        ArgumentNullException.ThrowIfNull(assembly);
+        ArgumentNullException.ThrowIfNull(namespacePrefix);
+        ArgumentNullException.ThrowIfNull(registerAction);
+
+        var services = new ServiceCollection();
+        registerAction(services);
+
+        var descriptors = services.ToList();
+
+        // Build a provider to allow invoking factories when necessary
+        var provider = services.BuildServiceProvider();
+
+        var interfaces = assembly.GetTypes()
+            .Where(t => t.IsInterface && t.IsPublic && t.Namespace != null && t.Namespace.StartsWith(namespacePrefix, StringComparison.Ordinal))
+            .Where(t => exclude == null || !exclude(t))
+            .ToList();
+
+        var missing = new List<string>();
+
+        foreach (var iface in interfaces)
         {
-            ArgumentNullException.ThrowIfNull(assembly);
-            ArgumentNullException.ThrowIfNull(namespacePrefix);
-            ArgumentNullException.ThrowIfNull(registerAction);
-
-            var services = new ServiceCollection();
-            registerAction(services);
-
-            var descriptors = services.ToList();
-
-            // Build a provider to allow invoking factories when necessary
-            var provider = services.BuildServiceProvider();
-
-            var interfaces = assembly.GetTypes()
-                .Where(t => t.IsInterface && t.IsPublic && t.Namespace != null && t.Namespace.StartsWith(namespacePrefix, StringComparison.Ordinal))
-                .Where(t => exclude == null || !exclude(t))
-                .ToList();
-
-            var missing = new List<string>();
-
-            foreach (var iface in interfaces)
+            bool found = descriptors.Any(sd =>
             {
-                bool found = descriptors.Any(sd =>
+                // Direct service type match
+                if (sd.ServiceType == iface)
+                    return true;
+
+                // Service registered as closed generic where the generic definition matches
+                if (iface.IsGenericTypeDefinition && sd.ServiceType.IsGenericType)
                 {
-                    // Direct service type match
-                    if (sd.ServiceType == iface)
-                        return true;
-
-                    // Service registered as closed generic where the generic definition matches
-                    if (iface.IsGenericTypeDefinition && sd.ServiceType.IsGenericType)
+                    try
                     {
-                        try
-                        {
-                            if (sd.ServiceType.GetGenericTypeDefinition() == iface)
-                                return true;
-                        }
-                        catch
-                        {
-                            // ignore malformed generic types
-                        }
+                        if (sd.ServiceType.GetGenericTypeDefinition() == iface)
+                            return true;
                     }
-
-                    // Implementation type assignable to interface
-                    if (sd.ImplementationType != null && iface.IsAssignableFrom(sd.ImplementationType))
-                        return true;
-
-                    // Implementation instance known
-                    if (sd.ImplementationInstance != null && iface.IsAssignableFrom(sd.ImplementationInstance.GetType()))
-                        return true;
-
-                    // Implementation factory invocation
-                    if (sd.ImplementationFactory != null)
+                    catch
                     {
-                        try
-                        {
-                            var instance = sd.ImplementationFactory(provider);
-                            if (instance != null && iface.IsAssignableFrom(instance.GetType()))
-                                return true;
-                        }
-                        catch
-                        {
-                            // ignore factory invocation failures
-                        }
+                        // ignore malformed generic types
                     }
+                }
 
-                    return false;
-                });
+                // Implementation type assignable to interface
+                if (sd.ImplementationType != null && iface.IsAssignableFrom(sd.ImplementationType))
+                    return true;
 
-                if (!found)
-                    missing.Add(iface.FullName ?? iface.Name);
-            }
+                // Implementation instance known
+                if (sd.ImplementationInstance != null && iface.IsAssignableFrom(sd.ImplementationInstance.GetType()))
+                    return true;
 
-            missing.Count.ShouldBe(0, $"The following interfaces declared in the assembly '{assembly.GetName().Name}' were not registered: {string.Join(", ", missing)}");
+                // Implementation factory invocation
+                if (sd.ImplementationFactory != null)
+                {
+                    try
+                    {
+                        var instance = sd.ImplementationFactory(provider);
+                        if (instance != null && iface.IsAssignableFrom(instance.GetType()))
+                            return true;
+                    }
+                    catch
+                    {
+                        // ignore factory invocation failures
+                    }
+                }
+
+                return false;
+            });
+
+            if (!found)
+                missing.Add(iface.FullName ?? iface.Name);
         }
+
+        missing.Count.ShouldBe(0, $"The following interfaces declared in the assembly '{assembly.GetName().Name}' were not registered: {string.Join(", ", missing)}");
     }
 }

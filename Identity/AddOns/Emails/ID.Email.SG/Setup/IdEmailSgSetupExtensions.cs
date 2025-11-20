@@ -16,11 +16,18 @@ public static class IdEmailSgSetupExtensions
     /// <returns>The same services</returns>
     public static IServiceCollection AddMyIdEmailSG(this IServiceCollection services, IConfiguration configuration, string sectionName = "SendGrid")
     {
+        ArgumentNullException.ThrowIfNull(configuration);
+
+        // If sectionName provided, get that section; otherwise assume configuration is already the JWT section
+        var configSection = string.IsNullOrWhiteSpace(sectionName)
+            ? configuration
+            : configuration.GetSection(sectionName);
+
         services.AddOptionsWithValidateOnStart<IdEmailSgOptions, IdEmailSgOptionsValidator>()
-            .Bind(configuration.GetSection(sectionName));
+            .Bind(configSection);
 
         // Add base email services configured from configuration
-        services.AddIdEmailBase<IdEmailSgService>(configuration, sectionName);
+        services.AddIdEmailBase<IdEmailSgService>(configSection);
 
         return services;
     }

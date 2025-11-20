@@ -25,7 +25,7 @@ Identity/
 │   ├── Emails/            # Email providers (SendGrid, SMTP)
 │   ├── ID.PhoneConfirmation/ # Phone verification
 │   ├── Msgs/              # Messaging (Twilio)
-│   └── OAuth/             # OAuth providers (Google)
+│   └── OAuth/             # OAuth providers (Google, Facebook, Amazon)
 ├── Extras/                 # Additional utilities & extensions
 │   ├── ID.TeamRoles.UserToAdmin/ # Custom claims and role elevation policies
 │   └── JwtKeyBuilder/     # JWT key generation utilities
@@ -54,8 +54,12 @@ Identity/
 ### Optional Extensions
 - **Email Services**: SendGrid and SMTP providers
 - **SMS/Phone Confirmation**: Twilio integration
-- **OAuth Providers**: Google authentication
+- **OAuth Providers**: Google, Facebook and Amazon authentication add-ons
+  - Each provider is implemented under `Identity/AddOns/OAuth/ID.OAuth.{Provider}` and follows a common pattern: typed HttpClient, authentication service, MediatR features (sign-in flows), and a provider-specific `FindOrCreateService`.
+  - The repository includes unit tests for each provider under `Identity/Tests/ID.OAuth.{Provider}.Tests`.
 - **Customer Management**: Specialized customer workflows
+
+For more details on add-ons see `Identity/AddOns/README.md`.
 
 ## 🛠️ Technology Stack
 
@@ -146,7 +150,7 @@ var startupData = new StartupData(builder.Configuration, builder.Environment);
      {
          config.ApplicationName = startupData.APP_NAME;
          config.ConnectionString = startupData.ConnectionStringsSection.GetSqlDb();
-         //config.TokenSigningKey = startupData.IdentitySection.GetSymetricKey();
+         //config.TokenSigningKey = startupData.GetSymmetricKey();
          config.AsymmetricPrivateKey_Xml = startupData.GetAsymmetricPrivateKeyXmlString();
          config.AsymmetricPublicKey_Xml = startupData.GetAsymmetricPublicKeyXmlString();
          config.TokenExpirationMinutes = startupData.IdentitySection.GetJwtExpirationMinutes();

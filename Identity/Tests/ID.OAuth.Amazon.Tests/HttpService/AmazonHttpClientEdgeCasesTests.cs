@@ -1,16 +1,3 @@
-using System.Net;
-using System.Net.Http;
-using System.Text.Json;
-using Microsoft.Extensions.Options;
-using Moq;
-using Shouldly;
-using Xunit;
-using ID.OAuth.Amazon.HttpService.Imps;
-using ID.OAuth.Amazon.Setup;
-using ID.OAuth.Amazon.Data;
-using Microsoft.Extensions.Logging;
-using ID.OAuth.Utils.Serialization;
-using MyResults;
 using ID.OAuth.Utils.Services.Abs;
 
 namespace ID.OAuth.Amazon.Tests.HttpService;

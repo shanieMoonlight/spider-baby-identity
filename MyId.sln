@@ -14,6 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Packages.props = Directory.Packages.props
 		PRIVACY-NOTICE.md = PRIVACY-NOTICE.md
 		README.md = README.md
+		Tutorials\README.md = Tutorials\README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionHelpers", "Libs\ExpressionHelpers\ExpressionHelpers.csproj", "{59D03126-9AD3-41B5-9379-4434BA0BF732}"
@@ -235,6 +236,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ID.OAuth.Utils", "Identity\AddOns\OAuth\ID.OAuth.Utils\ID.OAuth.Utils.csproj", "{387397C5-2D76-4143-91D6-881F8B2210E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ID.OAuth.Utils.Tests", "Identity\Tests\ID.OAuth.Utils.Tests\ID.OAuth.Utils.Tests.csproj", "{7EFAEADB-E8C7-4C10-ABAF-7EFBCF16DE1C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tutorials", "Tutorials", "{65A36A4D-FF6F-44E0-82B6-8491713FD01F}"
+	ProjectSection(SolutionItems) = preProject
+		Tutorials\DirRgTesting.md = Tutorials\DirRgTesting.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -664,6 +670,7 @@ Global
 		{F8B04577-7E9E-4FE8-8F46-FF18F6582B09} = {5EFB6D7C-41DD-4C63-B618-9512E0A852BA}
 		{387397C5-2D76-4143-91D6-881F8B2210E3} = {7E05A465-77A0-479D-B4C7-F0BAC4FBEB91}
 		{7EFAEADB-E8C7-4C10-ABAF-7EFBCF16DE1C} = {5EFB6D7C-41DD-4C63-B618-9512E0A852BA}
+		{65A36A4D-FF6F-44E0-82B6-8491713FD01F} = {8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {32CD658E-91A7-4238-A40D-2FCD8CC81535}

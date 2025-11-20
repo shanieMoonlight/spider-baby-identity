@@ -24,6 +24,7 @@ public static class AmazonOAuthSetupExtensions
     {
         services.Configure(config);
         services.AddOptionsWithValidateOnStart<IdOAuthAmazonOptions, AmazonOauthSetupOptionsValidator>();
+
         return services.AddAmazonOAuthDI();
     }
 

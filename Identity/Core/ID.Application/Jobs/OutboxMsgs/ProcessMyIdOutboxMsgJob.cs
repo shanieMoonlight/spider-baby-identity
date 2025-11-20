@@ -38,8 +38,6 @@ internal sealed class ProcessMyIdOutboxMsgJob(IServiceProvider _serviceProvider,
 
             var spec = UnprocessedOutboxMsgsSpec.Create(25);
             var msgs = await repo.ListAllAsync(spec);
-            //var takeSpec = new TakeSkipSpec<IdOutboxMessage>(50, 0, m => m.ProcessedOnUtc == null);
-            //var msgs = await repo.TakeAsync(takeSpec);
             if (!msgs.Any())
                 return;
 

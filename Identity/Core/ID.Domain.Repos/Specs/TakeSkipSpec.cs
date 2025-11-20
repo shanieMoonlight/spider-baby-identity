@@ -12,13 +12,17 @@ namespace ID.Domain.Repos.Specs;
 /// <remarks>
 /// Initializes a new instance of the <see cref="TakeSkipSpec{TEntity}"/> class.
 /// </remarks>
-/// <param name="criteria">The criteria expression for the specification.</param>
-internal class TakeSkipSpec<TEntity>(
-    int count,
-    int skip,
-    Expression<Func<TEntity, bool>>? criteria)
-    : ASimpleSpecification<TEntity>(criteria) where TEntity : class, IIdBaseDomainEntity
+internal class TakeSkipSpec<TEntity> : ASimpleSpecification<TEntity> where TEntity : class, IIdBaseDomainEntity
 {
-    public int Count { get; private set; } = count;
-    public int Skip { get; private set; } = skip;
+    public int Count { get; private set; }
+
+    /// <param name="criteria">The criteria expression for the specification.</param>
+    public TakeSkipSpec(
+        int count,
+        int skip,
+        Expression<Func<TEntity, bool>>? criteria) : base(criteria)
+    {
+        Count = count;
+        SetSkip(skip);
+    }
 }

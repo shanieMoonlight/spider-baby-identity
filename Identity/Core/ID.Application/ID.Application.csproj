@@ -74,4 +74,10 @@
       <ProjectReference Include="..\ID.IntegrationEvents\ID.IntegrationEvents.csproj" />
     </ItemGroup>
 
+
+
+    <ItemGroup>
+      <Folder Include="Features\Users\" />
+    </ItemGroup>
+
 </Project>

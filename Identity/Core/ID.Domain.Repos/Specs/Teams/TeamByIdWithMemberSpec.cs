@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ClArch.SimpleSpecification;
+﻿using ClArch.SimpleSpecification;
 using ID.Domain.Entities.Teams;
+using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ID.Domain.Repos.Specs.Teams;
 /// <summary>
@@ -23,6 +24,8 @@ internal class TeamByIdWithMemberSpec : ASimpleSpecification<Team>
         SetInclude(query =>
             query.Include(e => e.Members.Where(m => m.Id == userId))
                 .ThenInclude(m => m.Address)
+            .Include(e => e.Members.Where(m => m.Id == userId))
+                .ThenInclude(m => m.TrustedDevices)
         );
     }
 }

@@ -1,3 +1,4 @@
+using ID.Application.Features.Account.Cmd.TrustedDevices;
 using ID.Application.Features.Common.Dtos;
 using ID.Application.Features.FeatureFlags;
 using ID.Application.Features.SubscriptionPlans;

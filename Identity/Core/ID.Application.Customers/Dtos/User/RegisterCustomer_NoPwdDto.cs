@@ -1,4 +1,3 @@
-using ID.Domain.Entities.Teams;
 using System.ComponentModel.DataAnnotations;
 
 namespace ID.Application.Customers.Dtos.User;
@@ -25,7 +24,6 @@ public class RegisterCustomer_NoPwdDto
     public string GetTeamName() =>
        "Team_" + (string.IsNullOrWhiteSpace(Username) ? Email : Username);
 
-    //-------------------------------------//
 
-}
+}//Cls
 

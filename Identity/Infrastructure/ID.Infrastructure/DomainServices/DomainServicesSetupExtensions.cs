@@ -4,6 +4,7 @@ using ID.Domain.Abstractions.Services.SubPlans;
 using ID.Domain.Abstractions.Services.Teams;
 using ID.Domain.Abstractions.Services.Teams.Dvcs;
 using ID.Domain.Abstractions.Services.Teams.Subs;
+using ID.Domain.Abstractions.Services.TrustedDevices;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Repos.Transactions;
 using ID.Infrastructure.DomainServices.Members;
@@ -39,6 +40,8 @@ public static class DomainServicesSetupExtensions
 
         services.TryAddScoped<IIdentityFeatureFlagService, IdentityFeatureFlagService>();
         services.TryAddScoped<IIdentitySubscriptionPlanService, IdentitySubscriptionPlanService>();
+
+        services.TryAddScoped<ITrustedDeviceService<TUser>, TrustedDeviceService<TUser>>();
 
 
         services.TryAddScoped<IIdentityOutboxMsgsService, IdentityOutboxMsgsService>();

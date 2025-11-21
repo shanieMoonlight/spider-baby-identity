@@ -10,19 +10,22 @@ internal class TrustedDeviceConfig : IEntityTypeConfiguration<TrustedDevice>
     {
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.Id)
+            .ValueGeneratedNever();
+
         builder.HasIndex(x => new { x.UserId, x.DeviceFingerprint })
             .IsUnique();
 
         builder.Property(x => x.DeviceFingerprint)
             .IsRequired()
-            .HasMaxLength(ID.Domain.Entities.TrustedDevices.ValueObjects.DeviceFingerprint.MaxLength);
+            .HasMaxLength(Domain.Entities.TrustedDevices.ValueObjects.DeviceFingerprint.MaxLength);
 
         builder.Property(x => x.Name)
             .IsRequired()
-            .HasMaxLength(ID.Domain.Entities.TrustedDevices.ValueObjects.DeviceName.MaxLength);
+            .HasMaxLength(Domain.Entities.TrustedDevices.ValueObjects.DeviceName.MaxLength);
 
         builder.Property(x => x.UserAgent)
-            .HasMaxLength(ID.Domain.Entities.TrustedDevices.ValueObjects.UserAgent.MaxLength);
+            .HasMaxLength(Domain.Entities.TrustedDevices.ValueObjects.UserAgent.MaxLength);
 
         builder.HasOne(x => x.User)
             .WithMany(u => u.TrustedDevices)

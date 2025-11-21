@@ -939,7 +939,7 @@ namespace ID.Persistence.Ef.Postgres.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_asp_net_users_teams_team_id");
 
-                    b.OwnsOne("ID.Domain.Entities.AppUsers.IdentityAddress", "Address", b1 =>
+                    b.OwnsOne("ID.Domain.Entities.AppUsers.AppUser.Address#ID.Domain.Entities.AppUsers.IdentityAddress", "Address", b1 =>
                         {
                             b1.Property<Guid>("AppUserId")
                                 .HasColumnType("uuid")

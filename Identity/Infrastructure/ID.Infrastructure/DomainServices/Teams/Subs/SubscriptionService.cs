@@ -157,6 +157,4 @@ internal class SubscriptionService(IIdUnitOfWork uow, Team team) : ITeamSubscrip
         return updatedTeam;
     }
 
-    //-----------------------//
-
 }//Cls

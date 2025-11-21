@@ -9,8 +9,6 @@ namespace ID.Infrastructure.DomainServices.Members;
 internal class IdMemberAuditService<TUser>(IIdentityMemberAuditRepo<TUser> _repo)
     : IIdentityMemberAuditService<TUser> where TUser : AppUser
 {
-    //-----------------------//
-
     /// <summary>
     /// Checks if an User/Team Member with the specified ID exists.
     /// </summary>

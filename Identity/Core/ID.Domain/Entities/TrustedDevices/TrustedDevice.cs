@@ -1,9 +1,7 @@
-using ClArch.ValueObjects;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Common;
-using ID.Domain.Entities.TrustedDevices.ValueObjects;
-using ID.Domain.Abstractions.Events;
 using ID.Domain.Entities.TrustedDevices.Events;
+using ID.Domain.Entities.TrustedDevices.ValueObjects;
 using MassTransit;
 
 namespace ID.Domain.Entities.TrustedDevices;
@@ -14,16 +12,21 @@ public class TrustedDevice : IdDomainEntity
     public AppUser? User { get; private set; }
 
     public string DeviceFingerprint { get; private set; }
-    public string Name { get; private set; }
+    public string? Name { get; private set; }
     public string? UserAgent { get; private set; }
+
+    /// <summary>
+    /// Null is indefinite trust
+    /// </summary>
     public DateTime? TrustedUntil { get; private set; }
+
     public DateTime LastUsedDate { get; private set; }
 
     #region EfCoreCtor
     // Used by EF Core
-    #pragma warning disable CS8618
+#pragma warning disable CS8618
     private TrustedDevice() { }
-    #pragma warning restore CS8618
+#pragma warning restore CS8618
     #endregion
 
     //- - - - - - - - - - - - //
@@ -33,7 +36,8 @@ public class TrustedDevice : IdDomainEntity
         DeviceFingerprint fingerprint,
         DeviceName name,
         UserAgent userAgent,
-        TrustedUntil trustedUntil)
+        DateTime? trustedUntil)
+        //: base()
         : base(NewId.NextSequentialGuid())
     {
         UserId = user.Id;
@@ -41,19 +45,24 @@ public class TrustedDevice : IdDomainEntity
         DeviceFingerprint = fingerprint.Value;
         Name = name.Value;
         UserAgent = userAgent?.Value;
-        TrustedUntil = trustedUntil?.Value;
+        TrustedUntil = trustedUntil;
         LastUsedDate = DateTime.UtcNow;
     }
 
     //- - - - - - - - - - - - //
 
+    // New overload accepting TrustDuration
     internal static TrustedDevice Create(
         AppUser user,
         DeviceFingerprint fingerprint,
         DeviceName name,
         UserAgent userAgent,
-        TrustedUntil trustedUntil)
+        TrustDurationNullable trustDuration)
     {
+        DateTime? trustedUntil = trustDuration.Value.HasValue
+            ? DateTime.UtcNow.Add(trustDuration.Value!.Value)
+            : null;
+
         var device = new TrustedDevice(
             user,
             fingerprint,
@@ -61,7 +70,7 @@ public class TrustedDevice : IdDomainEntity
             userAgent,
             trustedUntil);
 
-        device.RaiseDomainEvent(new TrustedDeviceAddedDomainEvent(device, user));
+        device.RaiseDomainEvent(new TrustedDeviceAddedDomainEvent(device.Id, user.Id));
 
         return device;
     }
@@ -71,7 +80,7 @@ public class TrustedDevice : IdDomainEntity
     internal TrustedDevice UpdateLastUsed()
     {
         LastUsedDate = DateTime.UtcNow;
-        RaiseDomainEvent(new TrustedDeviceUsedDomainEvent(this, UserId));
+        RaiseDomainEvent(new TrustedDeviceUsedDomainEvent(Id, UserId));
         return this;
     }
 
@@ -88,12 +97,24 @@ public class TrustedDevice : IdDomainEntity
     internal TrustedDevice Revoke()
     {
         TrustedUntil = DateTime.UtcNow;
-        RaiseDomainEvent(new TrustedDeviceRevokedDomainEvent(this, UserId));
+        RaiseDomainEvent(new TrustedDeviceRevokedDomainEvent(Id, UserId));
         return this;
     }
 
     //- - - - - - - - - - - - //
-    
+
+    internal TrustedDevice ExtendTrust(TimeSpan? trustDuration)
+    {
+        TrustedUntil = trustDuration.HasValue
+            ? DateTime.UtcNow.Add(trustDuration.Value)
+            : null;
+
+        RaiseDomainEvent(new TrustedDeviceExtendedDomainEvent(Id, UserId));
+        return this;
+    }
+
+    //- - - - - - - - - - - - //
+
     #region EqualsAndHashCode
     public override bool Equals(object? obj) =>
         obj is TrustedDevice td

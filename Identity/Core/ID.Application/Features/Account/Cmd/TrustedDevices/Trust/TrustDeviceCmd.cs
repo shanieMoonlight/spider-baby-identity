@@ -1,4 +1,3 @@
-using ID.Application.Features.Users;
 using ID.Application.Mediatr.Cqrslmps.Commands;
 using ID.Domain.Entities.AppUsers;
 

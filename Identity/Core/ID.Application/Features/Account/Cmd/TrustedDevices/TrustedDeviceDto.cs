@@ -1,15 +1,13 @@
-using ID.Application.Features.Common.Dtos.User;
 using ID.Domain.Entities.TrustedDevices;
 
-namespace ID.Application.Features.Users;
+namespace ID.Application.Features.Account.Cmd.TrustedDevices;
 public class TrustedDeviceDto
 {
     public Guid Id { get; set; }
 
     public Guid UserId { get; set; }
-    public AppUserDto User { get; set; }
-    public string DeviceFingerprint { get; set; }
-    public string Name { get; set; }
+    public string DeviceFingerprint { get; set; } 
+    public string Name { get; set; } 
     public string? UserAgent { get; set; }
     public DateTime LastUsedDate { get; set; }
     public string? AdministratorUsername { get; set; }

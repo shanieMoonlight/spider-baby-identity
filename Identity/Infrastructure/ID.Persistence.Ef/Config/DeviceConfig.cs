@@ -15,6 +15,8 @@ internal class DeviceConfig : IEntityTypeConfiguration<TeamDevice>
         //builder.HasIndex(p => new { p.Name, p.Official })
         //    .IsUnique();
 
+        builder.HasIndex(x => new { x.SubscriptionId, x.UniqueId })
+            .IsUnique();
 
         builder.Property(b => b.Name)
             .IsRequired()

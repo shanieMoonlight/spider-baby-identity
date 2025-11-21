@@ -2,11 +2,13 @@
 using ID.Domain.Abstractions.Events;
 using ID.Domain.Entities.AppUsers.Events;
 using ID.Domain.Entities.AppUsers.OAuth;
+using ID.Domain.Entities.AppUsers.Validators;
 using ID.Domain.Entities.AppUsers.ValueObjects;
 using ID.Domain.Entities.Avatars;
 using ID.Domain.Entities.Common;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Entities.TrustedDevices;
+using ID.Domain.Entities.TrustedDevices.ValueObjects;
 using ID.Domain.Models;
 using ID.Domain.Utility.Exceptions;
 using ID.Domain.Utility.Extensions;
@@ -14,7 +16,7 @@ using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ID.Domain.Entities.AppUsers.Validators;
+using System.Xml.Linq;
 
 namespace ID.Domain.Entities.AppUsers;
 
@@ -380,16 +382,51 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
     /// </summary>
     public TrustedDevice TrustDevice(TrustedDeviceValidators.Addition.Token additionToken)
     {
+
+        var existingDevice = FindTrustedDevice(additionToken.DeviceFingerprint.Value);
+        if (existingDevice != null)
+        {
+            existingDevice.ExtendTrust(additionToken.TrustDuration.Value);
+            return existingDevice;
+        }
+
         var device = TrustedDevice.Create(this,
             additionToken.DeviceFingerprint,
             additionToken.DeviceName,
             additionToken.UserAgent,
-            additionToken.TrustedUntil);
+            additionToken.TrustDuration);
 
         _trustedDevices.Add(device);
 
         return device;
     }
+
+    ///// <summary>
+    ///// Trust a device for this user. The validation token guarantees correctness.
+    ///// </summary>
+    //public TrustedDevice TrustDevice(
+    //    DeviceFingerprint fingerprint,
+    //    DeviceName name,
+    //    UserAgent userAgent,
+    //    TrustDurationNullable trustedDuration)
+    //{
+
+    //    var existingDevice = FindTrustedDevice(fingerprint.Value);
+    //    if (existingDevice != null)
+    //    {
+    //        existingDevice.ExtendTrust(trustedDuration.Value);
+    //        return existingDevice;
+    //    }
+
+    //    var device = TrustedDevice.Create(this,
+    //        fingerprint,
+    //        name,
+    //        userAgent,
+    //        trustedDuration);
+    //    _trustedDevices.Add(device);
+
+    //    return device;
+    //}
 
     //- - - - - - - - - - - - // 
 
@@ -400,17 +437,44 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
     {
         var device = revocationToken.Device;
         var found = _trustedDevices.FirstOrDefault(d => d.Id == device.Id);
-        if (found is null) return false;
+        if (found is null)
+            return false;
 
-        found.Revoke();
+        _trustedDevices.Remove(found);
         return true;
     }
+
+    //- - - - - - - - - - - - // 
+
+    /// <summary>
+    /// Removes a trusted device form the user. Returns false if device not found (already removed).
+    /// </summary>
+    public bool DeleteTrustedDevice(TrustedDeviceValidators.Revocation.Token revocationToken)
+    {
+        var device = revocationToken.Device;
+        var found = _trustedDevices.FirstOrDefault(d => d.Id == device.Id);
+        if (found is null)
+            return false;
+
+        _trustedDevices.Remove(found);
+        return true;
+    }
+
+    //- - - - - - - - - - - - // 
 
     /// <summary>
     /// Find trusted device by fingerprint.
     /// </summary>
     public TrustedDevice? FindTrustedDevice(string deviceFingerprint)
         => _trustedDevices.FirstOrDefault(d => d.DeviceFingerprint == deviceFingerprint);
+
+    //- - - - - - - - - - - - // 
+
+    /// <summary>
+    /// Find trusted device by deviceId.
+    /// </summary>
+    public TrustedDevice? FindTrustedDevice(Guid deviceId)
+        => _trustedDevices.FirstOrDefault(d => d.Id == deviceId);
 
     //------------------------// 
 

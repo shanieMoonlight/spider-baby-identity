@@ -71,7 +71,7 @@ public static class Ensure
 
     public static void MinValue<T>(T value, T min, string propertyName) where T : IComparable, IComparable<T>
     {
-        if (value is null || value.CompareTo(min) < 0)
+        if (value is not null && value.CompareTo(min) < 0)
             throw new MinValuePropertyException<T>(propertyName, min);
     }
 
@@ -79,9 +79,44 @@ public static class Ensure
 
     public static void MaxValue<T>(T value, T max, string propertyName) where T : IComparable, IComparable<T>
     {
-        if (value is null || value.CompareTo(max) > 0)
+        if (value is not null && value.CompareTo(max) > 0)
             throw new MaxValuePropertyException<T>(propertyName, max);
     }
+
+    //- - - - - - - - - - - - - - - - - -//
+
+    /// <summary>
+    /// Ensures that the nullable value is either null or greater than or equal to the specified minimum value.
+    /// Only compares when the value is not null.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="min"></param>
+    /// <param name="propertyName"></param>
+    /// <exception cref="MinValuePropertyException{T}"></exception>
+    public static void MinValueNullable<T>(T? value, T min, string propertyName) where T : struct, IComparable, IComparable<T>
+    {
+        if (value.HasValue && value.Value.CompareTo(min) < 0)
+            throw new MinValuePropertyException<T>(propertyName, min);
+    }
+
+    //- - - - - - - - - - - - - - - - - -//
+
+    /// <summary>
+    /// Ensures that the nullable value is either null or less than or equal to the specified maximum value.
+    /// Only compares when the value is not null.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="max"></param>
+    /// <param name="propertyName"></param>
+    /// <exception cref="MaxValuePropertyException{T}"></exception>
+    public static void MaxValueNullable<T>(T? value, T max, string propertyName) where T : struct, IComparable, IComparable<T>
+    {
+        if (value.HasValue && value.Value.CompareTo(max) > 0)
+            throw new MaxValuePropertyException<T>(propertyName, max);
+    }
+
 
 
 }//Cls

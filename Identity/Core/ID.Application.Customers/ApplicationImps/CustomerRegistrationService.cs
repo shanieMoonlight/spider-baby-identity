@@ -41,7 +41,8 @@ internal class IdCustomerRegistrationService(IIdentityTeamManager<AppUser> _team
         CancellationToken cancellationToken = default)
     {
         var teamName = GetTeamName(username.Value, email.Value);
-        var team = await RegisterTeamAsync(teamName, cancellationToken);
+        var teamDescription = GetTeamDescription(username.Value, email.Value);
+        var team = await RegisterTeamAsync(teamName, teamDescription, cancellationToken);
 
         var newUser = AppUser.Create(
             team,
@@ -102,7 +103,8 @@ internal class IdCustomerRegistrationService(IIdentityTeamManager<AppUser> _team
 
 
         var teamName = GetTeamName(username.Value, email.Value);
-        var team = await RegisterTeamAsync(teamName, cancellationToken);
+        var teamDescription = GetTeamDescription(username.Value, email.Value);
+        var team = await RegisterTeamAsync(teamName, teamDescription, cancellationToken);
 
         var newUser = AppUser.Create(
             team,
@@ -146,7 +148,8 @@ internal class IdCustomerRegistrationService(IIdentityTeamManager<AppUser> _team
     {
 
         var teamName = GetTeamName(username.Value, email.Value);
-        var team = await RegisterTeamAsync(teamName, cancellationToken);
+        var teamDescription = GetTeamDescription(username.Value, email.Value);
+        var team = await RegisterTeamAsync(teamName, teamDescription,  cancellationToken);
 
         var newUser = AppUser.CreateOAuth(
             team,
@@ -194,11 +197,11 @@ internal class IdCustomerRegistrationService(IIdentityTeamManager<AppUser> _team
 
     //- - - - - - - - - - - - - - - - - - -//
 
-    private async Task<Team> RegisterTeamAsync(string name, CancellationToken cancellationToken)
+    private async Task<Team> RegisterTeamAsync(string name, string description, CancellationToken cancellationToken)
     {
         Team cusTeam = _teamBuilder.CreateCustomerTeam(
          Name.Create(name),
-         DescriptionNullable.Create(null));
+         DescriptionNullable.Create(description));
 
         return await _teamMgr.AddTeamAsync(cusTeam, cancellationToken);
     }
@@ -206,7 +209,13 @@ internal class IdCustomerRegistrationService(IIdentityTeamManager<AppUser> _team
     //- - - - - - - - - - - - - - - - - - -//
 
     private static string GetTeamName(string? username, string email) =>
-        "Team_" + (string.IsNullOrWhiteSpace(username) ? email : username);
+        $"Team_{(string.IsNullOrWhiteSpace(username) ? email : username)}";
+
+
+    //- - - - - - - - - - - - - - - - - - -//
+
+    private static string GetTeamDescription(string? username, string email) =>
+        $"{(string.IsNullOrWhiteSpace(username) ? email : username)}'s Team";
 
 
     //-------------------------------------//

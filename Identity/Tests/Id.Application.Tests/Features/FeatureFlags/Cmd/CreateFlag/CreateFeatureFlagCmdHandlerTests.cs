@@ -1,4 +1,5 @@
-﻿using ID.Application.Features.FeatureFlags;
+﻿using ID.Application.Features.Account.Cmd.TrustedDevices;
+using ID.Application.Features.FeatureFlags;
 using ID.Application.Features.FeatureFlags.Cmd.Create;
 using ID.Domain.Entities.SubscriptionPlans.FeatureFlags;
 using ID.Tests.Data.Factories.Dtos;

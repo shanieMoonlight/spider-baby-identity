@@ -35,6 +35,5 @@ public class Avatar : IdDomainEntity
 
     private Avatar() : base() { }
 
-    //------------------------//
 
 }//Cls

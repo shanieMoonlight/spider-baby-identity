@@ -16,7 +16,7 @@ public interface ITwoFactorVerificationService<TUser> where TUser : AppUser
     /// </returns>
     Task<GenResult<TUser>> DisableTwoFactorTokenAsync(TUser user);
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Enable TwoFactor Authentication on this <paramref name="user"/>
@@ -28,7 +28,7 @@ public interface ITwoFactorVerificationService<TUser> where TUser : AppUser
     /// </returns>
     Task<GenResult<TUser>> EnableTwoFactorTokenAsync(TUser user);
 
-    //------------------------------------//
+    //----------------------//
 
 
     /// <summary>
@@ -42,7 +42,7 @@ public interface ITwoFactorVerificationService<TUser> where TUser : AppUser
     /// </returns>
     Task<string> GenerateTwoFactorTokenAsync(Team team, TUser user, string tokenProvider);
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Gets the first two factor provider on  for this user.
@@ -54,7 +54,7 @@ public interface ITwoFactorVerificationService<TUser> where TUser : AppUser
     /// </returns>
     Task<string?> GetFirstValidTwoFactorProviderAsync(TUser user);
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Returns a flag indicating whether the specified <paramref name="user"/> has two factor authentication enabled or not,
@@ -67,7 +67,7 @@ public interface ITwoFactorVerificationService<TUser> where TUser : AppUser
     /// </returns>
     Task<bool> IsTwoFactorEnabledAsync(TUser user);
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Gets a flag indicating whether the email address for the specified <paramref name="user"/> has been verified, true if the email address is verified otherwise
@@ -80,7 +80,7 @@ public interface ITwoFactorVerificationService<TUser> where TUser : AppUser
     /// </returns>
     Task<GenResult<TUser>> SetTwoFactorEnabledAsync(TUser user, bool enabled);
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Verifies the specified two factor authentication <paramref name="token" /> against the <paramref name="user"/>. using
@@ -94,7 +94,7 @@ public interface ITwoFactorVerificationService<TUser> where TUser : AppUser
     /// </returns>
     Task<bool> VerifyTwoFactorTokenAsync(Team team, TUser user, string code);
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Verifies the specified two factor authentication <paramref name="token" /> against the <paramref name="user"/>.
@@ -108,5 +108,5 @@ public interface ITwoFactorVerificationService<TUser> where TUser : AppUser
     /// </returns>
     Task<bool> VerifyTwoFactorTokenAsync(Team team, TUser user, TwoFactorProvider tokenProvider, string token);
 
-    //------------------------------------//
+    //----------------------//
 }

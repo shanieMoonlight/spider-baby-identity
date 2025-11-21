@@ -9,7 +9,7 @@ public class AuditableEntityDto
     public DateTime DateCreated { get; init; }
     public DateTime? LastModifiedDate { get; init; }
 
-    //------------------------------------// 
+    //----------------------// 
 
     public AuditableEntityDto(IIdAuditableDomainEntity entity)
     {
@@ -20,9 +20,6 @@ public class AuditableEntityDto
     }
 
     public AuditableEntityDto()
-    {
-    }
-
-    //------------------------------------// 
+    { }
 
 }

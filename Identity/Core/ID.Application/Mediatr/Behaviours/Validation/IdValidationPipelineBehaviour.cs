@@ -8,7 +8,7 @@ public sealed class IdValidationPipelineBehaviour<TRequest, TResponse>(IEnumerab
     where TRequest : IRequest<TResponse>
     where TResponse : BasicResult
 {
-    //------------------------------------//
+    //----------------------//
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
@@ -27,7 +27,7 @@ public sealed class IdValidationPipelineBehaviour<TRequest, TResponse>(IEnumerab
         return CreateValidationResult(failures);
     }
 
-    //------------------------------------//
+    //----------------------//
 
     private static TResponse CreateValidationResult(ValidationFailure[] errors)
     {
@@ -110,6 +110,6 @@ public sealed class IdValidationPipelineBehaviour<TRequest, TResponse>(IEnumerab
         return ValidationError.BadRequest; //Anything else is a bad request
     }
 
-    //------------------------------------//
+    //----------------------//
 
 }//Cls

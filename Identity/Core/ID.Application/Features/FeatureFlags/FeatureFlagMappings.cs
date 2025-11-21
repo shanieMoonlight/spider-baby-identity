@@ -5,7 +5,7 @@ namespace ID.Application.Features.FeatureFlags;
 
 public static class FeatureFlagMappings
 {
-    //------------------------------------//
+    //----------------------//
 
     public static FeatureFlag Update(this FeatureFlag model, FeatureFlagDto dto) =>
         model.Update(
@@ -13,7 +13,7 @@ public static class FeatureFlagMappings
             Description.Create(dto.Description)
         );
 
-    //------------------------------------//
+    //----------------------//
 
     public static FeatureFlag ToModel(this FeatureFlagDto dto) =>
         FeatureFlag.Create(
@@ -21,12 +21,12 @@ public static class FeatureFlagMappings
             Description.Create(dto.Description)
         );
 
-    //------------------------------------//
+    //----------------------//
 
     public static FeatureFlagDto ToDto(this FeatureFlag mdl) =>
         new(mdl);
 
-    //------------------------------------//
+    //----------------------//
 
 }//Cls
 

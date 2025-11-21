@@ -23,7 +23,7 @@ public static class InitializedAuthenticator
         public bool IsAuthorized(HttpContext context) =>
             !IsAlreadyInitialized(context);
 
-        //------------------------------------//
+        //----------------------//
 
         public static bool IsAlreadyInitialized(HttpContext context)
         {

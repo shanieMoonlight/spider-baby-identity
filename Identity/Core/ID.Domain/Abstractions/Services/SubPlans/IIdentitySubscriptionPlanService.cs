@@ -30,6 +30,16 @@ public interface IIdentitySubscriptionPlanService
     //- - - - - - - - - - - - //
 
     /// <summary>
+    /// Adds a new SubscriptionPlan along with ZERO associated FeatureFlags.
+    /// </summary>
+    /// <param name="plan">The SubscriptionPlan to add.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>The added SubscriptionPlan with associated FeatureFlags.</returns>
+    Task<SubscriptionPlan> AddAsync(SubscriptionPlan plan, CancellationToken cancellationToken = default);
+
+    //- - - - - - - - - - - - //
+
+    /// <summary>
     /// Adds FeatureFlags to an existing SubscriptionPlan.
     /// </summary>
     /// <param name="plan">The SubscriptionPlan to update.</param>
@@ -61,6 +71,15 @@ public interface IIdentitySubscriptionPlanService
     //- - - - - - - - - - - - //
 
     /// <summary>
+    /// Deletes the SubscriptionPlan with the specified id.
+    /// </summary>
+    /// <param name="plan">The SubscriptionPlan to delete.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    Task DeleteAsync(SubscriptionPlan plan, CancellationToken cancellationToken);
+
+    //- - - - - - - - - - - - //
+
+    /// <summary>
     /// Get the first SubscriptionPlan that has this name. If it exists.
     /// </summary>
     /// <param name="name">Entity identifier</param>
@@ -73,7 +92,7 @@ public interface IIdentitySubscriptionPlanService
     /// Get all SubscriptionPlans.
     /// </summary>
     /// <returns>A task that represents the asynchronous operation. The task result contains a read-only list of all SubscriptionPlans.</returns>
-    Task<IReadOnlyList<SubscriptionPlan>> GetAllAsync();
+    Task<IReadOnlyList<SubscriptionPlan>> ListAllAsync();
 
     //- - - - - - - - - - - - //
 

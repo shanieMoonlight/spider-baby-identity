@@ -33,7 +33,7 @@ internal class EmailConfirmationBus(IEmailConfirmationService<AppUser> _emailCon
             await Send(user, team, safePwdResetTkn, cancellationToken);
     }
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Publishes an event indicating that email confirmation is required and the user needs to set a password.
@@ -50,7 +50,7 @@ internal class EmailConfirmationBus(IEmailConfirmationService<AppUser> _emailCon
                    team.TeamType == TeamType.customer),
                cancellationToken);
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Publishes an event indicating that email confirmation is required.
@@ -67,6 +67,6 @@ internal class EmailConfirmationBus(IEmailConfirmationService<AppUser> _emailCon
                     team.TeamType == TeamType.customer),
                 cancellationToken);
 
-    //------------------------------------//
+    //----------------------//
 
 }//Cls

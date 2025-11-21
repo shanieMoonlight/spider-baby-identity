@@ -27,7 +27,7 @@ public class MyIdSignInResult
 
     public MfaResultData? MfaResultData { get; private set; }
 
-    //------------------------------------//
+    //----------------------//
 
     public static MyIdSignInResult Success(AppUser user, Team team) =>
         new()
@@ -98,6 +98,6 @@ public class MyIdSignInResult
             Message = IDMsgs.Error.Authorization.TWO_FACTOR_REQUIRED(mfaResultData?.TwoFactorProvider ?? user.TwoFactorProvider)
         };
 
-    //------------------------------------//
+    //----------------------//
 
 }//Cls

@@ -17,6 +17,21 @@ internal class IdentitySubscriptionPlanService(IIdUnitOfWork _uow)
     //-----------------------//
 
     /// <summary>
+    /// Adds a new SubscriptionPlan along with NO associated FeatureFlags.
+    /// </summary>
+    /// <param name="plan">The SubscriptionPlan to add.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>The added SubscriptionPlan with associated FeatureFlags.</returns>
+    public async Task<SubscriptionPlan> AddAsync(SubscriptionPlan plan, CancellationToken cancellationToken = default)
+    {
+        var dbPlan = await _repo.AddAsync(plan, cancellationToken);
+        await _uow.SaveChangesAsync(cancellationToken);
+        return dbPlan;
+    }
+
+    //- - - - - - - - - - - - - - - - - - //
+
+    /// <summary>
     /// Adds a new SubscriptionPlan along with associated FeatureFlags by their IDs.
     /// </summary>
     /// <param name="plan">The SubscriptionPlan to add.</param>
@@ -106,6 +121,14 @@ internal class IdentitySubscriptionPlanService(IIdUnitOfWork _uow)
         await _uow.SaveChangesAsync(cancellationToken);
     }
 
+    //- - - - - - - - - - - -//
+
+    public async Task DeleteAsync(SubscriptionPlan plan , CancellationToken cancellationToken)
+    {
+        await _repo.DeleteAsync(plan);
+        await _uow.SaveChangesAsync(cancellationToken);
+    }
+
     //-----------------------//
 
     public Task<SubscriptionPlan?> FirstByNameAsync(string? name) =>
@@ -113,7 +136,7 @@ internal class IdentitySubscriptionPlanService(IIdUnitOfWork _uow)
 
     //-----------------------//
 
-    public Task<IReadOnlyList<SubscriptionPlan>> GetAllAsync() =>
+    public Task<IReadOnlyList<SubscriptionPlan>> ListAllAsync() =>
         _repo.ListAllAsync();
 
     //- - - - - - - - - - - - - - - - - - //

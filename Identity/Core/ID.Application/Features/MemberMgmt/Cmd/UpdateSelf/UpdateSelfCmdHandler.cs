@@ -32,7 +32,7 @@ public class UpdateSelfCmdHandler(IIdentityTeamManager<AppUser> teamMgr, IAppPer
         return updateResult.Convert(u => u?.ToDto());
     }
 
-    //------------------------------------//
+    //----------------------//
 
 }//Cls
 

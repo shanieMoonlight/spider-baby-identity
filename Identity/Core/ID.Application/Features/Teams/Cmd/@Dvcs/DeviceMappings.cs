@@ -5,7 +5,7 @@ namespace ID.Application.Features.Teams.Cmd.Dvcs;
 
 public static class DeviceMappings
 {
-    //------------------------------------//
+    //----------------------//
 
     public static TeamDevice Update(this TeamDevice model, DeviceDto dto)
     {
@@ -19,11 +19,11 @@ public static class DeviceMappings
 
     }
 
-    //------------------------------------//
+    //----------------------//
 
     public static DeviceDto ToDto(this TeamDevice mdl) => new(mdl);
 
-    //------------------------------------//
+    //----------------------//
 
 }//Cls
 

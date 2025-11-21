@@ -32,7 +32,7 @@ public class SubscriptionClaimData
     /// </summary>
     public string? DeviceId { get; private set; }
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SubscriptionClaimData"/> class.
@@ -56,7 +56,7 @@ public class SubscriptionClaimData
         return data;
     }
 
-    //------------------------------------//
+    //----------------------//
 
     #region Serializer CTOR
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.

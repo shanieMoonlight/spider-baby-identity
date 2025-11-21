@@ -20,7 +20,7 @@ internal class FindUserService<TUser>(IIdentityMemberAuditService<AppUser> userM
     public async Task<TUser?> FindUserAsync(Guid? userId) =>
         await userMgr.FirstByIdAsync(userId) as TUser; // TODO: Remove cast when DbContext is fully generic
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Finds a user by their email address.
@@ -30,7 +30,7 @@ internal class FindUserService<TUser>(IIdentityMemberAuditService<AppUser> userM
     public async Task<TUser?> FindUserByEmailAsync(string? email) =>
          await userMgr.FirstByEmailAsync(email) as TUser; // TODO: Remove cast when DbContext is fully generic
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Finds a user by their username.
@@ -40,7 +40,7 @@ internal class FindUserService<TUser>(IIdentityMemberAuditService<AppUser> userM
     public async Task<TUser?> FindUserByUsernameAsync(string? username) =>
          await userMgr.FirstByUsernameAsync(username) as TUser; // TODO: Remove cast when DbContext is fully generic
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Finds a user with team details by email, username, or unique identifier.
@@ -74,7 +74,7 @@ internal class FindUserService<TUser>(IIdentityMemberAuditService<AppUser> userM
         return user as TUser; // TODO: Remove cast when DbContext is fully generic
     }
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Finds a user with team details by unique identifier.

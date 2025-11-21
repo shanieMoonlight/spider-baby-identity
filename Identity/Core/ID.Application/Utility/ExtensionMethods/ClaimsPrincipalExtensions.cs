@@ -232,11 +232,11 @@ public static class ClaimsPrincipalExtensions
     public static string? GetClaimValue(this ClaimsPrincipal? principal, string claimType) =>
         principal?.FindFirst(claimType)?.Value;
 
-    //------------------------------------//
+    //----------------------//
 
     public static List<string>? GetClaimValues(this ClaimsPrincipal? principal, string claimType) =>
         principal?.FindAll(claimType)?.Select(c => c.Value).ToList();
 
-    //------------------------------------//
+    //----------------------//
 
 }//Cls

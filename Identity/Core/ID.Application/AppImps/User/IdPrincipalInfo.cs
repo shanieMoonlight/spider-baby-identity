@@ -8,21 +8,21 @@ namespace ID.Application.AppImps.User;
 
 public class IdPrincipalInfo(IHttpContextAccessor httpContextAccessor) : IIdPrincipalInfo
 {
-    //------------------------------------//
+    //----------------------//
 
 
     private readonly HttpContext? _ctx = httpContextAccessor?.HttpContext;
     private readonly ClaimsPrincipal? _principal = httpContextAccessor?.HttpContext?.User;
 
-    //------------------------------------//
+    //----------------------//
 
     public ClaimsPrincipal? GetPrincipal() => _principal;
 
-    //------------------------------------//
+    //----------------------//
 
     public bool IsAuthenticated() => _principal?.Identity?.IsAuthenticated ?? false;
 
-    //------------------------------------//
+    //----------------------//
 
     public bool IsMntc() => _principal.IsInMntcTeam();
     
@@ -30,7 +30,7 @@ public class IdPrincipalInfo(IHttpContextAccessor httpContextAccessor) : IIdPrin
 
     public bool IsCustomer() => _principal.IsInCustomerTeam();
 
-    //------------------------------------//
+    //----------------------//
 
     public bool IsCustomerMinimum() =>
         IsCustomer() || IsMntc() || IsSpr();
@@ -40,7 +40,7 @@ public class IdPrincipalInfo(IHttpContextAccessor httpContextAccessor) : IIdPrin
 
     public bool IsSprMinimum() => IsSpr();
 
-    //------------------------------------//
+    //----------------------//
 
     public Guid? TeamId() => _principal?.GetTeamId();
 
@@ -50,7 +50,7 @@ public class IdPrincipalInfo(IHttpContextAccessor httpContextAccessor) : IIdPrin
 
     public bool IsLeader() => _principal?.IsTeamLeader() ?? false;
 
-    //------------------------------------//
+    //----------------------//
 
     public TeamType? TeamType() => _principal?.GetTeamType();
 
@@ -60,6 +60,6 @@ public class IdPrincipalInfo(IHttpContextAccessor httpContextAccessor) : IIdPrin
 
     public string? DeviceId(string subName) =>  _principal?.GetDeviceId(subName);
 
-    //------------------------------------//
+    //----------------------//
 
 }//Cls

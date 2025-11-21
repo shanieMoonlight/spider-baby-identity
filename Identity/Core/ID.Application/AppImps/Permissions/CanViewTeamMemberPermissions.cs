@@ -10,8 +10,6 @@ namespace ID.Application.AppImps.Permissions;
 internal class CanViewTeamMemberPermissions<TUser>(IIdentityTeamManager<TUser> _teamMgr) : ICanViewTeamMemberPermissions<TUser> where TUser : AppUser
 {
 
-    //------------------------------------//
-
     /// <summary>
     /// Finds the user with Id <paramref name="memberId"/> and checks if the User/Principal making the <paramref name="request"/>
     /// can view/access the with Id <paramref name="memberId"/> 
@@ -48,7 +46,5 @@ internal class CanViewTeamMemberPermissions<TUser>(IIdentityTeamManager<TUser> _
         return GenResult<TUser>.Success(member as TUser);
         // TODO: Remove "as TUser" when we a Generic Db Context
     }
-
-    //------------------------------------//
 
 }//Cls

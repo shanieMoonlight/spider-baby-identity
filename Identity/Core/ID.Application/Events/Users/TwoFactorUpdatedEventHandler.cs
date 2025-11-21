@@ -57,7 +57,7 @@ public record TwoFactorUpdatedEventHandler(
 
     }
 
-    //------------------------------------//
+    //----------------------//
 
     private async Task<BasicResult> SetupAuthenticatorAppAsync(Team team, AppUser user, CancellationToken cancellationToken)
     {
@@ -77,7 +77,7 @@ public record TwoFactorUpdatedEventHandler(
         return BasicResult.Success("Handled");
     }
 
-    //------------------------------------//
+    //----------------------//
 
     private async Task<BasicResult> SetTwoFactorKeyAsync(Team team, AppUser user, string sid)
     {
@@ -90,7 +90,7 @@ public record TwoFactorUpdatedEventHandler(
         return BasicResult.Success();
     }
 
-    //------------------------------------//
+    //----------------------//
 
 
 

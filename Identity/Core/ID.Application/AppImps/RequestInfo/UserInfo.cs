@@ -12,13 +12,13 @@ public class UserInfo(IHttpContextAccessor httpContextAccessor) : IUserInfo
     private const string _not_found = "SYSTEM";
     private readonly ClaimsPrincipal? _principal = httpContextAccessor?.HttpContext?.User;
 
-    //------------------------------------//
+    //----------------------//
 
     public string GetLoggedInUserId(string? fallback = null) =>
         _principal?.GetClaimValue(ClaimTypes.NameIdentifier) ?? fallback ?? _not_found;
 
 
-    //------------------------------------//
+    //----------------------//
 
     public string GetLoggedInUserName(string? fallback = null) =>
          _principal?.GetClaimValue(MyIdClaimTypes.NAME)
@@ -26,7 +26,7 @@ public class UserInfo(IHttpContextAccessor httpContextAccessor) : IUserInfo
         ?? fallback 
         ?? _not_found;
 
-    //------------------------------------//
+    //----------------------//
 
     public string GetLoggedInUserEmail(string? fallback = null) =>
          _principal?.GetClaimValue(MyIdClaimTypes.EMAIL) 
@@ -34,7 +34,7 @@ public class UserInfo(IHttpContextAccessor httpContextAccessor) : IUserInfo
         ?? fallback 
         ?? _not_found;
 
-    //------------------------------------//
+    //----------------------//
 
     public string GetLoggedInNameAndEmail(string? fallback = null) =>
         $"{GetLoggedInUserName(fallback)} / {GetLoggedInUserEmail(fallback)}";

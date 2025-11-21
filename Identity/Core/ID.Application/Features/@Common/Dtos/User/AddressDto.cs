@@ -16,7 +16,7 @@ public class IdentityAddressDto
 
     public Guid AppUserId { get; set; }
 
-    //------------------------------------//
+    //----------------------//
 
     #region Model Biinding CTOR
     public IdentityAddressDto() { }
@@ -35,7 +35,7 @@ public class IdentityAddressDto
         AppUserId = mdl.AppUserId;
     }
 
-    //------------------------------------//
+    //----------------------//
 
 }
 

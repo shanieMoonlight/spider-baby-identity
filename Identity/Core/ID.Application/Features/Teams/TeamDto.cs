@@ -26,7 +26,7 @@ public class TeamDto
 
     public List<SubscriptionDto> Subscriptions = [];
 
-    //------------------------------------//
+    //----------------------//
 
     #region ModelBinding
     public TeamDto() { }
@@ -45,6 +45,6 @@ public class TeamDto
         MinPosition = team.MinPosition;
     }
 
-    //------------------------------------//
+    //----------------------//
 
 }//Cls

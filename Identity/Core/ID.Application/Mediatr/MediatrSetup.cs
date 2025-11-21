@@ -37,6 +37,7 @@ internal static class MediatrSetup
             config.AddOpenBehavior(typeof(IdTeamAwarePipelineBehavior<,>));        // Loads team context from principal
             config.AddOpenBehavior(typeof(IdValidationPipelineBehaviour<,>));      // Validates with full context
             config.AddOpenBehavior(typeof(IdCommandTransactionPipelineBehaviour<,>)); // Wraps in transaction
+            config.AddOpenBehavior(typeof(DevModePipelineBehavior<,>)); // Ensures requests only in dev mode
 
             config.RegisterServicesFromAssembly(assembly);
         });

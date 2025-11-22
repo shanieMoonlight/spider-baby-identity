@@ -384,3 +384,4 @@ FodyWeavers.xsd
 
 Tutorials/**
 /Identity/Core/ID.Domain/ID.Domain.csproj
+/Identity.Tests

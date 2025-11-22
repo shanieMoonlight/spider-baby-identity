@@ -383,3 +383,4 @@ FodyWeavers.xsd
 ##**/ID.OAuth.Facebook/**
 
 Tutorials/**
+/Identity/Core/ID.Domain/ID.Domain.csproj

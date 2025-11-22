@@ -1,11 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
-using Moq;
-using Shouldly;
-using Microsoft.Extensions.Logging;
-using MyResults;
-using ID.Domain.Entities.AppUsers;
-using ID.Tests.Data.Factories;
 using ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.RevokeByFingerPrint;
 
 namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.RevokeByFingerPrint;

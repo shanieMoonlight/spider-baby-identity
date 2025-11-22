@@ -1,1 +1,12 @@
 ﻿global using ClArch.ValueObjects;
+global using FluentValidation;
+global using ID.Application.Features.Account.Cmd.TrustedDevices.Qry.GetByName;
+global using ID.Application.Mediatr.CqrsAbs;
+global using ID.Application.Mediatr.Cqrslmps.Commands;
+global using ID.Application.Mediatr.Cqrslmps.Queries;
+global using ID.Application.Mediatr.Validation;
+global using ID.Domain.Entities.AppUsers;
+global using ID.Domain.Entities.TrustedDevices;
+global using ID.Domain.Utility.Messages;
+global using MyResults;
+global using Pagination;

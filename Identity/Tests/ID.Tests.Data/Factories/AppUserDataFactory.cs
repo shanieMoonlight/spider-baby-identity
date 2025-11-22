@@ -1,9 +1,12 @@
 using ClArch.ValueObjects;
 using ID.Domain.Entities.Teams;
+using ID.Domain.Entities.TrustedDevices;
 using ID.Domain.Models;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
+using static ID.Domain.Utility.Messages.IDMsgs.Error;
+using static ID.Domain.Utility.Messages.IDMsgs.Info;
 
 namespace ID.Tests.Data.Factories;
 
@@ -54,6 +57,7 @@ public static class AppUserDataFactory
         TwoFactorProvider? twoFactorProvider = null,
         int? teamPosition = 1,
         DateTime? tknModifiedDate = null,
+         HashSet<TrustedDevice>? trustedDevices = null,
         string? administratorUsername = null,
         string? administratorId = null
         )
@@ -80,6 +84,7 @@ public static class AppUserDataFactory
         phoneNumberConfirmed ??= false;
         twoFactorEnabled ??= false;
         teamPosition ??= 1;
+        trustedDevices ??= [];
 
         var paramaters = new[]
            {
@@ -108,12 +113,15 @@ public static class AppUserDataFactory
                 new PropertyAssignment(nameof(AppUser.TwoFactorEnabled),  () => twoFactorEnabled ),
                 new PropertyAssignment(nameof(AppUser.TeamPosition),  () => teamPosition ),
                 new PropertyAssignment(nameof(AppUser.Address),  () => identityAddress ),
-                new PropertyAssignment(nameof(AppUser.TknModifiedDate),  () => tknModifiedDate )
+                new PropertyAssignment(nameof(AppUser.TknModifiedDate),  () => tknModifiedDate ),
+                new PropertyAssignment(nameof(AppUser.TrustedDevices),  () => trustedDevices.ToList().AsReadOnly() )
                 //new PropertyAssignment(nameof(AppUser.TwoFactorProvider),  () => twoFactorProvider ),
         };
 
 
         var user =  NonPublicConstructorInvoker.CreateNoParamsInstance<AppUser>(paramaters);
+        NonPublicClassMembers.SetField(user, "_trustedDevices", trustedDevices);
+
         user.Update2FactorProvider(twoFactorProvider ??= TwoFactorProvider.Email); 
         return user;
     }

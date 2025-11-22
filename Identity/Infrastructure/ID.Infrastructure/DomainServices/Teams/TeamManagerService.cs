@@ -85,7 +85,7 @@ internal class TeamManagerService<TUser>(
     //- - - - - - - - - - - - - - - - - - //
 
     public async Task<Team?> GetByIdWithMemberAsync(Guid? teamId, Guid? userId) =>
-        await _teamRepo.FirstOrDefaultAsync(new TeamByIdWithMemberSpec(teamId, userId));
+        await _teamRepo.FirstOrDefaultAsync(new TeamByIdWithMemberAndTrustedDevicesSpec(teamId, userId));
 
     //- - - - - - - - - - - - - - - - - - //
 
@@ -314,7 +314,7 @@ internal class TeamManagerService<TUser>(
         if (teamId is null || userId is null)
             return null;
 
-        var team = await _teamRepo.FirstOrDefaultAsync(new TeamByIdWithMemberSpec(teamId, userId));
+        var team = await _teamRepo.FirstOrDefaultAsync(new TeamByIdWithMemberAndTrustedDevicesSpec(teamId, userId));
         return team?.Members.FirstOrDefault(u => u.Id == userId) as TUser;
     }
 

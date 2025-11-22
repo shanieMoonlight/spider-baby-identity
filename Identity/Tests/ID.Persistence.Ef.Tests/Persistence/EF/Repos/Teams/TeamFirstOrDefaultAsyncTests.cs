@@ -115,7 +115,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
         await DbContext.Set<AppUser>().AddAsync(member);
         await DbContext.SaveChangesAsync();
 
-        var spec = new TeamByIdWithMemberSpec(_customerTeam.Id, member.Id);
+        var spec = new TeamByIdWithMemberAndTrustedDevicesSpec(_customerTeam.Id, member.Id);
 
         // Act
         var result = await _repo.FirstOrDefaultAsync(spec);
@@ -131,7 +131,7 @@ public class TeamFirstOrDefaultAsyncTests : RepoTestBase, IAsyncLifetime
     {
         // Arrange
         var nonExistingMemberId = Guid.NewGuid();
-        var spec = new TeamByIdWithMemberSpec(_customerTeam.Id, nonExistingMemberId);
+        var spec = new TeamByIdWithMemberAndTrustedDevicesSpec(_customerTeam.Id, nonExistingMemberId);
 
         // Act
         var result = await _repo.FirstOrDefaultAsync(spec);

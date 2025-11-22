@@ -1,13 +1,5 @@
-﻿using ID.Tests.Data.Factories;
-using Moq;
-using MyResults;
-using Shouldly;
+﻿using ID.Application.AppAbs.ApplicationServices.Principal;
 using ID.Application.Features.Teams.Cmd.Delete;
-using ID.Application.AppAbs.ApplicationServices.Principal;
-using ID.Domain.Utility.Messages;
-using ID.Domain.Entities.Teams;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Abstractions.Services.Teams;
 
 
 namespace ID.Application.Tests.Features.Teams.Cmd.DeleteCustomer;

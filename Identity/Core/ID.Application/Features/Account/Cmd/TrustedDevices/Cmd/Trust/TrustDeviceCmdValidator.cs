@@ -1,5 +1,4 @@
 using FluentValidation;
-using ID.Application.Features.Account.Cmd.ResendEmailConfirmationPrincipal;
 using ID.Application.Mediatr.Validation;
 using ID.Domain.Utility.Messages;
 

@@ -1,20 +1,19 @@
 ﻿using ClArch.SimpleSpecification;
 using ID.Domain.Entities.Teams;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ID.Domain.Repos.Specs.Teams;
 /// <summary>
 /// Specification for querying a team by its ID and including a specific member with their address.
 /// </summary>
-internal class TeamByIdWithMemberSpec : ASimpleSpecification<Team>
+internal class TeamByIdWithMemberAndTrustedDevicesSpec : ASimpleSpecification<Team>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="TeamByIdWithMemberSpec"/> class.
+    /// Initializes a new instance of the <see cref="TeamByIdWithMemberAndTrustedDevicesSpec"/> class.
     /// </summary>
     /// <param name="teamId">The ID of the team to query.</param>
     /// <param name="userId">The ID of the user to include in the query.</param>
-    public TeamByIdWithMemberSpec(Guid? teamId, Guid? userId)
+    public TeamByIdWithMemberAndTrustedDevicesSpec(Guid? teamId, Guid? userId)
         : base(tm => tm.Id == teamId)
     {
         // Set short circuit condition to avoid query execution if teamId or userId is not provided

@@ -33,7 +33,6 @@ internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceSe
         return GenResult<TrustedDevice>.Success(device);
     }
 
-
     //-----------------------//
 
 

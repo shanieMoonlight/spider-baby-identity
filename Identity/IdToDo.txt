@@ -102,6 +102,8 @@ TrustedDevice event handling
 TrustedDevice hanndlers need validators
 Set MaxTrustedDevicesPerUser somewhere central
 
+Decide on Cmd params for single param commands.  Dto or string/guid etc.
+
 MemberAuditRepo
 
 More ValidateOnstart
@@ -126,6 +128,8 @@ Make Generic:
         return services;
     }
 
+
+    Add integration tests for Specs
 
 
 

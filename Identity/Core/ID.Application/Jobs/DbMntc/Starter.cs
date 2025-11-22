@@ -11,6 +11,7 @@ public static class DbMntcJobsStarterExtensions
         services.TryAddScoped<TeamSubscriptionCheckJob>();
         services.TryAddScoped<TeamLeaderMntcJob>();
         services.TryAddScoped<OldRefreshTokensJob>();
+        services.TryAddScoped<ExpiredTrustedDevicesJob>();
         return services;
     }
 
@@ -34,6 +35,10 @@ public static class DbMntcJobsStarterExtensions
             .SetupRecurringDevelopment(handler => handler.HandleAsync(), cron.Weekly());
 
         provider.BuildJobStarter<OldRefreshTokensJob>()
+            .SetupRecurringProduction(handler => handler.HandleAsync(), cron.Weekly())
+            .SetupRecurringDevelopment(handler => handler.HandleAsync(), cron.Monthly());
+
+        provider.BuildJobStarter<ExpiredTrustedDevicesJob>()
             .SetupRecurringProduction(handler => handler.HandleAsync(), cron.Weekly())
             .SetupRecurringDevelopment(handler => handler.HandleAsync(), cron.Monthly());
 

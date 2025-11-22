@@ -258,7 +258,7 @@ public class TeamRepoTests : RepoTestBase, IAsyncLifetime
         var spec = new CustomerTeamsByNameSpec("Customer");
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();

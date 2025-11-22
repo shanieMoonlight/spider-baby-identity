@@ -1,11 +1,7 @@
 using ID.Domain.Entities.AppUsers.Validators;
-using ID.Domain.Entities.TrustedDevices;
 using ID.Tests.Data.Factories;
 using Shouldly;
-using System;
-using System.Linq;
 using System.Reflection;
-using Xunit;
 using static MyResults.BasicResult;
 
 namespace ID.Domain.Tests.Entities.AppUsers.TrustedDevices;
@@ -19,7 +15,7 @@ public class TrustedDeviceRevocationValidatorTests
         // Arrange
         var userId = Guid.NewGuid();
         var device = TrustedDeviceDataFactory.Create(userId: userId);
-        var user = AppUserDataFactory.Create(id: userId, trustedDevices: new HashSet<TrustedDevice> { device });
+        var user = AppUserDataFactory.Create(id: userId, trustedDevices: [device]);
 
         // Act
         var result = TrustedDeviceValidators.Revocation.Validate(user, device);
@@ -88,7 +84,7 @@ public class TrustedDeviceRevocationValidatorTests
         // Arrange
         var userId = Guid.NewGuid();
         var device = TrustedDeviceDataFactory.Create(userId: userId);
-        var user = AppUserDataFactory.Create(id: userId, trustedDevices: new HashSet<TrustedDevice> { device });
+        var user = AppUserDataFactory.Create(id: userId, trustedDevices: [device]);
 
         // Act
         var result = TrustedDeviceValidators.Revocation.Validate(user, device);

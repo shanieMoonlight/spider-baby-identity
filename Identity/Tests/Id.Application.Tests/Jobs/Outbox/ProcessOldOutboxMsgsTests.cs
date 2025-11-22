@@ -70,7 +70,7 @@ public class ProcessOldOutboxMsgsTests : ServiceProviderTestBase
     public async Task HandleAsync_Should_Not_LogError_If_No_Exception()
     {
         // Arrange
-        _outboxRepoMock.Setup(r => r.ListAllAsync(It.Is<OutboxMsgsCompletedOlderThanSpec>(s => s.Seed == 14), It.IsAny<CancellationToken>()))
+        _outboxRepoMock.Setup(r => r.ListAllTrackedAsync(It.Is<OutboxMsgsCompletedOlderThanSpec>(s => s.Seed == 14), It.IsAny<CancellationToken>()))
             .ReturnsAsync(IdOutboxMessageDataFactory.CreateMany(0));
 
         // Act

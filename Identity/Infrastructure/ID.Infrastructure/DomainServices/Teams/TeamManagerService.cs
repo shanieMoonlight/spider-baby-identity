@@ -34,7 +34,7 @@ internal class TeamManagerService<TUser>(
 
     public async Task<IEnumerable<Team>> GetAllTeams(bool includeMntc, bool includeSuper, CancellationToken cancellationToken = default)
     {
-        var allTeams = await _teamRepo.ListAllAsync(new AllTeamsSpec(), cancellationToken);
+        var allTeams = await _teamRepo.ListAllTrackedAsync(new AllTeamsSpec(), cancellationToken);
 
         if (!includeMntc)
             allTeams = [.. allTeams.Where(t => t.TeamType != TeamType.maintenance)];
@@ -47,12 +47,12 @@ internal class TeamManagerService<TUser>(
     //- - - - - - - - - - - - - - - - - - //
 
     public async Task<IReadOnlyList<Team>> GetAllTeamsWithExpiredSubscriptions(CancellationToken cancellationToken = default) =>
-        await _teamRepo.ListAllAsync(new TeamsWithExpiredSubscriptionsSpec(), cancellationToken);
+        await _teamRepo.ListAllTrackedAsync(new TeamsWithExpiredSubscriptionsSpec(), cancellationToken);
 
     //- - - - - - - - - - - - - - - - - - //
 
     public async Task<IEnumerable<Team>> GetCustomerTeamsByNameAsync(string? name) =>
-        await _teamRepo.ListAllAsync(new CustomerTeamsByNameSpec(name));
+        await _teamRepo.ListAllTrackedAsync(new CustomerTeamsByNameSpec(name));
 
     //- - - - - - - - - - - - - - - - - - //
 

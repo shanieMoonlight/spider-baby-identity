@@ -20,7 +20,7 @@ internal class IdentityOutboxMsgsService(IIdentityOutboxMessageRepo repo) : IIde
     //- - - - - - - - - - - - - - - - - - //
 
     public Task<IReadOnlyList<IdOutboxMessage>> GetAllByTypeAsync(string? name) 
-        => repo.ListAllAsync(new OutboxMsgsByTypeSpec(name));
+        => repo.ListAllTrackedAsync(new OutboxMsgsByTypeSpec(name));
 
     //- - - - - - - - - - - - - - - - - - //
     public Task<Page<IdOutboxMessage>> GetPageAsync(PagedRequest request) 

@@ -106,6 +106,12 @@ Decide on Cmd params for single param commands.  Dto or string/guid etc.
 
 OAuth Generate ID in domain not DB
 
+Test all TrustedDevicesSpecs
+
+
+
+repos.ListAllTrackedAsync
+
 
 MemberAuditRepo
 

@@ -142,7 +142,7 @@ internal class IdentitySubscriptionPlanService(IIdUnitOfWork _uow)
     //- - - - - - - - - - - - - - - - - - //
 
     public Task<IReadOnlyList<SubscriptionPlan>> GetAllByNameAsync(string? name)
-        => _repo.ListAllAsync(new SubPlanByNameSpec(name));
+        => _repo.ListAllTrackedAsync(new SubPlanByNameSpec(name));
 
     //- - - - - - - - - - - - - - - - - - //
 

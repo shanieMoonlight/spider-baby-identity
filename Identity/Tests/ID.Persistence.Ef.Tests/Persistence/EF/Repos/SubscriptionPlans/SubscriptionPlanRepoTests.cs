@@ -256,7 +256,7 @@ public class SubscriptionPlanRepoTests : RepoTestBase, IAsyncLifetime
         var spec = new GetSubscriptionPlanByNameSpec(_basicPlan.Name);
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.Count.ShouldBe(1);
@@ -270,7 +270,7 @@ public class SubscriptionPlanRepoTests : RepoTestBase, IAsyncLifetime
         var spec = new GetSubscriptionPlanByNameContainsSpec("Plan");
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.Count.ShouldBe(3); // All plans contain "Plan"
@@ -286,7 +286,7 @@ public class SubscriptionPlanRepoTests : RepoTestBase, IAsyncLifetime
         var spec = new GetSubscriptionPlansByDeviceLimitSpec(5);
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.Count.ShouldBe(1);
@@ -301,7 +301,7 @@ public class SubscriptionPlanRepoTests : RepoTestBase, IAsyncLifetime
         var spec = new GetSubscriptionPlansByRenewalTypeSpec(SubscriptionRenewalTypes.Monthly);
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.Count.ShouldBe(2); // Basic and Premium are monthly
@@ -317,7 +317,7 @@ public class SubscriptionPlanRepoTests : RepoTestBase, IAsyncLifetime
         var spec = new GetSubscriptionPlansByPriceRangeSpec(10.0, 50.0);
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.Count.ShouldBe(1); // Only Premium plan (19.99) is in this range
@@ -379,7 +379,7 @@ public class SubscriptionPlanRepoTests : RepoTestBase, IAsyncLifetime
 
         // Act - Test price range filtering
         var priceRangeSpec = new GetSubscriptionPlansByPriceRangeSpec(0.0, 20.0);
-        var priceRangeResults = await _repo.ListAllAsync(priceRangeSpec);
+        var priceRangeResults = await _repo.ListAllTrackedAsync(priceRangeSpec);
 
         // Assert
         priceRangeResults.Count.ShouldBe(3); // Basic (9.99), Premium (19.99), Monthly Low (5.0)

@@ -88,7 +88,8 @@ public class TrustedDevice : IdDomainEntity
 
     public bool IsExpired()
     {
-        if (!TrustedUntil.HasValue) return false;
+        if (!TrustedUntil.HasValue) 
+            return false;
         return TrustedUntil.Value < DateTime.UtcNow;
 
     }

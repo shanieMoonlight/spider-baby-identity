@@ -1,6 +1,8 @@
 ﻿using ID.Application.Jobs.Abstractions;
-using ID.Domain.Abstractions.Services.Teams;
+using ID.Domain.Repos;
+using ID.Domain.Repos.Specs.TrustedDevices;
 using ID.Domain.Repos.Transactions;
+using ID.GlobalSettings.Constants;
 using ID.GlobalSettings.Errors;
 using LoggingHelpers;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,17 +10,18 @@ using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 
 
+
 namespace ID.Application.Jobs.DbMntc;
-internal class TeamSubscriptionCheckJob(IServiceProvider _serviceProvider, ILogger<TeamSubscriptionCheckJob> logger)
-    : AMyIdJobHandler("TEAM_SUBSCRIPTIONS_CHECK_JOB")
+internal class ExpiredTrustedDevicesJob(IServiceProvider _serviceProvider, ILogger<ExpiredTrustedDevicesJob> logger)
+    : AMyIdJobHandler("EXPIRED_TRUSTED_DEVICES_JOB")
 {
     [MyIdDisableConcurrentExecution(timeoutInSeconds: 300)]
-    [DisplayName("MyId - Check Expired Subscriptions")]
+    [DisplayName("MyId - Check Expired Trusted Devices")]
     public override async Task HandleAsync()
     {
 
         using var scope = _serviceProvider.CreateScope();
-        var _teamMgr = scope.ServiceProvider.GetRequiredService<IIdentityTeamManager<AppUser>>();
+        var _repo = scope.ServiceProvider.GetRequiredService<IIdentityTrustedDeviceRepo>();
         var transactionService = scope.ServiceProvider.GetRequiredService<IIdentityTransactionService>();
 
         // Get the execution strategy from the transaction service and run the transactional unit inside it.
@@ -29,16 +32,16 @@ internal class TeamSubscriptionCheckJob(IServiceProvider _serviceProvider, ILogg
             using var transaction = await transactionService.BeginTransactionAsync(ct);
             try
             {
-                var teams = await _teamMgr.GetAllTeamsWithExpiredSubscriptions(ct);
+                var spec = TrustedDevicesExpiredSpec.Create(expiredByDays: IdGlobalConstants.TrustedDevices.MAX_EXPIRED_BY_DAYS);
 
-                foreach (var team in teams)
+                var devices = await _repo.ListAllTrackedAsync(spec, ct);
+
+
+                var batches = devices.Chunk(50).ToList();
+
+                foreach (var batch in batches)
                 {
-                    foreach (var subscription in team.Subscriptions)
-                    {
-                        if (subscription.Expired)
-                            subscription.Deactivate();
-                    }
-                    await _teamMgr.UpdateAsync(team);
+                    await _repo.RemoveRangeAsync(batch);
                 }
 
                 await transactionService.SaveChangesAsync(ct);
@@ -50,12 +53,9 @@ internal class TeamSubscriptionCheckJob(IServiceProvider _serviceProvider, ILogg
                 await transaction.RollbackAsync(ct);
             }
         }, default);
-
-
-
-
-
     }
+
+
 
 
 }//Cls

@@ -60,7 +60,7 @@ internal class IdentityFeatureFlagService(IIdentityFeatureFlagRepo _repo) : IIde
     //- - - - - - - - - - - - - - - - - - //
 
     public async Task<IReadOnlyList<FeatureFlag>> GetAllByNameAsync(string? name, CancellationToken cancellationToken) =>
-        await _repo.ListAllAsync(new FlagByNameSpec(name), cancellationToken);
+        await _repo.ListAllTrackedAsync(new FlagByNameSpec(name), cancellationToken);
 
     //- - - - - - - - - - - - - - - - - - //
 

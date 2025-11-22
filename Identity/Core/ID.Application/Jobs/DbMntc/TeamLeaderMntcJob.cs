@@ -23,7 +23,7 @@ internal sealed class TeamLeaderMntcJob(IServiceProvider _serviceProvider, ILogg
             var uow = scope.ServiceProvider.GetRequiredService<IIdUnitOfWork>();
 
             IIdentityTeamRepo _repo = uow.TeamRepo;
-            var teams = await _repo.ListAllAsync(new TeamsWithMissingLeadersSpec());
+            var teams = await _repo.ListAllTrackedAsync(new TeamsWithMissingLeadersSpec());
             foreach (var team in teams)
             {
                 var highestPositionMember = team.Members

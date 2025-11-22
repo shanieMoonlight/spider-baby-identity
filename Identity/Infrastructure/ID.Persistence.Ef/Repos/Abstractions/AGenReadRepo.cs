@@ -128,7 +128,7 @@ internal abstract class AGenReadRepo<T>(IdDbContext _db) : IGenReadRepo<T> where
     /// <param name="spec">The specification to match.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>List of all entities that match the specification.</returns>
-    public virtual async Task<IReadOnlyList<T>> ListAllAsync(ASimpleSpecification<T> spec, CancellationToken cancellationToken = default)
+    public virtual async Task<IReadOnlyList<T>> ListAllTrackedAsync(ASimpleSpecification<T> spec, CancellationToken cancellationToken = default)
     {
         if (spec.ShouldShortCircuit())
             return [];

@@ -37,7 +37,7 @@ internal sealed class ProcessMyIdOutboxMsgJob(IServiceProvider _serviceProvider,
 
 
             var spec = UnprocessedOutboxMsgsSpec.Create(25);
-            var msgs = await repo.ListAllAsync(spec);
+            var msgs = await repo.ListAllTrackedAsync(spec);
             if (!msgs.Any())
                 return;
 

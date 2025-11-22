@@ -4,7 +4,7 @@ using ID.Domain.Entities.AppUsers;
 using Microsoft.Extensions.Logging;
 using MyResults;
 
-namespace ID.Application.Features.Account.Cmd.TrustedDevices.RevokeByFingerPrint;
+namespace ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.RevokeByFingerPrint;
 
 public class RevokeTrustedDeviceByFingerPrintCmdHandler(ITrustedDeviceService<AppUser> _service, ILogger<RevokeTrustedDeviceByFingerPrintCmdHandler> logger)
     : IIdCommandHandler<RevokeTrustedDeviceByFingerprintCmd>

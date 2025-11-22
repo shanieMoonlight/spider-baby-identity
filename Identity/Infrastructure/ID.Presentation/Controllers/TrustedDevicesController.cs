@@ -1,8 +1,8 @@
 using ControllerHelpers;
 using ID.Application.Features.Account.Cmd.TrustedDevices;
-using ID.Application.Features.Account.Cmd.TrustedDevices.Revoke;
-using ID.Application.Features.Account.Cmd.TrustedDevices.RevokeByFingerPrint;
-using ID.Application.Features.Account.Cmd.TrustedDevices.Trust;
+using ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.Revoke;
+using ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.RevokeByFingerPrint;
+using ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.Trust;
 using ID.GlobalSettings.Routes;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

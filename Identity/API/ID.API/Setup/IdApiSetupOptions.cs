@@ -230,6 +230,13 @@ public class IdApiSetupOptions
     public bool AllowExternalPagesDevModeAccess { get; set; } = InfrastructureDefaultValues.ALLOW_EXTERNAL_PAGES_DEV_MODE_ACCESS;
 
 
+
+
+    ///// <summary>
+    ///// Maximum number of trusted devices a user can have. (Prevent Database clutter)
+    ///// </summary>
+    //public int MaxTrustedDevicesPerUser { get; set; } = 10;
+
     #endregion
 
 

@@ -58,8 +58,17 @@ UpdateTeamLeader_MNTC_CmdHandler Make sure it works
 Stop using : InvariantStringDictionary
 
 
+Let API control Persistence/Jobs setup directly.
+ IdInfrastructureSetupOptions:   Remove 
+    public required string ConnectionString { get; set; } = string.Empty;??
+     public required string? SwaggerUrl { get; set; } ??
+ DO IdInfrastructureSetupOptions belong in Application layer????
+ IdInfrastructureSetupOptions - user validateOnstart
 
-Replace FromAppService with DeviceAuthService
+ All DomeinEvents should only have Ids not full entities
+
+
+Replace FromAppService with TrustedDeviceAuthService 
 remove FromAppMiddleware
 IIsFromMobileApp _fromAppService
  - Maybe remove this and and send 2 factor anyway???
@@ -91,8 +100,11 @@ Simplify TeamSubscription management Service/factory etc.
 Uipdate TeamByIdWithMemberSpec tests
 TrustedDevice event handling
 TrustedDevice hanndlers need validators
+Set MaxTrustedDevicesPerUser somewhere central
 
 MemberAuditRepo
+
+More ValidateOnstart
 
 Trust Device should check if there is already a trusted (maybe expired) device before adding a new one  (Extend Validity)
 // Business rule: Max 10 trusted devices per user

@@ -77,5 +77,13 @@ public partial class IdGlobalDefaultValues
     public const int MIN_SYMMETRIC_SIGNING_KEY_LENGTH = 50;
 
 
+
+    // Key for verifying token signature. SYMMETRIC
+    /// <summary>
+    /// 50
+    /// </summary>
+    public const int MAX_TRUSTED_DEVICES_PER_USER = 20;
+
+
 }//Cls
 #pragma warning restore IDE1006 // Naming Styles

@@ -1,6 +1,6 @@
-using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.TrustedDevices.ValueObjects;
 using ID.Domain.Utility.Messages;
+using ID.GlobalSettings.Setup.Defaults;
 using MyResults;
 
 namespace ID.Domain.Entities.AppUsers.Validators;
@@ -41,12 +41,13 @@ public  partial class TrustedDeviceValidators
             UserAgent userAgent, 
             TrustDurationNullable trustDuration)
         {
-            // Business rule: Max 10 trusted devices per user
-            const int MAX = 10;
+            // Business rule: Limit trusted devices per user
+            const int MAX = IdGlobalDefaultValues.MAX_TRUSTED_DEVICES_PER_USER;
             if (user.TrustedDevices.Count >= MAX)
                 return GenResult<Token>.BadRequestResult(IDMsgs.Error.TrustedDevices.MAX_EXCEEDED(user, MAX));
 
             // Business rule: Device fingerprint not already trusted by this user (and not active)
+            // If Expired adding device will extend trust, so we let it pass
             var existing = user.TrustedDevices.FirstOrDefault(d => d.DeviceFingerprint == deviceFingerprint.Value && !d.IsExpired());
             if (existing is not null)
                 return GenResult<Token>.BadRequestResult(IDMsgs.Error.TrustedDevices.ALREADY_TRUSTED(existing, user));

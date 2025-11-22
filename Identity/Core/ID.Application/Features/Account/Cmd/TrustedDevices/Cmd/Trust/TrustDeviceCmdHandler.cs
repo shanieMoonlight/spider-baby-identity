@@ -2,12 +2,11 @@ using ID.Application.Mediatr.CqrsAbs;
 using ID.Domain.Abstractions.Services.TrustedDevices;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.TrustedDevices.ValueObjects;
-using Microsoft.Extensions.Logging;
 using MyResults;
 
-namespace ID.Application.Features.Account.Cmd.TrustedDevices.Trust;
+namespace ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.Trust;
 
-public class TrustDeviceCmdHandler(ITrustedDeviceService<AppUser> _service, ILogger<TrustDeviceCmdHandler> logger) : IIdCommandHandler<TrustDeviceCmd, TrustedDeviceDto>
+public class TrustDeviceCmdHandler(ITrustedDeviceService<AppUser> _service) : IIdCommandHandler<TrustDeviceCmd, TrustedDeviceDto>
 {
     public async Task<GenResult<TrustedDeviceDto>> Handle(TrustDeviceCmd request, CancellationToken cancellationToken)
     {
@@ -15,8 +14,8 @@ public class TrustDeviceCmdHandler(ITrustedDeviceService<AppUser> _service, ILog
 
 
         // Build ValueObjects
-        var fingerprint = DeviceFingerprint.Create(request.Dto.Fingerprint);
-        var name = DeviceName.Create(request.Dto.Name);
+        var fingerprint = DeviceFingerprint.Create(request.Dto.DeviceFingerprint);
+        var name = DeviceName.Create(request.Dto.DeviceName);
         var userAgent = UserAgent.CreateNullable(request.Dto.UserAgent);
 
         var addResult =  await _service.AddAsync(

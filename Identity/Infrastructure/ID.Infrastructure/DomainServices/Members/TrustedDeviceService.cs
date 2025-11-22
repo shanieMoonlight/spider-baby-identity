@@ -12,8 +12,6 @@ namespace ID.Infrastructure.DomainServices.Members;
 internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceService<TUser> where TUser : AppUser
 {
 
-    //-----------------------//
-
     public async Task<GenResult<TrustedDevice>> AddAsync(
         TUser user,
         DeviceFingerprint deviceFingerprint,
@@ -27,7 +25,6 @@ internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceSe
         if (!validation.Succeeded)
             return validation.Convert<TrustedDevice>();
 
-        // Apply to aggregate
         var device = user.TrustDevice(validation.Value!);
 
         await uow.SaveChangesAsync(cancellationToken);
@@ -86,4 +83,4 @@ internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceSe
         return BasicResult.Success(IDMsgs.Info.TrustedDevices.REVOKED(device, user));
     }
 
-}
+}//Cls

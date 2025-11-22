@@ -4,7 +4,7 @@ using ID.Domain.Entities.AppUsers;
 using Microsoft.Extensions.Logging;
 using MyResults;
 
-namespace ID.Application.Features.Account.Cmd.TrustedDevices.Revoke;
+namespace ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.Revoke;
 
 public class RevokeTrustedDeviceCmdHandler(ITrustedDeviceService<AppUser> _service, ILogger<RevokeTrustedDeviceCmdHandler> logger)
     : IIdCommandHandler<RevokeTrustedDeviceCmd>

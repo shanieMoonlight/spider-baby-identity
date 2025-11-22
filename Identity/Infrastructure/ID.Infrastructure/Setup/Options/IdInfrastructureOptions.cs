@@ -44,5 +44,15 @@ public class IdInfrastructureOptions
         set => _allowExternalPagesDevModeAccess = value;
     }
 
+
+
+    //private int _maxTrustedDevicesPerUser = InfrastructureDefaultValues.MAX_TRUSTED_DEVICES_PER_USER   ;
+    ///// <inheritdoc cref="IdInfrastructureSetupOptions.MaxTrustedDevicesPerUser"/>
+    //internal int MaxTrustedDevicesPerUser   
+    //{
+    //    get => _maxTrustedDevicesPerUser;
+    //    set => _maxTrustedDevicesPerUser = value;
+    //}
+
 }//Cls
 

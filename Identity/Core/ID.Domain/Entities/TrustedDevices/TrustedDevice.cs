@@ -90,6 +90,7 @@ public class TrustedDevice : IdDomainEntity
     {
         if (!TrustedUntil.HasValue) return false;
         return TrustedUntil.Value < DateTime.UtcNow;
+
     }
 
     //- - - - - - - - - - - - //

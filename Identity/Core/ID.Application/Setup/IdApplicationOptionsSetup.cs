@@ -55,8 +55,7 @@ internal static class IdApplicationOptionsSetup
     //-----------------------------//
 
     private static void ValidateApplicationOptions(IdApplicationOptions options)
-    {
-    }
+    { }
 
 
 }//Cls

@@ -190,6 +190,16 @@ public class IdInfrastructureSetupOptions
     public required string ConnectionString { get; set; } = string.Empty;
 
 
+    //- - - - - - - - - - - - - -//
+
+    ///// <summary>
+    ///// Maximum number of trusted devices a user can have. (Prevent Database clutter)
+    ///// <para></para>
+    ///// Default = <inheritdoc cref="InfrastructureDefaultValues.MAX_TRUSTED_DEVICES_PER_USER"/>
+    ///// </summary>
+    //public required int MaxTrustedDevicesPerUser { get; set; } = 15;
+
+
 }//Cls
 
 

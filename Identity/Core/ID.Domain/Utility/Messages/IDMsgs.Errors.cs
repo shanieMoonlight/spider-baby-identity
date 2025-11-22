@@ -193,6 +193,7 @@ public partial class IDMsgs
             public static string ALREADY_TRUSTED(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.DeviceFingerprint} has already been trusted by user, {user.Email}";
             public static string ALREADY_REVOKED(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.DeviceFingerprint} has already been revoked by user, {user.Email}";
             public static string USER_NOT_OWNER(TrustedDevice trustedDevice, AppUser user) => $"User with email, {user.Email} is not the owner of the device with fingerprint, {trustedDevice.DeviceFingerprint}";
+            public static string USER_NOT_OWNER(TrustedDevice trustedDevice, Guid userId) => $"User with ID, {userId} is not the owner of the device with fingerprint, {trustedDevice.DeviceFingerprint}";
             public static string REVOKED(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.DeviceFingerprint} has already been revoked by user, {user.Email}";
             public static string MAX_EXCEEDED(AppUser user, int max) => $"User with email, {user.Email} has reached the maximum number of trusted devices, {max}.";
         }

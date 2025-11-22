@@ -1,7 +1,7 @@
 ﻿using ClArch.ValueObjects;
 using ID.Domain.Entities.AppUsers.ValueObjects;
 using ID.Domain.Entities.Common;
-using System.ComponentModel.DataAnnotations.Schema;
+using MassTransit;
 
 namespace ID.Domain.Entities.AppUsers.OAuth;
 
@@ -17,7 +17,7 @@ public class OAuthInfo : IdDomainEntity
     public OAuthProvider Provider { get; set; }
 
     public Guid AppUserId { get; set; }
-    public AppUser AppUser { get; set; }
+    public AppUser? AppUser { get; set; }
 
 
     //------------------------//
@@ -30,22 +30,27 @@ public class OAuthInfo : IdDomainEntity
 
     //- - - - - - - - - - - - //
 
-    public static OAuthInfo Create(
+    private OAuthInfo(
         OAuthProvider provider,
         IssuerNullable issuer,
         ImgUrlNullable imgUrl,
         EmailVerifiedNullable emailVerified)
+     : base(NewId.NextSequentialGuid())
     {
-        var oAuth = new OAuthInfo()
-        {
-            Provider = provider,
-            Issuer = issuer.Value,
-            ImageUrl = imgUrl.Value,
-            EmailVerified = emailVerified.Value
-        };
-
-        return oAuth;
-
+        Issuer = issuer.Value;
+        ImageUrl = imgUrl.Value;
+        EmailVerified = emailVerified.Value;
+        Provider = provider;
     }
+
+
+    //- - - - - - - - - - - - //
+
+    public static OAuthInfo Create(
+        OAuthProvider provider,
+        IssuerNullable issuer,
+        ImgUrlNullable imgUrl,
+        EmailVerifiedNullable emailVerified) =>
+        new (provider, issuer, imgUrl, emailVerified);
 
 }//Cls

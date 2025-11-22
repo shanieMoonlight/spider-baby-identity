@@ -9,6 +9,7 @@ using ID.Domain.Entities.Common;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using ID.Persistence.Ef.Utils;
 
 namespace ID.Persistence.Ef;
 
@@ -43,6 +44,7 @@ public class IdDbContext: IdentityDbContext<AppUser, AppRole, Guid>
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(IdDbContext).Assembly);
         modelBuilder.HasDefaultSchema(IdGlobalConstants.Db.SCHEMA);
+        modelBuilder.ApplyClientSideIdGeneration();
     }
 
     //--------------------------------//

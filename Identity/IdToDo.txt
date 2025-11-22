@@ -104,9 +104,11 @@ Set MaxTrustedDevicesPerUser somewhere central
 
 Decide on Cmd params for single param commands.  Dto or string/guid etc.
 
-OAuth Generate ID in domain not DB
 
 Test all TrustedDevicesSpecs
+
+
+remove Teamrepo.AddNewDevicesToDbAsync
 
 
 
@@ -139,6 +141,8 @@ Make Generic:
 
 
     Add integration tests for Specs
+
+    veritfy that TwoFactorUpdatedEventHandler works correctly  (internal handler)
 
 
 

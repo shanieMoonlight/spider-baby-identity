@@ -50,7 +50,7 @@ internal class TeamRepo(IdDbContext db) : AGenCrudRepo<Team>(db), IIdentityTeamR
         //Our entities create their own PRIMARY KEYS so we can identify new vs existing this way.
         //So EF can't tell if a Subscription or Device is new or existing when we attach the Team entity for update.
         // IT judges-based on whether thePK is default(Guid) or not, but our entities always generate a new Guid on creation.
-        await AddNewSubscriptionsToDbAsync(entity);
+        //await AddNewSubscriptionsToDbAsync(entity);
         await AddNewDevicesToDbAsync(entity);
 
         Db.Entry(entity).State = EntityState.Modified;
@@ -59,28 +59,6 @@ internal class TeamRepo(IdDbContext db) : AGenCrudRepo<Team>(db), IIdentityTeamR
     }
 
     //- - - - - - - - - - - - - - - - - - - //
-
-    private async Task AddNewSubscriptionsToDbAsync(Team entity)
-    {
-        // Get all subscription ids currently in the team entity
-        var subIds = entity.Subscriptions.Select(ts => ts.Id) ?? [];
-
-        // Load existing subscriptions for this team from the database
-        var originalSubs = await Db.Set<TeamSubscription>()
-            .Where(s => s.TeamId == entity.Id)
-            .AsNoTracking()
-            .ToListAsync();
-
-        var originalIds = originalSubs.Select(s => s.Id).ToHashSet();
-
-        // Determine subscriptions that are present in the entity but not in the DB
-        var newSubs = entity.Subscriptions.Where(s => !originalIds.Contains(s.Id));
-
-        foreach (var sub in newSubs)
-        {
-            Db.Add(sub);
-        }
-    }
 
     private async Task AddNewDevicesToDbAsync(Team entity)
     {

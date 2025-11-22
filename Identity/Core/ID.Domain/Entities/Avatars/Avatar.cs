@@ -1,5 +1,4 @@
 ﻿using ID.Domain.Entities.Common;
-using MassTransit;
 using System.ComponentModel.DataAnnotations;
 
 namespace ID.Domain.Entities.Avatars;
@@ -33,7 +32,7 @@ public class Avatar : IdDomainEntity
 
     //- - - - - - - - - - - - //
 
-    private Avatar() : base() { }
+    private Avatar() { }
 
 
 }//Cls

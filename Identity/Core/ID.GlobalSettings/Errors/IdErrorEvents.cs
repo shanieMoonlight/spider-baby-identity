@@ -45,6 +45,10 @@ public class IdErrorEvents
         public const int TwoFactorUpdated = UserPhoneUpdated + 1;
         public const int TeamPositionRangeUpdated = TwoFactorUpdated + 1;
         public const int TeamSubscriptionDeactivated = TeamPositionRangeUpdated + 1;
+        public const int TrustedDeviceAdded = TeamSubscriptionDeactivated + 1;
+        public const int TrustedDeviceExtended = TrustedDeviceAdded + 1;
+        public const int TrustedDeviceRevoked = TrustedDeviceExtended + 1;
+        public const int TrustedDeviceUsed = TrustedDeviceRevoked + 1;
     }
     public static class OAuth
     {

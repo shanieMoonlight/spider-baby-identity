@@ -76,6 +76,7 @@ internal abstract class AGenReadRepo<T>(IdDbContext _db) : IGenReadRepo<T> where
         if (spec.ShouldShortCircuit())
             return null;
 
+
         return await Db.Set<T>()
             .BuildQuery(spec)
             .FirstOrDefaultAsync(cancellationToken);

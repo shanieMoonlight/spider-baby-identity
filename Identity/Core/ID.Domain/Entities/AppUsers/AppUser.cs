@@ -8,7 +8,6 @@ using ID.Domain.Entities.Avatars;
 using ID.Domain.Entities.Common;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Entities.TrustedDevices;
-using ID.Domain.Entities.TrustedDevices.ValueObjects;
 using ID.Domain.Models;
 using ID.Domain.Utility.Exceptions;
 using ID.Domain.Utility.Extensions;
@@ -16,7 +15,6 @@ using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Xml.Linq;
 
 namespace ID.Domain.Entities.AppUsers;
 

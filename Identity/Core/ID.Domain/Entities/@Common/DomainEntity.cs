@@ -18,6 +18,9 @@ public abstract class IdDomainEntity : IIdDomainEventEntity, IIdAuditableDomainE
 
     protected IdDomainEntity(Guid id) => Id = id;
 
+    /// <summary>
+    /// Only use for EF Core. 
+    /// </summary>
     protected IdDomainEntity() { }
 
     //------------------------//

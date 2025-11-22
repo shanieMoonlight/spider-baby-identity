@@ -3,18 +3,18 @@ using ID.Email.Base.Models;
 using ID.Email.Base.Setup;
 using ID.GlobalSettings.Setup.Options;
 
-namespace ID.Email.Base.LocalImps.Specs;
+namespace ID.Email.Base.LocalImps.Specs.Subscriptions;
 
-internal sealed class TwoFactorSpec(string toName, string toAddress, string subject, string verificationCode) : IEmailSpec
+internal sealed class SubscriptionPausedSpec(string toName, string toAddress, string subPlanName, string subject = "Subscription Paused") : IEmailSpec
 {
-    private const string _template_path = @"Assets\html-templates\TwoFactor\IdTwoFactorLogin.html";
+    private const string _template_path = @"Assets\html-templates\Subs\IdSubPaused.html";
 
     public async Task<IEmailDetails> BuildAsync(IdGlobalOptions globalOptions, ITemplateHelpers templateHelpers, IdEmailBaseOptions emailOptions)
     {
         var message = await templateHelpers.ReadAndReplaceTemplateAsync(_template_path, new Dictionary<string, string>
         {
             { EmailPlaceholders.PLACEHOLDER_USERNAME, toName },
-            { EmailPlaceholders.PLACEHOLDER_VERIFICATION_CODE, verificationCode }
+            { EmailPlaceholders.PLACEHOLDER_SUB_PLAN_NAME, subPlanName }
         });
 
         return new EmailDetails(

@@ -12,6 +12,7 @@ using ID.Domain.Utility.Messages;
 using ID.Domain.Models;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Entities.AppUsers;
+using ID.IntegrationEvents.Events.Account.TrustedDevices;
 
 namespace ID.Application.Tests.Features.Account.Cmd.PwdForgot;
 

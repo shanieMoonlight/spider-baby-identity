@@ -1,7 +1,6 @@
 ﻿using ID.Email.Base.AppAbs;
 using ID.Email.Base.LocalAbs;
-using ID.Email.Base.LocalImps;
-using ID.Email.Base.LocalImps.Specs;
+using ID.Email.Base.LocalImps.Specs.Passwords;
 using ID.GlobalSettings.Constants;
 using ID.GlobalSettings.Errors;
 using ID.GlobalSettings.Setup.Options;

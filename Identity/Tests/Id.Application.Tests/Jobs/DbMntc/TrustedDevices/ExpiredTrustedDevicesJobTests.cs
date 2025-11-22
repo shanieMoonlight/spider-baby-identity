@@ -2,6 +2,7 @@ using ID.Domain.Entities.TrustedDevices;
 using ID.Domain.Repos.Specs.TrustedDevices;
 using ID.Domain.Repos.Transactions;
 using ID.Tests.Utility.ServiceProvider;
+using ID.Tests.Utility.Logging;
 
 namespace ID.Application.Tests.Jobs.DbMntc.TrustedDevices;
 
@@ -81,13 +82,19 @@ public class ExpiredTrustedDevicesJobTests : ServiceProviderTestBase
     public async Task HandleAsync_WhenRepoThrows_ShouldRollbackAndLog()
     {
         // Arrange
-        _repoMock.Setup(r => r.ListAllTrackedAsync(It.IsAny<TrustedDevicesExpiredSpec>(), It.IsAny<CancellationToken>())).ThrowsAsync(new Exception("boom"));
+        var boom = new Exception("boom");
+        _repoMock.Setup(r => r.ListAllTrackedAsync(It.IsAny<TrustedDevicesExpiredSpec>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(boom);
 
         // Act
         await _job.HandleAsync();
 
         // Assert
         _transactionMock.Verify(t => t.RollbackAsync(It.IsAny<CancellationToken>()), Times.Once);
-        _loggerMock.Verify(l => l.Log(It.IsAny<LogLevel>(), It.IsAny<EventId>(), It.IsAny<It.IsAnyType>(), It.IsAny<Exception>(), It.IsAny<Func<object, Exception, string>>()), Times.AtLeastOnce);
+        _loggerMock.VerifyExceptionLogging(
+            IdErrorEvents.Jobs.DbMntc,
+            boom,
+            Times.AtLeastOnce);
+
     }
 }

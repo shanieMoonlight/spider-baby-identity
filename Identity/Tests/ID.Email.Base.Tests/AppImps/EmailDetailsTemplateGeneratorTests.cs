@@ -1,6 +1,9 @@
 using ID.Email.Base.LocalAbs;
 using ID.Email.Base.LocalImps;
-using ID.Email.Base.LocalImps.Specs;
+using ID.Email.Base.LocalImps.Specs.EmailConfirmation;
+using ID.Email.Base.LocalImps.Specs.Passwords;
+using ID.Email.Base.LocalImps.Specs.Subscriptions;
+using ID.Email.Base.LocalImps.Specs.TwoFactor;
 using ID.GlobalSettings.Setup.Options;
 using ID.Tests.Data.GlobalOptions;
 

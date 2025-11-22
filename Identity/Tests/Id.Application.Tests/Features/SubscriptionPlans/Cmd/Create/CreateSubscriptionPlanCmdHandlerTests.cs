@@ -89,7 +89,7 @@ public class CreateSubscriptionPlanCmdHandlerTests
         var cancellationToken = CancellationToken.None;
         var expectedPlan = SubscriptionPlanDataFactory.Create();
         // Use the new overload that accepts only the plan and cancellation token when there are no feature ids
-        _serviceMock.Setup(s => s.AddAsync(It.IsAny<SubscriptionPlan>(), cancellationToken))
+        _serviceMock.Setup(s => s.AddAsync(It.IsAny<SubscriptionPlan>(), It.IsAny<IEnumerable<Guid>?>(), cancellationToken))
                     .ReturnsAsync(expectedPlan);
 
         // Act

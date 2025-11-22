@@ -23,25 +23,25 @@ public record ForgotPwdEmailRequestIntegrationEvent : AIdIntegrationEvent
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     #endregion
 
-    //- - - - - - - - - - - - - - - - - - //
+    //- - - - - - - - - - - - //
 
-    public ForgotPwdEmailRequestIntegrationEvent(
-        Guid userId,
-        string email,
-        string? phone,
-        string name,
-        string resetToken,
-        bool isCustomerTeam)
-    {
-        Email = email;
-        Phone = phone;
-        Name = name;
-        ResetToken = resetToken;
-        IsCustomerTeam = isCustomerTeam;
-        UserId = userId;
-    }
+    //public ForgotPwdEmailRequestIntegrationEvent(
+    //    Guid userId,
+    //    string email,
+    //    string? phone,
+    //    string name,
+    //    string resetToken,
+    //    bool isCustomerTeam)
+    //{
+    //    Email = email;
+    //    Phone = phone;
+    //    Name = name;
+    //    ResetToken = resetToken;
+    //    IsCustomerTeam = isCustomerTeam;
+    //    UserId = userId;
+    //}
 
-    //- - - - - - - - - - - - - - - - - - //
+    //- - - - - - - - - - - - //
 
     public ForgotPwdEmailRequestIntegrationEvent(AppUser user, string resetToken, bool isCustomerTeam)
     {
@@ -52,7 +52,5 @@ public record ForgotPwdEmailRequestIntegrationEvent : AIdIntegrationEvent
         IsCustomerTeam = isCustomerTeam;
         UserId = user.Id;
     }
-
-    //------------------------//
 
 }//Cls

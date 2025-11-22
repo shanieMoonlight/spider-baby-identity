@@ -79,11 +79,18 @@ public class TrustedDeviceTests
         var user = AppUserDataFactory.Create();
 
         // expired device
-        var expiredDevice = TrustedDevice.Create(user, DeviceFingerprint.Create($"fp-{Guid.NewGuid()}"), DeviceName.Create("E"), UserAgent.Create("UA"), TrustDurationNullable.Create(TimeSpan.FromSeconds(-10)));
+        var expiredDevice = TrustedDeviceDataFactory.Create(
+            user : user,
+            trustedUntil:DateTime.UtcNow.AddSeconds(-30)
+            );
+
         // active device
-        var activeDevice = TrustedDevice.Create(user, DeviceFingerprint.Create($"fp-{Guid.NewGuid()}"), DeviceName.Create("A"), UserAgent.Create("UA"), TrustDurationNullable.Create(TimeSpan.FromHours(1)));
+        var activeDevice = TrustedDeviceDataFactory.Create(
+            user:user, 
+            trustedUntil:DateTime.UtcNow.AddHours(1));
+
         // indefinite device
-        var indefiniteDevice = TrustedDevice.Create(user, DeviceFingerprint.Create($"fp-{Guid.NewGuid()}"), DeviceName.Create("I"), UserAgent.Create("UA"), TrustDurationNullable.Create(null));
+        var indefiniteDevice = TrustedDeviceDataFactory.Create(user:user, trustedUntil: null);
 
         // Act & Assert
         expiredDevice.IsExpired().ShouldBeTrue();

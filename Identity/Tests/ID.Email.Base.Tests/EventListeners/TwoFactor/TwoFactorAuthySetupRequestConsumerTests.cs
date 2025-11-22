@@ -1,10 +1,10 @@
 using Id.Tests.Utility.Exceptions;
 using ID.Email.Base.EventListeners.TwoFactor;
 using ID.Email.Base.LocalAbs;
+using ID.Email.Base.LocalImps.Specs.TwoFactor;
 using ID.GlobalSettings.Errors;
 using ID.IntegrationEvents.Events.Account.TwoFactor;
 using Microsoft.Extensions.Logging;
-using ID.Email.Base.LocalImps.Specs;
 
 namespace ID.Email.Base.Tests.EventListeners.TwoFactor;
 

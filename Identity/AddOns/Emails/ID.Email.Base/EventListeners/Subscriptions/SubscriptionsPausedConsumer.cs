@@ -1,6 +1,6 @@
 ﻿using ID.Email.Base.AppAbs;
 using ID.Email.Base.LocalAbs;
-using ID.Email.Base.LocalImps.Specs;
+using ID.Email.Base.LocalImps.Specs.Subscriptions;
 using ID.GlobalSettings.Errors;
 using ID.IntegrationEvents.Abstractions;
 using ID.IntegrationEvents.Events.Account.Subscriptions;

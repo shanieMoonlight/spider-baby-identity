@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Trusted Device - __appName__</title>
+    <style>
+        body {
+            font-family: Arial, Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            color: #516775;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .color-primary {
+            color: __colorPrimary__;
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            max-height: 250px;
+        }
+
+            .header #logo {
+                max-width: 50%;
+            }
+
+            .header #logo-text {
+                max-width: 50%;
+                color: __colorPrimary__;
+            }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: __colorPrimary__;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        /* Buttons and advanced effects are simplified for email compatibility.
+           Complex properties like text-shadow, box-shadow and darken() are removed. */
+
+        #qr-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                font-size: 18px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hidden preheader for inbox preview -->
+    <span style="display:none; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden; mso-hide:all;">A new trusted device was added to your __appName__ account. If this wasn't you, secure your account immediately.</span>
+    <div class="container">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+                <td align="center">
+                    <div class="header">
+                        <!-- Logo image or text: rendering engine should set display via inline style placeholders -->
+                        <h1 id="logo-text" style="margin:0; font-size:24px; display: __logoTextDisplay__">__appName__</h1>
+                        <img id="logo" src="__logo__" alt="__appName__ logo" style="display: __logoImageDisplay__; max-width:140px; height:auto;">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td align="center" class="color-primary">
+                    <h2 style="color: __colorPrimary__; margin: 0; padding-top: 8px;">New Trusted Device - __appName__</h2>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p><strong>Hi __toName__,</strong></p>
+                    <p>You're receiving this email because a new trusted device has been added to your account.</p>
+
+                    <p><strong>Device Details:</strong></p>
+                    <ul>
+                        <li><strong>Device Name:</strong> __deviceName__</li>
+                        <li><strong>Date & Time:</strong> __dateTime__</li>
+                        <li><strong>User-Agent:</strong> __userAgentShort__</li>
+                    </ul>
+
+
+                    <p style="margin-bottom: 25px;">If this was not you, you should change your password immediately!</p>
+
+                    <!-- Email-safe button using table fallback (works better across Outlook clients) -->
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center">
+                        <tr>
+                            <td align="center" bgcolor="__colorPrimaryHex__" style="border-radius:4px;">
+                                <a href="__callBackUrl__" target="_blank" rel="noreferrer" style="display:inline-block; padding:12px 22px; color:#ffffff; text-decoration:none; font-weight:bold; font-size:14px;">Reset Password</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <p style="margin-top:18px;">&nbsp;</p>
+                    <p><strong>Regards</strong></p>
+
+                    <div style="color: #526875d1; font-size: 14px;">
+                        <strong>The Team at __appName__</strong>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

@@ -104,11 +104,15 @@ Set MaxTrustedDevicesPerUser somewhere central
 
 Decide on Cmd params for single param commands.  Dto or string/guid etc.
 
+TrustedDeviceBus and emails
+
 
 Test all TrustedDevicesSpecs
 
 
 remove Teamrepo.AddNewDevicesToDbAsync
+
+RETEST TrustDeviceCmdHandler
 
 
 

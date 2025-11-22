@@ -8,12 +8,13 @@ public class TrustDeviceCmdHandler(ITrustedDeviceService<AppUser> _service) : II
     public async Task<GenResult<TrustedDeviceDto>> Handle(TrustDeviceCmd request, CancellationToken cancellationToken)
     {
         var user = request.PrincipalUser;
-
+        var dto = request.Dto;
 
         // Build ValueObjects
-        var fingerprint = DeviceFingerprint.Create(request.Dto.DeviceFingerprint);
-        var name = DeviceName.Create(request.Dto.DeviceName);
-        var userAgent = UserAgent.CreateNullable(request.Dto.UserAgent);
+        var fingerprint = DeviceFingerprint.Create(dto.DeviceFingerprint);
+        var name = DeviceName.Create(dto.DeviceName);
+       
+        var userAgent = UserAgent.CreateNullable(GetUserAgent(request));
 
         var addResult =  await _service.AddAsync(
             user:user,
@@ -25,8 +26,21 @@ public class TrustDeviceCmdHandler(ITrustedDeviceService<AppUser> _service) : II
         if (!addResult.Succeeded)
             return addResult.Convert<TrustedDeviceDto>();
 
-        var dto = addResult.Value!.ToDto(); //Success is non-null
+        var newDeviceDto = addResult.Value!.ToDto(); //Success is non-null
+        return GenResult<TrustedDeviceDto>.Success(newDeviceDto);
+    }
 
-        return GenResult<TrustedDeviceDto>.Success(dto);
+    //---------------------------//
+
+    private static string GetUserAgent(TrustDeviceCmd request)
+    {
+        var dto = request.Dto;
+        //var safeUserAgent = dto.UserAgent;
+        if (!string.IsNullOrWhiteSpace(dto.UserAgent))
+            return dto.UserAgent;
+
+        return string.IsNullOrWhiteSpace(request.UserAgent) 
+            ? "Unknown UserAgent" 
+            : request.UserAgent;
     }
 }

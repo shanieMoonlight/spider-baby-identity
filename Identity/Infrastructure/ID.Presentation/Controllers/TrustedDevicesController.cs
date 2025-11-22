@@ -37,7 +37,7 @@ public class TrustedDevicesController(ISender sender, ILogger<TrustedDevicesCont
     /// <returns>The created <see cref="TrustedDeviceDto"/> on success, or an error result.</returns>
     [HttpPost]
     public async Task<ActionResult<TrustedDeviceDto>> Trust([FromBody] TrustDeviceCreateDto dto) =>
-        this.ProcessResult(await sender.Send(new TrustDeviceCmd(dto)), logger);
+        this.ProcessResult(await sender.Send(new TrustDeviceCmd(dto, Request.Headers.UserAgent.ToString())), logger);
 
     //--------------------------// 
 
@@ -46,20 +46,9 @@ public class TrustedDevicesController(ISender sender, ILogger<TrustedDevicesCont
     /// </summary>
     /// <param name="dto">DTO containing the device id to revoke.</param>
     /// <returns>The revoked <see cref="TrustedDeviceDto"/> on success, or an error result.</returns>
-    [HttpPatch]
+    [HttpPost]
     public async Task<ActionResult<TrustedDeviceDto>> Revoke([FromBody] RevokeTrustedDeviceDto dto) =>
         this.ProcessResult(await sender.Send(new RevokeTrustedDeviceCmd(dto)), logger);
-
-    //--------------------------// 
-
-    /// <summary>
-    /// Revoke a trusted device by its id.
-    /// </summary>
-    /// <param name="deviceId">The id of the trusted device to revoke.</param>
-    /// <returns>The revoked <see cref="TrustedDeviceDto"/> on success, or an error result.</returns>
-    [HttpPatch("{deviceId}")]
-    public async Task<ActionResult<TrustedDeviceDto>> Revoke([FromRoute] Guid deviceId) =>
-        this.ProcessResult(await sender.Send(new RevokeTrustedDeviceCmd(new RevokeTrustedDeviceDto(deviceId))), logger);
 
     //--------------------------// 
 
@@ -68,19 +57,10 @@ public class TrustedDevicesController(ISender sender, ILogger<TrustedDevicesCont
     /// </summary>
     /// <param name="dto">DTO containing the fingerprint to revoke.</param>
     /// <returns>The revoked <see cref="TrustedDeviceDto"/> on success, or an error result.</returns>
-    [HttpPatch]
+    //[HttpPatch]
+    [HttpPost]
     public async Task<ActionResult<TrustedDeviceDto>> RevokeByFingerprint([FromBody] RevokeTrustedDeviceByFingerprintDto dto) =>
         this.ProcessResult(await sender.Send(new RevokeTrustedDeviceByFingerprintCmd(dto)), logger);
-    //--------------------------// 
-
-    /// <summary>
-    /// Revoke a trusted device by fingerprint supplied in the route.
-    /// </summary>
-    /// <param name="fingerprint">The device fingerprint to revoke.</param>
-    /// <returns>The revoked <see cref="TrustedDeviceDto"/> on success, or an error result.</returns>
-    [HttpPatch("{fingerprint}")]
-    public async Task<ActionResult<TrustedDeviceDto>> RevokeByFingerprint([FromRoute] string fingerprint) =>
-        this.ProcessResult(await sender.Send(new RevokeTrustedDeviceByFingerprintCmd(new RevokeTrustedDeviceByFingerprintDto(fingerprint))), logger);
 
     //--------------------------// 
 
@@ -126,6 +106,5 @@ public class TrustedDevicesController(ISender sender, ILogger<TrustedDevicesCont
     public async Task<ActionResult<PagedResponse<TrustedDeviceDto>>> Page(PagedRequest? request) =>
         this.ProcessResult(await sender.Send(new GetTrustedDevicesPageQry(request)), logger);
 
-    //--------------------------// 
 
 } //Cls

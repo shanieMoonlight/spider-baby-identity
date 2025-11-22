@@ -2,7 +2,7 @@ using ID.Email.Base.LocalAbs;
 using ID.Email.Base.Setup;
 using ID.GlobalSettings.Setup.Options;
 
-namespace ID.Email.Base.LocalImps.Specs;
+namespace ID.Email.Base.LocalImps.Specs.EmailConfirmation;
 
 internal sealed class EmailConfirmationMntcSpec(string toName, string toAddress, string callbackUrl) : IEmailSpec
 {

@@ -7,4 +7,4 @@ public sealed record TrustDeviceCreateDto(
     int? TrustDays);
 
 
-public record TrustDeviceCmd(TrustDeviceCreateDto Dto) : AIdUserAwareCommand<AppUser, TrustedDeviceDto>;
+public record TrustDeviceCmd(TrustDeviceCreateDto Dto, string? UserAgent) : AIdUserAwareCommand<AppUser, TrustedDeviceDto>;

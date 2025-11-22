@@ -5,7 +5,7 @@ using ID.Email.Base.LocalAbs;
 using ID.IntegrationEvents.Events.Account.TwoFactor;
 using MyResults;
 using ID.GlobalSettings.Errors;
-using ID.Email.Base.LocalImps.Specs;
+using ID.Email.Base.LocalImps.Specs.TwoFactor;
 
 namespace ID.Email.Base.Tests.EventListeners.TwoFactor;
 

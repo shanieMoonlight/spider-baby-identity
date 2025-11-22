@@ -1,7 +1,7 @@
 using ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.RevokeByFingerPrint;
 using ID.Application.Tests.Features.Utility;
 
-namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.RevokeByFingerPrint;
+namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Cmd.RevokeByFingerPrint;
 
 public class RevokeTrustedDeviceByFingerprintCmdValidatorTests
 {

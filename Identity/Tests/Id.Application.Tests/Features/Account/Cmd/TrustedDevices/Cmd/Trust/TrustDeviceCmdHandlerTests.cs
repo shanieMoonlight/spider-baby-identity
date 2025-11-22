@@ -2,7 +2,7 @@ using ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.Trust;
 using ID.Domain.Entities.TrustedDevices;
 using ID.Domain.Entities.TrustedDevices.ValueObjects;
 
-namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Trust;
+namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Cmd.Trust;
 
 public class TrustDeviceCmdHandlerTests
 {
@@ -31,7 +31,7 @@ public class TrustDeviceCmdHandlerTests
             userAgent: dto.UserAgent
         );
 
-        var mockService = new Mock<ID.Domain.Abstractions.Services.TrustedDevices.ITrustedDeviceService<AppUser>>();
+        var mockService = new Mock<Domain.Abstractions.Services.TrustedDevices.ITrustedDeviceService<AppUser>>();
         mockService.Setup(s => s.AddAsync(
                 It.Is<AppUser>(u => u == user),
                 It.Is<DeviceFingerprint>(df => df.Value == dto.DeviceFingerprint),
@@ -81,7 +81,7 @@ public class TrustDeviceCmdHandlerTests
 
         var errorMsg = "invalid request";
 
-        var mockService = new Mock<ID.Domain.Abstractions.Services.TrustedDevices.ITrustedDeviceService<AppUser>>();
+        var mockService = new Mock<Domain.Abstractions.Services.TrustedDevices.ITrustedDeviceService<AppUser>>();
         mockService.Setup(s => s.AddAsync(
                 It.IsAny<AppUser>(),
                 It.IsAny<DeviceFingerprint>(),

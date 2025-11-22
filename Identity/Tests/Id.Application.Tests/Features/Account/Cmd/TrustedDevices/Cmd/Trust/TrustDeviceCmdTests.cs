@@ -1,6 +1,6 @@
 ﻿using ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.Trust;
 
-namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Trust;
+namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Cmd.Trust;
 
 public class TrustDeviceCmdTests
 {

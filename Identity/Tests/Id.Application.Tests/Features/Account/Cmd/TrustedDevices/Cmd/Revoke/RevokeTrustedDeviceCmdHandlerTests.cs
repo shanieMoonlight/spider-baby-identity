@@ -9,7 +9,7 @@ using ID.Domain.Entities.AppUsers;
 using ID.Tests.Data.Factories;
 using ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.Revoke;
 
-namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Revoke;
+namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Cmd.Revoke;
 
 public class RevokeTrustedDeviceCmdHandlerTests
 {
@@ -24,7 +24,7 @@ public class RevokeTrustedDeviceCmdHandlerTests
             PrincipalUser = user
         };
 
-        var mockService = new Mock<ID.Domain.Abstractions.Services.TrustedDevices.ITrustedDeviceService<AppUser>>();
+        var mockService = new Mock<Domain.Abstractions.Services.TrustedDevices.ITrustedDeviceService<AppUser>>();
         mockService.Setup(s => s.RevokeAsync(
                 It.Is<AppUser>(u => u == user),
                 It.Is<Guid>(id => id == dto.DeviceId),
@@ -60,7 +60,7 @@ public class RevokeTrustedDeviceCmdHandlerTests
             PrincipalUser = user
         };
 
-        var mockService = new Mock<ID.Domain.Abstractions.Services.TrustedDevices.ITrustedDeviceService<AppUser>>();
+        var mockService = new Mock<Domain.Abstractions.Services.TrustedDevices.ITrustedDeviceService<AppUser>>();
         mockService.Setup(s => s.RevokeAsync(
                 It.IsAny<AppUser>(),
                 It.IsAny<Guid>(),

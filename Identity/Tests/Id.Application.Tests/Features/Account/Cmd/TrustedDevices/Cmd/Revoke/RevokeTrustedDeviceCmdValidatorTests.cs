@@ -1,7 +1,7 @@
 using ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.Revoke;
 using ID.Application.Tests.Features.Utility;
 
-namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Revoke;
+namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Cmd.Revoke;
 
 public class RevokeTrustedDeviceCmdValidatorTests
 {

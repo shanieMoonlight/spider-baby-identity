@@ -1,8 +1,5 @@
-using ID.Application.Mediatr.CqrsAbs;
 using ID.Domain.Abstractions.Services.TrustedDevices;
-using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.TrustedDevices.ValueObjects;
-using MyResults;
 
 namespace ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.Trust;
 

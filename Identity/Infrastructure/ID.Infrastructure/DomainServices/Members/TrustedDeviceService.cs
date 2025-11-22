@@ -38,17 +38,15 @@ internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceSe
 
     public async Task<BasicResult> RevokeAsync(TUser user, Guid deviceId, CancellationToken cancellationToken)
     {
-        var first = user.TrustedDevices.FirstOrDefault();
-
         var device = user.FindTrustedDevice(deviceId);
         if (device is null)
             return BasicResult.NotFoundResult(IDMsgs.Error.NotFound<TrustedDevice>(deviceId));
 
-        var validation = TrustedDeviceValidators.Revocation.Validate(user, device);
-        if (!validation.Succeeded)
-            return BasicResult.BadRequestResult(validation.Info);
+        var validationResult = TrustedDeviceValidators.Revocation.Validate(user, device);
+        if (!validationResult.Succeeded)
+            return validationResult.ToBasicResult();
 
-        var revoked = user.RevokeTrustedDevice(validation.Value!);
+        var revoked = user.RevokeTrustedDevice(validationResult.Value!);
         if (!revoked)
             return BasicResult.BadRequestResult(IDMsgs.Error.TrustedDevices.ALREADY_REVOKED(device, user));
 
@@ -69,11 +67,11 @@ internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceSe
         if (device is null)
             return BasicResult.NotFoundResult(IDMsgs.Error.NotFound<TrustedDevice>(deviceFingerprint));
 
-        var validation = TrustedDeviceValidators.Revocation.Validate(user, device);
-        if (!validation.Succeeded)
-            return BasicResult.BadRequestResult(validation.Info);
+        var validationResult = TrustedDeviceValidators.Revocation.Validate(user, device);
+        if (!validationResult.Succeeded)
+            return validationResult.ToBasicResult();
 
-        var revoked = user.RevokeTrustedDevice(validation.Value!);
+        var revoked = user.RevokeTrustedDevice(validationResult.Value!);
         if (!revoked)
             return BasicResult.BadRequestResult(IDMsgs.Error.TrustedDevices.ALREADY_REVOKED(device, user));
 

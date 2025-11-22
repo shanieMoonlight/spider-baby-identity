@@ -1,6 +1,7 @@
 using ID.Domain.Entities.TrustedDevices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ID.Domain.Entities.TrustedDevices.ValueObjects;
 
 namespace ID.Persistence.Ef.Config;
 
@@ -18,14 +19,14 @@ internal class TrustedDeviceConfig : IEntityTypeConfiguration<TrustedDevice>
 
         builder.Property(x => x.DeviceFingerprint)
             .IsRequired()
-            .HasMaxLength(Domain.Entities.TrustedDevices.ValueObjects.DeviceFingerprint.MaxLength);
+            .HasMaxLength(DeviceFingerprint.MaxLength);
 
         builder.Property(x => x.Name)
             .IsRequired()
-            .HasMaxLength(Domain.Entities.TrustedDevices.ValueObjects.DeviceName.MaxLength);
+            .HasMaxLength(DeviceName.MaxLength);
 
         builder.Property(x => x.UserAgent)
-            .HasMaxLength(Domain.Entities.TrustedDevices.ValueObjects.UserAgent.MaxLength);
+            .HasMaxLength(UserAgent.MaxLength);
 
         builder.HasOne(x => x.User)
             .WithMany(u => u.TrustedDevices)

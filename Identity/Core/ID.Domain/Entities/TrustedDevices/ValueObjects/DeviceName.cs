@@ -21,4 +21,24 @@ public sealed class DeviceName : StringValueObject
 
 }
 
+
+//=============================================================================//
+
+public sealed class DeviceNameNullable : NullableStringValueObject
+{
+    public static readonly int MaxLength = 100;
+
+    private DeviceNameNullable(string? value) : base(value) { }
+
+    public static DeviceNameNullable Create(string? value)
+    {
+        Ensure.NotNullOrWhiteSpace(value, nameof(DeviceNameNullable));
+        Ensure.MaxLength(value, MaxLength, nameof(DeviceNameNullable));
+
+        return new DeviceNameNullable(value);
+    }
+
+}
+
+
 //=============================================================================//

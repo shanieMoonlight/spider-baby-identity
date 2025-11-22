@@ -104,6 +104,9 @@ Set MaxTrustedDevicesPerUser somewhere central
 
 Decide on Cmd params for single param commands.  Dto or string/guid etc.
 
+OAuth Generate ID in domain not DB
+
+
 MemberAuditRepo
 
 More ValidateOnstart

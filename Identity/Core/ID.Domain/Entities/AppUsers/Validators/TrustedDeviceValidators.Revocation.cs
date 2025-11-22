@@ -25,7 +25,7 @@ public static partial class TrustedDeviceValidators
         public static GenResult<Token> Validate(AppUser user, TrustedDevice device)
         {
             if (device.UserId != user.Id)
-                return GenResult<Token>.BadRequestResult(IDMsgs.Error.TrustedDevices.USER_NOT_OWNER(device, user));
+                return GenResult<Token>.UnauthorizedResult(IDMsgs.Error.TrustedDevices.USER_NOT_OWNER(device, user));
 
 
             return GenResult<Token>.Success(new Token(user, device));

@@ -1,6 +1,6 @@
 using ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.RevokeByFingerPrint;
 
-namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.RevokeByFingerPrint;
+namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Cmd.RevokeByFingerPrint;
 
 public class RevokeTrustedDeviceByFingerprintCmdHandlerTests
 {
@@ -15,7 +15,7 @@ public class RevokeTrustedDeviceByFingerprintCmdHandlerTests
             PrincipalUser = user
         };
 
-        var mockService = new Mock<ID.Domain.Abstractions.Services.TrustedDevices.ITrustedDeviceService<AppUser>>();
+        var mockService = new Mock<Domain.Abstractions.Services.TrustedDevices.ITrustedDeviceService<AppUser>>();
         mockService.Setup(s => s.RevokeAsync(
                 It.Is<AppUser>(u => u == user),
                 It.Is<string>(f => f == dto.DeviceFingerprint),
@@ -51,7 +51,7 @@ public class RevokeTrustedDeviceByFingerprintCmdHandlerTests
             PrincipalUser = user
         };
 
-        var mockService = new Mock<ID.Domain.Abstractions.Services.TrustedDevices.ITrustedDeviceService<AppUser>>();
+        var mockService = new Mock<Domain.Abstractions.Services.TrustedDevices.ITrustedDeviceService<AppUser>>();
         mockService.Setup(s => s.RevokeAsync(
                 It.IsAny<AppUser>(),
                 It.IsAny<string>(),

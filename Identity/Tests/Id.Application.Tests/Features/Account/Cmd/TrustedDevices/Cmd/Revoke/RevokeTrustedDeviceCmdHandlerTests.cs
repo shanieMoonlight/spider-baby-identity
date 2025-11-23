@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using MyResults;
 using ID.Domain.Entities.AppUsers;
 using ID.Tests.Data.Factories;
-using ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.Revoke;
+using ID.Application.Features.Account.TrustedDevices.Cmd.Revoke;
 
 namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Cmd.Revoke;
 

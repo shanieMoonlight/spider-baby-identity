@@ -1,10 +1,3 @@
-using ID.Domain.Entities.AppUsers.Validators;
-using ID.Domain.Entities.TrustedDevices;
-using ID.Domain.Entities.TrustedDevices.ValueObjects;
-using ID.GlobalSettings.Setup.Defaults;
-using ID.Tests.Data.Factories;
-using Shouldly;
-using System.Reflection;
 using static MyResults.BasicResult;
 
 namespace ID.Domain.Tests.Entities.AppUsers.TrustedDevices;
@@ -20,10 +13,11 @@ public class TrustedDeviceAdditionValidatorTests
         var fingerprint = DeviceFingerprint.Create($"fp-{Guid.NewGuid()}");
         var name = DeviceName.Create("My Device");
         var ua = UserAgent.Create("MyUserAgent");
+        var ip = IpAddress.Create("IP");
         var trustDuration = TrustDurationNullable.Create(TimeSpan.FromDays(7));
 
         // Act
-        var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua, trustDuration);
+        var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua,ip, trustDuration);
 
         // Assert
         result.Succeeded.ShouldBeTrue();
@@ -51,10 +45,11 @@ public class TrustedDeviceAdditionValidatorTests
         var fingerprint = DeviceFingerprint.Create($"fp-{Guid.NewGuid()}");
         var name = DeviceName.Create("New Device");
         var ua = UserAgent.Create("UA");
+        var ip = IpAddress.Create("IP");
         var trustDuration = TrustDurationNullable.Create(TimeSpan.FromDays(1));
 
         // Act
-        var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua, trustDuration);
+        var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua,ip, trustDuration);
 
         // Assert
         result.Succeeded.ShouldBeFalse();
@@ -80,10 +75,11 @@ public class TrustedDeviceAdditionValidatorTests
         var fingerprint = DeviceFingerprint.Create(fpValue);
         var name = DeviceName.Create("Some Device");
         var ua = UserAgent.Create("UA-String");
+        var ip = IpAddress.Create("IP");    
         var trustDuration = TrustDurationNullable.Create(TimeSpan.FromDays(3));
 
         // Act
-        var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua, trustDuration);
+        var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua,ip, trustDuration);
 
         // Assert
         result.Succeeded.ShouldBeFalse();
@@ -131,10 +127,11 @@ public class TrustedDeviceAdditionValidatorTests
         var fingerprint = DeviceFingerprint.Create($"fp-{Guid.NewGuid()}");
         var name = DeviceName.Create("Device Name");
         var ua = UserAgent.Create("UA-Example");
+        var ip = IpAddress.Create("IP");
         var trustDuration = TrustDurationNullable.Create(TimeSpan.FromHours(12));
 
         // Act
-        var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua, trustDuration);
+        var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua,ip, trustDuration);
 
         // Assert
         result.Succeeded.ShouldBeTrue();
@@ -169,10 +166,11 @@ public class TrustedDeviceAdditionValidatorTests
         var fingerprint = DeviceFingerprint.Create(fpValue);
         var name = DeviceName.Create("Device X");
         var ua = UserAgent.Create("UA");
+        var ip = IpAddress.Create("IP");
         var trustDuration = TrustDurationNullable.Create(TimeSpan.FromDays(2));
 
         // Act
-        var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua, trustDuration);
+        var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua, ip, trustDuration);
 
         // Assert - should return the first error (max devices)
         result.Succeeded.ShouldBeFalse();

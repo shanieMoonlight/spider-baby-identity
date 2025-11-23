@@ -1,6 +1,7 @@
-using ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.Trust;
 using ID.Domain.Entities.TrustedDevices;
 using ID.Domain.Entities.TrustedDevices.ValueObjects;
+using Microsoft.AspNetCore.Http;
+using System.Net;
 
 namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Cmd.Trust;
 
@@ -11,13 +12,11 @@ public class TrustDeviceCmdHandlerTests
     {
         // Arrange
         var user = AppUserDataFactory.Create();
+        var userAgent = "ua-1";
 
         var dto = new TrustDeviceCreateDto(
             DeviceFingerprint: "fp-123",
-            DeviceName: "My Device",
-            UserAgent: "ua-1",
-            TrustDays: null
-        );
+            DeviceName: "My Device");
 
         var cmd = new TrustDeviceCmd(dto)
         {
@@ -28,7 +27,7 @@ public class TrustDeviceCmdHandlerTests
             user: user,
             deviceFingerprint: dto.DeviceFingerprint,
             name: dto.DeviceName,
-            userAgent: dto.UserAgent
+            userAgent: userAgent
         );
 
         var mockService = new Mock<Domain.Abstractions.Services.TrustedDevices.ITrustedDeviceService<AppUser>>();
@@ -36,11 +35,19 @@ public class TrustDeviceCmdHandlerTests
                 It.Is<AppUser>(u => u == user),
                 It.Is<DeviceFingerprint>(df => df.Value == dto.DeviceFingerprint),
                 It.Is<DeviceName>(dn => dn.Value == dto.DeviceName),
-                It.Is<UserAgent>(ua => ua.Value == dto.UserAgent),
+                It.Is<UserAgent>(ua => ua.Value == userAgent),
+                It.IsAny<IpAddress>(),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(GenResult<TrustedDevice>.Success(trustedDevice));
 
-        var handler = new TrustDeviceCmdHandler(mockService.Object);
+        // Setup HttpContextAccessor with headers and remote IP
+        var httpContext = new DefaultHttpContext();
+        httpContext.Request.Headers.UserAgent = userAgent;
+        httpContext.Connection.RemoteIpAddress = IPAddress.Parse("127.0.0.1");
+        var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+        httpContextAccessorMock.Setup(h => h.HttpContext).Returns(httpContext);
+
+        var handler = new TrustDeviceCmdHandler(mockService.Object, httpContextAccessorMock.Object);
 
         // Act
         var result = await handler.Handle(cmd, CancellationToken.None);
@@ -51,12 +58,13 @@ public class TrustDeviceCmdHandlerTests
                 It.IsAny<DeviceFingerprint>(),
                 It.IsAny<DeviceName>(),
                 It.IsAny<UserAgent>(),
+                It.IsAny<IpAddress>(),
                 It.IsAny<CancellationToken>()),
             Times.Once);
 
         result.Succeeded.ShouldBeTrue();
         result.Value.ShouldNotBeNull();
-        result.Value!.DeviceFingerprint.ShouldBe(trustedDevice.DeviceFingerprint);
+        result.Value!.DeviceFingerprint.ShouldBe(trustedDevice.Fingerprint);
     }
 
     //--------------------------// 
@@ -69,9 +77,7 @@ public class TrustDeviceCmdHandlerTests
 
         var dto = new TrustDeviceCreateDto(
             DeviceFingerprint: "fp-456",
-            DeviceName: "Other Device",
-            UserAgent: null,
-            TrustDays: null
+            DeviceName: "Other Device"
         );
 
         var cmd = new TrustDeviceCmd(dto)
@@ -87,10 +93,19 @@ public class TrustDeviceCmdHandlerTests
                 It.IsAny<DeviceFingerprint>(),
                 It.IsAny<DeviceName>(),
                 It.IsAny<UserAgent>(),
+                It.IsAny<IpAddress>(),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(GenResult<TrustedDevice>.BadRequestResult(errorMsg));
 
-        var handler = new TrustDeviceCmdHandler(mockService.Object);
+        // Setup HttpContextAccessor to avoid null reference
+        var httpContext = new DefaultHttpContext();
+        // empty user-agent and no remote ip
+        httpContext.Request.Headers.UserAgent = string.Empty;
+        httpContext.Connection.RemoteIpAddress = null;
+        var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+        httpContextAccessorMock.Setup(h => h.HttpContext).Returns(httpContext);
+
+        var handler = new TrustDeviceCmdHandler(mockService.Object, httpContextAccessorMock.Object);
 
         // Act
         var result = await handler.Handle(cmd, CancellationToken.None);
@@ -100,4 +115,4 @@ public class TrustDeviceCmdHandlerTests
         result.BadRequest.ShouldBeTrue();
         result.Info.ShouldBe(errorMsg);
     }
-}//Cls
+}

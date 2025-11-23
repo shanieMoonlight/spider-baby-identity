@@ -101,7 +101,7 @@ public class ForgotPwdHandlerTests
         result.ShouldBeOfType<BasicResult>();
         result.Succeeded.ShouldBeTrue();
         result.Info.ShouldBe(IDMsgs.Info.Passwords.PASSWORD_RESET);
-        _mockEventBus.Verify(x => x.Publish(It.IsAny<ForgotPwdEmailRequestIntegrationEvent>(), It.IsAny<CancellationToken>()), Times.Once);
+        _mockEventBus.Verify(x => x.PublishAsync(It.IsAny<ForgotPwdEmailRequestIntegrationEvent>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     //--------------------------//

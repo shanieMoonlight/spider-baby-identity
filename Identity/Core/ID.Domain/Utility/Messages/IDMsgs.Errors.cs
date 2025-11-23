@@ -188,13 +188,15 @@ public partial class IDMsgs
 
         public static class TrustedDevices
         {
-            public static string NOT_OWNED(TrustedDevice trustedDevice, AppUser user) => $"User with email, {user.Email} has ALREADY trusted the device with fingerprint, {trustedDevice.DeviceFingerprint}";
-            public static string NOT_FOUND(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.DeviceFingerprint} was not found for user, {user.Email}";
-            public static string ALREADY_TRUSTED(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.DeviceFingerprint} has already been trusted by user, {user.Email}";
-            public static string ALREADY_REVOKED(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.DeviceFingerprint} has already been revoked by user, {user.Email}";
-            public static string USER_NOT_OWNER(TrustedDevice trustedDevice, AppUser user) => $"User with email, {user.Email} is not the owner of the device with fingerprint, {trustedDevice.DeviceFingerprint}";
-            public static string USER_NOT_OWNER(TrustedDevice trustedDevice, Guid userId) => $"User with ID, {userId} is not the owner of the device with fingerprint, {trustedDevice.DeviceFingerprint}";
-            public static string REVOKED(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.DeviceFingerprint} has already been revoked by user, {user.Email}";
+            public static string NOT_OWNED(TrustedDevice trustedDevice, AppUser user) => $"User with email, {user.Email} has ALREADY trusted the device with fingerprint, {trustedDevice.Fingerprint}";
+            public static string NOT_FOUND(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.Fingerprint} was not found for user, {user.Email}";
+            public static string ALREADY_TRUSTED(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.Fingerprint} has already been trusted by user, {user.Email}";
+            public static string ALREADY_REVOKED(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.Fingerprint} has already been revoked by user, {user.Email}";
+            public static string USER_NOT_OWNER(TrustedDevice trustedDevice, AppUser user) => $"User with email, {user.Email} is not the owner of the device with fingerprint, {trustedDevice.Fingerprint}";
+            public static string USER_NOT_OWNER(TrustedDevice trustedDevice, Guid userId) => $"User with ID, {userId} is not the owner of the device with fingerprint, {trustedDevice.Fingerprint}";
+            public static string USER_NOT_FOUND(TrustedDevice trustedDevice) => $"User not found for device {trustedDevice.Fingerprint}/{trustedDevice.Id}";
+            public static string TEAM_NOT_FOUND(TrustedDevice trustedDevice, AppUser user) => $"Team for {user.FriendlyName} not found for device {trustedDevice.Fingerprint}/{trustedDevice.Id}";
+            public static string REVOKED(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.Fingerprint} has already been revoked by user, {user.Email}";
             public static string MAX_EXCEEDED(AppUser user, int max) => $"User with email, {user.Email} has reached the maximum number of trusted devices, {max}.";
         }
 

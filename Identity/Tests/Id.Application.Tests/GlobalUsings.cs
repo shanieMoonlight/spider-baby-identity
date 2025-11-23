@@ -28,3 +28,4 @@ global using ID.Application.Features.DevMode.SeedSubscriptionPlans;
 global using ID.Application.Features.SubscriptionPlans;
 global using ID.Domain.Abstractions.Services.SubPlans;
 global using ID.Domain.Entities.SubscriptionPlans;
+global using ID.Application.Features.Account.TrustedDevices.Cmd.Trust;

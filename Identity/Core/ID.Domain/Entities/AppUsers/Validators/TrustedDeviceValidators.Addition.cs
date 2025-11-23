@@ -15,7 +15,8 @@ public  partial class TrustedDeviceValidators
                 AppUser user, 
                 DeviceFingerprint deviceFingerprint, 
                 DeviceName deviceName, 
-                UserAgent userAgent, 
+                UserAgent userAgent,
+                IpAddress ipAddress,
                 TrustDurationNullable trustDuration)
             {
                 User = user;
@@ -23,6 +24,7 @@ public  partial class TrustedDeviceValidators
                 DeviceName = deviceName;
                 UserAgent = userAgent;
                 TrustDuration = trustDuration;
+                IpAddress = ipAddress;
             }
 
             public AppUser User { get; }
@@ -30,6 +32,7 @@ public  partial class TrustedDeviceValidators
             public DeviceName DeviceName { get; }
             public UserAgent UserAgent { get; }
             public TrustDurationNullable TrustDuration { get; }
+            public IpAddress IpAddress { get; }
         }
 
         //-----------------------//
@@ -38,7 +41,8 @@ public  partial class TrustedDeviceValidators
             AppUser user, 
             DeviceFingerprint deviceFingerprint, 
             DeviceName deviceName, 
-            UserAgent userAgent, 
+            UserAgent userAgent,
+            IpAddress ipAddress, 
             TrustDurationNullable trustDuration)
         {
             // Business rule: Limit trusted devices per user
@@ -48,11 +52,11 @@ public  partial class TrustedDeviceValidators
 
             // Business rule: Device fingerprint not already trusted by this user (and not active)
             // If Expired adding device will extend trust, so we let it pass
-            var existing = user.TrustedDevices.FirstOrDefault(d => d.DeviceFingerprint == deviceFingerprint.Value && !d.IsExpired());
+            var existing = user.TrustedDevices.FirstOrDefault(d => d.Fingerprint == deviceFingerprint.Value && !d.IsExpired());
             if (existing is not null)
                 return GenResult<Token>.BadRequestResult(IDMsgs.Error.TrustedDevices.ALREADY_TRUSTED(existing, user));
 
-            return GenResult<Token>.Success(new Token(user, deviceFingerprint, deviceName, userAgent, trustDuration));
+            return GenResult<Token>.Success(new Token(user, deviceFingerprint, deviceName, userAgent, ipAddress, trustDuration));
         }
     }
 

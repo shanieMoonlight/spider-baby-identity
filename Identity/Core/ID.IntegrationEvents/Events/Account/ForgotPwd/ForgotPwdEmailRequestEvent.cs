@@ -25,24 +25,6 @@ public record ForgotPwdEmailRequestIntegrationEvent : AIdIntegrationEvent
 
     //- - - - - - - - - - - - //
 
-    //public ForgotPwdEmailRequestIntegrationEvent(
-    //    Guid userId,
-    //    string email,
-    //    string? phone,
-    //    string name,
-    //    string resetToken,
-    //    bool isCustomerTeam)
-    //{
-    //    Email = email;
-    //    Phone = phone;
-    //    Name = name;
-    //    ResetToken = resetToken;
-    //    IsCustomerTeam = isCustomerTeam;
-    //    UserId = userId;
-    //}
-
-    //- - - - - - - - - - - - //
-
     public ForgotPwdEmailRequestIntegrationEvent(AppUser user, string resetToken, bool isCustomerTeam)
     {
         Email = user.Email ?? string.Empty; //Let the consumer handle it.  

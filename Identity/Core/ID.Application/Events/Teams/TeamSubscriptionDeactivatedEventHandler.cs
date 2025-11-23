@@ -48,7 +48,7 @@ internal class TeamSubscriptionDeactivatedEventHandler(
             }
 
             // ! is ok because GetByIdWithEverythingAsync makes sure everything is attached
-            await bus.Publish(
+            await bus.PublishAsync(
                 new SubscriptionsPausedIntegrationEvent(
                     leader.Id,
                     sub.Id,

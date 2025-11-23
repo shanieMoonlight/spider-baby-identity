@@ -31,7 +31,7 @@ public class ForgotPwdConsumer(
         try
         {
             Console.Beep();
-            logger.LogError("{message}", $"ForgotPasswordEvent: {data.Email}: {data.Phone}: {data.Name}: {data.IsCustomerTeam}");
+            //logger.LogError("{message}", $"ForgotPasswordEvent: {data.Email}: {data.Phone}: {data.Name}: {data.IsCustomerTeam}");
             Debug.WriteLine($"ForgotPasswordEvent: {data.Email}");
 
 

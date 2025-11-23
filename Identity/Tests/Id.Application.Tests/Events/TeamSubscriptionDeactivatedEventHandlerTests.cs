@@ -22,7 +22,7 @@ public class TeamSubscriptionDeactivatedEventHandlerTests
     public TeamSubscriptionDeactivatedEventHandlerTests()
     {
         _mockEventBus = new Mock<IEventBus>();
-        _mockEventBus.Setup(m => m.Publish(It.IsAny<SubscriptionsPausedIntegrationEvent>(), It.IsAny<CancellationToken>()))
+        _mockEventBus.Setup(m => m.PublishAsync(It.IsAny<SubscriptionsPausedIntegrationEvent>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
         _mockTeamManager = new Mock<IIdentityTeamManager<AppUser>>();
         _mockLogger = new Mock<ILogger<TeamSubscriptionDeactivatedDomainEvent>>();
@@ -149,7 +149,7 @@ public class TeamSubscriptionDeactivatedEventHandlerTests
 
         // Assert
         _mockEventBus.Verify(
-            x => x.Publish(
+            x => x.PublishAsync(
                 It.IsAny<SubscriptionsPausedIntegrationEvent>(),
                 It.IsAny<CancellationToken>()),
             Times.Once

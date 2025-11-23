@@ -1,4 +1,4 @@
-﻿using ID.Application.Features.Account.Cmd.TrustedDevices.Qry.GetPage;
+﻿using ID.Application.Features.Account.TrustedDevices.Qry.GetPage;
 using Pagination;
 
 namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Qry.GetPage;

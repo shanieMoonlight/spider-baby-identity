@@ -1,5 +1,5 @@
 ﻿using ID.Application.AppAbs.TokenVerificationServices;
-using ID.Application.AppImps;
+using ID.Application.AppImps.EventBuses;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using ID.IntegrationEvents.Abstractions;
@@ -39,7 +39,7 @@ public class EmailConfirmationBusTests
 
         // Assert
         _emailConfServiceMock.Verify(x => x.GenerateSafeEmailConfirmationTokenAsync(It.IsAny<Team>(), It.IsAny<AppUser>()), Times.Never);
-        _eventBusMock.Verify(x => x.Publish(It.IsAny<IIdIntegrationEvent>(), It.IsAny<CancellationToken>()), Times.Never);
+        _eventBusMock.Verify(x => x.PublishAsync(It.IsAny<IIdIntegrationEvent>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 
     //--------------------------//
@@ -60,7 +60,7 @@ public class EmailConfirmationBusTests
 
         // Assert
         _emailConfServiceMock.Verify(x => x.GenerateSafeEmailConfirmationTokenAsync(team, user), Times.Once);
-        _eventBusMock.Verify(x => x.Publish(It.Is<EmailConfirmationRequiringPasswordIntegrationEvent>(e => e.UserId == user.Id && e.ConfirmationToken == token), cancellationToken), Times.Once);
+        _eventBusMock.Verify(x => x.PublishAsync(It.Is<EmailConfirmationRequiringPasswordIntegrationEvent>(e => e.UserId == user.Id && e.ConfirmationToken == token), cancellationToken), Times.Once);
     }
 
     //--------------------------//
@@ -82,7 +82,7 @@ public class EmailConfirmationBusTests
 
         // Assert
         _emailConfServiceMock.Verify(x => x.GenerateSafeEmailConfirmationTokenAsync(team, user), Times.Once);
-        _eventBusMock.Verify(x => x.Publish(It.Is<EmailConfirmationIntegrationEvent>(e => e.UserId == user.Id && e.ConfirmationToken == token), cancellationToken), Times.Once);
+        _eventBusMock.Verify(x => x.PublishAsync(It.Is<EmailConfirmationIntegrationEvent>(e => e.UserId == user.Id && e.ConfirmationToken == token), cancellationToken), Times.Once);
     }
 
     //--------------------------//

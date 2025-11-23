@@ -1,13 +1,8 @@
+using ID.Application.AppAbs.ApplicationServices.User;
+using ID.Application.AppAbs.TokenVerificationServices;
 using ID.IntegrationEvents.Abstractions;
 using ID.IntegrationEvents.Events.Account.ForgotPwd;
-using MyResults;
 using StringHelpers;
-using ID.Application.AppAbs.TokenVerificationServices;
-using ID.Application.AppAbs.ApplicationServices.User;
-using ID.Application.Mediatr.CqrsAbs;
-using ID.Domain.Utility.Messages;
-using ID.Domain.Entities.Teams;
-using ID.Domain.Entities.AppUsers;
 
 namespace ID.Application.Features.Account.Cmd.PwdForgot;
 
@@ -30,11 +25,11 @@ public class ForgotPwdHandler(IFindUserService<AppUser> findUserService, IPwdRes
 
 
         string safePwdResetTkn = await _pwdReset.GenerateSafePasswordResetTokenAsync(user.Team!, user);
-        await bus.Publish(
+        await bus.PublishAsync(
             new ForgotPwdEmailRequestIntegrationEvent(
                 user,
                 safePwdResetTkn,
-                user.Team!.TeamType == TeamType.customer),
+                user.Team!.IsCustomerTeam),
             cancellationToken);
 
         //We must trust Publish

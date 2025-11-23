@@ -108,13 +108,17 @@ TrustedDeviceBus and emails
 
 
 Test all TrustedDevicesSpecs
+Test TrustedDeviceBus
 
 
 remove Teamrepo.AddNewDevicesToDbAsync
 
 RETEST TrustDeviceCmdHandler
-
-
+RETEST ExternalPagesAuthMiddlewareExtensions
+test TrustedDeviceRevokedSpec and TrustedDeviceAddedSpec
+IdGlobalOptions needs __deviceManagementUrl__  (Also ValidateOnStart)
+    
+    Make IdGlobalConstants.EmailRoutes an Ioptions??
 
 repos.ListAllTrackedAsync
 
@@ -123,8 +127,6 @@ MemberAuditRepo
 
 More ValidateOnstart
 
-Trust Device should check if there is already a trusted (maybe expired) device before adding a new one  (Extend Validity)
-// Business rule: Max 10 trusted devices per user
 
 Make Generic:
 
@@ -150,6 +152,9 @@ Make Generic:
 
 
 
+
+    Add Support emailaddress to html templates
+    Update trusteDevice emailtemplates
 
 Short answer — yes, this is a common tension in DDD + EF: domain wants IDs available when raising events, while DB-generated keys aren’t available until after SaveChanges.
 Why it happens

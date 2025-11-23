@@ -19,10 +19,17 @@ internal class TrustedDeviceExtendedEventHandler(IIdentityTrustedDeviceRepo _rep
             var deviceId = notification.TrustedDeviceId;
             var userId = notification.UserId;
 
-            var deviceResult = await TrustedDeviceFinder.FindWithUserAsync(deviceId, userId, _repo);
+            var deviceResult = await TrustedDeviceFinder.FindWithUserAndTeamAsync(deviceId, userId, _repo);
             if (!deviceResult.Succeeded)
             {
                 _logger.LogError(new EventId(IdErrorEvents.Listeners.TrustedDeviceAdded), "{msg}", deviceResult.Info);
+                return;
+            }
+            var device = deviceResult.Value!; //success is non-null
+            var user = device.User; //success is non-null
+            if (user is null)
+            {
+                _logger.LogError(new EventId(IdErrorEvents.Listeners.TrustedDeviceAdded), "{msg}", IDMsgs.Error.TrustedDevices.USER_NOT_FOUND(device));
                 return;
             }
 
@@ -31,7 +38,7 @@ internal class TrustedDeviceExtendedEventHandler(IIdentityTrustedDeviceRepo _rep
         }
         catch (Exception ex)
         {
-            _logger.LogException(ex, IdErrorEvents.Listeners.TrustedDeviceAdded);
+            _logger.LogException(ex, IdErrorEvents.Listeners.TrustedDeviceExtended);
         }
     }
 

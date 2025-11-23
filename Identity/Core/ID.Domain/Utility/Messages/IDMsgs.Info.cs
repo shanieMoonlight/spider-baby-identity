@@ -63,8 +63,8 @@ public partial class IDMsgs
 
         public static class TrustedDevices
         {
-            public static string REVOKED(TrustedDevice device, AppUser user) => $"Device ({device.Name ?? device.DeviceFingerprint}), belonging to {user.Email}, has been revoked";
-            public static string TRUSTED(TrustedDevice device, AppUser user) => $"Device ({device.Name ?? device.DeviceFingerprint}), belonging to {user.Email}, has been trusted";
+            public static string REVOKED(TrustedDevice device, AppUser user) => $"Device ({device.Name ?? device.Fingerprint}), belonging to {user.Email}, has been revoked";
+            public static string TRUSTED(TrustedDevice device, AppUser user) => $"Device ({device.Name ?? device.Fingerprint}), belonging to {user.Email}, has been trusted";
         }
 
         //-----------------------//

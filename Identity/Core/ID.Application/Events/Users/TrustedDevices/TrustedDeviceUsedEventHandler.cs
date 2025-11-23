@@ -1,13 +1,6 @@
-﻿using ID.Application.AppAbs.ApplicationServices;
-using ID.Application.Events.Users.TrustedDevices.Utils;
-using ID.Domain.Abstractions.Services.Teams;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Entities.AppUsers.Events;
-using ID.Domain.Entities.Teams;
-using ID.Domain.Entities.TrustedDevices.Events;
+﻿using ID.Domain.Entities.TrustedDevices.Events;
 using ID.Domain.Repos;
 using ID.Domain.Repos.Specs.TrustedDevices;
-using ID.Domain.Utility.Messages;
 using ID.GlobalSettings.Errors;
 using LoggingHelpers;
 using MediatR;
@@ -26,7 +19,7 @@ internal class TrustedDeviceUsedEventHandler(IIdentityTrustedDeviceRepo _repo, I
             var deviceId = notification.TrustedDeviceId;
 
             var spec = TrustedDeviceByIdWithUserSpec.Create(deviceId);
-            var device = await _repo.FirstOrDefaultAsync(spec);
+            var device = await _repo.FirstOrDefaultAsync(spec, cancellationToken);
 
             if (device is null)
             {
@@ -34,12 +27,18 @@ internal class TrustedDeviceUsedEventHandler(IIdentityTrustedDeviceRepo _repo, I
                 return;
             }
 
+            var user = device.User; //success is non-null
+            if (user is null)
+            {
+                _logger.LogError(new EventId(IdErrorEvents.Listeners.TrustedDeviceAdded), "{msg}", IDMsgs.Error.TrustedDevices.USER_NOT_FOUND(device));
+                return;
+            }
 
             //Do something, e.g., send a confirmation email 
         }
         catch (Exception ex)
         {
-            _logger.LogException(ex, IdErrorEvents.Listeners.TrustedDeviceAdded);
+            _logger.LogException(ex, IdErrorEvents.Listeners.TrustedDeviceUsed);
         }
     }
 

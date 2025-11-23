@@ -18,6 +18,7 @@ public class IdErrorEvents
         public const int TwoFactor = EmailConfirmation + 1;
         public const int EmailSetup = TwoFactor + 1;
         public const int PhoneConfirmation = EmailSetup + 1;
+        public const int TrustedDevices = PhoneConfirmation + 1;
     }
 
     public static class Jobs

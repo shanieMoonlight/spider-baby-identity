@@ -1,4 +1,4 @@
-﻿using ID.Application.Features.Account.Cmd.TrustedDevices.Qry.GetByName;
+﻿using ID.Application.Features.Account.TrustedDevices.Qry.GetByFingerprint;
 
 namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Qry.GetByFingerprint;
 

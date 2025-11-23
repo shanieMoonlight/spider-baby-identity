@@ -120,7 +120,7 @@ public class TwoFactorMsgService(
 
     private async Task<GenResult<MfaResultData>> SendEmailAsync(AppUser user, string token)
     {
-        await bus.Publish(new TwoFactorEmailRequestIntegrationEvent(user, token), default);
+        await bus.PublishAsync(new TwoFactorEmailRequestIntegrationEvent(user, token), default);
         return GenResult<MfaResultData>.Success(MfaResultData.Create(TwoFactorProvider.Email));
     }
 

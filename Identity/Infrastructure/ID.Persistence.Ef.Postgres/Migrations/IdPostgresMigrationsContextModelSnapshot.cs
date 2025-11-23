@@ -208,7 +208,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.AppUsers.OAuth.OAuthInfo", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -265,7 +264,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.Avatars.Avatar", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -346,7 +344,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.Refreshing.IdRefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -398,7 +395,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.SubscriptionPlans.FeatureFlags.FeatureFlag", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -445,7 +441,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.SubscriptionPlans.SubscriptionPlan", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -525,7 +520,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.Teams.Team", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -590,7 +584,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.Teams.TeamDevice", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -637,8 +630,9 @@ namespace ID.Persistence.Ef.Postgres.Migrations
                     b.HasKey("Id")
                         .HasName("pk_team_device");
 
-                    b.HasIndex("SubscriptionId")
-                        .HasDatabaseName("ix_team_device_subscription_id");
+                    b.HasIndex("SubscriptionId", "UniqueId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_team_device_subscription_id_unique_id");
 
                     b.ToTable("team_device", "MyId");
                 });
@@ -646,7 +640,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.Teams.TeamSubscription", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -734,7 +727,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.TrustedDevices.TrustedDevice", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -752,11 +744,17 @@ namespace ID.Persistence.Ef.Postgres.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("date_created");
 
-                    b.Property<string>("DeviceFingerprint")
+                    b.Property<string>("Fingerprint")
                         .IsRequired()
                         .HasMaxLength(512)
                         .HasColumnType("character varying(512)")
-                        .HasColumnName("device_fingerprint");
+                        .HasColumnName("fingerprint");
+
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("ip_address");
 
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone")
@@ -777,8 +775,9 @@ namespace ID.Persistence.Ef.Postgres.Migrations
                         .HasColumnName("trusted_until");
 
                     b.Property<string>("UserAgent")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
                         .HasColumnName("user_agent");
 
                     b.Property<Guid>("UserId")
@@ -788,9 +787,9 @@ namespace ID.Persistence.Ef.Postgres.Migrations
                     b.HasKey("Id")
                         .HasName("pk_trusted_device");
 
-                    b.HasIndex("UserId", "DeviceFingerprint")
+                    b.HasIndex("UserId", "Fingerprint")
                         .IsUnique()
-                        .HasDatabaseName("ix_trusted_device_user_id_device_fingerprint");
+                        .HasDatabaseName("ix_trusted_device_user_id_fingerprint");
 
                     b.ToTable("trusted_device", "MyId");
                 });
@@ -939,7 +938,7 @@ namespace ID.Persistence.Ef.Postgres.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_asp_net_users_teams_team_id");
 
-                    b.OwnsOne("ID.Domain.Entities.AppUsers.AppUser.Address#ID.Domain.Entities.AppUsers.IdentityAddress", "Address", b1 =>
+                    b.OwnsOne("ID.Domain.Entities.AppUsers.IdentityAddress", "Address", b1 =>
                         {
                             b1.Property<Guid>("AppUserId")
                                 .HasColumnType("uuid")

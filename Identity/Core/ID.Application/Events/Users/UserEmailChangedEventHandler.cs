@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using ID.Application.AppAbs.ApplicationServices;
 using ID.Domain.Utility.Messages;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Entities.AppUsers;
@@ -9,6 +8,7 @@ using ID.Domain.Abstractions.Services.Teams;
 using ID.GlobalSettings.Errors;
 using LoggingHelpers;
 using ID.Domain.Entities.TrustedDevices.Events;
+using ID.Application.AppAbs.EventBuses;
 
 
 namespace ID.Application.Events.Users;

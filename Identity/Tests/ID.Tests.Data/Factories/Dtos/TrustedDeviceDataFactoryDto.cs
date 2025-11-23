@@ -1,4 +1,4 @@
-using ID.Application.Features.Account.Cmd.TrustedDevices;
+using ID.Application.Features.Account.TrustedDevices;
 using ID.Domain.Entities.TrustedDevices;
 
 namespace ID.Tests.Data.Factories.Dtos;
@@ -32,7 +32,7 @@ public static class TrustedDeviceDtoDataFactory
         var paramaters = new[]
             {
                   new PropertyAssignment(nameof(TrustedDevice.UserId),  () => userId ),
-		          new PropertyAssignment(nameof(TrustedDevice.DeviceFingerprint),  () => deviceFingerprint ),
+		          new PropertyAssignment(nameof(TrustedDevice.Fingerprint),  () => deviceFingerprint ),
 		          new PropertyAssignment(nameof(TrustedDevice.Name),  () => name ),
 		          new PropertyAssignment(nameof(TrustedDevice.UserAgent),  () => userAgent ),
 		          new PropertyAssignment(nameof(TrustedDevice.Id),  () => id ),
@@ -73,7 +73,7 @@ public static class TrustedDeviceDtoDataFactory
                     propertAssignments.Add(new PropertyAssignment(nameof(TrustedDevice.User), () => user));
 		
             if (deviceFingerprint is not null)
-                    propertAssignments.Add(new PropertyAssignment(nameof(TrustedDevice.DeviceFingerprint), () => deviceFingerprint));
+                    propertAssignments.Add(new PropertyAssignment(nameof(TrustedDevice.Fingerprint), () => deviceFingerprint));
 		
             if (name is not null)
                     propertAssignments.Add(new PropertyAssignment(nameof(TrustedDevice.Name), () => name));

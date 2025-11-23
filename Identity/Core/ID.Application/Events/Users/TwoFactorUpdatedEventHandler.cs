@@ -63,7 +63,7 @@ public class TwoFactorUpdatedEventHandler(
         if (!setKeyResult.Succeeded)
             return setKeyResult;
 
-        await _bus.Publish(
+        await _bus.PublishAsync(
           new TwoFactorGoogleSetupRequestIntegrationEvent(
               user,
               setupInfo.QrCodeImageData,

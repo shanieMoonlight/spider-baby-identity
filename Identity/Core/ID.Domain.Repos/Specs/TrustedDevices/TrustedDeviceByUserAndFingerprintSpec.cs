@@ -13,7 +13,7 @@ internal class TrustedDeviceByUserAndFingerprintSpec : ASimpleSpecification<Trus
     public TrustedDeviceByUserAndFingerprintSpec(Guid userId, string fingerprint) 
         : base(d => 
         d.UserId == userId 
-        && d.DeviceFingerprint == fingerprint)
+        && d.Fingerprint == fingerprint)
     {
         SetShortCircuit(() =>
             userId == default

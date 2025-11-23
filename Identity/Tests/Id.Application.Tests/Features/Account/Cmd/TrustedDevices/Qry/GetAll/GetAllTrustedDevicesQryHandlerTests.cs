@@ -1,4 +1,4 @@
-using ID.Application.Features.Account.Cmd.TrustedDevices.Qry.GetAll;
+using ID.Application.Features.Account.TrustedDevices.Qry.GetAll;
 using ID.Domain.Entities.TrustedDevices;
 
 namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Qry.GetAll;

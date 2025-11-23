@@ -392,39 +392,13 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
             additionToken.DeviceFingerprint,
             additionToken.DeviceName,
             additionToken.UserAgent,
+            additionToken.IpAddress,
             additionToken.TrustDuration);
 
         _trustedDevices.Add(device);
 
         return device;
     }
-
-    ///// <summary>
-    ///// Trust a device for this user. The validation token guarantees correctness.
-    ///// </summary>
-    //public TrustedDevice TrustDevice(
-    //    DeviceFingerprint fingerprint,
-    //    DeviceName name,
-    //    UserAgent userAgent,
-    //    TrustDurationNullable trustedDuration)
-    //{
-
-    //    var existingDevice = FindTrustedDevice(fingerprint.Value);
-    //    if (existingDevice != null)
-    //    {
-    //        existingDevice.ExtendTrust(trustedDuration.Value);
-    //        return existingDevice;
-    //    }
-
-    //    var device = TrustedDevice.Create(this,
-    //        fingerprint,
-    //        name,
-    //        userAgent,
-    //        trustedDuration);
-    //    _trustedDevices.Add(device);
-
-    //    return device;
-    //}
 
     //- - - - - - - - - - - - // 
 
@@ -438,7 +412,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
         if (found is null)
             return false;
 
-        _trustedDevices.Remove(found);
+        found.Revoke();
         return true;
     }
 
@@ -464,7 +438,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
     /// Find trusted device by fingerprint.
     /// </summary>
     public TrustedDevice? FindTrustedDevice(string deviceFingerprint)
-        => _trustedDevices.FirstOrDefault(d => d.DeviceFingerprint == deviceFingerprint);
+        => _trustedDevices.FirstOrDefault(d => d.Fingerprint == deviceFingerprint);
 
     //- - - - - - - - - - - - // 
 

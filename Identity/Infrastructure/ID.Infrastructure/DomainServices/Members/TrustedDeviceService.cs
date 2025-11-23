@@ -17,11 +17,19 @@ internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceSe
         DeviceFingerprint deviceFingerprint,
         DeviceName deviceName,
         UserAgent userAgent,
+        IpAddress ipAddress,
         CancellationToken cancellationToken)
     {
         TrustDurationNullable trustDuration = TrustDurationNullable.Create(null);
 
-        var validation = TrustedDeviceValidators.Addition.Validate(user, deviceFingerprint, deviceName, userAgent, trustDuration);
+        var validation = TrustedDeviceValidators.Addition.Validate(
+            user, 
+            deviceFingerprint, 
+            deviceName, 
+            userAgent, 
+            ipAddress, 
+            trustDuration);
+
         if (!validation.Succeeded)
             return validation.Convert<TrustedDevice>();
 
@@ -63,7 +71,7 @@ internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceSe
     {
         var first = user.TrustedDevices.FirstOrDefault();
 
-        var device = user.TrustedDevices.FirstOrDefault(dvc => dvc.DeviceFingerprint == deviceFingerprint);
+        var device = user.TrustedDevices.FirstOrDefault(dvc => dvc.Fingerprint == deviceFingerprint);
         if (device is null)
             return BasicResult.NotFoundResult(IDMsgs.Error.NotFound<TrustedDevice>(deviceFingerprint));
 

@@ -1,4 +1,3 @@
-using ID.Domain.Entities.TrustedDevices;
 using ID.Email.Base.LocalAbs;
 using ID.Email.Base.Models;
 using ID.Email.Base.Setup;
@@ -6,13 +5,35 @@ using ID.GlobalSettings.Setup.Options;
 
 namespace ID.Email.Base.LocalImps.Specs.TrustedDevices;
 
-internal sealed class TrustedDeviceAddedSpec(string toName, string toAddress, TrustedDevice device) : IEmailSpec
+internal sealed class TrustedDeviceAddedSpec(
+    string toName,
+    string toAddress,
+    string deviceName,
+    string userAgent,
+    string ipAddress,
+    string deviceMgmtUrl,
+    string changePasswordUrl,
+    DateTime dateAdded)
+    : IEmailSpec
 {
     private const string _template_path = @"Assets\html-templates\TrustedDevices\IdTrustedDeviceAdded.html";
 
     public async Task<IEmailDetails> BuildAsync(IdGlobalOptions globalOptions, ITemplateHelpers templateHelpers, IdEmailBaseOptions emailOptions)
     {
-        var message = await templateHelpers.ReadAndReplaceTemplateAsync(_template_path, []);
+        var message = await templateHelpers.ReadAndReplaceTemplateAsync(_template_path, new Dictionary<string, string>
+        {
+            { EmailPlaceholders.PLACEHOLDER_USERNAME, toName },
+            { EmailPlaceholders.PLACEHOLDER_USER_EMAIL, toAddress },
+            { EmailPlaceholders.PLACEHOLDER_DEVICE_UPDATE_DATETIME, dateAdded.ToString("yyyy-MMM-dd HH:mm:ss") },
+            { EmailPlaceholders.PLACEHOLDER_DEVICE_IPADDRESS, ipAddress },
+            { EmailPlaceholders.PLACEHOLDER_DEVICE_USER_AGENT, userAgent },
+            { EmailPlaceholders.PLACEHOLDER_DEVICE_NAME, deviceName },
+            { EmailPlaceholders.PLACEHOLDER_DEVICE_MGMT_URL, deviceMgmtUrl },
+            { EmailPlaceholders.PLACEHOLDER_CHANGE_PASSWORD_URL, changePasswordUrl },
+
+        });
+
+
 
         return new EmailDetails(
             EmailType.HTML,
@@ -24,5 +45,6 @@ internal sealed class TrustedDeviceAddedSpec(string toName, string toAddress, Tr
             emailOptions.FromName
         );
     }
-}
+
+}//Cls
 

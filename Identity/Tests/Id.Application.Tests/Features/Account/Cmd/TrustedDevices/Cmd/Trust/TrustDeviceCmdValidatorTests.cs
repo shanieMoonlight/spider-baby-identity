@@ -1,4 +1,3 @@
-using ID.Application.Features.Account.Cmd.TrustedDevices.Cmd.Trust;
 using ID.Application.Tests.Features.Utility;
 
 namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Cmd.Trust;
@@ -29,7 +28,7 @@ public class TrustDeviceCmdValidatorTests
     {
         // Arrange
         var validator = new TrustDeviceCmdValidator();
-        var dto = new TrustDeviceCreateDto("fp","name", null, null);
+        var dto = new TrustDeviceCreateDto("fp","name");
         var command = new TrustDeviceCmd(dto);
         command.SetAuthenticated_MNTC();
 
@@ -47,7 +46,7 @@ public class TrustDeviceCmdValidatorTests
     {
         // Arrange
         var validator = new TrustDeviceCmdValidator();
-        var dto = new TrustDeviceCreateDto("     ", "name", null, null);
+        var dto = new TrustDeviceCreateDto("     ", "name");
         var command = new TrustDeviceCmd(dto);
         command.SetAuthenticated_MNTC();
 
@@ -67,7 +66,7 @@ public class TrustDeviceCmdValidatorTests
     {
         // Arrange
         var validator = new TrustDeviceCmdValidator();
-        var dto = new TrustDeviceCreateDto(null, "name", null, null);
+        var dto = new TrustDeviceCreateDto(null, "name");
         var command = new TrustDeviceCmd(dto);
         command.SetAuthenticated_MNTC();
 

@@ -11,9 +11,10 @@ public class TrustedDevice : IdDomainEntity
     public Guid UserId { get; private set; }
     public AppUser? User { get; private set; }
 
-    public string DeviceFingerprint { get; private set; }
+    public string Fingerprint { get; private set; }
     public string? Name { get; private set; }
-    public string? UserAgent { get; private set; }
+    public string UserAgent { get; private set; }
+    public string IpAddress { get; private set; }
 
     /// <summary>
     /// Null is indefinite trust
@@ -36,17 +37,19 @@ public class TrustedDevice : IdDomainEntity
         DeviceFingerprint fingerprint,
         DeviceName name,
         UserAgent userAgent,
+        IpAddress ipAddress,
         DateTime? trustedUntil)
         //: base()
         : base(NewId.NextSequentialGuid())
     {
         UserId = user.Id;
         User = user;
-        DeviceFingerprint = fingerprint.Value;
+        Fingerprint = fingerprint.Value;
         Name = name.Value;
-        UserAgent = userAgent?.Value;
+        UserAgent = userAgent.Value;
         TrustedUntil = trustedUntil;
         LastUsedDate = DateTime.UtcNow;
+        IpAddress = ipAddress.Value;
     }
 
     //- - - - - - - - - - - - //
@@ -57,6 +60,7 @@ public class TrustedDevice : IdDomainEntity
         DeviceFingerprint fingerprint,
         DeviceName name,
         UserAgent userAgent,
+        IpAddress ipAddress,
         TrustDurationNullable trustDuration)
     {
         DateTime? trustedUntil = trustDuration.Value.HasValue
@@ -68,6 +72,7 @@ public class TrustedDevice : IdDomainEntity
             fingerprint,
             name,
             userAgent,
+            ipAddress,
             trustedUntil);
 
         device.RaiseDomainEvent(new TrustedDeviceAddedDomainEvent(device.Id, user.Id));
@@ -120,10 +125,10 @@ public class TrustedDevice : IdDomainEntity
     #region EqualsAndHashCode
     public override bool Equals(object? obj) =>
         obj is TrustedDevice td
-        && td.DeviceFingerprint == DeviceFingerprint
+        && td.Fingerprint == Fingerprint
         && td.UserId == UserId;
 
-    public override int GetHashCode() => HashCode.Combine(DeviceFingerprint, UserId);
+    public override int GetHashCode() => HashCode.Combine(Fingerprint, UserId);
     #endregion
 
 }

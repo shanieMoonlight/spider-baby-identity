@@ -65,6 +65,11 @@ public class Team : IdDomainEntity
         _subscriptions.ToList().AsReadOnly();
 
 
+    [NotMapped]
+    public bool IsCustomerTeam => TeamType == TeamType.customer;
+
+
+
     //------------------------//   
 
 
@@ -186,7 +191,7 @@ public class Team : IdDomainEntity
     }
 
     //- - - - - - - - - - - - //    
-    
+
     /// <summary>
     /// Sets a new leader for the team.
     /// </summary>
@@ -214,7 +219,7 @@ public class Team : IdDomainEntity
     }
 
     //------------------------//
-    
+
     /// <summary>
     /// Updates the team's position range (minimum and maximum positions for team members).
     /// </summary>
@@ -240,7 +245,7 @@ public class Team : IdDomainEntity
     }
 
     //- - - - - - - - - - - - //
-    
+
     /// <summary>
     /// Updates a team member's position within the team hierarchy.
     /// </summary>
@@ -289,7 +294,7 @@ public class Team : IdDomainEntity
     }
 
     //------------------------//
-    
+
     /// <summary>
     /// Adds a new member to the team.
     /// </summary>
@@ -339,7 +344,7 @@ public class Team : IdDomainEntity
     }
 
     //- - - - - - - - - - - - 
-    
+
     /// <summary>
     /// Removes a member from the team.
     /// </summary>
@@ -368,7 +373,7 @@ public class Team : IdDomainEntity
     }
 
     //------------------------//
-    
+
     /// <summary>
     /// Adds a subscription to the team.
     /// </summary>
@@ -399,7 +404,7 @@ public class Team : IdDomainEntity
     }
 
     //- - - - - - - - - - - - //
-    
+
     /// <summary>
     /// Removes a subscription from the team.
     /// </summary>

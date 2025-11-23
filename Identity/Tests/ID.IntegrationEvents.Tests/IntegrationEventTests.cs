@@ -1,8 +1,10 @@
 using ID.IntegrationEvents.Abstractions;
+using Microsoft.VisualStudio.TestPlatform.Utilities;
+using Xunit.Abstractions;
 
 namespace ID.IntegrationEvents.Tests;
 
-public class IntegrationEventTests
+public class IntegrationEventTests(ITestOutputHelper output)
 {
     [Fact]
     public void AllIntegrationEvents_ShouldHaveParameterlessConstructor()
@@ -28,8 +30,9 @@ public class IntegrationEventTests
 
         foreach (var type in integrationEventTypes)
         {
-            // Ensure they have timestamp, correlation ID, etc.
-            Assert.True(HasProperty(type, "OccurredAt"),
+            // Ensure they have timestamp, correlation ID, etc
+            output.WriteLine($"Checking properties for {type.FullName} - {HasProperty(type, "OccurredAtUtc")}");
+            Assert.True(HasProperty(type, "OccurredAtUtc"),
                 $"{type.FullName} should have a timestamp property");
         }
     }

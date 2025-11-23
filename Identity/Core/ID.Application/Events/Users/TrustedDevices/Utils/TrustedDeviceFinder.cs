@@ -5,9 +5,9 @@ namespace ID.Application.Events.Users.TrustedDevices.Utils;
 internal class TrustedDeviceFinder
 {
 
-    public static async Task<GenResult<TrustedDevice>> FindWithUserAsync(Guid deviceId, Guid userId, IIdentityTrustedDeviceRepo repo)
+    public static async Task<GenResult<TrustedDevice>> FindWithUserAndTeamAsync(Guid deviceId, Guid userId, IIdentityTrustedDeviceRepo repo)
     {
-        var spec = TrustedDeviceByIdWithUserSpec.Create(deviceId);
+        var spec = TrustedDeviceByIdWithUserAndTeamSpec.Create(deviceId);
         var device = await repo.FirstOrDefaultAsync(spec);
 
         if (device is null)

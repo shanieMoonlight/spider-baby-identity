@@ -1,4 +1,3 @@
-using ID.Application.Features.Account.Cmd.TrustedDevices;
 using ID.Application.Features.Common.Dtos;
 using ID.Application.Features.FeatureFlags;
 using ID.Application.Features.SubscriptionPlans;
@@ -48,8 +47,8 @@ public class SubscriptionPlanDto : AuditableEntityDto
         Price = mdl.Price;
         TrialMonths = mdl.TrialMonths;
 
-        FeatureFlagIds = mdl.FeatureFlags.Select(f => f.Id).ToList();
-        FeatureFlags = mdl.FeatureFlags.Select(f => f.ToDto()).ToList();
+        FeatureFlagIds = [.. mdl.FeatureFlags.Select(f => f.Id)];
+        FeatureFlags = [.. mdl.FeatureFlags.Select(f => f.ToDto())];
     }
 
     //----------------------//

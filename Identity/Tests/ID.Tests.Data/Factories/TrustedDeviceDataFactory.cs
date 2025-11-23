@@ -47,7 +47,7 @@ public static class TrustedDeviceDataFactory
             {
                          new PropertyAssignment(nameof(TrustedDevice.UserId),  () => userId ),
                   new PropertyAssignment(nameof(TrustedDevice.User),  () => user ),
-                  new PropertyAssignment(nameof(TrustedDevice.DeviceFingerprint),  () => deviceFingerprint ),
+                  new PropertyAssignment(nameof(TrustedDevice.Fingerprint),  () => deviceFingerprint ),
                   new PropertyAssignment(nameof(TrustedDevice.Name),  () => name ),
                   new PropertyAssignment(nameof(TrustedDevice.UserAgent),  () => userAgent ),
                   new PropertyAssignment(nameof(TrustedDevice.TrustedUntil),  () => trustedUntil ),
@@ -92,7 +92,7 @@ public static class TrustedDeviceDataFactory
             propertAssignments.Add(new PropertyAssignment(nameof(TrustedDevice.User), () => user));
 
         if (deviceFingerprint is not null)
-            propertAssignments.Add(new PropertyAssignment(nameof(TrustedDevice.DeviceFingerprint), () => deviceFingerprint));
+            propertAssignments.Add(new PropertyAssignment(nameof(TrustedDevice.Fingerprint), () => deviceFingerprint));
 
         if (name is not null)
             propertAssignments.Add(new PropertyAssignment(nameof(TrustedDevice.Name), () => name));

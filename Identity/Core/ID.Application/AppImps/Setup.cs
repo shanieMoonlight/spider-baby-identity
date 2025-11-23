@@ -1,15 +1,15 @@
-﻿using ID.Application.AppAbs.ApplicationServices;
-using ID.Application.AppAbs.ApplicationServices.Principal;
+﻿using ID.Application.AppAbs.ApplicationServices.Principal;
 using ID.Application.AppAbs.ApplicationServices.TwoFactor;
 using ID.Application.AppAbs.ApplicationServices.User;
+using ID.Application.AppAbs.EventBuses;
 using ID.Application.AppAbs.RequestInfo;
 using ID.Application.AppAbs.SignIn;
+using ID.Application.AppImps.EventBuses;
 using ID.Application.AppImps.Permissions;
 using ID.Application.AppImps.RequestInfo;
 using ID.Application.AppImps.SignIn;
 using ID.Application.AppImps.TwoFactor;
 using ID.Application.AppImps.User;
-using ID.Domain.Entities.AppUsers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -33,6 +33,7 @@ public static class ApplicationImplementationsSetupExtensions
         services.TryAddScoped<IUserInfo, UserInfo>();
 
         services.TryAddScoped<IEmailConfirmationBus, EmailConfirmationBus>();
+        services.TryAddScoped<ITrustedDeviceBus, TrustedDeviceBus>();
 
         services.TryAddScoped<ITwoFactorMsgService, TwoFactorMsgService>();
         services.TryAddScoped<ITwoFactorCompleteRegistrationHandler, TwoFactorCompleteRegistrationHandler>();

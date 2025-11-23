@@ -1,9 +1,6 @@
-﻿using ID.Application.Features.Account.Cmd.TrustedDevices;
-using ID.Application.Features.FeatureFlags;
+﻿using ID.Application.Features.FeatureFlags;
 using ID.Application.Features.FeatureFlags.Qry.GetPage;
-using ID.Domain.Abstractions.Services.SubPlans;
 using ID.Domain.Entities.SubscriptionPlans.FeatureFlags;
-using Moq;
 using Pagination;
 
 namespace ID.Application.Tests.Features.FeatureFlags.Qry.GetByPage;

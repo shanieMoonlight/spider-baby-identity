@@ -8,6 +8,7 @@ using ID.GlobalSettings.Errors;
 using ID.GlobalSettings.Setup.Options;
 using ID.GlobalSettings.Utility;
 using ID.IntegrationEvents.Events.Account.ForgotPwd;
+using ID.Tests.Data.Factories;
 using ID.Tests.Data.GlobalOptions;
 using Microsoft.Extensions.Logging;
 
@@ -71,13 +72,12 @@ public class ForgotPwdConsumerTests
 
     private static ForgotPwdEmailRequestIntegrationEvent CreateTestEventData(bool isCustomerTeam = true)
     {
-        return new ForgotPwdEmailRequestIntegrationEvent(
-            Guid.Parse("c6f88c01-f4a2-48a6-ab6d-d3865d9974e8"),
-            "test@example.com",
-            "1234567890",
-            "Test User",
-            "test-reset-token",
-            isCustomerTeam);
+        var user = AppUserDataFactory.Create(
+            email: "test@example.com",
+            userName: "Test User",
+            phoneNumber: "1234567890");
+
+        return new ForgotPwdEmailRequestIntegrationEvent(user, "test-reset-token", isCustomerTeam);
     }
 
     private static EmailDetails CreateTestEmailDetails()

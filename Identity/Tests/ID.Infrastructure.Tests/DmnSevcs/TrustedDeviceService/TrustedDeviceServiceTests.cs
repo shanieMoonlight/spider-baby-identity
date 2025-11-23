@@ -25,15 +25,16 @@ public class TrustedDeviceServiceTests
 
         var fingerprint = DeviceFingerprint.Create("fp-1");
         var name = DeviceName.Create("name-1");
-        var ua = UserAgent.CreateNullable("ua-1");
+        var ua = UserAgent.Create("ua-1");
+        var ip = IpAddress.Create("ip-1");
 
         // Act
-        var result = await service.AddAsync(user, fingerprint, name, ua, CancellationToken.None);
+        var result = await service.AddAsync(user, fingerprint, name, ua, ip, CancellationToken.None);
 
         // Assert
         result.Succeeded.ShouldBeTrue();
         result.Value.ShouldNotBeNull();
-        result.Value!.DeviceFingerprint.ShouldBe("fp-1");
+        result.Value!.Fingerprint.ShouldBe("fp-1");
         _uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -55,10 +56,11 @@ public class TrustedDeviceServiceTests
 
         var fingerprint = DeviceFingerprint.Create("fp-x");
         var name = DeviceName.Create("name-x");
-        var ua = UserAgent.CreateNullable("ua-x");
+        var ua = UserAgent.Create("ua-x");
+        var ip = IpAddress.Create("ip-xxxx");
 
         // Act
-        var result = await service.AddAsync(user, fingerprint, name, ua, CancellationToken.None);
+        var result = await service.AddAsync(user, fingerprint, name, ua, ip, CancellationToken.None);
 
         // Assert
         result.Succeeded.ShouldBeFalse();

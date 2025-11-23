@@ -14,7 +14,7 @@ internal class TrustedDeviceIsTrustedSpec : ASimpleSpecification<TrustedDevice>
     public TrustedDeviceIsTrustedSpec(Guid userId, string fingerprint)
         : base(d =>
             d.UserId == userId
-            && d.DeviceFingerprint == fingerprint
+            && d.Fingerprint == fingerprint
             && (d.TrustedUntil == null || d.TrustedUntil > DateTime.UtcNow))
     {
 

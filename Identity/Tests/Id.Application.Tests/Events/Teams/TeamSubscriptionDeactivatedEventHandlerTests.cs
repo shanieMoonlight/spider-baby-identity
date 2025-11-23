@@ -10,7 +10,7 @@ using ID.Tests.Data.Factories;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace ID.Application.Tests.Events;
+namespace ID.Application.Tests.Events.Teams;
 
 public class TeamSubscriptionDeactivatedEventHandlerTests
 {

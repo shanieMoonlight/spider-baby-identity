@@ -1,11 +1,12 @@
-﻿using ID.Domain.Repos;
+﻿using ID.Application.AppAbs.TrustedDevices;
+using ID.Domain.Repos;
 using ID.Domain.Repos.Specs.TrustedDevices;
 
-namespace ID.Application.Events.Users.TrustedDevices.Utils;
-internal class TrustedDeviceFinder
+namespace ID.Application.AppImps.TrustedDevices;
+internal class TrustedDeviceFinder(IIdentityTrustedDeviceRepo repo) : ITrustedDeviceFinder
 {
 
-    public static async Task<GenResult<TrustedDevice>> FindWithUserAndTeamAsync(Guid deviceId, Guid userId, IIdentityTrustedDeviceRepo repo)
+    public async Task<GenResult<TrustedDevice>> FindWithUserAndTeamAsync(Guid deviceId, Guid userId)
     {
         var spec = TrustedDeviceByIdWithUserAndTeamSpec.Create(deviceId);
         var device = await repo.FirstOrDefaultAsync(spec);

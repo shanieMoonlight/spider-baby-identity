@@ -7,7 +7,7 @@ using ID.IntegrationEvents.Events.Account.EmailConfirmation;
 using ID.Tests.Data.Factories;
 using Moq;
 
-namespace ID.Application.Tests.ApplicationImps;
+namespace ID.Application.Tests.ApplicationImps.Buses;
 public class EmailConfirmationBusTests
 {
 

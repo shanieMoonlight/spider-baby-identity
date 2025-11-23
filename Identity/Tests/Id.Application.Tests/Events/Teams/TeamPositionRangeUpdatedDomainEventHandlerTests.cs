@@ -1,14 +1,7 @@
 using ID.Application.Events.Teams;
-using ID.Domain.Abstractions.Services.Teams;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Entities.Teams;
 using ID.Domain.Entities.Teams.Events;
-using ID.Tests.Data.Factories;
-using Microsoft.Extensions.Logging;
-using Moq;
-using Shouldly;
 
-namespace ID.Application.Tests.Events;
+namespace ID.Application.Tests.Events.Teams;
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
 #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.

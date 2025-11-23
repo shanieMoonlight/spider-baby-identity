@@ -1,6 +1,5 @@
-﻿using ID.Application.Events.Users.TrustedDevices.Utils;
+﻿using ID.Application.AppAbs.TrustedDevices;
 using ID.Domain.Entities.TrustedDevices.Events;
-using ID.Domain.Repos;
 using ID.GlobalSettings.Errors;
 using LoggingHelpers;
 using MediatR;
@@ -8,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ID.Application.Events.Users.TrustedDevices;
 
-internal class TrustedDeviceExtendedEventHandler(IIdentityTrustedDeviceRepo _repo, ILogger<TrustedDeviceExtendedEventHandler> _logger)
+internal class TrustedDeviceExtendedEventHandler(ITrustedDeviceFinder _finder, ILogger<TrustedDeviceExtendedEventHandler> _logger)
     : INotificationHandler<TrustedDeviceExtendedDomainEvent>
 {
     public async Task Handle(TrustedDeviceExtendedDomainEvent notification, CancellationToken cancellationToken)
@@ -19,7 +18,7 @@ internal class TrustedDeviceExtendedEventHandler(IIdentityTrustedDeviceRepo _rep
             var deviceId = notification.TrustedDeviceId;
             var userId = notification.UserId;
 
-            var deviceResult = await TrustedDeviceFinder.FindWithUserAndTeamAsync(deviceId, userId, _repo);
+            var deviceResult = await _finder.FindWithUserAndTeamAsync(deviceId, userId);
             if (!deviceResult.Succeeded)
             {
                 _logger.LogError(new EventId(IdErrorEvents.Listeners.TrustedDeviceAdded), "{msg}", deviceResult.Info);

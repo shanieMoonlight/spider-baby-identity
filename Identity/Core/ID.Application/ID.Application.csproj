@@ -77,6 +77,7 @@
 
 
     <ItemGroup>
+      <Folder Include="Events\Users\TrustedDevices\Utils\" />
       <Folder Include="Features\Users\" />
     </ItemGroup>
 

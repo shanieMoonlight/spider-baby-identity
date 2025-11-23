@@ -1,12 +1,10 @@
 ﻿using ID.Domain.Abstractions.Services.Teams;
-using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Entities.Teams.Events;
-using ID.Domain.Utility.Messages;
-using MediatR;
-using Microsoft.Extensions.Logging;
 using ID.GlobalSettings.Errors;
 using LoggingHelpers;
+using MediatR;
+using Microsoft.Extensions.Logging;
 
 
 namespace ID.Application.Events.Teams;

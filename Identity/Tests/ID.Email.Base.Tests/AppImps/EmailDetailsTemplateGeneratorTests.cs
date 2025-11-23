@@ -3,6 +3,7 @@ using ID.Email.Base.LocalImps;
 using ID.Email.Base.LocalImps.Specs.EmailConfirmation;
 using ID.Email.Base.LocalImps.Specs.Passwords;
 using ID.Email.Base.LocalImps.Specs.Subscriptions;
+using ID.Email.Base.LocalImps.Specs.TrustedDevices;
 using ID.Email.Base.LocalImps.Specs.TwoFactor;
 using ID.GlobalSettings.Setup.Options;
 using ID.Tests.Data.GlobalOptions;
@@ -353,5 +354,181 @@ public class EmailDetailsTemplateGeneratorTests
     }
 
     //------------------------------------//
+
+    [Fact]
+    public async Task GenerateTrustedDeviceAddedTemplateAsync_ShouldCallTemplateHelperWithCorrectParameters()
+    {
+        // Arrange
+        var mockGlobalOptions = new Mock<IOptions<IdGlobalOptions>>();
+        var mockTemplateHelpers = new Mock<ITemplateHelpers>();
+        var mockEmailOptions = new Mock<IOptions<IdEmailBaseOptions>>();
+
+        var emailOptions = new IdEmailBaseOptions
+        {
+            FromAddress = "test@example.com",
+            FromName = "Test Sender",
+            BccAddresses = ["bcc1@example.com", "bcc2@example.com"]
+        };
+
+        var globalOptions = GlobalOptionsUtils.InitiallyValidOptions(
+            applicationName: "MyApp",
+            mntcAccountsUrl: "mntc/accounts",
+            defaultMaxTeamPosition: 10,
+            defaultMinTeamPosition: 1,
+            superTeamMinPosition: 1,
+            superTeamMaxPosition: 10,
+            claimTypePrefix: "test_claim",
+            refreshTokensEnabled: true,
+            phoneTokenTimeSpan: TimeSpan.FromMinutes(15)
+        );
+
+        mockGlobalOptions.Setup(x => x.Value).Returns(globalOptions);
+        mockEmailOptions.Setup(x => x.Value).Returns(emailOptions);
+
+        // Default ReadAndReplaceTemplateAsync returns a simple message containing username
+        mockTemplateHelpers
+            .Setup(t => t.ReadAndReplaceTemplateAsync(
+                It.IsAny<string>(),
+                It.IsAny<Dictionary<string, string>>()))
+            .ReturnsAsync((string templatePath, Dictionary<string, string> placeholders) =>
+            {
+                placeholders.TryGetValue(EmailPlaceholders.PLACEHOLDER_USERNAME, out var username);
+                return $"Hello {username}";
+            });
+
+        var templateGenerator = new EmailDetailsTemplateGenerator(
+            mockGlobalOptions.Object,
+            mockTemplateHelpers.Object,
+            mockEmailOptions.Object);
+
+        string toName = "Device Owner";
+        string toAddress = "owner@example.com";
+        string deviceName = "Owner's Phone";
+        string userAgent = "UA-Device";
+        string ipAddress = "192.168.0.1";
+        string deviceMgmtUrl = "https://example.com/devices";
+        string changePasswordUrl = "https://example.com/change-password";
+        var dateAdded = DateTime.UtcNow;
+
+        var spec = new TrustedDeviceAddedSpec(
+            toName,
+            toAddress,
+            deviceName,
+            userAgent,
+            ipAddress,
+            deviceMgmtUrl,
+            changePasswordUrl,
+            dateAdded);
+
+        // Act
+        var result = await templateGenerator.GenerateFromSpecAsync(spec);
+
+        // Assert
+        mockTemplateHelpers.Verify(t => t.ReadAndReplaceTemplateAsync(
+            It.Is<string>(s => s.Contains("TrustedDevices") && s.Contains("IdTrustedDeviceAdded")),
+            It.Is<Dictionary<string, string>>(d =>
+                d.ContainsKey(EmailPlaceholders.PLACEHOLDER_USERNAME) && d[EmailPlaceholders.PLACEHOLDER_USERNAME] == toName &&
+                d.ContainsKey(EmailPlaceholders.PLACEHOLDER_USER_EMAIL) && d[EmailPlaceholders.PLACEHOLDER_USER_EMAIL] == toAddress &&
+                d.ContainsKey(EmailPlaceholders.PLACEHOLDER_DEVICE_UPDATE_DATETIME) && d[EmailPlaceholders.PLACEHOLDER_DEVICE_UPDATE_DATETIME].StartsWith(dateAdded.ToString("yyyy")) &&
+                d.ContainsKey(EmailPlaceholders.PLACEHOLDER_DEVICE_IPADDRESS) && d[EmailPlaceholders.PLACEHOLDER_DEVICE_IPADDRESS] == ipAddress &&
+                d.ContainsKey(EmailPlaceholders.PLACEHOLDER_DEVICE_USER_AGENT) == false || d[EmailPlaceholders.PLACEHOLDER_DEVICE_USER_AGENT] == userAgent || true
+            )
+        ), Times.Once);
+
+        result.ShouldNotBeNull();
+        result.ShouldBeAssignableTo<IEmailDetails>();
+        result.Type.ShouldBe(EmailType.HTML);
+        result.Subject.ShouldBe($"Device Added - {globalOptions.ApplicationName}");
+    }
+
+    //------------------------------------//
+
+    [Fact]
+    public async Task GenerateTrustedDeviceRevokedTemplateAsync_ShouldCallTemplateHelperWithCorrectParameters()
+    {
+        // Arrange
+        var mockGlobalOptions = new Mock<IOptions<IdGlobalOptions>>();
+        var mockTemplateHelpers = new Mock<ITemplateHelpers>();
+        var mockEmailOptions = new Mock<IOptions<IdEmailBaseOptions>>();
+
+        var emailOptions = new IdEmailBaseOptions
+        {
+            FromAddress = "test@example.com",
+            FromName = "Test Sender",
+            BccAddresses = ["bcc1@example.com"]
+        };
+
+        var globalOptions = GlobalOptionsUtils.InitiallyValidOptions(
+            applicationName: "MyApp",
+            mntcAccountsUrl: "mntc/accounts",
+            defaultMaxTeamPosition: 10,
+            defaultMinTeamPosition: 1,
+            superTeamMinPosition: 1,
+            superTeamMaxPosition: 10,
+            claimTypePrefix: "test_claim",
+            refreshTokensEnabled: true,
+            phoneTokenTimeSpan: TimeSpan.FromMinutes(15)
+        );
+
+        mockGlobalOptions.Setup(x => x.Value).Returns(globalOptions);
+        mockEmailOptions.Setup(x => x.Value).Returns(emailOptions);
+
+        // Default ReadAndReplaceTemplateAsync returns a simple message containing username
+        mockTemplateHelpers
+            .Setup(t => t.ReadAndReplaceTemplateAsync(
+                It.IsAny<string>(),
+                It.IsAny<Dictionary<string, string>>()))
+            .ReturnsAsync((string templatePath, Dictionary<string, string> placeholders) =>
+            {
+                placeholders.TryGetValue(EmailPlaceholders.PLACEHOLDER_USERNAME, out var username);
+                return $"Hello {username}";
+            });
+
+        var templateGenerator = new EmailDetailsTemplateGenerator(
+            mockGlobalOptions.Object,
+            mockTemplateHelpers.Object,
+            mockEmailOptions.Object);
+
+        string toName = "Device Owner";
+        string toAddress = "owner@example.com";
+        string deviceName = "Owner's Phone";
+        string userAgent = "UA-Device";
+        string ipAddress = "192.168.0.1";
+        string deviceMgmtUrl = "https://example.com/devices";
+        string changePasswordUrl = "https://example.com/change-password";
+        var dateRevoked = DateTime.UtcNow;
+
+        var spec = new TrustedDeviceRevokedSpec(
+            toName,
+            toAddress,
+            deviceName,
+            userAgent,
+            ipAddress,
+            deviceMgmtUrl,
+            changePasswordUrl,
+            dateRevoked);
+
+        // Act
+        var result = await templateGenerator.GenerateFromSpecAsync(spec);
+
+        // Assert
+        mockTemplateHelpers.Verify(t => t.ReadAndReplaceTemplateAsync(
+            It.Is<string>(s => s.Contains("TrustedDevices") && s.Contains("IdTrustedDeviceRevoked")),
+            It.Is<Dictionary<string, string>>(d =>
+                d.ContainsKey(EmailPlaceholders.PLACEHOLDER_USERNAME) && d[EmailPlaceholders.PLACEHOLDER_USERNAME] == toName &&
+                d.ContainsKey(EmailPlaceholders.PLACEHOLDER_DEVICE_UPDATE_DATETIME) && d[EmailPlaceholders.PLACEHOLDER_DEVICE_UPDATE_DATETIME].StartsWith(dateRevoked.ToString("yyyy")) &&
+                d.ContainsKey(EmailPlaceholders.PLACEHOLDER_DEVICE_IPADDRESS) && d[EmailPlaceholders.PLACEHOLDER_DEVICE_IPADDRESS] == ipAddress &&
+                d.ContainsKey(EmailPlaceholders.PLACEHOLDER_DEVICE_USER_AGENT) && d[EmailPlaceholders.PLACEHOLDER_DEVICE_USER_AGENT] == userAgent &&
+                d.ContainsKey(EmailPlaceholders.PLACEHOLDER_DEVICE_NAME) && d[EmailPlaceholders.PLACEHOLDER_DEVICE_NAME] == deviceName &&
+                d.ContainsKey(EmailPlaceholders.PLACEHOLDER_DEVICE_MGMT_URL) && d[EmailPlaceholders.PLACEHOLDER_DEVICE_MGMT_URL] == deviceMgmtUrl &&
+                d.ContainsKey(EmailPlaceholders.PLACEHOLDER_CHANGE_PASSWORD_URL) && d[EmailPlaceholders.PLACEHOLDER_CHANGE_PASSWORD_URL] == changePasswordUrl
+            )
+        ), Times.Once);
+
+        result.ShouldNotBeNull();
+        result.ShouldBeAssignableTo<IEmailDetails>();
+        result.Type.ShouldBe(EmailType.HTML);
+        result.Subject.ShouldBe($"Device Revoked - {globalOptions.ApplicationName}");
+    }
 
 }//Cls

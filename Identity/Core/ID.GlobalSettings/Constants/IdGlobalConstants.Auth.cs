@@ -29,5 +29,11 @@ internal partial class IdGlobalConstants
         /// true
         /// </summary>
         internal const bool COOKIE_IS_PERSISTENT = true;
+
+        // How long the authentication time is valid for device trust
+        /// <summary>
+        /// 5
+        /// </summary>
+        internal const int MAX_AUTH_TIME_FOR_DEVICE_TRUST_MINUTES = 5;
     }
 }

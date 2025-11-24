@@ -1,7 +1,4 @@
-﻿
-using FluentValidation;
-using ID.Application.Mediatr.Behaviours.Validation;
-using ID.Application.Mediatr.CqrsAbs;
+﻿using ID.Application.Mediatr.Behaviours.Validation;
 using Microsoft.AspNetCore.Hosting;
 
 namespace ID.Application.Mediatr.Validation;

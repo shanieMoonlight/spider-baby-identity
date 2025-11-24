@@ -1,8 +1,10 @@
 ﻿using CollectionHelpers;
 using ID.Application.JWT.Subscriptions;
 using ID.Domain.Claims;
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Claims.Teams;
 using ID.Domain.Entities.Teams;
+using ID.Domain.Utility.Dates;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -230,6 +232,24 @@ public static class ClaimsPrincipalExtensions
 
     //------------------------//
 
+    public static DateTime? GetAuthTime(this ClaimsPrincipal? principal) { 
+
+        var authTime = principal?.FindFirst(JwtRegisteredClaimNames.AuthTime)?.Value;
+
+        if(authTime is null)
+            return null;
+        
+        if (long.TryParse(authTime, out var secondsSinceEpochLong))
+            return secondsSinceEpochLong.ConvertFromUnixTimestamp();
+
+        if (double.TryParse(authTime, out var secondsSinceEpochDouble))
+            return secondsSinceEpochDouble.ConvertFromUnixTimestamp();
+
+        return null;
+    }
+
+    //----------------------//
+
     public static string? GetClaimValue(this ClaimsPrincipal? principal, string claimType) =>
         principal?.FindFirst(claimType)?.Value;
 
@@ -239,5 +259,22 @@ public static class ClaimsPrincipalExtensions
         principal?.FindAll(claimType)?.Select(c => c.Value).ToList();
 
     //----------------------//
+
+    public static List<AuthMethodRef> GetAuthMethodClaimValues(this ClaimsPrincipal? principal)
+    {
+        var amrClaims = principal?.FindAll(JwtRegisteredClaimNames.Amr);
+        if (amrClaims == null)
+            return [];
+
+        var result = new List<AuthMethodRef>();
+        foreach (var c in amrClaims)
+        {
+            var v = c.Value?.Trim();
+            if (AuthMethodClaimValueExtensions.TryParseClaimValue(v, out var parsed))
+                result.Add(parsed);
+        }
+
+        return result;
+    }
 
 }//Cls

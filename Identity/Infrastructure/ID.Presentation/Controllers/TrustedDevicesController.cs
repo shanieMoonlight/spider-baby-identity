@@ -1,4 +1,5 @@
 using ControllerHelpers;
+using ID.Application.Authenticators;
 using ID.Application.Features.Account.TrustedDevices;
 using ID.Application.Features.Account.TrustedDevices.Cmd.Revoke;
 using ID.Application.Features.Account.TrustedDevices.Cmd.RevokeByFingerPrint;
@@ -26,6 +27,7 @@ namespace ID.Presentation.Controllers;
 /// </remarks>
 [ApiController]
 [Route($"{IdRoutes.Base}/[controller]/[action]")]
+[AuthorizedOrDevAuthenticator.ResourceFilter]
 public class TrustedDevicesController(ISender sender) : Controller
 {
 
@@ -35,6 +37,7 @@ public class TrustedDevicesController(ISender sender) : Controller
     /// <param name="dto">Device information required to create the trust (fingerprint, name, user agent, duration).</param>
     /// <returns>The created <see cref="TrustedDeviceDto"/> on success, or an error result.</returns>
     [HttpPost]
+    //[CanTrustDeviceAuthenticator.ResourceFilter]
     public async Task<ActionResult<TrustedDeviceDto>> Trust([FromBody] TrustDeviceCreateDto dto) =>
         this.ProcessResult(await sender.Send(new TrustDeviceCmd(dto)));
 

@@ -10,6 +10,8 @@ Each authenticator provides three types of authorization mechanisms:
 - **ResourceFilter**: Applied to controller actions, executes earlier in the pipeline (before model binding)
 - **Policy**: Used with `[Authorize(Policy = "PolicyName")]` attribute for declarative authorization
 
+Choose Policy for typical authorization. Use ResourceFilter when you can decide without model-bound values and want to short‑circuit early. Use ActionFilter when you need bound arguments or to wrap action execution.
+
 ## Usage Examples
 
 ### Basic Action Authorization
@@ -51,6 +53,50 @@ public async Task<ActionResult> UpdateResource()
     // Uses policy for authorization
 }
 ```
+
+## NEW: Container Pattern Explained
+
+All authenticator types follow a consistent container pattern in this folder. Examples:
+- `CustomerLeaderAuthenticator`
+- `SuperAdminMinimumAuthenticator`
+- `DevAccessAuthenticator`
+
+Each container class exposes three inner authorization mechanisms:
+
+1. `ResourceFilter` (implements `IAsyncResourceFilter`)
+   - Runs early (after auth middleware, before model binding).
+   - Use when you can decide authorization without needing bound action parameters.
+   - Saves cost of model binding if request will be rejected.
+
+2. `ActionFilter` (inherits `ActionFilterAttribute`)
+   - Runs after model binding and just before the action method.
+   - Use when you need access to model-bound values or wish to wrap action execution.
+
+3. `Policy` (nested static with `Requirement`, `Handler`, and `Attribute`)
+   - Use for attribute-driven `[Authorize]` integration and centralized logic.
+   - Recommended for most auth scenarios; plays nicely with DI and external composition.
+
+### Why this pattern?
+- Keeps related auth shapes (filter + policy) co-located for discoverability.
+- Avoids duplication of logic—the inner `AuthHandler` contains the core boolean check.
+- Allows teams to switch between ResourceFilter, ActionFilter, or Policy without rewriting logic.
+
+### How to choose quickly
+| Need | Use |
+|------|-----|
+| Fast short-circuit (no model state needed) | ResourceFilter |
+| Need action arguments / model state | ActionFilter |
+| Prefer standard ASP.NET Core authorization pipeline | Policy |
+
+### Minimal custom logic location
+Place new authorization rules in the inner `AuthHandler.IsAuthorized(HttpContext)` method—each mechanism delegates to this.
+
+### Extending
+To add a new authenticator:
+1. Create a new container class copying an existing one closest to your scenario.
+2. Implement `AuthHandler.IsAuthorized(...)` with your logic.
+3. (Optional) Add constructor parameters or extra checks in policy handler if needed.
+4. Register the policy via a `Add{X}AuthenticatorPolicy()` DI extension if you need the Policy flavor.
 
 ## Available Authenticators
 

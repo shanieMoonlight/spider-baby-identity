@@ -1,5 +1,5 @@
 namespace ID.Application.Features.Account.TrustedDevices.Cmd.Trust;
-public class TrustDeviceCmdValidator : IsAuthenticatedValidator<TrustDeviceCmd>
+public class TrustDeviceCmdValidator : CanTrustDeviceValidator<TrustDeviceCmd>
 {
     public TrustDeviceCmdValidator()
     {

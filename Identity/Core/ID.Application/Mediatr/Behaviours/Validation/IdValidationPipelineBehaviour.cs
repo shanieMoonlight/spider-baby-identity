@@ -34,8 +34,20 @@ public sealed class IdValidationPipelineBehaviour<TRequest, TResponse>(IEnumerab
         ValidationError errorType = GetValidationErrorType(errors);
 
         var errorResponse = new ValidationFailureReponse();
-        foreach (var error in errors)
-            errorResponse.AddError(GetErrorInfo(error));
+        var firstCustomError = errors.FirstOrDefault(e => e.CustomState is ValidationError);
+
+        //Custom errors are auth erros in the MyId system, so we only return the first one
+        //Model errors are irrelevant if you are not authorized
+        if (firstCustomError is not null)
+        {
+            errorResponse.AddError(GetErrorInfo(firstCustomError));
+        }
+        else
+        {
+            foreach (var error in errors)
+                errorResponse.AddError(GetErrorInfo(error));
+        }
+
 
 
         return typeof(TResponse) == typeof(BasicResult)
@@ -55,19 +67,19 @@ public sealed class IdValidationPipelineBehaviour<TRequest, TResponse>(IEnumerab
         return errorType switch
         {
             ValidationError.BadRequest => (TResponse)resultType
-                                        .GetMethod(nameof(GenResult<object>.BadRequestResult), [typeof(object)])!
-                                        .Invoke(null, [errorResponse])!,
+                            .GetMethod(nameof(GenResult<object>.BadRequestResult), [typeof(object)])!
+                            .Invoke(null, [errorResponse])!,
 
             ValidationError.Unauthorized => (TResponse)resultType
-                                        .GetMethod(nameof(GenResult<object>.UnauthorizedResult), [typeof(string)])!
-                                        .Invoke(null, [errorResponse.ToString()])!,
+                            .GetMethod(nameof(GenResult<object>.UnauthorizedResult), [typeof(string)])!
+                            .Invoke(null, [ToAuthErrorResponseString(errorResponse)])!,
 
             ValidationError.Forbidden => (TResponse)resultType
-                                        .GetMethod(nameof(GenResult<object>.ForbiddenResult), [typeof(string)])!
-                                        .Invoke(null, [errorResponse.ToString()])!,
+                            .GetMethod(nameof(GenResult<object>.ForbiddenResult), [typeof(string)])!
+                            .Invoke(null, [ToAuthErrorResponseString(errorResponse)])!,
 
             _ => (TResponse)resultType.GetMethod(nameof(GenResult<object>.BadRequestResult), [typeof(object)])!
-                                        .Invoke(null, [errorResponse])!,
+                              .Invoke(null, [errorResponse])!,
         };
     }
 
@@ -87,7 +99,7 @@ public sealed class IdValidationPipelineBehaviour<TRequest, TResponse>(IEnumerab
     private static ValidationErrorInfo GetErrorInfo(ValidationFailure error)
     {
         if (error.CustomState is ValidationError)
-            return new ValidationErrorInfo(error.CustomState.ToString()!, true);
+            return new ValidationErrorInfo($"{error.CustomState}", error.ErrorMessage);
 
         var key = error.PropertyName.Contains('.')
             ? Path.GetExtension(error.PropertyName).Replace(".", "")
@@ -111,5 +123,15 @@ public sealed class IdValidationPipelineBehaviour<TRequest, TResponse>(IEnumerab
     }
 
     //----------------------//
+
+    private static string ToAuthErrorResponseString(ValidationFailureReponse errorResponse)
+    {
+        var firstError = errorResponse.Errors.FirstOrDefault();
+        if (firstError.Equals(default(KeyValuePair<string, object>)))
+            return "Unauthorized";
+
+        return $"{firstError.Key}: {firstError.Value?.ToString() ?? "Unauthorized"}";
+    }
+
 
 }//Cls

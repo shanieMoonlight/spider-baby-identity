@@ -88,7 +88,7 @@ public class TrustDeviceCmdValidatorTests
         var validator = new TrustDeviceCmdValidator();
 
         // Act & Assert
-        validator.ShouldBeAssignableTo<IsAuthenticatedValidator<TrustDeviceCmd>>();
+        validator.ShouldBeAssignableTo<CanTrustDeviceValidator<TrustDeviceCmd>>();
     }
 
     //--------------------------//

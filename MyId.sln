@@ -98,7 +98,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{243C9E4C-FCA9-4041-A578-F957DB5C0AC0}"
 	ProjectSection(SolutionItems) = preProject
 		Identity\IdToDo.txt = Identity\IdToDo.txt
+		Identity\NEXT_STEPS.md = Identity\NEXT_STEPS.md
 		Identity\README.md = Identity\README.md
+		Identity\Schedule.txt = Identity\Schedule.txt
 		Identity\TeamManagerServiceRefactoring.md = Identity\TeamManagerServiceRefactoring.md
 	EndProjectSection
 EndProject

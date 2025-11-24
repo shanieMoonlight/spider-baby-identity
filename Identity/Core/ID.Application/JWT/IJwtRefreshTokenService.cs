@@ -1,4 +1,5 @@
-﻿using ID.Domain.Entities.AppUsers;
+﻿using ID.Domain.Claims.AuthMethods;
+using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Refreshing;
 
 namespace ID.Application.JWT;
@@ -20,7 +21,7 @@ public interface IJwtRefreshTokenService<TUser> where TUser : AppUser
     /// <param name="user">The user for whom the token is being generated.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The newly created refresh token.</returns>
-    Task<IdRefreshToken> GenerateTokenAsync(TUser user, CancellationToken cancellationToken);
+    Task<IdRefreshToken> GenerateTokenAsync(TUser user, IEnumerable<AuthMethodRef> authMethodRefs, CancellationToken cancellationToken);
 
     //-------------------------//
 

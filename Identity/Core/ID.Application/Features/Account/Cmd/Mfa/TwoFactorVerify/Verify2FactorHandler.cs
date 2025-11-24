@@ -1,19 +1,20 @@
 using ID.Application.AppAbs.ApplicationServices.User;
 using ID.Application.AppAbs.TokenVerificationServices;
+using ID.Application.AppAbs.TrustedDevices;
 using ID.Application.JWT;
-using ID.Application.Mediatr.CqrsAbs;
 using ID.Application.MFA;
-using ID.Domain.Entities.AppUsers;
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Models;
-using ID.Domain.Utility.Messages;
-using MyResults;
+using Microsoft.Extensions.Logging;
 
 namespace ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerify;
 public class Verify2FactorHandler(
     IJwtPackageProvider _jwtPackageProvider,
     IFindUserService<AppUser> _findUserService,
     ITwofactorUserIdCacheService _twofactorUserIdCache,
-    ITwoFactorVerificationService<AppUser> _2FactorService)
+    ITwoFactorVerificationService<AppUser> _2FactorService,
+    IDeviceTrustService<AppUser> _deviceTrustService,
+    ILogger<Verify2FactorHandler> _logger)
     : IIdCommandHandler<Verify2FactorCmd, JwtPackage>
 {
 
@@ -34,10 +35,31 @@ public class Verify2FactorHandler(
         if (!validVerification)
             return GenResult<JwtPackage>.BadRequestResult(IDMsgs.Error.TwoFactor.INVALID_2_FACTOR_CODE);
 
-        //Package all user info in JWT and send it back to client.
+        // If the client asked to trust this device, persist it now
+        if (dto.TrustDevice && !string.IsNullOrWhiteSpace(dto.DeviceFingerprint))
+        {
+            try
+            {
+                var addResult = await _deviceTrustService.TrustAsync(
+                    user: user,
+                    deviceFingerprint: dto.DeviceFingerprint!,
+                    deviceName: "Trusted via MFA",
+                    cancellationToken: cancellationToken);
+
+                if (!addResult.Succeeded)
+                    _logger.LogWarning("Failed to create trusted device for user {UserId}: {Error}", user.Id, addResult.Info);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Exception while creating trusted device for user {UserId}; continuing.", user.Id);
+            }
+        }
+
+        // Package all user info in JWT and send it back to client.
         JwtPackage jwtPackage = await _jwtPackageProvider.CreateJwtPackageAsync(
             user: user,
             team: user.Team!,
+            [AuthMethodRef.mfa],
             currentDeviceId: dto.DeviceId,
             cancellationToken: cancellationToken);
 

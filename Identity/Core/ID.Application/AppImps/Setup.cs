@@ -40,11 +40,13 @@ public static class ApplicationImplementationsSetupExtensions
 
         services.TryAddScoped<ITwoFactorMsgService, TwoFactorMsgService>();
         services.TryAddScoped<ITwoFactorCompleteRegistrationHandler, TwoFactorCompleteRegistrationHandler>();
-        services.TryAddScoped<IPreSignInService<AppUser>, PreSignInService<AppUser>>();
+        services.TryAddScoped<IPreSignInService<TUser>, PreSignInService<TUser>>();
+        services.TryAddScoped<IDeviceTrustService<TUser>, DeviceTrustService<TUser>>();
 
 
         return services;
     }
-
+    
+    
 }//Cls
 

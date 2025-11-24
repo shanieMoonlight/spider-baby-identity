@@ -2,6 +2,7 @@ using ID.Application.AppAbs.ApplicationServices.TwoFactor;
 using ID.Application.AppAbs.TokenVerificationServices;
 using ID.Application.JWT;
 using ID.Application.Mediatr.CqrsAbs;
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Models;
@@ -62,6 +63,7 @@ public class FacebookSignInHandler(
         JwtPackage jwtPackage = await _jwtPackageProvider.CreateJwtPackageAsync(
            user: user,
            team: team,
+           authMethods: [AuthMethodRef.oauth],
            currentDeviceId: currentDeviceId,
            cancellationToken: cancellationToken);
 

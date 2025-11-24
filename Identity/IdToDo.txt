@@ -97,25 +97,15 @@ TeamSubscriptionPersistenceIssue.md
 
 Simplify TeamSubscription management Service/factory etc.
 
-Uipdate TeamByIdWithMemberSpec tests
-TrustedDevice event handling
-TrustedDevice hanndlers need validators
+Update TeamByIdWithMemberSpec tests
 Set MaxTrustedDevicesPerUser somewhere central
 
-Decide on Cmd params for single param commands.  Dto or string/guid etc.
-
-TrustedDeviceBus and emails
 
 
-Test all TrustedDevicesSpecs
-Test TrustedDeviceBus
 
 
 remove Teamrepo.AddNewDevicesToDbAsync
 
-RETEST TrustDeviceCmdHandler
-RETEST ExternalPagesAuthMiddlewareExtensions
-test TrustedDeviceRevokedSpec and TrustedDeviceAddedSpec
 IdGlobalOptions needs __deviceManagementUrl__  (Also ValidateOnStart)
     
     Make IdGlobalConstants.EmailRoutes an Ioptions??
@@ -155,6 +145,12 @@ Make Generic:
 
     Add Support emailaddress to html templates
     Update trusteDevice emailtemplates
+
+
+    Update MemerwithEverything Specs and Tests
+
+
+    cache FindbyUser results ????
 
 Short answer — yes, this is a common tension in DDD + EF: domain wants IDs available when raising events, while DB-generated keys aren’t available until after SaveChanges.
 Why it happens

@@ -1,9 +1,10 @@
 ﻿using ID.Domain.Entities.AppUsers;
+using Microsoft.EntityFrameworkCore;
 
 namespace ID.Domain.Repos.Specs.Members.WithEverything;
 
 internal class MemberByUsernameWithEverythingSpec<TUser> 
-    : AMemberlWithEverythingSpec<TUser> where TUser : AppUser
+    : AMemberWithEverythingSpec<TUser> where TUser : AppUser
 {
     public MemberByUsernameWithEverythingSpec(string? username)
         : base(e =>
@@ -13,6 +14,9 @@ internal class MemberByUsernameWithEverythingSpec<TUser>
         )
     {
         SetShortCircuit(() => string.IsNullOrWhiteSpace(username));
+        SetInclude(qry => qry
+            .Include(u => u.TrustedDevices)
+        );
     }
 
 }//Cls

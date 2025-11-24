@@ -1,5 +1,5 @@
 using ID.Application.Authenticators;
-using ID.Domain.Claims;
+using ID.Domain.Claims.AuthMethods;
 using ID.Tests.Data.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -16,7 +16,7 @@ public class MfaVerifiedAuthenticatorTests(ITestOutputHelper _output)
     [Fact]
     public async Task ShouldPassWhen_Verified()
     {
-        var httpContext = ContextProvider.GetHttpContext([TwoFactorClaims.TwoFactorVerified], true);
+        var httpContext = ContextProvider.GetHttpContext([AuthenticationClaims.TwoFactorVerified], true);
 
         var authHandler = new MfaVerifiedAuthenticator.AuthHandler();
 

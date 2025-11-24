@@ -5,17 +5,19 @@ using System.Linq.Expressions;
 
 namespace ID.Domain.Repos.Specs.Members.WithEverything;
 
-internal abstract class AMemberlWithEverythingSpec<TUser> : ASimpleSpecification<TUser> where TUser : AppUser
+internal abstract class AMemberWithEverythingSpec<TUser> : ASimpleSpecification<TUser> where TUser : AppUser
 {
-    public AMemberlWithEverythingSpec(Expression<Func<TUser, bool>> criteria) : base(criteria)
+    public AMemberWithEverythingSpec(Expression<Func<TUser, bool>> criteria) : base(criteria)
     {
         SetInclude(query => query
+            .Include(u => u.TrustedDevices) 
              .Include(u => u.Team)
                 .ThenInclude(t => t!.Subscriptions)
                     .ThenInclude(t => t.Devices)
                 .Include(u => u.Team)
                     .ThenInclude(t => t!.Subscriptions)
                         .ThenInclude(t => t.SubscriptionPlan));
+
     }
 
 }//Cls

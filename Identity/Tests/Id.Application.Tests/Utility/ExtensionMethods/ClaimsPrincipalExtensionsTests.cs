@@ -1,4 +1,5 @@
-using ID.Domain.Claims.Utils;
+using ID.Domain.Claims;
+using ID.Domain.Claims.Teams;
 using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace Id.Application.Tests.Utility.ExtensionMethods;

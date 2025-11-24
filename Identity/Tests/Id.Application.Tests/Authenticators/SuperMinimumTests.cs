@@ -1,5 +1,5 @@
 using ID.Application.Authenticators.Teams;
-using ID.Domain.Claims;
+using ID.Domain.Claims.Teams;
 using ID.Tests.Data.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;

@@ -1,4 +1,5 @@
 ﻿using ID.Application.JWT;
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Refreshing;
 using ID.Domain.Entities.Refreshing.ValueObjects;
@@ -45,13 +46,17 @@ internal class JwtRefreshTokenService<TUser>(
     //-----------------------//  
 
     /// <inheritdoc />
-    public async Task<IdRefreshToken> GenerateTokenAsync(TUser user, CancellationToken cancellationToken)
+    public async Task<IdRefreshToken> GenerateTokenAsync(
+        TUser user,
+        IEnumerable<AuthMethodRef> authMethodRefs,
+        CancellationToken cancellationToken)
     {
         var tokenPayload = RandomTokenGenerator.Generate();
         var token = IdRefreshToken.Create(
             TokenPayload.Create(tokenPayload),
             user,
-            TokenLifetime.Create(_options.RefreshTokenTimeSpan));
+            TokenLifetime.Create(_options.RefreshTokenTimeSpan),
+            authMethodRefs);
 
         await _repo.AddAsync(token, cancellationToken);
         await _uow.SaveChangesAsync(cancellationToken);

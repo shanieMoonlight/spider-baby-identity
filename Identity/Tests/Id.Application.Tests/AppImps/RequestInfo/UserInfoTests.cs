@@ -1,5 +1,5 @@
 using ID.Application.AppImps.RequestInfo;
-using ID.Domain.Claims.Utils;
+using ID.Domain.Claims;
 using Microsoft.AspNetCore.Http;
 
 namespace ID.Application.Tests.AppImps.RequestInfo;

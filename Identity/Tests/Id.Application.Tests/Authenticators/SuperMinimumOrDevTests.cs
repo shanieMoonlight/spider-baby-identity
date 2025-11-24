@@ -1,6 +1,6 @@
 using CollectionHelpers;
 using ID.Application.Authenticators.Teams;
-using ID.Domain.Claims;
+using ID.Domain.Claims.Teams;
 using ID.Tests.Data.Filters;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

@@ -528,6 +528,34 @@ Use in validators and handlers instead of hardcoded values.
 - Domain methods are `internal`, exposed via validators
 - Log warnings (not errors) if device trust fails - don't block login
 
+### Secure cookie / opaque token (recommended long-term)
+
+Consider adopting a server-issued opaque token approach for "remember this device" in a follow-up iteration. Short summary:
+
+- What: after a user opts to trust a device (post-MFA), the server generates a high-entropy random token and returns it to the client. The client stores it in a secure, long-lived `HttpOnly` cookie (or secure storage on mobile). On subsequent sign-ins the cookie is sent automatically and the server validates the token.
+
+- Security best-practices:
+    - Store only a hashed version (e.g. SHA-256 with app-level salt) of the token in the database.
+    - Tokens should be cryptographically random (GUIDs are OK; prefer 256-bit random values).
+    - Use `HttpOnly`, `Secure`, and appropriate `SameSite` attributes on cookies.
+    - Set a reasonable expiration (e.g., 30 days) and support revocation.
+
+- Pros:
+    - More secure and less prone to client-side spoofing than client-generated fingerprints.
+    - User experience: browser sends cookie automatically; no client code needed to attach a device id on every login.
+    - Easy to revoke or rotate tokens; minimal client changes for web.
+
+- Cons:
+    - More implementation work (token generation, hashing, cookie plumbing, migration for mobile clients).
+    - Mobile apps must store tokens in secure storage and attach them on requests (or use platform-specific secure cookie handling).
+
+- Implementation notes:
+    - Add fields to the `TrustedDevice` entity for `TokenHash` (nullable) and `TokenSalt` (optional), or maintain a separate `TrustedDeviceTokens` table for token rotation/audit.
+    - Provide a service method that creates the token, saves its hash and metadata (IP, UA, expiry), and returns the plaintext token for the server to place in a cookie.
+    - Validate tokens by hashing the incoming token and matching the stored hash while checking expiry/ownership.
+    - Keep the current fingerprint-based flow as a fallback/compatibility path during rollout.
+
+
 
 
 -create  GLobalSettings for MaxTrustedDevices
@@ -537,3 +565,63 @@ Use in validators and handlers instead of hardcoded values.
 - test trustedDevice Specs
 - restrict ITrustedDeviceRepo ??? NO add delete etc?????  CanDeleteAsync??
 - TrustedUntil Global setting
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+hort answer first: both patterns are used in practice. The common, secure default is to only create a trusted device after the user has completed a successful MFA step (so trust is granted only after proof of identity). Also provide a management UI later so users can view/revoke trusted devices.
+
+Quick comparison and recommendation
+
+Option A — "Add while logging in" (i.e., include “Trust this device” on the 2FA/verify screen)
+
+Pros: straightforward UX — user completes 2FA and ticks “Remember this device” → you create the trust record immediately.
+Security: good, because creation happens after MFA.
+Implementation: what you already implemented in Verify2FactorHandler. This is the normal/expected flow for web apps.
+Option B — "Create from account page / popup after login"
+
+Pros: explicit user action from an authenticated context; good for admin or granular device naming.
+Cons: requires the user to log in (with MFA) before managing devices — no bypass benefit until after they’ve already logged in once.
+Use case: users who prefer to manage devices centrally, or when you want richer metadata collection (friendly name, location, device photo).
+Device-id delivery (what clients send)
+
+Body field (LoginDto.DeviceId): simple and fine for PoC and mobile apps.
+Header: okay for separation concerns.
+Server-issued opaque token in HttpOnly cookie (recommended long-term): most secure and automatic for browsers; store only hashed token server-side.
+Recommended flow for your project (practical + secure)
+
+Keep the 2FA-time “Trust this device” checkbox and create the trusted device in Verify2FactorHandler (you already did).
+Keep a “Trusted Devices” management page where users can list and revoke devices (you already have controller/commands).
+Short term: accept client-supplied DeviceId (LoginDto) for bypass checks (fast).
+Medium-term: migrate to server-issued opaque tokens stored in HttpOnly Secure cookies:
+On Trust creation: server generates token, stores hashed token + metadata, returns cookie to client.
+On login: cookie is sent automatically; use cookie to bypass MFA instead of client-supplied fingerprint.
+Benefits: less spoofable, revocable, easier UX (no client wiring).
+Always: hash tokens in DB, enforce max devices, expiry, and user-controlled revocation. Log/audit trust/grant/revoke events.
+UX suggestions
+
+Show a clear checkbox during 2FA: “Remember this device for 30 days” with explanation of what that means.
+Optional: allow naming the device in a post-login popup or in account settings.
+Provide the management UI that shows last-used time, IP, UA, and revoke button.
+Next step options
+
+Continue with current approach (trust on 2FA + management UI) and add unit tests / audit logging.
+Start implementing server-issued opaque token + cookie flow (I can scaffold service, DB changes, cookie plumbing and migration steps).
+Which do you want to prioritize next?

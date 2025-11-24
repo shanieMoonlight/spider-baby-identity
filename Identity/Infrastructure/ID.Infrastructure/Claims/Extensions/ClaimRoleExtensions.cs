@@ -1,5 +1,5 @@
 ﻿using CollectionHelpers;
-using ID.Domain.Claims.Utils;
+using ID.Domain.Claims;
 using System.Security.Claims;
 
 namespace ID.Infrastructure.Claims.Extensions;

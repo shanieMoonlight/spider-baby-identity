@@ -4,11 +4,5 @@ namespace ID.Application.Features.Account.TrustedDevices;
 
 public static class TrustedDeviceMappings
 {
-
-    public static TrustedDeviceDto ToDto(this TrustedDevice mdl) =>
-        new(mdl);
-
-
-}//Cls
-
-
+    public static TrustedDeviceDto ToDto(this TrustedDevice mdl) => new(mdl);
+} //Cls

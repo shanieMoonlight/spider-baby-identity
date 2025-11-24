@@ -1,4 +1,4 @@
-﻿namespace ID.Domain.Claims.Utils;
+﻿namespace ID.Domain.Claims.Teams;
 
 public class MyTeamClaimValues
 {

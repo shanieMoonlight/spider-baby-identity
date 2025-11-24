@@ -88,4 +88,37 @@ internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceSe
         return BasicResult.Success(IDMsgs.Info.TrustedDevices.REVOKED(device, user));
     }
 
+
+    //-----------------------//
+
+    public Task<bool> IsDeviceTrustedAsync(TUser user, string deviceFingerprint, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(deviceFingerprint))
+            return Task.FromResult(false);
+
+        var device = user.TrustedDevices.FirstOrDefault(d => d.Fingerprint == deviceFingerprint && !d.IsExpired());
+        return Task.FromResult(device is not null);
+    }
+
+    //-----------------------//
+
+    public Task<TrustedDevice?> GetByFingerprintAsync(TUser user, string deviceFingerprint, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(deviceFingerprint))
+            return Task.FromResult<TrustedDevice?>(null);
+
+        var device = user.TrustedDevices.FirstOrDefault(d => d.Fingerprint == deviceFingerprint);
+        return Task.FromResult(device);
+    }
+
+    //-----------------------//
+    
+    public async Task UpdateLastUsedAsync(TUser user, TrustedDevice device, CancellationToken cancellationToken)
+    {
+        if (device is null) return;
+
+        device.UpdateLastUsed();
+        await uow.SaveChangesAsync(cancellationToken);
+    }
+
 }//Cls

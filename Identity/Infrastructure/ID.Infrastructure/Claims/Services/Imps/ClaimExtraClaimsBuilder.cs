@@ -1,4 +1,4 @@
-﻿using ID.Domain.Claims.Utils;
+﻿using ID.Domain.Claims;
 using ID.GlobalSettings.Setup.Options;
 using ID.Infrastructure.Claims.Extensions;
 using ID.Infrastructure.Claims.Services.Abs;

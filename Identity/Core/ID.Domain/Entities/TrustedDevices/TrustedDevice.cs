@@ -1,5 +1,6 @@
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Common;
+using ID.Domain.Entities.Refreshing;
 using ID.Domain.Entities.TrustedDevices.Events;
 using ID.Domain.Entities.TrustedDevices.ValueObjects;
 using MassTransit;
@@ -22,6 +23,14 @@ public class TrustedDevice : IdDomainEntity
     public DateTime? TrustedUntil { get; private set; }
 
     public DateTime LastUsedDate { get; private set; }
+
+
+    /// <summary>
+    /// Trusted devices for this user
+    /// </summary>
+    public IReadOnlyCollection<IdRefreshToken> IdRefreshTokens { get; private set; }
+
+
 
     #region EfCoreCtor
     // Used by EF Core
@@ -82,7 +91,7 @@ public class TrustedDevice : IdDomainEntity
 
     //- - - - - - - - - - - - //
 
-    internal TrustedDevice UpdateLastUsed()
+    public TrustedDevice UpdateLastUsed()
     {
         LastUsedDate = DateTime.UtcNow;
         RaiseDomainEvent(new TrustedDeviceUsedDomainEvent(Id, UserId));

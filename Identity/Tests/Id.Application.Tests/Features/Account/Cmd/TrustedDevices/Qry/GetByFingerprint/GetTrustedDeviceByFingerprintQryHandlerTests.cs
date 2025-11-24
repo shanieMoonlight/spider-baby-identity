@@ -39,6 +39,6 @@ public class GetTrustedDeviceByFingerprintQryHandlerTests
         // Assert
         result.Succeeded.ShouldBeTrue();
         result.Value.ShouldNotBeNull();
-        result.Value!.DeviceFingerprint.ShouldBe("fp-1");
+        result.Value!.Fingerprint.ShouldBe("fp-1");
     }
 }

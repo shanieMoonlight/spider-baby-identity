@@ -1,7 +1,8 @@
 using ID.Application.JWT.Subscriptions;
 using ID.Domain.Abstractions.Services.Teams;
 using ID.Domain.Claims;
-using ID.Domain.Claims.Utils;
+using ID.Domain.Claims.AuthMethods;
+using ID.Domain.Claims.Teams;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using Microsoft.AspNetCore.Hosting;
@@ -145,7 +146,7 @@ public class ContextProvider
     {
         var claims = new List<Claim>
         {
-            TwoFactorClaims.TwoFactorVerified
+            AuthenticationClaims.TwoFactorVerified
         };
         var identity = new ClaimsIdentity(claims, "IamAuthenticatedAuthenticationType");
         var httpContext = new DefaultHttpContext
@@ -175,7 +176,7 @@ public class ContextProvider
 
         var claims = new List<Claim>
         {
-            TwoFactorClaims.TwoFactorVerified,
+            AuthenticationClaims.TwoFactorVerified,
         };
 
         var identity = new ClaimsIdentity(claims);
@@ -219,7 +220,7 @@ public class ContextProvider
    
         var claims = new List<Claim>
         {
-            TwoFactorClaims.TwoFactorVerified,
+            AuthenticationClaims.TwoFactorVerified,
             new(MyIdClaimTypes.TEAM_TYPE,  MyTeamClaimValues.SUPER_TEAM_NAME),
             IdTeamClaims.LEADER
         };
@@ -260,7 +261,7 @@ public class ContextProvider
         };
 
         if (tfVerified)
-            claims.Add(TwoFactorClaims.TwoFactorVerified);
+            claims.Add(AuthenticationClaims.TwoFactorVerified);
 
         if (isLeader)
             claims.Add(IdTeamClaims.LEADER);

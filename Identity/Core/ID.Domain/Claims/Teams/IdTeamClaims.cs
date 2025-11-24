@@ -1,8 +1,7 @@
-﻿using ID.Domain.Claims.Utils;
-using ID.GlobalSettings.Setup.Defaults;
+﻿using ID.GlobalSettings.Setup.Defaults;
 using System.Security.Claims;
 
-namespace ID.Domain.Claims;
+namespace ID.Domain.Claims.Teams;
 
 
 //=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=//

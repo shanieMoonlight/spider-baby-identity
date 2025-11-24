@@ -1,4 +1,5 @@
 ﻿using ID.Application.AppAbs.ApplicationServices.TwoFactor;
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Utility.Messages;
@@ -12,6 +13,7 @@ public class MyIdSignInResult
     public bool NotFound { get; private set; } = false;
     public bool Unauthorized { get; private set; } = false;
     public string Message { get; private set; } = string.Empty;
+    public List<AuthMethodRef> AuthMethods { get; private set; } = [];
 
     /// <summary>
     /// Will be null if the user is not signed in.
@@ -29,12 +31,13 @@ public class MyIdSignInResult
 
     //----------------------//
 
-    public static MyIdSignInResult Success(AppUser user, Team team) =>
+    public static MyIdSignInResult Success(AppUser user, Team team, IEnumerable<AuthMethodRef> authMethods) =>
         new()
         {
             Succeeded = true,
             User = user,
             Team = team,
+            AuthMethods = [.. authMethods],
             Message = "Signed In!!!"
         };
 

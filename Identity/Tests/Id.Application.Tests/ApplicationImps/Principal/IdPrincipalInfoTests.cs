@@ -8,8 +8,8 @@ using System.Security.Claims;
 using ID.Application.AppImps.User;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Entities.Devices;
-using ID.Domain.Claims;
 using ID.Application.JWT.Subscriptions;
+using ID.Domain.Claims.Teams;
 
 namespace ID.Application.Tests.ApplicationImps.Principal;
 

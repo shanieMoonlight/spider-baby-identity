@@ -1,4 +1,4 @@
-using ID.Domain.Entities.AppUsers;
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.Refreshing;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Models;
@@ -40,6 +40,7 @@ public interface IJwtPackageProvider
     Task<JwtPackage> CreateJwtPackageAsync(
         AppUser user,
         Team team,
+        IEnumerable<AuthMethodRef> authMethods,
         string? currentDeviceId = null,
         CancellationToken cancellationToken = default);
 

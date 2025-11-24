@@ -1,7 +1,7 @@
 ﻿using ID.GlobalSettings.Setup.Settings;
 
 
-namespace ID.Domain.Claims.Utils;
+namespace ID.Domain.Claims.Teams;
 
 public class MyTeamClaimTypes
 {

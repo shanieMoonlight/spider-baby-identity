@@ -42,7 +42,7 @@ internal class CookieAuthService<TUser>(
         httpContext.Response.Cookies.Delete(CookieConstants.IsPersistentKey);
         httpContext.Response.Cookies.Delete(CookieConstants.DeviceIdKey);
 
-        var claims = await _claimsBuilder.BuildClaimsAsync(user, team, currentDeviceId);
+        var claims = await _claimsBuilder.BuildClaimsAsync(user, team, [], currentDeviceId);
         var principal = CreateClaimsPrincipal(claims);
         var authProps = CreateAuthenticationProperties(isPersistent);
 

@@ -1,3 +1,4 @@
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using ID.GlobalSettings.Setup.Options;
@@ -45,9 +46,14 @@ public class JwtBuilder(
     public async Task<string> CreateJwtAsync(
         AppUser user,
         Team team,
+        IEnumerable<AuthMethodRef> authMethods,
         string? currentDeviceId = null)
     {
-        var regularClaims = await _claimsBuilder.BuildClaimsAsync(user, team, currentDeviceId);
+        var regularClaims = await _claimsBuilder.BuildClaimsAsync(
+            user, 
+            team,
+            authMethods,
+            currentDeviceId);
         List<Claim> claims = _jwtClaims.AddRegisteredClaims(regularClaims, user);
         return GenerateAndSerializeToken(claims);
     }

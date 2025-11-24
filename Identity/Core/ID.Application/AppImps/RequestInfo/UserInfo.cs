@@ -1,6 +1,6 @@
 ﻿using ID.Application.AppAbs.RequestInfo;
 using ID.Application.Utility.ExtensionMethods;
-using ID.Domain.Claims.Utils;
+using ID.Domain.Claims;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 

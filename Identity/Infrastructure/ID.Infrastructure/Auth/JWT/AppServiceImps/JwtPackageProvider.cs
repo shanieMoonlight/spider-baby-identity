@@ -1,5 +1,6 @@
 using ID.Application.JWT;
 using ID.Application.MFA;
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Refreshing;
 using ID.Domain.Entities.Teams;
@@ -50,9 +51,9 @@ public class JwtPackageProvider(
         CancellationToken cancellationToken = default)
     {
         long expiration = GetTokenExpirationUnixTimestamp();
-        string twoFactorToken = _twofactorUserIdCache.StoreUserId(user.Id); 
+        string twoFactorToken = _twofactorUserIdCache.StoreUserId(user.Id);
 
-        var pkg =  JwtPackage.CreateWithTwoFactoRequired(
+        var pkg = JwtPackage.CreateWithTwoFactoRequired(
             twoFactorToken,
             expiration,
             provider,
@@ -76,14 +77,15 @@ public class JwtPackageProvider(
     public async Task<JwtPackage> CreateJwtPackageAsync(
         AppUser user,
         Team team,
+        IEnumerable<AuthMethodRef> authMethods,
         string? currentDeviceId = null,
         CancellationToken cancellationToken = default)
     {
         // Generate JWT token
-        string encodedToken = await _jwtBuilder.CreateJwtAsync(user, team, currentDeviceId);
+        string encodedToken = await _jwtBuilder.CreateJwtAsync(user, team, authMethods, currentDeviceId);
 
         // Generate refresh token if eligible
-        IdRefreshToken? refreshToken = await GenerateRefreshTokenIfEligibleAsync(user, cancellationToken);
+        IdRefreshToken? refreshToken = await GenerateRefreshTokenIfEligibleAsync(user, authMethods, cancellationToken);
 
         long expiration = GetTokenExpirationUnixTimestamp();
 
@@ -116,6 +118,7 @@ public class JwtPackageProvider(
         string encodedToken = await _jwtBuilder.CreateJwtAsync(
             user: user,
             team: team,
+            authMethods: existingToken.AuthMethodRefs,
             currentDeviceId: currentDeviceId);
 
         var refreshToken = await GetRefreshTokenWithSmartUpdateAsync(existingToken);
@@ -145,6 +148,7 @@ public class JwtPackageProvider(
     /// <returns>Generated refresh token if eligible, null otherwise</returns>
     private async Task<IdRefreshToken?> GenerateRefreshTokenIfEligibleAsync(
         AppUser user,
+        IEnumerable<AuthMethodRef> authMethods,
         CancellationToken cancellationToken)
     {
         // Check if refresh tokens are globally disabled
@@ -155,7 +159,7 @@ public class JwtPackageProvider(
             return null;
 
 
-        return await _refreshTokenService.GenerateTokenAsync(user, cancellationToken);
+        return await _refreshTokenService.GenerateTokenAsync(user, authMethods, cancellationToken);
 
     }
 
@@ -225,7 +229,7 @@ public class JwtPackageProvider(
     /// </summary>
     /// <returns>Token expiration timespan</returns>
     private long GetTokenExpirationUnixTimestamp() =>
-        (long)DateTime.UtcNow.Add(_tokenExpiration).ConvertToUnixTimestamp();
+        DateTime.UtcNow.Add(_tokenExpiration).ConvertToUnixTimestamp();
 
 
 

@@ -27,9 +27,9 @@ internal class JwtRefreshTokenService<TUser>(
     //-----------------------//  
 
     /// <inheritdoc />
-    public async Task<IdRefreshToken?> FindTokenWithUserAndTeamAsync(string tknPayload, CancellationToken cancellationToken = default)
+    public async Task<IdRefreshToken?> FindTokenWithUserAndDeviceAndTeamAsync(string tknPayload, CancellationToken cancellationToken = default)
     {
-        var spec = RefreshTokenWithUserAndTeamSpec.Create(tknPayload);
+        var spec = RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec.Create(tknPayload);
         return await _repo.FirstOrDefaultAsync(spec, cancellationToken);
     }
 
@@ -68,7 +68,7 @@ internal class JwtRefreshTokenService<TUser>(
     //-----------------------// 
 
     /// <inheritdoc />
-    public async Task<IdRefreshToken> GenerateTokenAsync(
+    public async Task<IdRefreshToken> GenerateTokenWithDeviceAsync(
         TUser user,
         IEnumerable<AuthMethodRef> authMethodRefs,
         TrustedDevice trustedDevice,

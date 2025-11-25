@@ -1,8 +1,4 @@
-using FluentValidation.TestHelper;
-using ID.Application.Features.Account.Cmd.Cookies.SignOut;
 using ID.Application.Features.Account.Cmd.PwdReset;
-using ID.Application.Features.Account.Cmd.Refresh;
-using Shouldly;
 
 namespace ID.Application.Tests.Features.Account.Cmd.PwdReset;
 public class ResetPwdCmdValidatorTests

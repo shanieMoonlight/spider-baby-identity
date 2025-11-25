@@ -1,4 +1,3 @@
-using ID.Application.Features.Account.TrustedDevices;
 using ID.Application.Mediatr.CqrsAbs;
 using MyResults;
 

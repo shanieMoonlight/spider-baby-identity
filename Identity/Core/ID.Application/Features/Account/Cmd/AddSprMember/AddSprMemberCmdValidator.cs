@@ -1,7 +1,3 @@
-using FluentValidation;
-using ID.Application.Mediatr.Validation;
-using ID.Domain.Utility.Messages;
-
 namespace ID.Application.Features.Account.Cmd.AddSprMember;
 public class AddSprMemberCmdValidator : ASuperMinimumValidator<AddSprMemberCmd>
 {

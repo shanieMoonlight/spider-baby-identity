@@ -1,4 +1,3 @@
-using ID.Application.Features.Account.TrustedDevices;
 using ID.Domain.Utility.Messages;
 
 namespace ID.Application.Features.Account.TrustedDevices.Qry.GetByFingerprint;

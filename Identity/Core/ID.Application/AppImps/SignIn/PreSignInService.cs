@@ -1,7 +1,6 @@
 ﻿using ID.Application.AppAbs.ApplicationServices.TwoFactor;
 using ID.Application.AppAbs.ApplicationServices.User;
 using ID.Application.AppAbs.EventBuses;
-using ID.Application.AppAbs.FromApp;
 using ID.Application.AppAbs.SignIn;
 using ID.Application.AppAbs.TokenVerificationServices;
 using ID.Application.Features.Account.Cmd.Login;
@@ -18,7 +17,6 @@ internal class PreSignInService<TUser>(
     IEmailConfirmationBus _emailConfirmationBus,
     ITwoFactorVerificationService<AppUser> _2FactorService,
     ITwoFactorMsgService _twoFactorMsgService,
-    IIsFromMobileApp _fromAppService,
     ITrustedDeviceService<TUser> _trustedDeviceService,
     ILogger<PreSignInService<TUser>> _logger
 ) : IPreSignInService<TUser>
@@ -59,7 +57,7 @@ internal class PreSignInService<TUser>(
 
         //Package all user info  and send it back to client.
         var tfEnabled = await _2FactorService.IsTwoFactorEnabledAsync(user);
-        if (tfEnabled && !_fromAppService.IsFromApp)
+        if (tfEnabled)
             return await SendTwoFactor(user, user.Team!);
 
         return MyIdSignInResult.Success(user, user.Team!, []);

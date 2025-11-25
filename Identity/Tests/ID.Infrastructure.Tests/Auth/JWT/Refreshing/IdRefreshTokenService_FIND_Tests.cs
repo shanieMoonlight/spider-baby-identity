@@ -36,14 +36,14 @@ public class IdRefreshTokenService_FINDING_Tests
         var user = AppUserDataFactory.Create();
         var existingToken = CreateRefreshToken(tokenPayload, user);
 
-        var userTeamSpec = RefreshTokenWithUserAndTeamSpec.Create(tokenPayload);
+        var userTeamSpec = RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec.Create(tokenPayload);
 
         _refreshTokenRepoMock
-            .Setup(repo => repo.FirstOrDefaultAsync(It.IsAny<RefreshTokenWithUserAndTeamSpec>(), It.IsAny<CancellationToken>()))
+            .Setup(repo => repo.FirstOrDefaultAsync(It.IsAny<RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingToken); //Assume FirstOrDefaultAsync works
 
         // Act
-        var result = await _sut.FindTokenWithUserAndTeamAsync(tokenPayload, It.IsAny<CancellationToken>());
+        var result = await _sut.FindTokenWithUserAndDeviceAndTeamAsync(tokenPayload, It.IsAny<CancellationToken>());
 
         // Assert
         result.ShouldNotBeNull();
@@ -52,7 +52,7 @@ public class IdRefreshTokenService_FINDING_Tests
 
         _refreshTokenRepoMock.Verify(
             repo => repo.FirstOrDefaultAsync(
-                It.Is<RefreshTokenWithUserAndTeamSpec>(spec => spec.TESTING_CompareCriteria(userTeamSpec, existingToken)),
+                It.Is<RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec>(spec => spec.TESTING_CompareCriteria(userTeamSpec, existingToken)),
                 It.IsAny<CancellationToken>()),
             Times.Once);
     }
@@ -64,22 +64,22 @@ public class IdRefreshTokenService_FINDING_Tests
     {
         // Arrange
         var tokenPayload = "non-existent-token";
-        var userTeamSpec = RefreshTokenWithUserAndTeamSpec.Create(tokenPayload);
+        var userTeamSpec = RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec.Create(tokenPayload);
         var testToken = RefreshTokenDataFactory.Create(payload: tokenPayload);
 
         _refreshTokenRepoMock
-            .Setup(repo => repo.FirstOrDefaultAsync(It.IsAny<RefreshTokenWithUserAndTeamSpec>(), It.IsAny<CancellationToken>()))
+            .Setup(repo => repo.FirstOrDefaultAsync(It.IsAny<RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((IdRefreshToken?)null);
 
         // Act
-        var result = await _sut.FindTokenWithUserAndTeamAsync(tokenPayload, It.IsAny<CancellationToken>());
+        var result = await _sut.FindTokenWithUserAndDeviceAndTeamAsync(tokenPayload, It.IsAny<CancellationToken>());
 
         // Assert
         result.ShouldBeNull();
 
         _refreshTokenRepoMock.Verify(
             repo => repo.FirstOrDefaultAsync(
-                It.Is<RefreshTokenWithUserAndTeamSpec>(spec =>
+                It.Is<RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec>(spec =>
                     spec.TESTING_GetCriteria().Compile().Invoke(testToken) == userTeamSpec.TESTING_GetCriteria().Compile().Invoke(testToken)),
                 It.IsAny<CancellationToken>()),
             Times.Once);

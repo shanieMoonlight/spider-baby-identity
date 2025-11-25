@@ -24,7 +24,7 @@ public class TrustDeviceCmdHandler(
             return addResult.Convert<TrustDeviceCreateResponseDto>();
 
         var device = addResult.Value!;
-        var token = await _refreshTokenService.GenerateTokenAsync(
+        var token = await _refreshTokenService.GenerateTokenWithDeviceAsync(
              user,
              [AuthMethodRef.mfa],
              device,

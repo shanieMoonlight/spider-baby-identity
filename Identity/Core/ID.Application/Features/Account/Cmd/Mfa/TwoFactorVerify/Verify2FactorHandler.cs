@@ -4,7 +4,6 @@ using ID.Application.AppAbs.TrustedDevices;
 using ID.Application.JWT;
 using ID.Application.MFA;
 using ID.Domain.Claims.AuthMethods;
-using ID.Domain.Entities.TrustedDevices.ValueObjects;
 using ID.Domain.Models;
 
 namespace ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerify;
@@ -41,7 +40,8 @@ public class Verify2FactorHandler(
                 user: user,
                 deviceFingerprint: dto.DeviceFingerprint,
                 deviceName: dto.DeviceName ?? $"Trusted via MFA: {DateTime.UtcNow:yyyy-MMM-dd}",
-                cancellationToken: cancellationToken);
+                cancellationToken: cancellationToken
+            );
 
             if (!addResult.Succeeded)
                 addResult.Convert<JwtPackage>();

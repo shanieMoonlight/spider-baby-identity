@@ -1,5 +1,4 @@
 ﻿using ID.Domain.Claims.AuthMethods;
-using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Refreshing;
 
 namespace ID.Application.JWT;
@@ -11,7 +10,7 @@ public interface IJwtRefreshTokenService<TUser> where TUser : AppUser
     /// </summary>
     /// <param name="tknPayload">The refresh token payload.</param>
     /// <returns>The refresh token with user and team information, or null if not found.</returns>
-    Task<IdRefreshToken?> FindTokenWithUserAndTeamAsync(string tknPayload, CancellationToken cancellationToken = default);
+    Task<IdRefreshToken?> FindTokenWithUserAndDeviceAndTeamAsync(string tknPayload, CancellationToken cancellationToken = default);
 
     //-------------------------//
 
@@ -41,5 +40,5 @@ public interface IJwtRefreshTokenService<TUser> where TUser : AppUser
     /// <param name="user">The user whose tokens are to be revoked.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     Task RevokeTokensAsync(TUser user, CancellationToken cancellationToken = default);
-    Task<IdRefreshToken> GenerateTokenAsync(TUser user, IEnumerable<AuthMethodRef> authMethodRefs, TrustedDevice trustedDevice, CancellationToken cancellationToken);
+    Task<IdRefreshToken> GenerateTokenWithDeviceAsync(TUser user, IEnumerable<AuthMethodRef> authMethodRefs, TrustedDevice trustedDevice, CancellationToken cancellationToken);
 }

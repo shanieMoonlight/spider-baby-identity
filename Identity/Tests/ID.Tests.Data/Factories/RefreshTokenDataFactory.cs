@@ -1,5 +1,6 @@
 using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.Refreshing;
+using ID.Domain.Entities.TrustedDevices;
 
 namespace ID.Tests.Data.Factories;
 
@@ -19,6 +20,8 @@ public static class RefreshTokenDataFactory
             DateTime? expiresOnUtc = null,
             AppUser? user = null,
             IEnumerable<AuthMethodRef>? authMethodRefs = null,
+            Guid? trustedDeviceId = null,
+            TrustedDevice? trustedDevice = null,
             string? administratorUsername = null,
             string? administratorId = null)
     {
@@ -36,6 +39,8 @@ public static class RefreshTokenDataFactory
         administratorUsername ??= $"{RandomStringGenerator.Generate(20)}{id}";
         administratorId ??= $"{RandomStringGenerator.Generate(20)}{id}";
 
+        trustedDeviceId = trustedDevice?.Id ?? trustedDeviceId;
+
 
         var paramaters = new[]
            {
@@ -44,6 +49,8 @@ public static class RefreshTokenDataFactory
             new PropertyAssignment(nameof(IdRefreshToken.User),  () => user ),
             new PropertyAssignment(nameof(IdRefreshToken.UserId),  () => userId ),
             new PropertyAssignment(nameof(IdRefreshToken.Id),  () => id ),
+            new PropertyAssignment(nameof(IdRefreshToken.TrustedDeviceId),  () => trustedDeviceId ),
+            new PropertyAssignment(nameof(IdRefreshToken.TrustedDevice),  () => trustedDevice ),
             new PropertyAssignment(nameof(IdRefreshToken.AuthMethodRefs),  () => authMethodRefs.ToList() ),
             new PropertyAssignment(nameof(IdRefreshToken.AdministratorUsername),  () => administratorUsername ),
             new PropertyAssignment(nameof(IdRefreshToken.AdministratorId),  () => administratorId )

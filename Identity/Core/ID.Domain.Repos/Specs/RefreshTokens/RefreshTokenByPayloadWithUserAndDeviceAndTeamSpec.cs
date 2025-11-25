@@ -8,13 +8,13 @@ namespace ID.Domain.Repos.Specs.RefreshTokens;
 /// <summary>
 /// Specification for retrieving a RefreshToken entity by its payload, including its associated User and Team.
 /// </summary>
-internal class RefreshTokenWithUserAndTeamSpec : ASimpleSpecification<IdRefreshToken>
+internal class RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec : ASimpleSpecification<IdRefreshToken>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="RefreshTokenWithUserAndTeamSpec"/> class.
+    /// Initializes a new instance of the <see cref="RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec"/> class.
     /// </summary>
     /// <param name="tknPayload">The token payload to match.</param>
-    public RefreshTokenWithUserAndTeamSpec(string? tknPayload) : base(r => r.Payload == tknPayload)
+    public RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec(string? tknPayload) : base(r => r.Payload == tknPayload)
     {
         // Short-circuits the query if the token is null or whitespace.
         SetShortCircuit(() => tknPayload.IsNullOrWhiteSpace());
@@ -23,17 +23,18 @@ internal class RefreshTokenWithUserAndTeamSpec : ASimpleSpecification<IdRefreshT
         SetInclude(query => query
             .Include(e => e.User)
                 .ThenInclude(u => u!.Team)
-                );
+            .Include(e => e.TrustedDevice)
+        );
     }
 
     //-------------------------------------//
 
     /// <summary>
-    /// Factory method to create a new instance of <see cref="RefreshTokenWithUserAndTeamSpec"/>.
+    /// Factory method to create a new instance of <see cref="RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec"/>.
     /// </summary>
     /// <param name="tkn">The token payload to match.</param>
-    /// <returns>A new instance of <see cref="RefreshTokenWithUserAndTeamSpec"/>.</returns>
-    public static RefreshTokenWithUserAndTeamSpec Create(string? tkn) =>
+    /// <returns>A new instance of <see cref="RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec"/>.</returns>
+    public static RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec Create(string? tkn) =>
         new(tkn);
 
 }//Cls

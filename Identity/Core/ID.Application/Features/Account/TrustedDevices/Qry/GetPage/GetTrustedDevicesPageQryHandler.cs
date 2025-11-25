@@ -1,5 +1,3 @@
-using ID.Application.Features.Account.TrustedDevices;
-
 namespace ID.Application.Features.Account.TrustedDevices.Qry.GetPage;
 internal class GetTrustedDevicesPageQryHandler() : IIdQueryHandler<GetTrustedDevicesPageQry, PagedResponse<TrustedDeviceDto>>
 {

@@ -2,7 +2,6 @@
 using ID.Application.Utility.ExtensionMethods;
 using ID.Domain.Claims.AuthMethods;
 using ID.GlobalSettings.Constants;
-using System.Diagnostics;
 
 namespace ID.Application.Mediatr.Validation;
 

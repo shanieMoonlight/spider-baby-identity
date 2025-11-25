@@ -9,7 +9,7 @@ using Microsoft.Extensions.Options;
 using MyResults;
 
 namespace ID.Application.Features.Account.Cmd.LoginRefresh;
-public class RefreshTknHandler(
+public class LoginRefreshHandler(
     IJwtRefreshTokenService<AppUser> _tknService,
     IJwtPackageProvider _jwtPackageProvider,
     IOptions<IdGlobalOptions> _globalOptionsProvider)
@@ -27,32 +27,57 @@ public class RefreshTknHandler(
         if (!_globalOptions.JwtRefreshTokensEnabled)
             return GenResult<JwtPackage>.BadRequestResult(IDMsgs.Error.REFRESH_TOKEN_DISABLED);
 
-        var tknPayload = request.RefreshToken;
-        var refreshToken = await _tknService.FindTokenWithUserAndTeamAsync(tknPayload, cancellationToken);
+        var requestDto = request.Dto;
+        var tknPayload = requestDto.RefreshToken;
+        var dvcFingerprint = requestDto.DeviceFingerprint;
+        var refreshToken = await _tknService.FindTokenWithUserAndDeviceAndTeamAsync(tknPayload, cancellationToken);
+
 
         if (refreshToken == null)
             return GenResult<JwtPackage>.UnauthorizedResult(IDMsgs.Error.Authorization.INVALID_AUTH);
 
+
         if (refreshToken.IsExpired)
             return GenResult<JwtPackage>.UnauthorizedResult(IDMsgs.Error.Authorization.INVALID_AUTH);
+
 
         var user = refreshToken.User;
         if (user == null)
             return GenResult<JwtPackage>.UnauthorizedResult(IDMsgs.Error.Authorization.INVALID_AUTH_EXPIRED_TOKEN);
 
+
         var team = user.Team;
         if (team == null)
-            return GenResult<JwtPackage>.NotFoundResult(IDMsgs.Error.NotFound<Team>(refreshToken));
+            return GenResult<JwtPackage>.NotFoundResult(IDMsgs.Error.NotFound<Team>(user.TeamId));
+
+
+        if (!DoFingerprintsMatch(refreshToken.TrustedDevice?.Fingerprint, dvcFingerprint))
+            return GenResult<JwtPackage>.UnauthorizedResult(IDMsgs.Error.Authorization.INVALID_AUTH);
 
 
         JwtPackage jwtPackage = await _jwtPackageProvider.RefreshJwtPackageAsync(
             existingToken: refreshToken,
             user: user!,
             team: team!,
-            currentDeviceId: request.DeviceId);
+            currentDeviceId: dvcFingerprint);
 
 
         return GenResult<JwtPackage>.Success(jwtPackage);
     }
+
+    //-----------------------------//
+
+    private static bool DoFingerprintsMatch(string? tokenFingerprint, string? requestFingerprint)
+    {
+        var tokenFingerprintTrimmed = tokenFingerprint?.Trim();
+        var requestFingerprintTrimmed = requestFingerprint?.Trim();
+
+        if (string.IsNullOrWhiteSpace(tokenFingerprintTrimmed) && string.IsNullOrWhiteSpace(requestFingerprintTrimmed))
+            return true;
+        if (string.IsNullOrWhiteSpace(tokenFingerprintTrimmed) || string.IsNullOrWhiteSpace(requestFingerprintTrimmed))
+            return false;
+        return tokenFingerprintTrimmed == requestFingerprintTrimmed;
+    }
+
 
 }//Cls

@@ -24,7 +24,7 @@ internal class DeviceTrustService<TUser>(ITrustedDeviceService<TUser> _trustedDe
         var ua = UserAgent.Create(uaValue);
         var ip = IpAddress.Create(ipValue);
 
-        var addResult = await _trustedDeviceService.AddAsync(
+        return await _trustedDeviceService.AddAsync(
             user: user,
             deviceFingerprint: fingerprint,
             deviceName: name,
@@ -32,10 +32,6 @@ internal class DeviceTrustService<TUser>(ITrustedDeviceService<TUser> _trustedDe
             ipAddress: ip,
             cancellationToken: cancellationToken);
 
-        if (!addResult.Succeeded)
-            return addResult.Convert<TrustedDevice>();
-
-        return GenResult<TrustedDevice>.Success(addResult.Value!);
     }
 
     //---------------------------//

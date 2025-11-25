@@ -33,7 +33,7 @@ public static class CanTrustDeviceAuthenticator
 
             Debug.WriteLine(authTime <= DateTime.UtcNow.AddMinutes(IdGlobalConstants.Authentication.MAX_AUTH_TIME_FOR_DEVICE_TRUST_MINUTES));
 
-            return authTime <= DateTime.UtcNow.AddMinutes(IdGlobalConstants.Authentication.MAX_AUTH_TIME_FOR_DEVICE_TRUST_MINUTES);
+            return authTime.HasValue && authTime.Value.AddMinutes(IdGlobalConstants.Authentication.MAX_AUTH_TIME_FOR_DEVICE_TRUST_MINUTES) >= DateTime.UtcNow;
         }
 
     }//Cls

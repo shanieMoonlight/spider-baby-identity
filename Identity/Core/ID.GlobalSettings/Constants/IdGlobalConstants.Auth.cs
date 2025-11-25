@@ -32,8 +32,8 @@ internal partial class IdGlobalConstants
 
         // How long the authentication time is valid for device trust
         /// <summary>
-        /// 5
+        /// 8
         /// </summary>
-        internal const int MAX_AUTH_TIME_FOR_DEVICE_TRUST_MINUTES = 5;
+        internal const int MAX_AUTH_TIME_FOR_DEVICE_TRUST_MINUTES = 8;
     }
 }

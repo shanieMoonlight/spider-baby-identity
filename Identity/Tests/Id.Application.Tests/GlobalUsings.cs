@@ -35,3 +35,15 @@ global using  ID.Domain.Entities.TrustedDevices;
 global using ID.Domain.Entities.TrustedDevices.Events;
 global using ID.Application.AppAbs.TrustedDevices;
 global using ID.Tests.Utility.Logging;
+global using ID.Application.AppAbs.ApplicationServices.TwoFactor;
+global using ID.Application.Features.Account.Cmd.Login;
+global using ID.Application.JWT;
+global using ID.Domain.Claims.AuthMethods;
+global using CollectionHelpers;
+global using  ID.Application.Authenticators.Teams;
+global using  ID.Domain.Claims.Teams;
+global using  ID.Tests.Data.Filters;
+global using  Microsoft.AspNetCore.Mvc;
+global using  Microsoft.AspNetCore.Mvc.Filters;
+global using  Xunit.Abstractions;
+

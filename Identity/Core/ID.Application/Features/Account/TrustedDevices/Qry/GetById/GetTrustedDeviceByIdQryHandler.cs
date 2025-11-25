@@ -1,5 +1,3 @@
-using ID.Application.Features.Account.TrustedDevices;
-
 namespace ID.Application.Features.Account.TrustedDevices.Qry.GetById;
 internal class GetTrustedDeviceByIdQryHandler() : IIdQueryHandler<GetTrustedDeviceByIdQry, TrustedDeviceDto>
 {

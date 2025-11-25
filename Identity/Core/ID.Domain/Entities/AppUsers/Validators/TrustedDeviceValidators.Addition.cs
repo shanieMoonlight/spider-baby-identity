@@ -17,7 +17,7 @@ public  partial class TrustedDeviceValidators
                 DeviceName deviceName, 
                 UserAgent userAgent,
                 IpAddress ipAddress,
-                TrustDurationNullable trustDuration)
+                TrustDuration trustDuration)
             {
                 User = user;
                 DeviceFingerprint = deviceFingerprint;
@@ -31,7 +31,7 @@ public  partial class TrustedDeviceValidators
             public DeviceFingerprint DeviceFingerprint { get; }
             public DeviceName DeviceName { get; }
             public UserAgent UserAgent { get; }
-            public TrustDurationNullable TrustDuration { get; }
+            public TrustDuration TrustDuration { get; }
             public IpAddress IpAddress { get; }
         }
 
@@ -43,7 +43,7 @@ public  partial class TrustedDeviceValidators
             DeviceName deviceName, 
             UserAgent userAgent,
             IpAddress ipAddress, 
-            TrustDurationNullable trustDuration)
+            TrustDuration trustDuration)
         {
             // Business rule: Limit trusted devices per user
             const int MAX = IdGlobalDefaultValues.MAX_TRUSTED_DEVICES_PER_USER;

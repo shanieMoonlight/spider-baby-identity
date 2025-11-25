@@ -44,6 +44,11 @@ public partial class IdGlobalDefaultValues
     /// </summary>
     internal static readonly TimeSpan PHONE_TOKEN_EXPIRE_TIME_SPAN = TimeSpan.FromHours(6);
 
+    /// <summary>
+    /// TimeSpan.FromDays(30);
+    /// </summary>
+    internal static readonly TimeSpan TRUSTED_DEVICE_EXPIRE_TIME_SPAN = TimeSpan.FromDays(30);
+
     //How long the cookie is valid for.
     /// <summary>
     /// 120

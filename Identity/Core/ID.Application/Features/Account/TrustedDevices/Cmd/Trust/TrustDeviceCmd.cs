@@ -7,4 +7,9 @@ public sealed record TrustDeviceCreateDto(
     string DeviceName);
 
 
-public record TrustDeviceCmd(TrustDeviceCreateDto Dto) : AIdUserAwareCommand<AppUser, TrustedDeviceDto>;
+public sealed record TrustDeviceCreateResponseDto(
+    TrustedDeviceDto Device,
+    string RefreshToken);
+
+
+public record TrustDeviceCmd(TrustDeviceCreateDto Dto) : AIdUserAwareCommand<AppUser, TrustDeviceCreateResponseDto>;

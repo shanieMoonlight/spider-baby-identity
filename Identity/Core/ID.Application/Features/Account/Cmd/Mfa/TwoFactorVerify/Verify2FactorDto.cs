@@ -14,6 +14,7 @@ public class Verify2FactorDto
     
     // Optional: device fingerprint to create a trusted-device entry when requested
     public string? DeviceFingerprint { get; set; }
+    public string? DeviceName { get; set; }
 
     // When true, create a trusted device record for this device after successful verification
     public bool TrustDevice { get; set; } = false;

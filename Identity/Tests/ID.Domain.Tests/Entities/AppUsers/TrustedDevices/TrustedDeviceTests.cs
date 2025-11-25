@@ -11,7 +11,7 @@ public class TrustedDeviceTests
         var name = DeviceName.Create("Device A");
         var ua = UserAgent.Create("UA-A");
         var ip = IpAddress.Create("IP");
-        var duration = TrustDurationNullable.Create(TimeSpan.FromDays(7));
+        var duration = TrustDuration.Create(TimeSpan.FromDays(7));
 
         // Act
         var device = TrustedDevice.Create(user, fp, name, ua, ip, duration);
@@ -21,9 +21,9 @@ public class TrustedDeviceTests
         device.Fingerprint.ShouldBe(fp.Value);
         device.Name.ShouldBe(name.Value);
         device.UserAgent.ShouldBe(ua.Value);
-        device.TrustedUntil.ShouldNotBeNull();
+        device.TrustedUntil.ShouldNotBe(default);
         // TrustedUntil should be approximately now + duration
-        var diff = device.TrustedUntil!.Value - DateTime.UtcNow - duration.Value!.Value;
+        var diff = device.TrustedUntil - DateTime.UtcNow - duration.Value;
         Math.Abs(diff.TotalSeconds).ShouldBeLessThan(2);
     }
 
@@ -37,14 +37,14 @@ public class TrustedDeviceTests
         var fp = DeviceFingerprint.Create($"fp-{Guid.NewGuid()}");
         var name = DeviceName.Create("Device B");
         var ua = UserAgent.Create("UA-B");
-        var duration = TrustDurationNullable.Create(null);
-        var ip = IpAddress.Create("IP") ;
+        var duration = TrustDuration.Create(TimeSpan.FromDays(5));
+        var ip = IpAddress.Create("IP");
 
         // Act
-        var device = TrustedDevice.Create(user, fp, name, ua,ip, duration);
+        var device = TrustedDevice.Create(user, fp, name, ua, ip, duration);
 
         // Assert
-        device.TrustedUntil.ShouldBeNull();
+        device.TrustedUntil.ShouldNotBe(default);
         device.IsExpired().ShouldBeFalse();
     }
 
@@ -55,7 +55,7 @@ public class TrustedDeviceTests
     {
         // Arrange
         var user = AppUserDataFactory.Create();
-        var device = TrustedDevice.Create(user, DeviceFingerprint.Create($"fp-{Guid.NewGuid()}"), DeviceName.Create("D"), UserAgent.Create("UA"), IpAddress.Create("IP"), TrustDurationNullable.Create(null));
+        var device = TrustedDevice.Create(user, DeviceFingerprint.Create($"fp-{Guid.NewGuid()}"), DeviceName.Create("D"), UserAgent.Create("UA"), IpAddress.Create("IP"), TrustDuration.Create(TimeSpan.FromDays(1)));
 
         var before = device.LastUsedDate;
         Thread.Sleep(5);
@@ -77,22 +77,22 @@ public class TrustedDeviceTests
 
         // expired device
         var expiredDevice = TrustedDeviceDataFactory.Create(
-            user : user,
-            trustedUntil:DateTime.UtcNow.AddSeconds(-30)
+            user: user,
+            trustedUntil: DateTime.UtcNow.AddSeconds(-30)
             );
 
         // active device
         var activeDevice = TrustedDeviceDataFactory.Create(
-            user:user, 
-            trustedUntil:DateTime.UtcNow.AddHours(1));
+            user: user,
+            trustedUntil: DateTime.UtcNow.AddHours(1));
 
         // indefinite device
-        var indefiniteDevice = TrustedDeviceDataFactory.Create(user:user, trustedUntil: null);
+        var indefiniteDevice = TrustedDeviceDataFactory.Create(user: user, trustedUntil: null);
 
         // Act & Assert
         expiredDevice.IsExpired().ShouldBeTrue();
         activeDevice.IsExpired().ShouldBeFalse();
-        indefiniteDevice.IsExpired().ShouldBeFalse();
+        indefiniteDevice.IsExpired().ShouldBeTrue(); //We don't allow nulls
     }
 
     //--------------------//
@@ -103,20 +103,20 @@ public class TrustedDeviceTests
         // Arrange
         var user = AppUserDataFactory.Create();
         var device = TrustedDevice.Create(
-            user, 
-            DeviceFingerprint.Create($"fp-{Guid.NewGuid()}"), 
-            DeviceName.Create("R"), 
-            UserAgent.Create("UA"), 
-            IpAddress.Create("IP"), 
-            TrustDurationNullable.Create(TimeSpan.FromDays(1)));
+            user,
+            DeviceFingerprint.Create($"fp-{Guid.NewGuid()}"),
+            DeviceName.Create("R"),
+            UserAgent.Create("UA"),
+            IpAddress.Create("IP"),
+            TrustDuration.Create(TimeSpan.FromDays(1)));
 
         // Act
         var revoked = device.Revoke();
 
         // Assert
-        revoked.TrustedUntil.ShouldNotBeNull();
+        revoked.TrustedUntil.ShouldNotBe(default);
         // TrustedUntil set to now (approximately)
-        var diff = DateTime.UtcNow - revoked.TrustedUntil!.Value;
+        var diff = DateTime.UtcNow - revoked.TrustedUntil;
         Math.Abs(diff.TotalSeconds).ShouldBeLessThan(2);
         revoked.IsExpired().ShouldBeTrue();
     }
@@ -128,14 +128,14 @@ public class TrustedDeviceTests
     {
         // Arrange
         var user = AppUserDataFactory.Create();
-        var device = TrustedDevice.Create(user, DeviceFingerprint.Create($"fp-{Guid.NewGuid()}"), DeviceName.Create("X"), UserAgent.Create("UA"), IpAddress.Create("IP"), TrustDurationNullable.Create(TimeSpan.FromDays(1)));
+        var device = TrustedDevice.Create(user, DeviceFingerprint.Create($"fp-{Guid.NewGuid()}"), DeviceName.Create("X"), UserAgent.Create("UA"), IpAddress.Create("IP"), TrustDuration.Create(TimeSpan.FromDays(1)));
 
         // Act
         var extended = device.ExtendTrust(TimeSpan.FromDays(5));
 
         // Assert
-        extended.TrustedUntil.ShouldNotBeNull();
-        extended.TrustedUntil!.Value.ShouldBeGreaterThan(DateTime.UtcNow);
+        extended.TrustedUntil.ShouldNotBe(default);
+        extended.TrustedUntil.ShouldBeGreaterThan(DateTime.UtcNow);
         extended.IsExpired().ShouldBeFalse();
     }
 
@@ -146,13 +146,13 @@ public class TrustedDeviceTests
     {
         // Arrange
         var user = AppUserDataFactory.Create();
-        var device = TrustedDevice.Create(user, DeviceFingerprint.Create($"fp-{Guid.NewGuid()}"), DeviceName.Create("Y"), UserAgent.Create("UA"), IpAddress.Create("IP"), TrustDurationNullable.Create(TimeSpan.FromDays(1)));
+        var device = TrustedDevice.Create(user, DeviceFingerprint.Create($"fp-{Guid.NewGuid()}"), DeviceName.Create("Y"), UserAgent.Create("UA"), IpAddress.Create("IP"), TrustDuration.Create(TimeSpan.FromDays(1)));
 
         // Act
-        var extended = device.ExtendTrust(null);
+        var extended = device.ExtendTrust(TimeSpan.FromDays(5));
 
         // Assert
-        extended.TrustedUntil.ShouldBeNull();
+        extended.TrustedUntil.ShouldNotBe(default);
         extended.IsExpired().ShouldBeFalse();
     }
 
@@ -165,8 +165,8 @@ public class TrustedDeviceTests
         var user = AppUserDataFactory.Create();
         var fpValue = $"same-fp-{Guid.NewGuid()}";
 
-        var d1 = TrustedDevice.Create(user, DeviceFingerprint.Create(fpValue), DeviceName.Create("N1"), UserAgent.Create("UA1"), IpAddress.Create("IP"), TrustDurationNullable.Create(null));
-        var d2 = TrustedDevice.Create(user, DeviceFingerprint.Create(fpValue), DeviceName.Create("N2"), UserAgent.Create("UA2"), IpAddress.Create("IP"), TrustDurationNullable.Create(TimeSpan.FromDays(1)));
+        var d1 = TrustedDevice.Create(user, DeviceFingerprint.Create(fpValue), DeviceName.Create("N1"), UserAgent.Create("UA1"), IpAddress.Create("IP"), TrustDuration.Create(TimeSpan.FromDays(1)));
+        var d2 = TrustedDevice.Create(user, DeviceFingerprint.Create(fpValue), DeviceName.Create("N2"), UserAgent.Create("UA2"), IpAddress.Create("IP"), TrustDuration.Create(TimeSpan.FromDays(1)));
 
         // Act & Assert
         d1.Equals(d2).ShouldBeTrue();

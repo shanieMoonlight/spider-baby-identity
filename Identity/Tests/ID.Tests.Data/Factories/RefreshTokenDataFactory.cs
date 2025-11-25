@@ -1,11 +1,10 @@
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.Refreshing;
 
 namespace ID.Tests.Data.Factories;
 
 public static class RefreshTokenDataFactory
 {
-    //------------------------------------//
-
     public static List<IdRefreshToken> CreateMany(int count = 20)
     {
         return [.. IdGenerator.GetGuidIdsList(count).Select(id => Create(id))];
@@ -19,13 +18,15 @@ public static class RefreshTokenDataFactory
             string? payload = null,
             DateTime? expiresOnUtc = null,
             AppUser? user = null,
-        string? administratorUsername = null,
-        string? administratorId = null)
+            IEnumerable<AuthMethodRef>? authMethodRefs = null,
+            string? administratorUsername = null,
+            string? administratorId = null)
     {
 
         id ??= Guid.NewGuid();
         payload ??= $"{RandomStringGenerator.Generate(20)}{id}";
         expiresOnUtc ??= RandomDateGenerator.Generate(DateTime.Now.AddDays(5));
+        authMethodRefs ??= [];
 
         if (user is not null)
             userId ??= user.Id;
@@ -43,6 +44,7 @@ public static class RefreshTokenDataFactory
             new PropertyAssignment(nameof(IdRefreshToken.User),  () => user ),
             new PropertyAssignment(nameof(IdRefreshToken.UserId),  () => userId ),
             new PropertyAssignment(nameof(IdRefreshToken.Id),  () => id ),
+            new PropertyAssignment(nameof(IdRefreshToken.AuthMethodRefs),  () => authMethodRefs.ToList() ),
             new PropertyAssignment(nameof(IdRefreshToken.AdministratorUsername),  () => administratorUsername ),
             new PropertyAssignment(nameof(IdRefreshToken.AdministratorId),  () => administratorId )
         };

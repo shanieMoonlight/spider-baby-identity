@@ -3,10 +3,7 @@ using LoggingHelpers.Principal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using StringHelpers;
-using System;
-using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace LoggingHelpers;
 
@@ -28,6 +25,21 @@ public class InfoMessageBuilder
         if (string.IsNullOrEmpty(formatterMessage))
             return "";
 
+
+        // Safely obtain HttpContext info (GetHttpContextInfo is async)
+        string httpContextInfo = string.Empty;
+        try
+        {
+            if (httpContext != null)
+                httpContextInfo = GetHttpContextInfo(httpContext).GetAwaiter().GetResult();
+        }
+        catch (Exception ex)
+        {
+            // Don't let HttpContext read failures break logging; include a short note instead.
+            httpContextInfo = $"(Failed to read HttpContext info: {ex.Message})";
+        }
+
+
         StringBuilder messageBuilder = new();
 
         messageBuilder
@@ -39,7 +51,7 @@ public class InfoMessageBuilder
            .AppendLine()
            .AppendLine($"Application: {appName ?? "???"}")
            .AppendLine()
-           .AppendLine($"{GetHttpContextInfo(httpContext)}")
+           .AppendLine($"{httpContextInfo}")
            .AppendLine()
            .AppendLine(formatterMessage)
            .AppendLine()

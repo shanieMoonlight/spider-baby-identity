@@ -46,8 +46,25 @@ public class IdRefreshToken : IdDomainEntity
 
     //------------------------//   
 
-    public static IdRefreshToken Create(TokenPayload token,  AppUser user, TokenLifetime tokenLifetime, IEnumerable<AuthMethodRef> authMethodRefs) => 
+    public static IdRefreshToken Create(
+        TokenPayload token,
+        AppUser user,
+        TokenLifetime tokenLifetime,
+        IEnumerable<AuthMethodRef> authMethodRefs) =>
         new(token, user, tokenLifetime, authMethodRefs);
+
+    //------------------------//   
+
+    public static IdRefreshToken Create(
+        TokenPayload token, 
+        AppUser user, 
+        TokenLifetime tokenLifetime, 
+        IEnumerable<AuthMethodRef> authMethodRefs,
+        TrustedDevice trustedDevice) =>
+        new(token, user, tokenLifetime, authMethodRefs)
+        {
+            TrustedDevice = trustedDevice
+        };
 
     //------------------------//    
 

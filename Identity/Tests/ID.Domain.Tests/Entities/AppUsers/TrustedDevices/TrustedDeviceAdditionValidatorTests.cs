@@ -14,7 +14,7 @@ public class TrustedDeviceAdditionValidatorTests
         var name = DeviceName.Create("My Device");
         var ua = UserAgent.Create("MyUserAgent");
         var ip = IpAddress.Create("IP");
-        var trustDuration = TrustDurationNullable.Create(TimeSpan.FromDays(7));
+        var trustDuration = TrustDuration.Create(TimeSpan.FromDays(7));
 
         // Act
         var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua,ip, trustDuration);
@@ -46,7 +46,7 @@ public class TrustedDeviceAdditionValidatorTests
         var name = DeviceName.Create("New Device");
         var ua = UserAgent.Create("UA");
         var ip = IpAddress.Create("IP");
-        var trustDuration = TrustDurationNullable.Create(TimeSpan.FromDays(1));
+        var trustDuration = TrustDuration.Create(TimeSpan.FromDays(1));
 
         // Act
         var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua,ip, trustDuration);
@@ -76,7 +76,7 @@ public class TrustedDeviceAdditionValidatorTests
         var name = DeviceName.Create("Some Device");
         var ua = UserAgent.Create("UA-String");
         var ip = IpAddress.Create("IP");    
-        var trustDuration = TrustDurationNullable.Create(TimeSpan.FromDays(3));
+        var trustDuration = TrustDuration.Create(TimeSpan.FromDays(3));
 
         // Act
         var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua,ip, trustDuration);
@@ -128,7 +128,7 @@ public class TrustedDeviceAdditionValidatorTests
         var name = DeviceName.Create("Device Name");
         var ua = UserAgent.Create("UA-Example");
         var ip = IpAddress.Create("IP");
-        var trustDuration = TrustDurationNullable.Create(TimeSpan.FromHours(12));
+        var trustDuration = TrustDuration.Create(TimeSpan.FromHours(12));
 
         // Act
         var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua,ip, trustDuration);
@@ -167,7 +167,7 @@ public class TrustedDeviceAdditionValidatorTests
         var name = DeviceName.Create("Device X");
         var ua = UserAgent.Create("UA");
         var ip = IpAddress.Create("IP");
-        var trustDuration = TrustDurationNullable.Create(TimeSpan.FromDays(2));
+        var trustDuration = TrustDuration.Create(TimeSpan.FromDays(2));
 
         // Act
         var result = TrustedDeviceValidators.Addition.Validate(user, fingerprint, name, ua, ip, trustDuration);

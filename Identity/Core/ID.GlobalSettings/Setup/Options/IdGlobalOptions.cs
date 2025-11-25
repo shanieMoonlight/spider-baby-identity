@@ -134,4 +134,20 @@ public class IdGlobalOptions
             : value;
     }
 
+
+
+    private TimeSpan _trustDuration = IdGlobalDefaultValues.TRUSTED_DEVICE_EXPIRE_TIME_SPAN;
+    /// <summary>
+    /// The Trusted Device expiration time.
+    /// <para></para>
+    /// Default = <inheritdoc cref="IdGlobalDefaultValues.TRUSTED_DEVICE_EXPIRE_TIME_SPAN"/>
+    /// </summary>
+    public required TimeSpan TrustedDeviceExpireTimeSpan
+    {
+        get => _trustDuration;
+        set => _trustDuration = value <= TimeSpan.Zero
+            ? IdGlobalDefaultValues.TRUSTED_DEVICE_EXPIRE_TIME_SPAN
+            : value;
+    }
+
 }//Cls

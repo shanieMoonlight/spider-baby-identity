@@ -8,7 +8,7 @@ namespace ID.Application.AppAbs.TrustedDevices;
 public interface IDeviceTrustService<TUser>
     where TUser : AppUser
 {
-    Task<GenResult<TrustedDeviceDto>> TrustAsync(
+    Task<GenResult<TrustedDevice>> TrustAsync(
         TUser user,
         string deviceFingerprint,
         string deviceName,

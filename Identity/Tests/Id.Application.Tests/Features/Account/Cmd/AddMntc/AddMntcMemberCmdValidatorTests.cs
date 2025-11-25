@@ -1,8 +1,4 @@
-using FluentValidation.TestHelper;
 using ID.Application.Features.Account.Cmd.AddMntcMember;
-using ID.Application.Mediatr.Validation;
-using ID.Domain.Utility.Messages;
-using Shouldly;
 
 namespace ID.Application.Tests.Features.Account.Cmd.AddMntc;
 
@@ -48,8 +44,8 @@ public class AddMntcMemberCmdValidatorTests
     public void Should_Not_Have_Error_When_Dto_And_Email_Are_Valid()
     {
         var Dto = new AddMntcMemberDto { Email = "test@example.com" };
-        var model = new AddMntcMemberCmd(Dto);
-        var result = _validator.TestValidate(model);
+        var cmd = new AddMntcMemberCmd(Dto);
+        var result = _validator.TestValidate(cmd);
         result.ShouldNotHaveValidationErrorFor(x => x.Dto);
         result.ShouldNotHaveValidationErrorFor(x => x.Dto.Email);
     }

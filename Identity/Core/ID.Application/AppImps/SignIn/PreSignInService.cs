@@ -99,4 +99,5 @@ internal class PreSignInService<TUser>(
             ? MyIdSignInResult.Failure(tfResultMsg.Info)
             : MyIdSignInResult.TwoFactorRequiredResult(tfResultMsg.Value, user, team);
     }
+
 } //Cls

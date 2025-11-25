@@ -3,6 +3,7 @@ using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Refreshing;
 using ID.Domain.Entities.Refreshing.ValueObjects;
+using ID.Domain.Entities.TrustedDevices;
 using ID.Domain.Repos;
 using ID.Domain.Repos.Specs.RefreshTokens;
 using ID.Infrastructure.Auth.JWT.Setup;
@@ -57,6 +58,29 @@ internal class JwtRefreshTokenService<TUser>(
             user,
             TokenLifetime.Create(_options.RefreshTokenTimeSpan),
             authMethodRefs);
+
+        await _repo.AddAsync(token, cancellationToken);
+        await _uow.SaveChangesAsync(cancellationToken);
+
+        return token;
+    }
+
+    //-----------------------// 
+
+    /// <inheritdoc />
+    public async Task<IdRefreshToken> GenerateTokenAsync(
+        TUser user,
+        IEnumerable<AuthMethodRef> authMethodRefs,
+        TrustedDevice trustedDevice,
+        CancellationToken cancellationToken)
+    {
+        var tokenPayload = RandomTokenGenerator.Generate();
+        var token = IdRefreshToken.Create(
+            TokenPayload.Create(tokenPayload),
+            user,
+            TokenLifetime.Create(_options.RefreshTokenTimeSpan),
+            authMethodRefs,
+            trustedDevice);
 
         await _repo.AddAsync(token, cancellationToken);
         await _uow.SaveChangesAsync(cancellationToken);

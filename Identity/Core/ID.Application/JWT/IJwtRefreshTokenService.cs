@@ -41,4 +41,5 @@ public interface IJwtRefreshTokenService<TUser> where TUser : AppUser
     /// <param name="user">The user whose tokens are to be revoked.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     Task RevokeTokensAsync(TUser user, CancellationToken cancellationToken = default);
+    Task<IdRefreshToken> GenerateTokenAsync(TUser user, IEnumerable<AuthMethodRef> authMethodRefs, TrustedDevice trustedDevice, CancellationToken cancellationToken);
 }

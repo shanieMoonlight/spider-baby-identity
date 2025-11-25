@@ -8,7 +8,7 @@ namespace ID.Application.AppImps.TrustedDevices;
 internal class DeviceTrustService<TUser>(ITrustedDeviceService<TUser> _trustedDeviceService, IHttpContextAccessor _httpContextAccessor) : IDeviceTrustService<TUser>
     where TUser : AppUser
 {
-    public async Task<GenResult<TrustedDeviceDto>> TrustAsync(
+    public async Task<GenResult<TrustedDevice>> TrustAsync(
         TUser user,
         string deviceFingerprint,
         string deviceName,
@@ -33,10 +33,9 @@ internal class DeviceTrustService<TUser>(ITrustedDeviceService<TUser> _trustedDe
             cancellationToken: cancellationToken);
 
         if (!addResult.Succeeded)
-            return addResult.Convert<TrustedDeviceDto>();
+            return addResult.Convert<TrustedDevice>();
 
-        var dto = addResult.Value!.ToDto();
-        return GenResult<TrustedDeviceDto>.Success(dto);
+        return GenResult<TrustedDevice>.Success(addResult.Value!);
     }
 
     //---------------------------//

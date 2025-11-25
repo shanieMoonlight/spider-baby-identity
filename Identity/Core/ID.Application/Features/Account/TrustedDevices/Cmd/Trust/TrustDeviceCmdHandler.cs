@@ -1,11 +1,15 @@
 using ID.Application.AppAbs.TrustedDevices;
-using Microsoft.AspNetCore.Http;
+using ID.Application.JWT;
+using ID.Domain.Claims.AuthMethods;
 
 namespace ID.Application.Features.Account.TrustedDevices.Cmd.Trust;
 
-public class TrustDeviceCmdHandler(IDeviceTrustService<AppUser> _deviceTrustService) : IIdCommandHandler<TrustDeviceCmd, TrustedDeviceDto>
+public class TrustDeviceCmdHandler(
+    IDeviceTrustService<AppUser> _deviceTrustService,
+    IJwtRefreshTokenService<AppUser> _refreshTokenService)
+    : IIdCommandHandler<TrustDeviceCmd, TrustDeviceCreateResponseDto>
 {
-    public async Task<GenResult<TrustedDeviceDto>> Handle(TrustDeviceCmd request, CancellationToken cancellationToken)
+    public async Task<GenResult<TrustDeviceCreateResponseDto>> Handle(TrustDeviceCmd request, CancellationToken cancellationToken)
     {
         var user = request.PrincipalUser;
         var dto = request.Dto;
@@ -17,38 +21,20 @@ public class TrustDeviceCmdHandler(IDeviceTrustService<AppUser> _deviceTrustServ
             cancellationToken: cancellationToken);
 
         if (!addResult.Succeeded)
-            return addResult.Convert<TrustedDeviceDto>();
+            return addResult.Convert<TrustDeviceCreateResponseDto>();
 
-        return GenResult<TrustedDeviceDto>.Success(addResult.Value!);
+        var device = addResult.Value!;
+        var token = await _refreshTokenService.GenerateTokenAsync(
+             user,
+             [AuthMethodRef.mfa],
+             device,
+             cancellationToken);
+
+
+        var responseDto = new TrustDeviceCreateResponseDto(device.ToDto(), token.Payload);
+
+        return GenResult<TrustDeviceCreateResponseDto>.Success(responseDto);
     }
-
-    ////---------------------------//
-
-    //private  string GetUserAgent()
-    //{
-    //    var userAgent = httpContextAccessor.HttpContext?.Request.Headers.UserAgent.ToString();
-    //    return string.IsNullOrWhiteSpace(userAgent) 
-    //        ? "Unknown UserAgent" 
-    //        : userAgent;
-    //}
-
-
-    ////---------------------------//
-
-    //private string GetIpAddress()
-    //{
-    //    var ctx = httpContextAccessor.HttpContext;
-    //    var ip = ctx?.Connection?.RemoteIpAddress;
-
-    //    if (ip is null)
-    //        return "Unknown IP Address";
-
-    //    // Normalize IPv4-mapped IPv6 to IPv4
-    //    if (ip.IsIPv4MappedToIPv6) 
-    //        ip = ip.MapToIPv4();
-
-    //    return ip.ToString();
-    //}
 
 
 }//Cls

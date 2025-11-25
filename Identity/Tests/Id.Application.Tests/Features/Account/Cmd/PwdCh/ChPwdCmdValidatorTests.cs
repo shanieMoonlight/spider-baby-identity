@@ -1,8 +1,4 @@
-using FluentValidation.TestHelper;
 using ID.Application.Features.Account.Cmd.PwdChange;
-using ID.Application.Features.Account.Cmd.RefreshTokenRevoke;
-using ID.Application.Mediatr.Validation;
-using Shouldly;
 
 namespace ID.Application.Tests.Features.Account.Cmd.PwdCh;
 public class ChPwdCmdValidatorTests

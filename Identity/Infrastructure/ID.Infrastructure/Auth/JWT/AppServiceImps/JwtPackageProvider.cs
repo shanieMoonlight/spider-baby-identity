@@ -38,10 +38,8 @@ public class JwtPackageProvider(
     /// This package contains a limited JWT token and no refresh token (refresh token will be provided after 2FA verification).
     /// </summary>
     /// <param name="user">User requiring two-factor authentication</param>
-    /// <param name="team">Team context for the user</param>
     /// <param name="provider">Two-factor authentication provider being used</param>
     /// <param name="extraInfo">Optional additional information for the 2FA process</param>
-    /// <param name="currentDeviceId">Optional device identifier for the current session</param>
     /// <param name="cancellationToken">Token to monitor for cancellation requests</param>
     /// <returns>JWT package configured for two-factor authentication flow</returns>
     public Task<JwtPackage> CreateJwtPackageWithTwoFactorRequiredAsync(
@@ -70,7 +68,6 @@ public class JwtPackageProvider(
     /// </summary>
     /// <param name="user">Authenticated user</param>
     /// <param name="team">Team context for the user</param>
-    /// <param name="twoFactorVerified">Whether the user has completed 2FA verification</param>
     /// <param name="currentDeviceId">Optional device identifier for the current session</param>
     /// <param name="cancellationToken">Token to monitor for cancellation requests</param>
     /// <returns>Complete JWT package with access token and optional refresh token</returns>

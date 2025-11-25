@@ -6,11 +6,18 @@ using ID.Domain.Repos;
 using ID.Domain.Utility.Messages;
 using MyResults;
 using ID.Domain.Entities.AppUsers.Validators;
+using ID.GlobalSettings.Setup.Options;
+using Microsoft.Extensions.Options;
 
 
 namespace ID.Infrastructure.DomainServices.Members;
-internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceService<TUser> where TUser : AppUser
+internal class TrustedDeviceService<TUser>( IIdUnitOfWork _uow, IOptions<IdGlobalOptions> _optsProvider) 
+    : ITrustedDeviceService<TUser> where TUser : AppUser
 {
+
+    private readonly IdGlobalOptions _options = _optsProvider.Value;
+
+    //-----------------------------//
 
     public async Task<GenResult<TrustedDevice>> AddAsync(
         TUser user,
@@ -20,7 +27,7 @@ internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceSe
         IpAddress ipAddress,
         CancellationToken cancellationToken)
     {
-        TrustDurationNullable trustDuration = TrustDurationNullable.Create(null);
+        TrustDuration trustDuration = TrustDuration.Create(_options.TrustedDeviceExpireTimeSpan);
 
         var validation = TrustedDeviceValidators.Addition.Validate(
             user, 
@@ -35,7 +42,7 @@ internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceSe
 
         var device = user.TrustDevice(validation.Value!);
 
-        await uow.SaveChangesAsync(cancellationToken);
+        await _uow.SaveChangesAsync(cancellationToken);
 
 
         return GenResult<TrustedDevice>.Success(device);
@@ -58,7 +65,7 @@ internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceSe
         if (!revoked)
             return BasicResult.BadRequestResult(IDMsgs.Error.TrustedDevices.ALREADY_REVOKED(device, user));
 
-        await uow.SaveChangesAsync(cancellationToken);
+        await _uow.SaveChangesAsync(cancellationToken);
 
         return BasicResult.Success(IDMsgs.Info.TrustedDevices.REVOKED(device, user));
     }
@@ -83,7 +90,7 @@ internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceSe
         if (!revoked)
             return BasicResult.BadRequestResult(IDMsgs.Error.TrustedDevices.ALREADY_REVOKED(device, user));
 
-        await uow.SaveChangesAsync(cancellationToken);
+        await _uow.SaveChangesAsync(cancellationToken);
 
         return BasicResult.Success(IDMsgs.Info.TrustedDevices.REVOKED(device, user));
     }
@@ -118,7 +125,7 @@ internal class TrustedDeviceService<TUser>(IIdUnitOfWork uow) : ITrustedDeviceSe
         if (device is null) return;
 
         device.UpdateLastUsed();
-        await uow.SaveChangesAsync(cancellationToken);
+        await _uow.SaveChangesAsync(cancellationToken);
     }
 
 }//Cls

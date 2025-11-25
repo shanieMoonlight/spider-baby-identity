@@ -105,7 +105,7 @@ public static class ClaimsPrincipalExtensions
     /// <param name="user">ClaimsPrincipal</param>
     public static Guid? GetUserId(this ClaimsPrincipal user)
     {
-        var userIdStr = user.GetClaimValue(JwtRegisteredClaimNames.Sub) 
+        var userIdStr = user.GetClaimValue(JwtRegisteredClaimNames.Sub)
             ?? user.GetClaimValue(ClaimTypes.NameIdentifier);
         return Guid.TryParse(userIdStr, out var userId) ? userId : null;
     }
@@ -232,13 +232,14 @@ public static class ClaimsPrincipalExtensions
 
     //------------------------//
 
-    public static DateTime? GetAuthTime(this ClaimsPrincipal? principal) { 
+    public static DateTime? GetAuthTime(this ClaimsPrincipal? principal)
+    {
 
         var authTime = principal?.FindFirst(JwtRegisteredClaimNames.AuthTime)?.Value;
 
-        if(authTime is null)
+        if (authTime is null)
             return null;
-        
+
         if (long.TryParse(authTime, out var secondsSinceEpochLong))
             return secondsSinceEpochLong.ConvertFromUnixTimestamp();
 
@@ -263,6 +264,12 @@ public static class ClaimsPrincipalExtensions
     public static List<AuthMethodRef> GetAuthMethodClaimValues(this ClaimsPrincipal? principal)
     {
         var amrClaims = principal?.FindAll(JwtRegisteredClaimNames.Amr);
+        // Fallback to the Microsoft-mapped URI if nothing found
+        if (amrClaims == null || !amrClaims.Any())
+        {
+            const string mappedAmrType = "http://schemas.microsoft.com/claims/authnmethodsreferences";
+            amrClaims = principal?.FindAll(mappedAmrType)?.ToList();
+        }
         if (amrClaims == null)
             return [];
 

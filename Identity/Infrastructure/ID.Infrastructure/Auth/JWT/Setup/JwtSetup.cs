@@ -79,6 +79,9 @@ internal static class JwtSetup
 
                 options.SaveToken = true;
                 options.Events = MyIdJwtBearerEvents.CreateCustomEvents();
+
+                // Preserve original JWT claim types (e.g. "amr") instead of mapping to .NET URIs
+                options.MapInboundClaims = false;
             });
         });
 

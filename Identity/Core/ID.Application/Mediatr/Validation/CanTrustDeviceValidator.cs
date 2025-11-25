@@ -2,6 +2,7 @@
 using ID.Application.Utility.ExtensionMethods;
 using ID.Domain.Claims.AuthMethods;
 using ID.GlobalSettings.Constants;
+using System.Diagnostics;
 
 namespace ID.Application.Mediatr.Validation;
 
@@ -27,7 +28,7 @@ public abstract class CanTrustDeviceValidator<TRequest>
 
 
             RuleFor(p => p.Principal.GetAuthTime())
-                .Must(at => at.HasValue && at.Value >= DateTime.UtcNow.AddMinutes(IdGlobalConstants.Authentication.MAX_AUTH_TIME_FOR_DEVICE_TRUST_MINUTES))
+                .Must(at => at.HasValue && at.Value.AddMinutes(IdGlobalConstants.Authentication.MAX_AUTH_TIME_FOR_DEVICE_TRUST_MINUTES) >= DateTime.UtcNow)
                 .WithMessage($"You must have logged in within the last {IdGlobalConstants.Authentication.MAX_AUTH_TIME_FOR_DEVICE_TRUST_MINUTES} minutes.")
                 .WithState(state => ValidationError.Unauthorized);
         });

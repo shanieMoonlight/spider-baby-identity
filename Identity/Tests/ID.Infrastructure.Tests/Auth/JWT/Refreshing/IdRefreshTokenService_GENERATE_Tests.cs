@@ -1,3 +1,4 @@
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Refreshing;
 using ID.Domain.Repos;
@@ -39,6 +40,7 @@ public class IdRefreshTokenService_GENERATE_Tests
         var user = AppUserDataFactory.Create();
         var cancellationToken = new CancellationToken();
         IdRefreshToken capturedToken = null!;
+        var authMethods = new List<AuthMethodRef> { AuthMethodRef.pwd, AuthMethodRef.mfa };
 
         _refreshTokenRepoMock
             .Setup(repo => repo.AddAsync(It.IsAny<IdRefreshToken>(), cancellationToken))
@@ -46,7 +48,7 @@ public class IdRefreshTokenService_GENERATE_Tests
             .ReturnsAsync(capturedToken);
 
         // Act
-        var result = await _sut.GenerateTokenAsync(user, cancellationToken);
+        var result = await _sut.GenerateTokenAsync(user, authMethods, cancellationToken);
 
         // Assert
         result.ShouldNotBeNull();

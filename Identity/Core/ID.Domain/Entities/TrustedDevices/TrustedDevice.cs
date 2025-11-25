@@ -20,7 +20,7 @@ public class TrustedDevice : IdDomainEntity
     /// <summary>
     /// Null is indefinite trust
     /// </summary>
-    public DateTime? TrustedUntil { get; private set; }
+    public DateTime TrustedUntil { get; private set; }
 
     public DateTime LastUsedDate { get; private set; }
 
@@ -28,7 +28,7 @@ public class TrustedDevice : IdDomainEntity
     /// <summary>
     /// Trusted devices for this user
     /// </summary>
-    public IReadOnlyCollection<IdRefreshToken> IdRefreshTokens { get; private set; }
+    public IReadOnlyCollection<IdRefreshToken>? IdRefreshTokens { get; private set; }
 
 
 
@@ -47,7 +47,7 @@ public class TrustedDevice : IdDomainEntity
         DeviceName name,
         UserAgent userAgent,
         IpAddress ipAddress,
-        DateTime? trustedUntil)
+        DateTime trustedUntil)
         //: base()
         : base(NewId.NextSequentialGuid())
     {
@@ -70,11 +70,9 @@ public class TrustedDevice : IdDomainEntity
         DeviceName name,
         UserAgent userAgent,
         IpAddress ipAddress,
-        TrustDurationNullable trustDuration)
+        TrustDuration trustDuration)
     {
-        DateTime? trustedUntil = trustDuration.Value.HasValue
-            ? DateTime.UtcNow.Add(trustDuration.Value!.Value)
-            : null;
+        DateTime trustedUntil = DateTime.UtcNow.Add(trustDuration.Value);
 
         var device = new TrustedDevice(
             user,
@@ -102,10 +100,11 @@ public class TrustedDevice : IdDomainEntity
 
     public bool IsExpired()
     {
-        if (!TrustedUntil.HasValue) 
-            return false;
-        return TrustedUntil.Value < DateTime.UtcNow;
+        var isExpired = TrustedUntil < DateTime.UtcNow;
+        if(isExpired)
+            RaiseDomainEvent(new TrustedDeviceExpiredDomainEvent(Id, UserId));
 
+        return isExpired;
     }
 
     //- - - - - - - - - - - - //
@@ -119,12 +118,9 @@ public class TrustedDevice : IdDomainEntity
 
     //- - - - - - - - - - - - //
 
-    internal TrustedDevice ExtendTrust(TimeSpan? trustDuration)
+    internal TrustedDevice ExtendTrust(TimeSpan trustDuration)
     {
-        TrustedUntil = trustDuration.HasValue
-            ? DateTime.UtcNow.Add(trustDuration.Value)
-            : null;
-
+        TrustedUntil = DateTime.UtcNow.Add(trustDuration);
         RaiseDomainEvent(new TrustedDeviceExtendedDomainEvent(Id, UserId));
         return this;
     }

@@ -1,4 +1,5 @@
 using ID.Application.Tests.Features.Utility;
+using ID.Domain.Claims.AuthMethods;
 
 namespace ID.Application.Tests.Features.Account.Cmd.TrustedDevices.Cmd.Trust;
 
@@ -28,9 +29,25 @@ public class TrustDeviceCmdValidatorTests
     {
         // Arrange
         var validator = new TrustDeviceCmdValidator();
+
+        // Create claims that mimic an authenticated maintenance user
+        var claims = new[]
+        {
+            //new Claim(ClaimTypes.NameIdentifier, "test-user-id"),
+            //new Claim(ClaimTypes.Name, "test-user"),
+            AuthenticationClaims.AuthTime(DateTime.UtcNow.AddDays(5)),
+            AuthenticationClaims.Amr(AuthMethodRef.mfa)
+        };
+
+        var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, "TestAuth"));
+
         var dto = new TrustDeviceCreateDto("fp","name");
-        var command = new TrustDeviceCmd(dto);
-        command.SetAuthenticated_MNTC();
+        var command = new TrustDeviceCmd(dto) { 
+            Principal = principal
+        };
+
+        // Attach the crafted principal to the command so the validator can read expected claims
+        command.SetAuthenticated_MNTC(claims);
 
         // Act
         var result = validator.TestValidate(command);

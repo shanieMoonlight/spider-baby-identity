@@ -1,17 +1,21 @@
 using ID.Domain.Entities.TrustedDevices;
 using ID.Domain.Entities.TrustedDevices.ValueObjects;
+using ID.GlobalSettings.Setup.Options;
 using ID.Infrastructure.DomainServices.Members;
+using ID.Tests.Data.GlobalOptions;
 
 namespace ID.Infrastructure.Tests.DmnSevcs.TrustedDeviceService;
 
 public class TrustedDeviceServiceTests
 {
     private readonly Mock<IIdUnitOfWork> _uowMock;
+    private readonly Mock<IOptions<IdGlobalOptions>> _mockGlobalOptionsProvider = new();
 
     public TrustedDeviceServiceTests()
     {
         _uowMock = new Mock<IIdUnitOfWork>();
         _uowMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+        _mockGlobalOptionsProvider.Setup(x => x.Value).Returns(GlobalOptionsUtils.ValidOptions);
     }
 
     //--------------------------//
@@ -21,7 +25,7 @@ public class TrustedDeviceServiceTests
     {
         // Arrange
         var user = AppUserDataFactory.Create();
-        var service = new TrustedDeviceService<AppUser>(_uowMock.Object);
+        var service = new TrustedDeviceService<AppUser>(_uowMock.Object, _mockGlobalOptionsProvider.Object);
 
         var fingerprint = DeviceFingerprint.Create("fp-1");
         var name = DeviceName.Create("name-1");
@@ -52,7 +56,7 @@ public class TrustedDeviceServiceTests
             set.Add(TrustedDeviceDataFactory.Create(userId: userId));
 
         var user = AppUserDataFactory.Create(id: userId, trustedDevices: set);
-        var service = new TrustedDeviceService<AppUser>(_uowMock.Object);
+        var service = new TrustedDeviceService<AppUser>(_uowMock.Object, _mockGlobalOptionsProvider.Object);
 
         var fingerprint = DeviceFingerprint.Create("fp-x");
         var name = DeviceName.Create("name-x");
@@ -74,7 +78,7 @@ public class TrustedDeviceServiceTests
     {
         // Arrange
         var user = AppUserDataFactory.Create();
-        var service = new TrustedDeviceService<AppUser>(_uowMock.Object);
+        var service = new TrustedDeviceService<AppUser>(_uowMock.Object, _mockGlobalOptionsProvider.Object);
 
         // Act
         var result = await service.RevokeAsync(user, Guid.NewGuid(), CancellationToken.None);
@@ -95,7 +99,7 @@ public class TrustedDeviceServiceTests
         var devices = new HashSet<TrustedDevice> { device };
         var user = AppUserDataFactory.Create(id: userId, trustedDevices: devices);
 
-        var service = new TrustedDeviceService<AppUser>(_uowMock.Object);
+        var service = new TrustedDeviceService<AppUser>(_uowMock.Object, _mockGlobalOptionsProvider.Object);
 
         // Act
         var result = await service.RevokeAsync(user, device.Id, CancellationToken.None);
@@ -113,7 +117,7 @@ public class TrustedDeviceServiceTests
     {
         // Arrange
         var user = AppUserDataFactory.Create();
-        var service = new TrustedDeviceService<AppUser>(_uowMock.Object);
+        var service = new TrustedDeviceService<AppUser>(_uowMock.Object, _mockGlobalOptionsProvider.Object);
 
         // Act
         var result = await service.RevokeAsync(user, "nope", CancellationToken.None);
@@ -134,7 +138,7 @@ public class TrustedDeviceServiceTests
         var devices = new HashSet<TrustedDevice> { device };
         var user = AppUserDataFactory.Create(id: userId, trustedDevices: devices);
 
-        var service = new TrustedDeviceService<AppUser>(_uowMock.Object);
+        var service = new TrustedDeviceService<AppUser>(_uowMock.Object, _mockGlobalOptionsProvider.Object);
 
         // Act
         var result = await service.RevokeAsync(user, "fp-1", CancellationToken.None);

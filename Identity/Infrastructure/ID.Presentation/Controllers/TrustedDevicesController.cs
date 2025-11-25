@@ -13,6 +13,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pagination;
+using System.Diagnostics;
 
 namespace ID.Presentation.Controllers;
 
@@ -21,7 +22,7 @@ namespace ID.Presentation.Controllers;
 /// </summary>
 /// <remarks>
 /// Use these endpoints to trust a new device, revoke trusted devices (by id or fingerprint),
-/// and to query trusted devices (all, by id, by fingerprint or paginated).
+/// and to query trusted devices (all, by id, by fingerprint or paginated).Verify2
 /// All actions are implemented using MediatR commands/queries and return standard
 /// ActionResult responses with <see cref="TrustedDeviceDto"/> payloads where appropriate.
 /// </remarks>
@@ -38,8 +39,15 @@ public class TrustedDevicesController(ISender sender) : Controller
     /// <returns>The created <see cref="TrustedDeviceDto"/> on success, or an error result.</returns>
     [HttpPost]
     //[CanTrustDeviceAuthenticator.ResourceFilter]
-    public async Task<ActionResult<TrustedDeviceDto>> Trust([FromBody] TrustDeviceCreateDto dto) =>
-        this.ProcessResult(await sender.Send(new TrustDeviceCmd(dto)));
+    public async Task<ActionResult<TrustedDeviceDto>> Trust([FromBody] TrustDeviceCreateDto dto)
+    {
+        var claims = User.Claims;
+        foreach(var claim in claims)
+        {
+            Debug.WriteLine($"{claim.Type} - {claim.Value} - ({claim.ValueType})");
+        }
+        return this.ProcessResult(await sender.Send(new TrustDeviceCmd(dto)));
+    }
 
     //--------------------------// 
 

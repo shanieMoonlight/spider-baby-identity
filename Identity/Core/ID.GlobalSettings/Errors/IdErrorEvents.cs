@@ -50,6 +50,7 @@ public class IdErrorEvents
         public const int TrustedDeviceExtended = TrustedDeviceAdded + 1;
         public const int TrustedDeviceRevoked = TrustedDeviceExtended + 1;
         public const int TrustedDeviceUsed = TrustedDeviceRevoked + 1;
+        public const int TrustedDeviceExpired = TrustedDeviceUsed + 1;
     }
     public static class OAuth
     {

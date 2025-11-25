@@ -4,8 +4,8 @@ using ID.Application.AppAbs.TrustedDevices;
 using ID.Application.JWT;
 using ID.Application.MFA;
 using ID.Domain.Claims.AuthMethods;
+using ID.Domain.Entities.TrustedDevices.ValueObjects;
 using ID.Domain.Models;
-using Microsoft.Extensions.Logging;
 
 namespace ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerify;
 public class Verify2FactorHandler(
@@ -13,8 +13,7 @@ public class Verify2FactorHandler(
     IFindUserService<AppUser> _findUserService,
     ITwofactorUserIdCacheService _twofactorUserIdCache,
     ITwoFactorVerificationService<AppUser> _2FactorService,
-    IDeviceTrustService<AppUser> _deviceTrustService,
-    ILogger<Verify2FactorHandler> _logger)
+    IDeviceTrustService<AppUser> _deviceTrustService)
     : IIdCommandHandler<Verify2FactorCmd, JwtPackage>
 {
 
@@ -24,7 +23,7 @@ public class Verify2FactorHandler(
 
         var userId = _twofactorUserIdCache.GetUserId(dto.Token);
         var user = await _findUserService.FindUserWithTeamDetailsAsync(userId: userId);
-        var team = user?.Team; 
+        var team = user?.Team;
 
 
         if (user is null || team is null)
@@ -38,21 +37,14 @@ public class Verify2FactorHandler(
         // If the client asked to trust this device, persist it now
         if (dto.TrustDevice && !string.IsNullOrWhiteSpace(dto.DeviceFingerprint))
         {
-            try
-            {
-                var addResult = await _deviceTrustService.TrustAsync(
-                    user: user,
-                    deviceFingerprint: dto.DeviceFingerprint!,
-                    deviceName: "Trusted via MFA",
-                    cancellationToken: cancellationToken);
+            var addResult = await _deviceTrustService.TrustAsync(
+                user: user,
+                deviceFingerprint: dto.DeviceFingerprint,
+                deviceName: dto.DeviceName ?? $"Trusted via MFA: {DateTime.UtcNow:yyyy-MMM-dd}",
+                cancellationToken: cancellationToken);
 
-                if (!addResult.Succeeded)
-                    _logger.LogWarning("Failed to create trusted device for user {UserId}: {Error}", user.Id, addResult.Info);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex, "Exception while creating trusted device for user {UserId}; continuing.", user.Id);
-            }
+            if (!addResult.Succeeded)
+                addResult.Convert<JwtPackage>();
         }
 
         // Package all user info in JWT and send it back to client.

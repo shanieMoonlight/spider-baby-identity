@@ -13,31 +13,37 @@ public class AuthMethodClaimValueExtensionsTests
 
             switch (val)
             {
-                case AuthMethodRef.Password:
+                case AuthMethodRef.pwd:
                     claim.ShouldBe(AuthMethodClaimValues.PASSWORD);
                     break;
-                case AuthMethodRef.Otp:
+                case AuthMethodRef.otp:
                     claim.ShouldBe(AuthMethodClaimValues.OTP);
                     break;
-                case AuthMethodRef.Mfa:
+                case AuthMethodRef.oauth:
+                    claim.ShouldBe(AuthMethodClaimValues.OAUTH);
+                    break;
+                case AuthMethodRef.mfa:
                     claim.ShouldBe(AuthMethodClaimValues.MULTI_FACTOR);
                     break;
-                case AuthMethodRef.WindowsIntegratedAuth:
+                case AuthMethodRef.windowsIntegratedAuth:
                     claim.ShouldBe(AuthMethodClaimValues.WINDOWS_INTEGRATED_AUTH);
                     break;
-                case AuthMethodRef.Rsa:
+                case AuthMethodRef.rsa:
                     claim.ShouldBe(AuthMethodClaimValues.RSA);
                     break;
-                case AuthMethodRef.Federated:
+                case AuthMethodRef.fed:
                     claim.ShouldBe(AuthMethodClaimValues.FEDERATED);
                     break;
-                case AuthMethodRef.Face:
+                case AuthMethodRef.kba:
+                    claim.ShouldBe(AuthMethodClaimValues.KBA);
+                    break;
+                case AuthMethodRef.face:
                     claim.ShouldBe(AuthMethodClaimValues.FACE);
                     break;
-                case AuthMethodRef.Fingerprint:
+                case AuthMethodRef.fingerprint:
                     claim.ShouldBe(AuthMethodClaimValues.FINGERPRINT);
                     break;
-                case AuthMethodRef.HardwareKey:
+                case AuthMethodRef.hwk:
                     claim.ShouldBe(AuthMethodClaimValues.HARDWARE_KEY);
                     break;
                 default:
@@ -58,15 +64,15 @@ public class AuthMethodClaimValueExtensionsTests
             parsed.ShouldBe(expected);
         }
 
-        AssertParse(AuthMethodClaimValues.PASSWORD, AuthMethodRef.Password);
-        AssertParse(AuthMethodClaimValues.OTP, AuthMethodRef.Otp);
-        AssertParse(AuthMethodClaimValues.MULTI_FACTOR, AuthMethodRef.Mfa);
-        AssertParse(AuthMethodClaimValues.WINDOWS_INTEGRATED_AUTH, AuthMethodRef.WindowsIntegratedAuth);
-        AssertParse(AuthMethodClaimValues.RSA, AuthMethodRef.Rsa);
-        AssertParse(AuthMethodClaimValues.FEDERATED, AuthMethodRef.Federated);
-        AssertParse(AuthMethodClaimValues.FACE, AuthMethodRef.Face);
-        AssertParse(AuthMethodClaimValues.FINGERPRINT, AuthMethodRef.Fingerprint);
-        AssertParse(AuthMethodClaimValues.HARDWARE_KEY, AuthMethodRef.HardwareKey);
+        AssertParse(AuthMethodClaimValues.PASSWORD, AuthMethodRef.pwd);
+        AssertParse(AuthMethodClaimValues.OTP, AuthMethodRef.otp);
+        AssertParse(AuthMethodClaimValues.MULTI_FACTOR, AuthMethodRef.mfa);
+        AssertParse(AuthMethodClaimValues.WINDOWS_INTEGRATED_AUTH, AuthMethodRef.windowsIntegratedAuth);
+        AssertParse(AuthMethodClaimValues.RSA, AuthMethodRef.rsa);
+        AssertParse(AuthMethodClaimValues.FEDERATED, AuthMethodRef.fed);
+        AssertParse(AuthMethodClaimValues.FACE, AuthMethodRef.face);
+        AssertParse(AuthMethodClaimValues.FINGERPRINT, AuthMethodRef.fingerprint);
+        AssertParse(AuthMethodClaimValues.HARDWARE_KEY, AuthMethodRef.hwk);
     }
 
     //--------------------//

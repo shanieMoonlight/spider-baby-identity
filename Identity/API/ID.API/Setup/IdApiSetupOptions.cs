@@ -75,6 +75,12 @@ public class IdApiSetupOptions
     /// </summary>
     public bool JwtRefreshTokensEnabled { get; set; }
 
+    /// <summary>
+    /// <inheritdoc cref="IdGlobalOptions.TrustedDeviceExpireTimeSpan"/>
+    /// </summary>
+    public TimeSpan TrustedDeviceExpireTimeSpan { get; set; } = IdGlobalDefaultValues.TRUSTED_DEVICE_EXPIRE_TIME_SPAN;
+
+
 
     #endregion
 
@@ -232,6 +238,8 @@ public class IdApiSetupOptions
 
 
 
+
+
     ///// <summary>
     ///// Maximum number of trusted devices a user can have. (Prevent Database clutter)
     ///// </summary>
@@ -312,6 +320,7 @@ public class IdApiSetupOptions
         JwtRefreshTokensEnabled = JwtRefreshTokensEnabled,
         PhoneTokenTimeSpan = PhoneTokenTimeSpan,
         MntcAccountsUrl = MntcAccountsUrl,
+        TrustedDeviceExpireTimeSpan = TrustedDeviceExpireTimeSpan
 
     };
 

@@ -19,9 +19,9 @@ internal class RefreshTokenConfig : IEntityTypeConfiguration<IdRefreshToken>
 
         //- - - - - - - - - - - - - - - - -//   
 
-        builder.Property(b => b.Payload)
+        builder.Property(b => b.PayloadHash)
             .IsRequired()
-            .HasMaxLength(TokenPayload.MaxLength);
+            .HasMaxLength(TokenPayloadHash.MaxLength);
 
         builder.HasOne(b => b.User)
             .WithMany()

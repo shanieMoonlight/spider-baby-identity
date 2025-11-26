@@ -3,6 +3,13 @@ using ID.Domain.Entities.Refreshing;
 
 namespace ID.Application.JWT;
 
+
+//###############################################################//
+
+public record GeneratedTokenDto(IdRefreshToken RefreshToken, string ClientToken);   
+
+//###############################################################//
+
 public interface IJwtRefreshTokenService<TUser> where TUser : AppUser
 {
     /// <summary>
@@ -20,7 +27,17 @@ public interface IJwtRefreshTokenService<TUser> where TUser : AppUser
     /// <param name="user">The user for whom the token is being generated.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The newly created refresh token.</returns>
-    Task<IdRefreshToken> GenerateTokenAsync(TUser user, IEnumerable<AuthMethodRef> authMethodRefs, CancellationToken cancellationToken);
+    Task<GeneratedTokenDto> GenerateAndStoreTokenAsync(TUser user, IEnumerable<AuthMethodRef> authMethodRefs, CancellationToken cancellationToken);
+
+    //-------------------------//
+
+    /// <summary>
+    /// Generates a new refresh token for the specified user. And stores it with the device.
+    /// </summary>
+    /// <param name="user">The user for whom the token is being generated.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The newly created refresh token.</returns>
+    Task<GeneratedTokenDto> GenerateAndStoreWithDeviceAsync(TUser user, IEnumerable<AuthMethodRef> authMethodRefs, TrustedDevice trustedDevice, CancellationToken cancellationToken);
 
     //-------------------------//
 
@@ -40,5 +57,4 @@ public interface IJwtRefreshTokenService<TUser> where TUser : AppUser
     /// <param name="user">The user whose tokens are to be revoked.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     Task RevokeTokensAsync(TUser user, CancellationToken cancellationToken = default);
-    Task<IdRefreshToken> GenerateTokenWithDeviceAsync(TUser user, IEnumerable<AuthMethodRef> authMethodRefs, TrustedDevice trustedDevice, CancellationToken cancellationToken);
 }

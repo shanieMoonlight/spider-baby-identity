@@ -44,7 +44,7 @@ public static class RefreshTokenDataFactory
 
         var paramaters = new[]
            {
-            new PropertyAssignment(nameof(IdRefreshToken.Payload),  () => payload ),
+            new PropertyAssignment(nameof(IdRefreshToken.PayloadHash),  () => payload ),
             new PropertyAssignment(nameof(IdRefreshToken.ExpiresOnUtc),  () => expiresOnUtc ),
             new PropertyAssignment(nameof(IdRefreshToken.User),  () => user ),
             new PropertyAssignment(nameof(IdRefreshToken.UserId),  () => userId ),

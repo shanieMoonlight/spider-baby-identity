@@ -10,7 +10,8 @@ namespace ID.Domain.Entities.Refreshing;
 public class IdRefreshToken : IdDomainEntity
 {
 
-    public string Payload { get; set; } = string.Empty;
+    public string Selector { get; set; } = string.Empty;
+    public string PayloadHash { get; set; } = string.Empty;
     public DateTime ExpiresOnUtc { get; set; }
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
 
@@ -34,43 +35,51 @@ public class IdRefreshToken : IdDomainEntity
     protected IdRefreshToken() { }
     #endregion
 
-    private IdRefreshToken(TokenPayload token, AppUser user, TokenLifetime tokenLifetime, IEnumerable<AuthMethodRef> authMethodRefs )
+    private IdRefreshToken(
+        TokenPayloadHash token,
+        TokenSelector selector,
+        AppUser user, 
+        TokenLifetime tokenLifetime, 
+        IEnumerable<AuthMethodRef> authMethodRefs )
         : base(NewId.NextSequentialGuid())
     {
-        Payload = token.Value;
+        PayloadHash = token.Value;
         ExpiresOnUtc = DateTime.UtcNow.Add(tokenLifetime.Value);
         UserId = user.Id;
         User = user;
+        Selector = selector.Value;
         AuthMethodRefs = [.. authMethodRefs];
     }
 
     //------------------------//   
 
     public static IdRefreshToken Create(
-        TokenPayload token,
+        TokenPayloadHash payload,
+        TokenSelector selector,
         AppUser user,
         TokenLifetime tokenLifetime,
         IEnumerable<AuthMethodRef> authMethodRefs) =>
-        new(token, user, tokenLifetime, authMethodRefs);
+        new(payload, selector, user, tokenLifetime, authMethodRefs);
 
     //------------------------//   
 
     public static IdRefreshToken Create(
-        TokenPayload token, 
-        AppUser user, 
+        TokenPayloadHash token, 
+        TokenSelector selector,
+        AppUser user,
         TokenLifetime tokenLifetime, 
         IEnumerable<AuthMethodRef> authMethodRefs,
         TrustedDevice trustedDevice) =>
-        new(token, user, tokenLifetime, authMethodRefs)
+        new(token, selector, user, tokenLifetime, authMethodRefs)
         {
             TrustedDevice = trustedDevice
         };
 
     //------------------------//    
 
-    public IdRefreshToken Update(TokenPayload token, TokenLifetime tokenLifetime)
+    public IdRefreshToken Update(TokenPayloadHash token, TokenLifetime tokenLifetime)
     {
-        Payload = token.Value;
+        PayloadHash = token.Value;
         ExpiresOnUtc = DateTime.UtcNow.Add(tokenLifetime.Value);
         return this;
     }

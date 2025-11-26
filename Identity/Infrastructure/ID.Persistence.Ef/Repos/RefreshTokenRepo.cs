@@ -20,7 +20,7 @@ internal class RefreshTokenRepo(IdDbContext db)
             WHEN NOT MATCHED THEN
                 INSERT (Id, UserId, Payload, ExpiresOnUtc, DateCreated)
                 VALUES (Source.Id, Source.UserId, Source.Payload, Source.ExpiresOnUtc, Source.DateCreated);",
-        entity.Id, entity.UserId, entity.Payload, entity.ExpiresOnUtc, entity.DateCreated);
+        entity.Id, entity.UserId, entity.PayloadHash, entity.ExpiresOnUtc, entity.DateCreated);
     }
 
 }

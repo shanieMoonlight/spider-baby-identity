@@ -65,7 +65,7 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
         result.ShouldNotBeNull();
         result.Id.ShouldBe(newToken.Id);
         result.UserId.ShouldBe(newToken.UserId);
-        result.Payload.ShouldBe("new_token_payload");
+        result.PayloadHash.ShouldBe("new_token_payload");
     }
 
     [Fact]
@@ -78,7 +78,7 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
         result.ShouldNotBeNull();
         result!.Id.ShouldBe(_activeToken.Id);
         result.UserId.ShouldBe(_activeToken.UserId);
-        result.Payload.ShouldBe(_activeToken.Payload);
+        result.PayloadHash.ShouldBe(_activeToken.PayloadHash);
     }
 
     [Fact]
@@ -99,8 +99,8 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
     {
         // Arrange
         var token = await _repo.FirstOrDefaultByIdAsync(_activeToken.Id);
-        token.ShouldNotBeNull(); var originalPayload = token!.Payload;
-        var newPayload = TokenPayload.Create("updated_token_payload");
+        token.ShouldNotBeNull(); var originalPayload = token!.PayloadHash;
+        var newPayload = TokenPayloadHash.Create("updated_token_payload");
         var newTokenLifetime = TokenLifetime.Create(TimeSpan.FromDays(14));
 
         token.Update(newPayload, newTokenLifetime);
@@ -109,9 +109,9 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
         var result = await _repo.UpdateAsync(token);
         await SaveAndDetachAllAsync();        // Assert
         result.ShouldNotBeNull();
-        result.Payload.ShouldBe(newPayload.Value);
+        result.PayloadHash.ShouldBe(newPayload.Value);
         result.ExpiresOnUtc.ShouldBeInRange(DateTime.UtcNow.AddDays(13.9), DateTime.UtcNow.AddDays(14.1));
-        result.Payload.ShouldNotBe(originalPayload);
+        result.PayloadHash.ShouldNotBe(originalPayload);
     }
 
     [Fact]
@@ -172,7 +172,7 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
         var retrievedToken = await _repo.FirstOrDefaultByIdAsync(newToken.Id);
         retrievedToken.ShouldNotBeNull();
         retrievedToken!.UserId.ShouldBe(newUserId);
-        retrievedToken.Payload.ShouldBe("upsert_new_payload");
+        retrievedToken.PayloadHash.ShouldBe("upsert_new_payload");
     }
 
     [Fact(Skip = "UpsertRefreshTokenAsync uses SQL Server MERGE which is not supported by in-memory database")]
@@ -195,7 +195,7 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
 
         // Should still have only one token for this user
         userTokens.Count.ShouldBe(1);
-        userTokens.First().Payload.ShouldBe("updated_via_upsert");
+        userTokens.First().PayloadHash.ShouldBe("updated_via_upsert");
         userTokens.First().ExpiresOnUtc.Date.ShouldBe(DateTime.UtcNow.AddDays(30).Date);
     }
 
@@ -223,7 +223,7 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
         var userTokens = allTokens.Where(t => t.UserId == userId).ToList();
 
         userTokens.Count.ShouldBe(1);
-        userTokens.First().Payload.ShouldBe("third_payload");
+        userTokens.First().PayloadHash.ShouldBe("third_payload");
     }
 
     #endregion
@@ -356,9 +356,9 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         var allTokens = await _repo.ListAllAsync();
-        allTokens.ShouldContain(t => t.Payload == "Batch Token 1");
-        allTokens.ShouldContain(t => t.Payload == "Batch Token 2");
-        allTokens.ShouldContain(t => t.Payload == "Batch Token 3");
+        allTokens.ShouldContain(t => t.PayloadHash == "Batch Token 1");
+        allTokens.ShouldContain(t => t.PayloadHash == "Batch Token 2");
+        allTokens.ShouldContain(t => t.PayloadHash == "Batch Token 3");
     }
 
     [Fact]
@@ -484,8 +484,8 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         var allTokens = await _repo.ListAllAsync();
-        allTokens.ShouldContain(t => t.Payload == "Concurrent Token 1");
-        allTokens.ShouldContain(t => t.Payload == "Concurrent Token 2");
+        allTokens.ShouldContain(t => t.PayloadHash == "Concurrent Token 1");
+        allTokens.ShouldContain(t => t.PayloadHash == "Concurrent Token 2");
     }
 
     [Fact]
@@ -499,7 +499,7 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
         // Act
         await _repo.DeleteAsync(token.Id);
         await SaveAndDetachAllAsync();        // Attempt to update deleted entity
-        token.Update(TokenPayload.Create("Updated Payload"), TokenLifetime.Create(TimeSpan.FromDays(1)));
+        token.Update(TokenPayloadHash.Create("Updated Payload"), TokenLifetime.Create(TimeSpan.FromDays(1)));
 
         // Assert - The update should not affect the database since the entity is deleted
         var deletedToken = await _repo.FirstOrDefaultByIdAsync(token.Id);
@@ -528,8 +528,8 @@ public class RefreshTokenRepoTests : RepoTestBase, IAsyncLifetime
         var userTokens = allTokens.Where(t => t.UserId == userId).ToList();
 
         userTokens.Count.ShouldBe(2);
-        userTokens.ShouldContain(t => t.Payload == "First Token");
-        userTokens.ShouldContain(t => t.Payload == "Second Token");
+        userTokens.ShouldContain(t => t.PayloadHash == "First Token");
+        userTokens.ShouldContain(t => t.PayloadHash == "Second Token");
     }
 
     #endregion

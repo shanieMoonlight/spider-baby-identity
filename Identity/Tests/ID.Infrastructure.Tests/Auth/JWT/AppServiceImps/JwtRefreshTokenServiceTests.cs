@@ -1,6 +1,7 @@
 using ClArch.SimpleSpecification;
 using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Repos.Specs.RefreshTokens;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace ID.Infrastructure.Tests.Auth.JWT.AppServiceImps;
@@ -9,12 +10,21 @@ public class JwtRefreshTokenServiceTests
 {
     private readonly Mock<IIdUnitOfWork> _uow = new();
     private readonly Mock<IIdentityRefreshTokenRepo> _repo = new();
+    private readonly Mock<IPasswordHasher<AppUser>> _pwdHasher = new();
 
     private JwtRefreshTokenService<AppUser> CreateService(TimeSpan refresh)
     {
         var options = Options.Create(new JwtOptions { RefreshTokenTimeSpan = refresh });
         _uow.Setup(u => u.RefreshTokenRepo).Returns(_repo.Object);
-        return new JwtRefreshTokenService<AppUser>(_uow.Object, options);
+
+        // default hasher behaviour: verify succeeds
+        _pwdHasher.Setup(h => h.VerifyHashedPassword(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>()))
+            .Returns(PasswordVerificationResult.Success);
+
+
+        _pwdHasher.Setup(h => h.HashPassword(It.IsAny<AppUser>(), It.IsAny<string>())).Returns("hashed");
+
+        return new JwtRefreshTokenService<AppUser>(_uow.Object, _pwdHasher.Object, options);
     }
 
     //-------------------------//
@@ -22,7 +32,7 @@ public class JwtRefreshTokenServiceTests
     [Fact]
     public async Task FindTokenWithUserAndDeviceAndTeamAsync_UsesCorrectSpec()
     {
-        var payload = "sample-payload";
+        var payload = "sample-selector.sample-payload";
         var svc = CreateService(TimeSpan.FromDays(7));
         var user = AppUserDataFactory.Create();
         var device = TrustedDeviceDataFactory.Create(user: user);
@@ -35,7 +45,7 @@ public class JwtRefreshTokenServiceTests
         var foundToken = await svc.FindTokenWithUserAndDeviceAndTeamAsync(payload, default);
 
         foundToken.ShouldNotBeNull();
-        _repo.Verify(x => x.FirstOrDefaultAsync(It.IsAny<RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec>(), It.IsAny<CancellationToken>()), Times.Once);
+        _repo.Verify(x => x.FirstOrDefaultAsync(It.IsAny<RefreshTokenBySelectorWithUserAndDeviceAndTeamSpec>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     //-------------------------//
@@ -54,9 +64,10 @@ public class JwtRefreshTokenServiceTests
 
         _uow.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()));
 
-        var token = await svc.GenerateTokenAsync(user, authMethodRefs, default);
+        var dto = await svc.GenerateAndStoreTokenAsync(user, authMethodRefs, default);
 
-        token.ShouldNotBeNull();
+        dto.ShouldNotBeNull();
+        dto.ClientToken.ShouldNotBeNullOrEmpty();
         captured.ShouldNotBeNull();
         captured.UserId.ShouldBe(user.Id);
         captured.ExpiresOnUtc.ShouldBeGreaterThan(DateTime.UtcNow);
@@ -78,11 +89,13 @@ public class JwtRefreshTokenServiceTests
             .Callback<IdRefreshToken, CancellationToken>((t, ct) => captured = t)
             .ReturnsAsync((IdRefreshToken t, CancellationToken ct) => t);
 
-        _uow.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()));
+        _uow.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
 
-        var token = await svc.GenerateTokenWithDeviceAsync(user, authMethodRefs, device, default);
+        var dto = await svc.GenerateAndStoreWithDeviceAsync(user, authMethodRefs, device, default);
 
-        token.ShouldNotBeNull();
+        dto.ShouldNotBeNull();
+        dto.ClientToken.ShouldNotBeNullOrEmpty();
         captured.ShouldNotBeNull();
         captured.TrustedDevice.ShouldBe(device);
         _uow.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
@@ -99,12 +112,14 @@ public class JwtRefreshTokenServiceTests
         _repo.Setup(r => r.UpdateAsync(It.IsAny<IdRefreshToken>()))
             .ReturnsAsync(token);
 
-        _uow.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()));
+        _uow.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
 
         var updated = await svc.UpdateTokenPayloadAsync(token);
 
         updated.ShouldNotBeNull();
-        updated.Payload.ShouldNotBeNullOrEmpty();
+        // Payload was renamed to PayloadHash
+        updated.PayloadHash.ShouldNotBeNullOrEmpty();
         updated.ExpiresOnUtc.ShouldBeGreaterThan(DateTime.UtcNow);
         _uow.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }

@@ -25,7 +25,7 @@ public class IdRefreshTokenDto
 
     public IdRefreshTokenDto(IdRefreshToken mdl)
     {
-        Payload = mdl.Payload;
+        Payload = mdl.PayloadHash;
         ExpiresOnUtc = mdl.ExpiresOnUtc;
         CreatedUtc = mdl.CreatedUtc;
         TrustedDeviceId = mdl.TrustedDeviceId;

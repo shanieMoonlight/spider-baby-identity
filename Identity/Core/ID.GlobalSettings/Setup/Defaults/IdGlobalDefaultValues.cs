@@ -35,9 +35,9 @@ public partial class IdGlobalDefaultValues
     internal const bool REFRESH_TOKENS_ENABLED = false;
 
     /// <summary>
-    /// TimeSpan.FromDays(7) - 1 week
+    /// TimeSpan.FromDays(14) - 2 weeks
     /// </summary>
-    internal static readonly TimeSpan REFRESH_TOKEN_EXPIRE_TIME_SPAN = TimeSpan.FromDays(7);
+    internal static readonly TimeSpan REFRESH_TOKEN_EXPIRE_TIME_SPAN = TimeSpan.FromDays(14);
 
     /// <summary>
     /// TimeSpan.FromHours(6)

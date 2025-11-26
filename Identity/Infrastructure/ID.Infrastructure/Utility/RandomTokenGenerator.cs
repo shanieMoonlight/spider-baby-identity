@@ -9,4 +9,13 @@ internal class RandomTokenGenerator
         return Convert.ToBase64String(RandomNumberGenerator.GetBytes(tokenLength));
     }
 
-}
+
+    public static string GenerateHashingSelector()
+    {
+        var bytes = RandomNumberGenerator.GetBytes(12);
+        var s = Convert.ToBase64String(bytes);
+        s = s.TrimEnd('=').Replace('+', '-').Replace('/', '_');
+        return s;
+    }
+
+}//Cls

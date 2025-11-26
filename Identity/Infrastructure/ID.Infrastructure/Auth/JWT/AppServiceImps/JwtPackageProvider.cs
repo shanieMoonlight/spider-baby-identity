@@ -82,7 +82,7 @@ public class JwtPackageProvider(
         string encodedToken = await _jwtBuilder.CreateJwtAsync(user, team, authMethods, currentDeviceId);
 
         // Generate refresh token if eligible
-        IdRefreshToken? refreshToken = await GenerateRefreshTokenIfEligibleAsync(user, authMethods, cancellationToken);
+        var generatedTokenDto = await GenerateRefreshTokenIfEligibleAsync(user, authMethods, cancellationToken);
 
         long expiration = GetTokenExpirationUnixTimestamp();
 
@@ -90,7 +90,7 @@ public class JwtPackageProvider(
             encodedToken,
             expiration,
             user.TwoFactorProvider,
-            refreshToken?.Payload);
+            generatedTokenDto?.ClientToken);
     }
 
     //-----------------------------//
@@ -126,7 +126,7 @@ public class JwtPackageProvider(
                encodedToken,
                expiration,
                user.TwoFactorProvider,
-               refreshToken?.Payload);
+               refreshToken?.PayloadHash);
     }
 
     //-----------------------------//
@@ -143,7 +143,7 @@ public class JwtPackageProvider(
     /// <param name="twoFactorVerified">Whether 2FA has been completed</param>
     /// <param name="cancellationToken">Token to monitor for cancellation requests</param>
     /// <returns>Generated refresh token if eligible, null otherwise</returns>
-    private async Task<IdRefreshToken?> GenerateRefreshTokenIfEligibleAsync(
+    private async Task<GeneratedTokenDto?> GenerateRefreshTokenIfEligibleAsync(
         AppUser user,
         IEnumerable<AuthMethodRef> authMethods,
         CancellationToken cancellationToken)
@@ -156,7 +156,7 @@ public class JwtPackageProvider(
             return null;
 
 
-        return await _refreshTokenService.GenerateTokenAsync(user, authMethods, cancellationToken);
+        return await _refreshTokenService.GenerateAndStoreTokenAsync(user, authMethods, cancellationToken);
 
     }
 

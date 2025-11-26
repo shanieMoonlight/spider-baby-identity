@@ -14,7 +14,7 @@ internal class RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec : ASimpleSpecif
     /// Initializes a new instance of the <see cref="RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec"/> class.
     /// </summary>
     /// <param name="tknPayload">The token payload to match.</param>
-    public RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec(string? tknPayload) : base(r => r.Payload == tknPayload)
+    public RefreshTokenByPayloadWithUserAndDeviceAndTeamSpec(string? tknPayload) : base(r => r.PayloadHash == tknPayload)
     {
         // Short-circuits the query if the token is null or whitespace.
         SetShortCircuit(() => tknPayload.IsNullOrWhiteSpace());

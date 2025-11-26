@@ -115,12 +115,14 @@ public class JwtRefreshTokenServiceTests
         _uow.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
-        var updated = await svc.UpdateTokenPayloadAsync(token);
+        var updatedDto = await svc.UpdateTokenPayloadAsync(token);
 
-        updated.ShouldNotBeNull();
+        updatedDto.ShouldNotBeNull();
+        updatedDto.RefreshToken.ShouldNotBeNull();
         // Payload was renamed to PayloadHash
-        updated.PayloadHash.ShouldNotBeNullOrEmpty();
-        updated.ExpiresOnUtc.ShouldBeGreaterThan(DateTime.UtcNow);
+        updatedDto.RefreshToken.PayloadHash.ShouldNotBeNullOrEmpty();
+        updatedDto.RefreshToken.ExpiresOnUtc.ShouldBeGreaterThan(DateTime.UtcNow);
+        updatedDto.ClientToken.ShouldNotBeNullOrEmpty();
         _uow.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 

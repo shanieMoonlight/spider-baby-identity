@@ -43,13 +43,15 @@ public class IdRefreshTokenService_UPDATE_Tests
             .ReturnsAsync((IdRefreshToken)null!); // Mock UpdateAsync behavior
 
         // Act
-        var updatedToken = await _sut.UpdateTokenPayloadAsync(originalToken, cancellationToken);
+        var updatedDto = await _sut.UpdateTokenPayloadAsync(originalToken, cancellationToken);
 
         // Assert
-        updatedToken.ShouldNotBeNull();
-        updatedToken.ShouldBe(originalToken);
-        //updatedToken.Payload.ShouldNotBe(newTokenPayloadVo.Value);
-        updatedToken.ExpiresOnUtc.ShouldNotBe(originalDate);
+        updatedDto.ShouldNotBeNull();
+        updatedDto.RefreshToken.ShouldBe(originalToken);
+        updatedDto.ClientToken.ShouldNotBeNullOrEmpty();
+        // Payload was renamed to PayloadHash
+        updatedDto.RefreshToken.PayloadHash.ShouldNotBeNullOrEmpty();
+        updatedDto.RefreshToken.ExpiresOnUtc.ShouldNotBe(originalDate);
 
         _repoMock.Verify(repo => repo.UpdateAsync(originalToken), Times.Once);
         _uowMock.Verify(uow => uow.SaveChangesAsync(cancellationToken), Times.Once);

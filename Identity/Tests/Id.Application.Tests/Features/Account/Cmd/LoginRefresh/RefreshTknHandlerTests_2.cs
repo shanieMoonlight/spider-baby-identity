@@ -1,5 +1,4 @@
 using ID.Application.Features.Account.Cmd.LoginRefresh;
-using ID.Application.JWT;
 using ID.Domain.Entities.Refreshing;
 using ID.GlobalSettings.Setup.Options;
 using ID.Tests.Data.GlobalOptions;
@@ -217,7 +216,7 @@ public class RefreshTknHandlerTests
         //    .ReturnsAsync(updatedToken);
 
         _mockJwtPackageProvider
-            .Setup(p => p.RefreshJwtPackageAsync(validToken, user, team, command.Dto.DeviceFingerprint))
+            .Setup(p => p.RefreshJwtPackageAsync(validToken, command.Dto.RefreshToken, user, team, command.Dto.DeviceFingerprint))
             .ReturnsAsync(jwtPackage);
 
         // Act
@@ -287,7 +286,7 @@ public class RefreshTknHandlerTests
             .ReturnsAsync(validToken);
 
         _mockJwtPackageProvider
-            .Setup(p => p.RefreshJwtPackageAsync(validToken, user, team, command.Dto.DeviceFingerprint))
+            .Setup(p => p.RefreshJwtPackageAsync(validToken, command.Dto.RefreshToken, user, team, command.Dto.DeviceFingerprint    ))
             .ReturnsAsync(jwtPackage);
 
         // Act
@@ -328,7 +327,7 @@ public class RefreshTknHandlerTests
             .ReturnsAsync(validToken);
 
         _mockJwtPackageProvider
-            .Setup(p => p.RefreshJwtPackageAsync(validToken, user, team, command.Dto.DeviceFingerprint))
+            .Setup(p => p.RefreshJwtPackageAsync(validToken, command.Dto.RefreshToken, user, team, command.Dto.DeviceFingerprint    ))
             .ReturnsAsync(jwtPackage);
 
         // Act
@@ -363,7 +362,7 @@ public class RefreshTknHandlerTests
             .ReturnsAsync(validToken);
 
         _mockJwtPackageProvider
-            .Setup(p => p.RefreshJwtPackageAsync(validToken, user, team, command.Dto.DeviceFingerprint))
+            .Setup(p => p.RefreshJwtPackageAsync(validToken, command.Dto.RefreshToken, user, team, command.Dto.DeviceFingerprint    ))
             .ReturnsAsync(jwtPackage);
 
         // Act
@@ -395,14 +394,18 @@ public class RefreshTknHandlerTests
             .Setup(s => s.FindTokenWithUserAndDeviceAndTeamAsync(command.Dto.RefreshToken, It.IsAny<CancellationToken>()))
             .ReturnsAsync(validToken);
 
+        var jwtPackage = JwtPackageDataFactory.Create(accessToken: "new-access-token");
+        _mockJwtPackageProvider
+            .Setup(p => p.RefreshJwtPackageAsync(validToken, command.Dto.RefreshToken, user, team, command.Dto.DeviceFingerprint))
+            .ReturnsAsync(jwtPackage);
+
         // Act
         var result = await _handler_RefreshEnabled.Handle(command, CancellationToken.None);
 
-        // Assert
+        // Assert - now allowed: token had no device so fingerprint check is skipped
         result.ShouldNotBeNull();
-        result.Succeeded.ShouldBeFalse();
-        result.Unauthorized.ShouldBeTrue();
-        result.Info.ShouldBe(IDMsgs.Error.Authorization.INVALID_AUTH);
+        result.Succeeded.ShouldBeTrue();
+        result.Value.ShouldBe(jwtPackage);
     }
 
     //------------------------------//
@@ -433,7 +436,7 @@ public class RefreshTknHandlerTests
             .ReturnsAsync(validToken);
 
         _mockJwtPackageProvider
-            .Setup(p => p.RefreshJwtPackageAsync(validToken, user, team, command.Dto.DeviceFingerprint))
+            .Setup(p => p.RefreshJwtPackageAsync(validToken, command.Dto.RefreshToken, user, team, command.Dto.DeviceFingerprint))
             .ReturnsAsync(jwtPackage);
 
         // Act

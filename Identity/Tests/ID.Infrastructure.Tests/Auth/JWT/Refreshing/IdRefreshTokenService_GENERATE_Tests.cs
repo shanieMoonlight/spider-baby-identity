@@ -61,5 +61,4 @@ public class IdRefreshTokenService_GENERATE_Tests
         _uowMock.Verify(uow => uow.SaveChangesAsync(cancellationToken), Times.Once);
     }
 
-    //------------------------------//  
 }//Cls

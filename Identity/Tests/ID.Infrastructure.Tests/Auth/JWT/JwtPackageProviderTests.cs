@@ -4,8 +4,6 @@ using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Models;
 using ID.GlobalSettings.Setup.Options;
 using ID.Infrastructure.Auth.JWT.LocalServices.Abs;
-using ID.Infrastructure.Auth.JWT.Setup;
-using Microsoft.Extensions.Options;
 using ID.Tests.Data.GlobalOptions;
 using TestingHelpers.RandomData;
 using Xunit.Abstractions;
@@ -28,7 +26,9 @@ public class JwtPackageProviderTests
         _mockGlobalOptionsProvider.Setup(x => x.Value).Returns(GlobalOptionsUtils.ValidOptions);
     }
 
+
     //------------------------------------//
+
 
     [Fact]
     public async Task CreateJwtPackageWithTwoFactorRequiredAsync_Should_Return_JwtPackage_With_TwoFactorRequired()
@@ -60,7 +60,9 @@ public class JwtPackageProviderTests
 
     }
 
+
     //------------------------------------//
+
 
     [Fact]
     public async Task CreateJwtPackageWithTwoFactorRequiredAsync_Should_Call_StoreUserId_And_Use_Result()
@@ -94,7 +96,9 @@ public class JwtPackageProviderTests
         _mock2FactorUserIdCache.Verify(x => x.StoreUserId(user.Id), Times.Once);
     }
 
+
     //------------------------------------//
+
 
     [Fact]
     public async Task CreateJwtPackageAsync_Should_Return_JwtPackage_With_RefreshToken_When_Eligible()
@@ -144,11 +148,14 @@ public class JwtPackageProviderTests
         _refreshTokenServiceMock.Verify(x => x.GenerateAndStoreTokenAsync(user, authMethods, It.IsAny<CancellationToken>()), Times.Once);
     }
 
+
     //------------------------------------//
+
 
     [Fact]
     public async Task CreateJwtPackageAsync_Should_Not_Generate_RefreshToken_When_TwoFactor_Not_Verified()
     {
+
         // Arrange
         var teamId = Guid.NewGuid();
         var user = AppUserDataFactory.Create(teamId);
@@ -156,7 +163,7 @@ public class JwtPackageProviderTests
         var team = TeamDataFactory.Create(id: teamId);
         var deviceId = "device123";
         var encodedToken = "encoded.jwt.token";
-        var authMethods = new List<AuthMethodRef> { AuthMethodRef.pwd, AuthMethodRef.mfa };
+        var authMethods = new List<AuthMethodRef> { AuthMethodRef.pwd };
 
         _jwtBuilderMock
             .Setup(x => x.CreateJwtAsync(user, team, authMethods, deviceId))
@@ -174,8 +181,12 @@ public class JwtPackageProviderTests
             jwtOptions,
             _mockGlobalOptionsProvider.Object);
 
+
+
         // Act
         var result = await provider_sut.CreateJwtPackageAsync(user, team, authMethods, deviceId);
+
+
 
         // Assert
         result.ShouldNotBeNull();
@@ -186,7 +197,9 @@ public class JwtPackageProviderTests
         _refreshTokenServiceMock.Verify(x => x.GenerateAndStoreTokenAsync(It.IsAny<AppUser>(), authMethods, It.IsAny<CancellationToken>()), Times.Never);
     }
 
+
     //------------------------------------//
+
 
     [Fact]
     public async Task CreateJwtPackageAsync_Should_Not_Generate_RefreshToken_When_RefreshTokens_Disabled_Globally()
@@ -228,7 +241,9 @@ public class JwtPackageProviderTests
         _refreshTokenServiceMock.Verify(x => x.GenerateAndStoreTokenAsync(It.IsAny<AppUser>(), authMethods, It.IsAny<CancellationToken>()), Times.Never);
     }
 
+
     //------------------------------------//
+
 
     [Theory]
     [InlineData(RefreshTokenUpdatePolicy.Always, true)]
@@ -250,11 +265,12 @@ public class JwtPackageProviderTests
             .Setup(x => x.CreateJwtAsync(user, team, authMethods, deviceId))
             .ReturnsAsync(encodedToken);
 
+        var originalClientToken = "client-token-orig";
         if (shouldUpdate)
         {
             _refreshTokenServiceMock
                 .Setup(x => x.UpdateTokenPayloadAsync(existingToken, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(updatedToken);
+                .ReturnsAsync(new GeneratedTokenDto(updatedToken, "client-token-updated"));
         }
 
         var jwtOptions = CreateJwtOptions(refreshTokenUpdatePolicy: policy);
@@ -266,7 +282,7 @@ public class JwtPackageProviderTests
             _mockGlobalOptionsProvider.Object);
 
         // Act
-        var result = await provider_sut.RefreshJwtPackageAsync(existingToken, user, team, deviceId);
+        var result = await provider_sut.RefreshJwtPackageAsync(existingToken, originalClientToken, user, team, deviceId);
 
         // Assert
         result.ShouldNotBeNull();
@@ -274,12 +290,12 @@ public class JwtPackageProviderTests
 
         if (shouldUpdate)
         {
-            result.RefreshToken.ShouldBe(updatedToken.PayloadHash);
+            result.RefreshToken.ShouldBe("client-token-updated");
             _refreshTokenServiceMock.Verify(x => x.UpdateTokenPayloadAsync(existingToken, It.IsAny<CancellationToken>()), Times.Once);
         }
         else
         {
-            result.RefreshToken.ShouldBe(existingToken.PayloadHash);
+            result.RefreshToken.ShouldBe(originalClientToken);
             _refreshTokenServiceMock.Verify(x => x.UpdateTokenPayloadAsync(It.IsAny<IdRefreshToken>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
@@ -320,11 +336,12 @@ public class JwtPackageProviderTests
             .Setup(x => x.CreateJwtAsync(user, team, authMethods, deviceId))
             .ReturnsAsync(encodedToken);
 
+        var originalClientToken2 = "client-token-orig";
         if (shouldUpdate)
         {
             _refreshTokenServiceMock
                 .Setup(x => x.UpdateTokenPayloadAsync(existingToken, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(updatedToken);
+                .ReturnsAsync(new GeneratedTokenDto(updatedToken, "client-token-updated"));
         }
 
         var jwtOptions = CreateJwtOptions(refreshTokenUpdatePolicy: policy);
@@ -336,7 +353,7 @@ public class JwtPackageProviderTests
             _mockGlobalOptionsProvider.Object);
 
         // Act
-        var result = await provider_sut.RefreshJwtPackageAsync(existingToken, user, team, deviceId);
+        var result = await provider_sut.RefreshJwtPackageAsync(existingToken, originalClientToken2, user, team, deviceId);
 
         // Assert
         result.ShouldNotBeNull();
@@ -344,12 +361,12 @@ public class JwtPackageProviderTests
 
         if (shouldUpdate)
         {
-            result.RefreshToken.ShouldBe(updatedToken.PayloadHash);
+            result.RefreshToken.ShouldBe("client-token-updated");
             _refreshTokenServiceMock.Verify(x => x.UpdateTokenPayloadAsync(existingToken, It.IsAny<CancellationToken>()), Times.Once);
         }
         else
         {
-            result.RefreshToken.ShouldBe(existingToken.PayloadHash);
+            result.RefreshToken.ShouldBe(originalClientToken2);
             _refreshTokenServiceMock.Verify(x => x.UpdateTokenPayloadAsync(It.IsAny<IdRefreshToken>(), It.IsAny<CancellationToken>()), Times.Never);
         }
 
@@ -369,6 +386,7 @@ public class JwtPackageProviderTests
         var existingToken = RefreshTokenDataFactory.Create(authMethodRefs: authMethods);
         var deviceId = "device123";
         var encodedToken = "encoded.jwt.token";
+        var originalClientToken = "client-token-orig";
 
         _jwtBuilderMock
             .Setup(x => x.CreateJwtAsync(user, team, authMethods, deviceId)) // Should be called with twoFactorVerified = true
@@ -383,7 +401,7 @@ public class JwtPackageProviderTests
             _mockGlobalOptionsProvider.Object);
 
         // Act
-        var result = await provider_sut.RefreshJwtPackageAsync(existingToken, user, team, deviceId);
+        var result = await provider_sut.RefreshJwtPackageAsync(existingToken, originalClientToken, user, team, deviceId);
 
         // Assert
         result.ShouldNotBeNull();

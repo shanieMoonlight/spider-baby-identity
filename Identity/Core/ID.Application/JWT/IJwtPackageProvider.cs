@@ -53,11 +53,12 @@ public interface IJwtPackageProvider
     /// <param name="existingToken">The valid refresh token being refreshed</param>
     /// <param name="user">The authenticated user (explicit validation required)</param>
     /// <param name="team">The user's team context (explicit validation required)</param>
-    /// <param name="currentDeviceId">Optional device identifier for audit and security</param>
+    /// <param name="currentDeviceFingerprint">Optional device identifier for audit and security</param>
     /// <returns>A JWT package with new access token and potentially updated refresh token</returns>
     Task<JwtPackage> RefreshJwtPackageAsync(
-        IdRefreshToken existingToken, 
-        AppUser user, 
-        Team team, 
-        string? currentDeviceId = null);
+        IdRefreshToken existingToken,
+        string currentClientToken,
+        AppUser user,
+        Team team,
+        string? currentDeviceFingerprint = null);
 }

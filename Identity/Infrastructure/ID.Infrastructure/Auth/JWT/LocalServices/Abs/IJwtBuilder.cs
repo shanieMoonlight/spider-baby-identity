@@ -9,5 +9,5 @@ public interface IJwtBuilder
         AppUser user, 
         Team team,
         IEnumerable<AuthMethodRef> authMethods,
-        string? currentDeviceId = null);
+        string? currentDeviceFingerprint = null);
 }

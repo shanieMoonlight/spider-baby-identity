@@ -6,7 +6,7 @@ namespace ID.Domain.Entities.Refreshing.ValueObjects;
 
 public class TokenPayloadHash : StringValueObject
 {
-    public const int MaxLength = 200;
+    public const int MaxLength = 512;
 
     private TokenPayloadHash(string value) : base(value) { }
 

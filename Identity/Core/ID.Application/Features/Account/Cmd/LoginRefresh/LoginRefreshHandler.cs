@@ -57,9 +57,10 @@ public class LoginRefreshHandler(
 
         JwtPackage jwtPackage = await _jwtPackageProvider.RefreshJwtPackageAsync(
             existingToken: refreshToken,
+            currentClientToken: tknPayload,
             user: user!,
             team: team!,
-            currentDeviceId: dvcFingerprint);
+            currentDeviceFingerprint: dvcFingerprint);
 
 
         return GenResult<JwtPackage>.Success(jwtPackage);
@@ -72,10 +73,14 @@ public class LoginRefreshHandler(
         var tokenFingerprintTrimmed = tokenFingerprint?.Trim();
         var requestFingerprintTrimmed = requestFingerprint?.Trim();
 
-        if (string.IsNullOrWhiteSpace(tokenFingerprintTrimmed) && string.IsNullOrWhiteSpace(requestFingerprintTrimmed))
+        // If the token is not associated with a device, don't enforce fingerprint matching.
+        if (string.IsNullOrWhiteSpace(tokenFingerprintTrimmed))
             return true;
-        if (string.IsNullOrWhiteSpace(tokenFingerprintTrimmed) || string.IsNullOrWhiteSpace(requestFingerprintTrimmed))
+
+        // Token has a fingerprint, but request does not -> fail.
+        if (string.IsNullOrWhiteSpace(requestFingerprintTrimmed))
             return false;
+
         return tokenFingerprintTrimmed == requestFingerprintTrimmed;
     }
 

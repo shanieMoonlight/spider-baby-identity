@@ -6,7 +6,7 @@ namespace ID.Domain.Entities.Refreshing.ValueObjects;
 
 public class TokenSelector : StringValueObject
 {
-    public const int MaxLength = 200;
+    public const int MaxLength = 128;
 
     private TokenSelector(string value) : base(value) { }
 

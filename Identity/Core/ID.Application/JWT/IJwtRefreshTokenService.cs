@@ -42,12 +42,12 @@ public interface IJwtRefreshTokenService<TUser> where TUser : AppUser
     //-------------------------//
 
     /// <summary>
-    /// Updates the payload of an existing refresh token.
+    /// Updates the payload of an existing refresh token and returns the generated client token.
     /// </summary>
     /// <param name="refreshToken">The refresh token to update.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
-    /// <returns>The updated refresh token.</returns>
-    Task<IdRefreshToken> UpdateTokenPayloadAsync(IdRefreshToken refreshToken, CancellationToken cancellationToken = default);
+    /// <returns>A <see cref="GeneratedTokenDto"/> containing the updated token and the client token string.</returns>
+    Task<GeneratedTokenDto> UpdateTokenPayloadAsync(IdRefreshToken refreshToken, CancellationToken cancellationToken = default);
 
     //-------------------------//
 

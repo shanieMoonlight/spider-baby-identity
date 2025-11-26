@@ -54,7 +54,6 @@ internal class JwtRefreshTokenService<TUser>(
             return null;
 
         //Verify the candidate against the stored hash
-        //var hasher = new PasswordHasher<TUser>();
         var verify = _passwordHasher.VerifyHashedPassword(user, token.PayloadHash, candidate);
         if (verify == PasswordVerificationResult.Failed)
             return null;
@@ -81,7 +80,6 @@ internal class JwtRefreshTokenService<TUser>(
         var validator = RandomTokenGenerator.Generate();
         var selector = RandomTokenGenerator.GenerateHashingSelector();
 
-        //var hasher = new PasswordHasher<TUser>();
         var validatorHash = _passwordHasher.HashPassword(user, validator);
 
         var token = IdRefreshToken.Create(
@@ -131,11 +129,10 @@ internal class JwtRefreshTokenService<TUser>(
     //-----------------------//    
 
     /// <inheritdoc />
-    public async Task<IdRefreshToken> UpdateTokenPayloadAsync(IdRefreshToken refreshToken, CancellationToken cancellationToken = default)
+    public async Task<GeneratedTokenDto> UpdateTokenPayloadAsync(IdRefreshToken refreshToken, CancellationToken cancellationToken = default)
     {
         var validator = RandomTokenGenerator.Generate();
 
-        //var hasher = new PasswordHasher<TUser>();
         var validatorHash = _passwordHasher.HashPassword((TUser?)refreshToken.User!, validator);
 
         refreshToken.Update(
@@ -143,10 +140,12 @@ internal class JwtRefreshTokenService<TUser>(
             TokenLifetime.Create(_options.RefreshTokenTimeSpan)
             );
 
+        // Persist changes and return the client token for the caller to hand to the client
         await _repo.UpdateAsync(refreshToken);
         await _uow.SaveChangesAsync(cancellationToken);
 
-        return refreshToken;
+        var clientToken = refreshToken.Selector + "." + validator;
+        return new GeneratedTokenDto(refreshToken, clientToken);
     }
 
     //-----------------------//
@@ -159,9 +158,5 @@ internal class JwtRefreshTokenService<TUser>(
         await _repo.RemoveRangeAsync(spec);
         await _uow.SaveChangesAsync(cancellationToken);
     }
-
-    //-----------------------//
-
-    // GenerateSelector moved to RandomTokenGenerator.GenerateHashingSelector()
 
 }//Cls

@@ -14,18 +14,19 @@ internal class RefreshTokenConfig : IEntityTypeConfiguration<IdRefreshToken>
     {
         builder.HasKey(x => x.Id);
 
-        //builder.HasIndex(b => b.UserId)
-        //    .IsUnique();
-
-        //- - - - - - - - - - - - - - - - -//   
 
         builder.Property(b => b.PayloadHash)
             .IsRequired()
             .HasMaxLength(TokenPayloadHash.MaxLength);
 
+        builder.Property(b => b.Selector)
+            .IsRequired()
+            .HasMaxLength(TokenSelector.MaxLength);
+
         builder.HasOne(b => b.User)
             .WithMany()
             .HasForeignKey(r => r.UserId);
+
 
         // Serialize List<AuthMethodRef> to JSON (stored as string) and provide a ValueComparer
         var authMethodConverter = new ValueConverter<List<AuthMethodRef>, string>(
@@ -39,6 +40,7 @@ internal class RefreshTokenConfig : IEntityTypeConfiguration<IdRefreshToken>
             a => a == null ? 0 : a.Aggregate(0, (h, v) => HashCode.Combine(h, (int)v)),
             a => a == null ? new List<AuthMethodRef>() : a.ToList());
 
+        
         builder.Property(b => b.AuthMethodRefs)
             .HasConversion(authMethodConverter)
             .Metadata.SetValueComparer(authMethodComparer);

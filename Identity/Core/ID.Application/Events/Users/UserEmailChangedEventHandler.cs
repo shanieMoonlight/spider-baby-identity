@@ -1,14 +1,11 @@
-﻿using MediatR;
-using Microsoft.Extensions.Logging;
-using ID.Domain.Utility.Messages;
-using ID.Domain.Entities.Teams;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Entities.AppUsers.Events;
+﻿using ID.Application.AppAbs.EventBuses;
 using ID.Domain.Abstractions.Services.Teams;
+using ID.Domain.Entities.AppUsers.Events;
+using ID.Domain.Entities.Teams;
 using ID.GlobalSettings.Errors;
 using LoggingHelpers;
-using ID.Domain.Entities.TrustedDevices.Events;
-using ID.Application.AppAbs.EventBuses;
+using MediatR;
+using Microsoft.Extensions.Logging;
 
 
 namespace ID.Application.Events.Users;
@@ -21,18 +18,18 @@ internal class UserEmailChangedEventHandler(IEmailConfirmationBus bus, IIdentity
         try
         {
 
-            var team = await teamMgr.GetByIdWithMemberAsync(notification.User.TeamId, notification.User.Id);
+            var team = await teamMgr.GetByIdWithMemberAsync(notification.TeamId, notification.UserId);
 
             if (team is null)
             {
-                logger.LogError(new EventId(IdErrorEvents.Listeners.UserEmailUpdated), "{msg}", IDMsgs.Error.NotFound<Team>(notification.User.TeamId));
+                logger.LogError(new EventId(IdErrorEvents.Listeners.UserEmailUpdated), "{msg}", IDMsgs.Error.NotFound<Team>(notification.TeamId));
                 return;
             }
 
-            var member = team.Members.FirstOrDefault(m => m.Id == notification.User.Id);
+            var member = team.Members.FirstOrDefault(m => m.Id == notification.UserId);
             if (member is null)
             {
-                logger.LogError(new EventId(IdErrorEvents.Listeners.UserEmailUpdated), "{msg}", IDMsgs.Error.NotFound<Team>(notification.User));
+                logger.LogError(new EventId(IdErrorEvents.Listeners.UserEmailUpdated), "{msg}", IDMsgs.Error.NotFound<Team>(notification.UserId));
                 return;
             }
 

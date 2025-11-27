@@ -1,14 +1,7 @@
 using ID.Application.Events.Teams;
-using ID.Domain.Abstractions.Services.Teams;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Entities.Teams;
 using ID.Domain.Entities.Teams.Events;
-using ID.Domain.Utility.Messages;
 using ID.IntegrationEvents.Abstractions;
 using ID.IntegrationEvents.Events.Account.Subscriptions;
-using ID.Tests.Data.Factories;
-using Microsoft.Extensions.Logging;
-using Moq;
 
 namespace ID.Application.Tests.Events.Teams;
 
@@ -39,8 +32,11 @@ public class TeamSubscriptionDeactivatedEventHandlerTests
     public async Task Handle_TeamNotFound_LogsError()
     {
         // Arrange
+        var team = TeamDataFactory.Create();
+        var subscription = SubscriptionDataFactory.Create(team: team);
         var notification = new TeamSubscriptionDeactivatedDomainEvent(
-            SubscriptionDataFactory.Create()
+            subscription.TeamId,
+            subscription.Id
         );
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         _mockTeamManager.Setup(m => m.GetByIdWithEverythingAsync(It.IsAny<Guid>(), It.IsAny<int>()))
@@ -57,7 +53,7 @@ public class TeamSubscriptionDeactivatedEventHandlerTests
             x => x.Log(
                 LogLevel.Error,
                 It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(IDMsgs.Error.NotFound<Team>(notification.Subscription.TeamId))),
+                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(IDMsgs.Error.NotFound<Team>(notification.TeamId))),
                 It.IsAny<Exception>(),
                 It.IsAny<Func<It.IsAnyType, Exception, string>>()),
             Times.Once);
@@ -73,8 +69,10 @@ public class TeamSubscriptionDeactivatedEventHandlerTests
     {
         // Arrange
         var team = TeamDataFactory.Create();
+        var subscription = SubscriptionDataFactory.Create(team: team);
         var notification = new TeamSubscriptionDeactivatedDomainEvent(
-            SubscriptionDataFactory.Create()
+            subscription.TeamId,
+            subscription.Id
         );
         _mockTeamManager.Setup(m => m.GetByIdWithEverythingAsync(It.IsAny<Guid>(), It.IsAny<int>()))
             .ReturnsAsync(team);
@@ -89,7 +87,7 @@ public class TeamSubscriptionDeactivatedEventHandlerTests
             x => x.Log(
                 LogLevel.Error,
                 It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(IDMsgs.Error.NotFound<AppUser>(notification.Subscription.Id))),
+                It.Is<It.IsAnyType>((v, t) => v.ToString().Contains(IDMsgs.Error.NotFound<AppUser>(notification.SubscriptionId))),
                 It.IsAny<Exception>(),
                 It.IsAny<Func<It.IsAnyType, Exception, string>>()),
             Times.Once);
@@ -105,7 +103,7 @@ public class TeamSubscriptionDeactivatedEventHandlerTests
         // Arrange
         var sub = SubscriptionDataFactory.Create();
         var team = TeamDataFactory.Create(subscriptions: [sub]);
-        var notification = new TeamSubscriptionDeactivatedDomainEvent(sub);
+        var notification = new TeamSubscriptionDeactivatedDomainEvent(sub.TeamId, sub.Id);
         _mockTeamManager.Setup(m => m.GetByIdWithEverythingAsync(It.IsAny<Guid>(), It.IsAny<int>()))
             .ReturnsAsync(team);
 
@@ -140,7 +138,7 @@ public class TeamSubscriptionDeactivatedEventHandlerTests
             leader: leader,
             subscriptions: [subscription]
         );
-        var notification = new TeamSubscriptionDeactivatedDomainEvent(subscription);
+        var notification = new TeamSubscriptionDeactivatedDomainEvent(subscription.TeamId, subscription.Id);
         _mockTeamManager.Setup(m => m.GetByIdWithEverythingAsync(It.IsAny<Guid>(), It.IsAny<int>()))
             .ReturnsAsync(team);
 

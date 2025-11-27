@@ -169,7 +169,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
                 teamPosition);
 
         user.SetCreated();
-        user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id, user));
+        user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id));
 
         return user;
     }
@@ -203,7 +203,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
         };
 
         user.SetCreated();
-        user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id, user));
+        user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id));
 
         return user;
     }
@@ -228,7 +228,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
         if (provider.HasValue)
             Update2FactorProvider(provider.Value);
 
-        RaiseDomainEvent(new UserUpdatedDomainEvent(Id, this));
+        RaiseDomainEvent(new UserUpdatedDomainEvent(Id));
 
         return this;
     }
@@ -252,7 +252,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
     public AppUser UpdateAddress(IdentityAddress? address)
     {
         Address = address;
-        RaiseDomainEvent(new UserAddressUpdatedDomainEvent(this, Address));
+        RaiseDomainEvent(new UserAddressUpdatedDomainEvent(Id, Address));
         return this;
     }
 
@@ -264,7 +264,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
         {
             Email = email.Value.Trim();
             EmailConfirmed = false;
-            RaiseDomainEvent(new UserEmailUpdatedDomainEvent(this));
+            RaiseDomainEvent(new UserEmailUpdatedDomainEvent(Id, TeamId, Email));
         }
 
         return this;
@@ -288,7 +288,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
         {
             PhoneNumber = string.IsNullOrWhiteSpace(phone.Value) ? null : phone.Value?.Trim();
             PhoneNumberConfirmed = false;
-            RaiseDomainEvent(new UserPhoneUpdatedDomainEvent(this, PhoneNumber));
+            RaiseDomainEvent(new UserPhoneUpdatedDomainEvent(Id, TeamId, PhoneNumber));
         }
 
         return this;
@@ -301,7 +301,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
         if (TwoFactorEnabled != enabled)
         {
             TwoFactorEnabled = enabled;
-            RaiseDomainEvent(new User2FactorEnableChangedDomainEvent(this, TwoFactorEnabled));
+            RaiseDomainEvent(new User2FactorEnableChangedDomainEvent(Id, TeamId, TwoFactorEnabled));
         }
 
         return this;
@@ -330,7 +330,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
             if (!canChangeResult.Succeeded)
                 throw new InvalidTwoFactorConfigurationException(canChangeResult.Info);
             TwoFactorProvider = newProvider;
-            RaiseDomainEvent(new User2FactorUpdatedDomainEvent(this, newProvider));
+            RaiseDomainEvent(new User2FactorProviderUpdatedDomainEvent(Id, TeamId, newProvider));
         }
 
         return this;

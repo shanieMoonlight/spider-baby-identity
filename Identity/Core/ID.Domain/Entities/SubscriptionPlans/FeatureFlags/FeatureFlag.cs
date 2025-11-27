@@ -27,7 +27,7 @@ public class FeatureFlag : IdDomainEntity
     {
         Name = name.Value;
         Description = description.Value;
-        RaiseDomainEvent(new FeatureFlagCreatedDomainEvent(Id, this));
+        RaiseDomainEvent(new FeatureFlagCreatedDomainEvent(Id));
     }
 
     //- - - - - - - - - - - - - - - - - - - - -//
@@ -51,7 +51,7 @@ public class FeatureFlag : IdDomainEntity
         Name = name.Value;
         Description = description.Value;
 
-        RaiseDomainEvent(new FeatureFlagUpdatedDomainEvent(Id, this));
+        RaiseDomainEvent(new FeatureFlagUpdatedDomainEvent(Id));
         return this;
     }
 

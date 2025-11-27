@@ -39,8 +39,8 @@ public class Team_RemoveMember_Tests
 
         var memberEvent = domainEvents.OfType<TeamMemberRemovedDomainEvent>().FirstOrDefault();
         memberEvent.ShouldNotBeNull();
-        memberEvent.Team.ShouldBe(team);
-        memberEvent.Member.ShouldBe(member1);
+        memberEvent.TeamId.ShouldBe(team.Id);
+        memberEvent.MemberId.ShouldBe(member1.Id);
     }
 
     //------------------------------------//
@@ -279,8 +279,8 @@ public class Team_RemoveMember_Tests
         
         var memberEvent = domainEvents.OfType<TeamMemberRemovedDomainEvent>().FirstOrDefault();
         memberEvent.ShouldNotBeNull();
-        memberEvent.Team.ShouldBe(customerTeam);
-        memberEvent.Member.ShouldBe(lastMember);
+        memberEvent.TeamId.ShouldBe(customerTeam.Id);
+        memberEvent.MemberId.ShouldBe(lastMember.Id);
     }
 
     //------------------------------------//

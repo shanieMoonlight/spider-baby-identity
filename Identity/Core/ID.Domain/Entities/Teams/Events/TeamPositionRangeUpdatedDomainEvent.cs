@@ -2,9 +2,4 @@
 
 namespace ID.Domain.Entities.Teams.Events;
 
-public sealed record TeamPositionRangeUpdatedDomainEvent(Guid TeamId, int Min, int Max) : IIdDomainEvent 
-{
-    
-}
-
-
+public sealed record TeamPositionRangeUpdatedDomainEvent(Guid TeamId, int Min, int Max) : IIdDomainEvent;

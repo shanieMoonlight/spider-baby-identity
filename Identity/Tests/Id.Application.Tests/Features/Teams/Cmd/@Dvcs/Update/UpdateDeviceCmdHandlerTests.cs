@@ -43,7 +43,9 @@ public class UpdateDeviceCmdHandlerTests
         var dvcCount = 2;
         var dvcs = DeviceDataFactory.CreateMany(dvcCount).ToHashSet();
         var dvcToRemove = dvcs.First();
-        var subscription = SubscriptionDataFactory.Create(subscriptionId, null, null, null, null, null, 0, dvcs);
+        var subscription = SubscriptionDataFactory.Create(
+            deviceLimit: 0,
+            devices: dvcs);
         var request = new UpdateDeviceCmd(dto) { PrincipalTeam = team };
         var cancellationToken = CancellationToken.None;
 
@@ -109,7 +111,9 @@ public class UpdateDeviceCmdHandlerTests
         var dvcCount = 2;
         var dvcs = DeviceDataFactory.CreateMany(dvcCount).ToHashSet();
         var dvcToUdate = dvcs.First();
-        var subscription = SubscriptionDataFactory.Create(subscriptionId, null, null, null, null, null, 0, dvcs);
+        var subscription = SubscriptionDataFactory.Create(
+            deviceLimit: 0,
+            devices: dvcs);
         var dto = new DeviceDto
         {
             Id = dvcToUdate.Id,

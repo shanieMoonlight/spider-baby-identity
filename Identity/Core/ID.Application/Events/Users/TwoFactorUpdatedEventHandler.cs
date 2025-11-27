@@ -18,16 +18,26 @@ public class TwoFactorUpdatedEventHandler(
     IEventBus _bus,
     IIdentityTeamManager<AppUser> _teamMgr,
     ILogger<TwoFactorUpdatedEventHandler> _logger)
-    : INotificationHandler<User2FactorUpdatedDomainEvent>
+    : INotificationHandler<User2FactorProviderUpdatedDomainEvent>
 {
-    public async Task Handle(User2FactorUpdatedDomainEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(User2FactorProviderUpdatedDomainEvent notification, CancellationToken cancellationToken)
     {
         try
         {
-            var user = notification.User;
-            var dbTeam = await _teamMgr.GetByIdWithMemberAsync(user.TeamId, user.Id);
+            var userId = notification.UserId;
+            var teamId = notification.TeamId;
+            var provider = notification.Provider;
+
+            var dbTeam = await _teamMgr.GetByIdWithMemberAsync(teamId, userId);
             if (dbTeam ==  null || !dbTeam.Members.AnyValues()){
-                _logger.LogError(IDMsgs.Error.Teams.NOT_TEAM_MEMBER(user, user.TeamId.ToString()), IdErrorEvents.Listeners.TwoFactorAuthSetup);
+                _logger.LogError(IDMsgs.Error.Teams.NOT_TEAM_MEMBER(userId, teamId), IdErrorEvents.Listeners.TwoFactorAuthSetup);
+                return;
+            }
+
+            var member = dbTeam.Members.FirstOrDefault(m => m.Id == notification.UserId);
+            if (member is null)
+            {
+                _logger.LogError(new EventId(IdErrorEvents.Listeners.TwoFactorAuthSetup), "{msg}", IDMsgs.Error.NotFound<Team>(notification.UserId));
                 return;
             }
 
@@ -35,7 +45,7 @@ public class TwoFactorUpdatedEventHandler(
             switch (notification.Provider)
             {
                 case TwoFactorProvider.AuthenticatorApp:
-                    authResult = await SetupAuthenticatorAppAsync(dbTeam, notification.User, cancellationToken);
+                    authResult = await SetupAuthenticatorAppAsync(dbTeam, member, cancellationToken);
                     break;
                 default:
                     break;//Otherwise do nothing

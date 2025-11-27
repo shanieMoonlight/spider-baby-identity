@@ -114,8 +114,8 @@ public class TeamAddMemberTests
         
         var memberEvent = domainEvents.OfType<TeamMemberAddedDomainEvent>().FirstOrDefault();
         memberEvent.ShouldNotBeNull();
-        memberEvent.Team.ShouldBe(team);
-        memberEvent.User.ShouldBe(member);
+        memberEvent.TeamId.ShouldBe(team.Id);
+        memberEvent.UserId.ShouldBe(member.Id);
     }
 
     //------------------------------------//

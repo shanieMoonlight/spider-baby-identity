@@ -1,8 +1,5 @@
 ﻿using ID.Domain.Abstractions.Events;
-using ID.Domain.Entities.Teams;
 
 namespace ID.Domain.Entities.Teams.Events;
-public record TeamSubscriptionDeactivatedDomainEvent(TeamSubscription Subscription) : IIdDomainEvent
-{
-}
-
+public record TeamSubscriptionDeactivatedDomainEvent(Guid TeamId, Guid SubscriptionId) : IIdDomainEvent;
+//public record TeamSubscriptionDeactivatedDomainEvent(TeamSubscription Subscription) : IIdDomainEvent;

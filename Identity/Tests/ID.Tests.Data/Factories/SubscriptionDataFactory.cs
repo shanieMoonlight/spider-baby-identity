@@ -18,6 +18,7 @@ public static class SubscriptionDataFactory
         double? discount = null,
         double? lastPaymenAmount = null,
         Guid? teamId = null,
+        Team? team = null,
         Guid? subscriptionPlanId = null,
         bool? trial = null,
         int? deviceLimit = null,
@@ -35,7 +36,7 @@ public static class SubscriptionDataFactory
 
         discount ??= 0;
         lastPaymenAmount ??= 0;
-        teamId ??= Guid.NewGuid();
+        teamId ??= team?.Id ?? Guid.NewGuid();
         subscriptionPlanId ??= Guid.NewGuid();
         trial ??= false;
         name ??= $"{RandomStringGenerator.Generate(20)}{id}";
@@ -52,6 +53,7 @@ public static class SubscriptionDataFactory
                new PropertyAssignment(nameof(TeamSubscription.Discount),  () => discount ),
                 new PropertyAssignment(nameof(TeamSubscription.LastPaymenAmount),  () => lastPaymenAmount ),
                 new PropertyAssignment(nameof(TeamSubscription.TeamId),  () => teamId ),
+                new PropertyAssignment(nameof(TeamSubscription.Team),  () => team ),
                 new PropertyAssignment(nameof(TeamSubscription.SubscriptionPlanId),  () => plan?.Id ?? subscriptionPlanId ),
                 new PropertyAssignment(nameof(TeamSubscription.SubscriptionPlan),  () => plan ),
                 new PropertyAssignment(nameof(TeamSubscription.Trial),  () => trial ),

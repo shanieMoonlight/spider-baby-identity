@@ -19,7 +19,7 @@ namespace ID.PhoneConfirmation.Events.Domain;
 /// </summary>
 internal class UserPhoneChangedEventHandler(
     IPhoneConfirmationBus bus,
-    IIdentityTeamManager<AppUser> teamRepo,
+    IIdentityTeamManager<AppUser> teamMgr,
     ILogger<UserPhoneChangedEventHandler> logger)
     : INotificationHandler<UserPhoneUpdatedDomainEvent>
 {
@@ -33,7 +33,8 @@ internal class UserPhoneChangedEventHandler(
     {
         try
         {
-            var user = notification.User;
+            var userId = notification.UserId;
+            var teamId = notification.TeamId;
             var phone = notification.Phone;
 
             if (phone is null)
@@ -42,17 +43,17 @@ internal class UserPhoneChangedEventHandler(
                 return; //do nothing
             }
 
-            var team = await teamRepo.GetByIdWithMembersAsync(user.TeamId);
+            var team = await teamMgr.GetByIdWithMemberAsync(notification.TeamId, notification.UserId);
             if (team is null)
             {
-                logger.LogError(IDMsgs.Error.NotFound<Team>(user.TeamId), IdErrorEvents.Listeners.UserPhoneUpdated);
+                logger.LogError(IDMsgs.Error.NotFound<Team>(teamId), IdErrorEvents.Listeners.UserPhoneUpdated);
                 return; //do nothing
             }
 
-            var dbUser = team.Members.FirstOrDefault(m => m.Id == user.Id);
+            var dbUser = team.Members.FirstOrDefault(m => m.Id == userId);
             if (dbUser is null)
             {
-                logger.LogError(new EventId(IdErrorEvents.Listeners.UserPhoneUpdated), "{msg}", IDMsgs.Error.NotFound<Team>(notification.User.TeamId));
+                logger.LogError(new EventId(IdErrorEvents.Listeners.UserPhoneUpdated), "{msg}", IDMsgs.Error.NotFound<AppUser>(teamId));
                 return;
             }
 

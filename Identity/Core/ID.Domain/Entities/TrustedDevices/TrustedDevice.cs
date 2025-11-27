@@ -17,16 +17,13 @@ public class TrustedDevice : IdDomainEntity
     public string UserAgent { get; private set; }
     public string IpAddress { get; private set; }
 
-    /// <summary>
-    /// Null is indefinite trust
-    /// </summary>
     public DateTime TrustedUntil { get; private set; }
 
     public DateTime LastUsedDate { get; private set; }
 
 
     /// <summary>
-    /// Trusted devices for this user
+    /// Trusted devices for this device.
     /// </summary>
     public IReadOnlyCollection<IdRefreshToken>? IdRefreshTokens { get; private set; }
 

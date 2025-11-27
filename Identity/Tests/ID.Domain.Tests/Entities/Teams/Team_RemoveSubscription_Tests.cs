@@ -2,8 +2,6 @@ using ID.Domain.Entities.SubscriptionPlans.ValueObjects;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Entities.Teams.Events;
 using ID.Domain.Entities.Teams.Validators;
-using ID.Tests.Data.Factories;
-using Shouldly;
 
 namespace ID.Domain.Tests.Entities.Teams;
 
@@ -65,8 +63,8 @@ public class Team_RemoveSubscription_Tests
         
         var removalEvent = domainEvents.OfType<TeamSubscriptionRemovedEvent>().FirstOrDefault();
         removalEvent.ShouldNotBeNull();
-        removalEvent.Team.ShouldBe(team);
-        removalEvent.Subscription.ShouldBe(subscription);
+        removalEvent.TeamId.ShouldBe(team.Id);
+        removalEvent.SubscriptionId.ShouldBe(subscription.Id);
     }
 
     //------------------------------------//

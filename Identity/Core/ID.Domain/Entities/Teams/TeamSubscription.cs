@@ -127,7 +127,7 @@ public class TeamSubscription : IdDomainEntity
         if (SubscriptionStatus != SubscriptionStatus.InActive)
         {
             SubscriptionStatus = SubscriptionStatus.InActive;
-            RaiseDomainEvent(new TeamSubscriptionDeactivatedDomainEvent(this));
+            RaiseDomainEvent(new TeamSubscriptionDeactivatedDomainEvent(TeamId, Id));
         }
 
         return this;
@@ -144,7 +144,7 @@ public class TeamSubscription : IdDomainEntity
 
         var succeeded = _devices.Add(dvc);
         if (succeeded)
-            RaiseDomainEvent(new SubscriptionDeviceAddedDomainEvent(Id, this, dvc));
+            RaiseDomainEvent(new SubscriptionDeviceAddedDomainEvent(Id, dvc.Id));
         //else Already Added
 
         return dvc;
@@ -156,7 +156,7 @@ public class TeamSubscription : IdDomainEntity
     {
         var succeeded = _devices.Remove(dvc);
         if (succeeded)
-            RaiseDomainEvent(new SubscriptionDeviceRemovedDomainEvent(Id, this, dvc));
+            RaiseDomainEvent(new SubscriptionDeviceRemovedDomainEvent(Id,  dvc.Id));
         //else Already Deleted
 
         return succeeded;

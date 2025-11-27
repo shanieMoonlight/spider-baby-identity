@@ -1,8 +1,6 @@
 ﻿using ID.Domain.Entities.SubscriptionPlans.Events;
-using ID.Tests.Data.Factories;
-using Shouldly;
 
-namespace ID.Domain.Tests.Entities.SubscriptionPlans;
+namespace ID.Domain.Tests.Entities.SubscriptionPlan;
 
 public class SubscriptionPlan_DomainEvents_Tests
 {
@@ -26,8 +24,8 @@ public class SubscriptionPlan_DomainEvents_Tests
 
         var domainEvent = domainEvents[0].ShouldBeOfType<SubscriptionPlanFeatureAddedDomainEvent>();
         domainEvent.SubscriptionPlanId.ShouldBe(subscriptionPlan.Id);
-        domainEvent.SubscriptionPlan.ShouldBe(subscriptionPlan);
-        domainEvent.FeatureFlag.ShouldBe(featureFlag);
+        domainEvent.SubscriptionPlanId.ShouldBe(subscriptionPlan.Id);
+        domainEvent.FeatureFlagId.ShouldBe(featureFlag.Id   );
     }
 
     //------------------------------------//
@@ -78,8 +76,7 @@ public class SubscriptionPlan_DomainEvents_Tests
         {
             var featureAddedEvent = domainEvent.ShouldBeOfType<SubscriptionPlanFeatureAddedDomainEvent>();
             featureAddedEvent.SubscriptionPlanId.ShouldBe(subscriptionPlan.Id);
-            featureAddedEvent.SubscriptionPlan.ShouldBe(subscriptionPlan);
-            featureFlags.ShouldContain(featureAddedEvent.FeatureFlag);
+            featureFlags.ShouldContain(f => f.Id == featureAddedEvent.FeatureFlagId);
         }
     }
 
@@ -107,14 +104,14 @@ public class SubscriptionPlan_DomainEvents_Tests
         var domainEvents = subscriptionPlan.GetDomainEvents();
         domainEvents.Count.ShouldBe(2); // Only for new flags
 
-        var raisedFlags = domainEvents
+        var raisedFlagIds = domainEvents
             .Cast<SubscriptionPlanFeatureAddedDomainEvent>()
-            .Select(e => e.FeatureFlag)
+            .Select(e => e.FeatureFlagId)
             .ToList();
 
-        raisedFlags.ShouldContain(newFlag1);
-        raisedFlags.ShouldContain(newFlag2);
-        raisedFlags.ShouldNotContain(existingFlag);
+        raisedFlagIds.ShouldContain(newFlag1.Id);
+        raisedFlagIds.ShouldContain(newFlag2.Id );
+        raisedFlagIds.ShouldNotContain(existingFlag.Id);
     }
 
     //------------------------------------//
@@ -139,8 +136,7 @@ public class SubscriptionPlan_DomainEvents_Tests
 
         var domainEvent = domainEvents[0].ShouldBeOfType<SubscriptionPlanFeatureRemovedDomainEvent>();
         domainEvent.SubscriptionPlanId.ShouldBe(subscriptionPlan.Id);
-        domainEvent.SubscriptionPlan.ShouldBe(subscriptionPlan);
-        domainEvent.FeatureFlag.ShouldBe(featureFlag);
+        domainEvent.FeatureFlagId.ShouldBe(featureFlag.Id);
     }
 
     //------------------------------------//
@@ -191,8 +187,7 @@ public class SubscriptionPlan_DomainEvents_Tests
         {
             var featureRemovedEvent = domainEvent.ShouldBeOfType<SubscriptionPlanFeatureRemovedDomainEvent>();
             featureRemovedEvent.SubscriptionPlanId.ShouldBe(subscriptionPlan.Id);
-            featureRemovedEvent.SubscriptionPlan.ShouldBe(subscriptionPlan);
-            featureFlags.ShouldContain(featureRemovedEvent.FeatureFlag);
+            featureFlags.ShouldContain(f => f.Id == featureRemovedEvent.FeatureFlagId);
         }
     }
 
@@ -208,7 +203,7 @@ public class SubscriptionPlan_DomainEvents_Tests
         var nonExistingFlag = FeatureFlagDataFactory.Create();
 
         // Add only some flags
-        subscriptionPlan.AddFeatureFlags(new[] { existingFlag1, existingFlag2 });
+        subscriptionPlan.AddFeatureFlags([existingFlag1, existingFlag2]);
         subscriptionPlan.ClearDomainEvents();
 
         var flagsToRemove = new[] { existingFlag1, existingFlag2, nonExistingFlag };
@@ -220,14 +215,14 @@ public class SubscriptionPlan_DomainEvents_Tests
         var domainEvents = subscriptionPlan.GetDomainEvents();
         domainEvents.Count.ShouldBe(2); // Only for existing flags
 
-        var removedFlags = domainEvents
+        var removedFlagIds = domainEvents
             .Cast<SubscriptionPlanFeatureRemovedDomainEvent>()
-            .Select(e => e.FeatureFlag)
+            .Select(e => e.FeatureFlagId)
             .ToList();
 
-        removedFlags.ShouldContain(existingFlag1);
-        removedFlags.ShouldContain(existingFlag2);
-        removedFlags.ShouldNotContain(nonExistingFlag);
+        removedFlagIds.ShouldContain(existingFlag1.Id);
+        removedFlagIds.ShouldContain(existingFlag2.Id);
+        removedFlagIds.ShouldNotContain(nonExistingFlag.Id);
     }
 
     //------------------------------------//
@@ -252,8 +247,8 @@ public class SubscriptionPlan_DomainEvents_Tests
         var addEvent = domainEvents[0].ShouldBeOfType<SubscriptionPlanFeatureAddedDomainEvent>();
         var removeEvent = domainEvents[domainEvents.Count - 1].ShouldBeOfType<SubscriptionPlanFeatureRemovedDomainEvent>();
 
-        addEvent.FeatureFlag.ShouldBe(featureFlag);
-        removeEvent.FeatureFlag.ShouldBe(featureFlag);
+        addEvent.FeatureFlagId.ShouldBe(featureFlag.Id);
+        removeEvent.FeatureFlagId.ShouldBe(featureFlag.Id   );
     }
 
     //------------------------------------//

@@ -168,9 +168,10 @@ public partial class IDMsgs
             public static string CANT_DEMOTE_SAME_POSITION => $"Can only demote users with TeamPositions already lower than yours";
             public static string EMPTY_TEAM(string teamName) => $"Team {teamName} has no members.";
             public static string NotACustomerTeam(Guid teamId) => $"Team {teamId} is not  a Customer Team";
+            public static string NOT_TEAM_MEMBER(Guid userId, Guid teamIdentifier) => NOT_TEAM_MEMBER(userId.ToString(), teamIdentifier.ToString());
             public static string NOT_TEAM_MEMBER(AppUser user, Guid teamIdentifier) => NOT_TEAM_MEMBER(user, teamIdentifier.ToString());
-            public static string NOT_TEAM_MEMBER(AppUser user, string teamIdentifier) => $"User with email, {user.Email} is not a member of the Team, {teamIdentifier}";
             public static string NOT_TEAM_MEMBER(AppUser user, Team team) => NOT_TEAM_MEMBER(user, team.Name);
+            public static string NOT_TEAM_MEMBER(AppUser user, string teamIdentifier) => $"User with email, {user.Email} is not a member of the Team, {teamIdentifier}";
 
             public static string NOT_TEAM_MEMBER(Guid userIdentifier, string teamIdentifier) => NOT_TEAM_MEMBER(userIdentifier.ToString(), teamIdentifier);
             public static string NOT_TEAM_MEMBER(string userIdentifier, string teamIdentifier) => $"User, {userIdentifier} is not a member of the Team, {teamIdentifier}";

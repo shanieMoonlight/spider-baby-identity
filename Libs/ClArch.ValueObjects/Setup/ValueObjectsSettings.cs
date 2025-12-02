@@ -105,6 +105,5 @@ internal class ValueObjectsSettings
 
     }
 
-    //------------------------------------//
 
 }//Cls

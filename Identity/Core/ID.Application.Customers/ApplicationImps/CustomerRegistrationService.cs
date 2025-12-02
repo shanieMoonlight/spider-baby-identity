@@ -98,7 +98,8 @@ internal class IdCustomerRegistrationService(IIdentityTeamManager<AppUser> _team
         Guid? subscriptionPlanId = null,
         CancellationToken cancellationToken = default)
     {
-        if (confirmPassword != password)
+        //compare values because the VOs are different types
+        if (confirmPassword.Value != password.Value)
             return GenResult<AppUser>.BadRequestResult(IDMsgs.Error.Authorization.NON_MATCHING_PASSOWRDS);
 
 

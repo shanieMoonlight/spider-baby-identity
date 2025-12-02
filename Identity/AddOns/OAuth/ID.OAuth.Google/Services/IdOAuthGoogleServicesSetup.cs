@@ -4,7 +4,7 @@ using ID.OAuth.Google.Services.Imps;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace ID.OAuth.Google.Setup;
+namespace ID.OAuth.Google.Services;
 internal static class IdOAuthGoogleServicesSetup
 {
     internal static IServiceCollection RegisterServices<TUser>(this IServiceCollection services) where TUser : AppUser
@@ -14,8 +14,6 @@ internal static class IdOAuthGoogleServicesSetup
 
         return services;
     }
-
-
 
 
 }//Cls

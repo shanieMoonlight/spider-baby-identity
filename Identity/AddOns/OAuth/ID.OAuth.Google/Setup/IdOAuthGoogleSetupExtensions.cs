@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using ID.Domain.Entities.AppUsers;
+using ID.OAuth.Google.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;

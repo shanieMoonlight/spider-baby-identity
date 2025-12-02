@@ -44,6 +44,5 @@ internal abstract class BaseEmailConfirmationService<TUser>(IIdUserMgmtService<T
         return HttpUtility.UrlEncode(tkn);
     }
 
-    //-----------------------//
 
 }//Cls

@@ -1,7 +1,14 @@
-﻿using ID.Domain.Entities.AppUsers;
+﻿using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.Refreshing;
 
 namespace ID.Application.JWT;
+
+
+//###############################################################//
+
+public record GeneratedTokenDto(IdRefreshToken RefreshToken, string ClientToken);   
+
+//###############################################################//
 
 public interface IJwtRefreshTokenService<TUser> where TUser : AppUser
 {
@@ -10,7 +17,7 @@ public interface IJwtRefreshTokenService<TUser> where TUser : AppUser
     /// </summary>
     /// <param name="tknPayload">The refresh token payload.</param>
     /// <returns>The refresh token with user and team information, or null if not found.</returns>
-    Task<IdRefreshToken?> FindTokenWithUserAndTeamAsync(string tknPayload, CancellationToken cancellationToken = default);
+    Task<IdRefreshToken?> FindTokenWithUserAndDeviceAndTeamAsync(string tknPayload, CancellationToken cancellationToken = default);
 
     //-------------------------//
 
@@ -20,17 +27,27 @@ public interface IJwtRefreshTokenService<TUser> where TUser : AppUser
     /// <param name="user">The user for whom the token is being generated.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The newly created refresh token.</returns>
-    Task<IdRefreshToken> GenerateTokenAsync(TUser user, CancellationToken cancellationToken);
+    Task<GeneratedTokenDto> GenerateAndStoreTokenAsync(TUser user, IEnumerable<AuthMethodRef> authMethodRefs, CancellationToken cancellationToken);
 
     //-------------------------//
 
     /// <summary>
-    /// Updates the payload of an existing refresh token.
+    /// Generates a new refresh token for the specified user. And stores it with the device.
+    /// </summary>
+    /// <param name="user">The user for whom the token is being generated.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The newly created refresh token.</returns>
+    Task<GeneratedTokenDto> GenerateAndStoreWithDeviceAsync(TUser user, IEnumerable<AuthMethodRef> authMethodRefs, TrustedDevice trustedDevice, CancellationToken cancellationToken);
+
+    //-------------------------//
+
+    /// <summary>
+    /// Updates the payload of an existing refresh token and returns the generated client token.
     /// </summary>
     /// <param name="refreshToken">The refresh token to update.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
-    /// <returns>The updated refresh token.</returns>
-    Task<IdRefreshToken> UpdateTokenPayloadAsync(IdRefreshToken refreshToken, CancellationToken cancellationToken = default);
+    /// <returns>A <see cref="GeneratedTokenDto"/> containing the updated token and the client token string.</returns>
+    Task<GeneratedTokenDto> UpdateTokenPayloadAsync(IdRefreshToken refreshToken, CancellationToken cancellationToken = default);
 
     //-------------------------//
 

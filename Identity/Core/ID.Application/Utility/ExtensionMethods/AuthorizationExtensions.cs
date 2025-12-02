@@ -1,9 +1,8 @@
-﻿using ID.GlobalSettings.Utility;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
 
-namespace ID.GlobalSettings.Utility.ExtensionMethods;
+namespace ID.Application.Utility.ExtensionMethods;
 
 public static class AuthorizationExtensions
 {

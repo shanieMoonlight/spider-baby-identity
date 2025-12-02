@@ -1,5 +1,5 @@
 using ID.Application.JWT.Subscriptions;
-using ID.Domain.Claims.Utils;
+using ID.Domain.Claims;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 

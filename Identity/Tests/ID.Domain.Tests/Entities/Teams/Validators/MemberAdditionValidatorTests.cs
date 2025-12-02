@@ -176,7 +176,7 @@ public class MemberAdditionValidatorTests
         var tokenType = typeof(TeamValidators.MemberAddition.Token);
 
         // Assert
-        tokenType.GetInterfaces().ShouldContain(typeof(IValidationToken));
+        tokenType.GetInterfaces().ShouldContain(typeof(ITeamValidationToken));
     }
 
     //------------------------------------//

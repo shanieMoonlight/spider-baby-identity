@@ -1,8 +1,5 @@
 using ID.Application.AppAbs.Permissions;
-using ID.Application.Mediatr.CqrsAbs;
 using ID.Domain.Abstractions.Services.Teams;
-using ID.Domain.Entities.AppUsers;
-using MyResults;
 
 namespace ID.Application.Features.MemberMgmt.Cmd.DeleteMember;
 public class DeleteMyTeamMemberCmdHandler(IIdentityTeamManager<AppUser> _teamMgr, IAppPermissionService<AppUser> _appPermissions) : IIdCommandHandler<DeleteMyTeamMemberCmd>

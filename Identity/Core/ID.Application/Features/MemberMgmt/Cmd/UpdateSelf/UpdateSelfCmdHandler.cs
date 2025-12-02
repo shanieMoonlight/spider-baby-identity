@@ -1,9 +1,6 @@
-using ID.Application.Dtos.User;
-using MyResults;
-using ID.Application.Features.Common.Dtos.User;
 using ID.Application.AppAbs.Permissions;
-using ID.Application.Mediatr.CqrsAbs;
-using ID.Domain.Entities.AppUsers;
+using ID.Application.Dtos.User;
+using ID.Application.Features.Common.Dtos.User;
 using ID.Domain.Abstractions.Services.Teams;
 
 namespace ID.Application.Features.MemberMgmt.Cmd.UpdateSelf;
@@ -32,7 +29,6 @@ public class UpdateSelfCmdHandler(IIdentityTeamManager<AppUser> teamMgr, IAppPer
         return updateResult.Convert(u => u?.ToDto());
     }
 
-    //------------------------------------//
 
 }//Cls
 

@@ -35,6 +35,9 @@ internal static class Setup
             .AddInitializedAuthenticatorPolicy()
 
             .AddMfaVerifiedAuthenticatorPolicy()
+
+            .AddAuthorizedOrDevAuthenticatorPolicy()
+            .AddCanTrustDeviceAuthenticatorPolicy()
             ;
 
         return services;

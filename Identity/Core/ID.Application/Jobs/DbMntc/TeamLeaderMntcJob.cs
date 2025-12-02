@@ -1,8 +1,8 @@
 ﻿using ID.Application.Jobs.Abstractions;
 using ID.Domain.Entities.Teams.Validators;
 using ID.Domain.Repos;
+using ID.Domain.Repos.Specs.Teams;
 using ID.GlobalSettings.Errors;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
 using LoggingHelpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -23,7 +23,7 @@ internal sealed class TeamLeaderMntcJob(IServiceProvider _serviceProvider, ILogg
             var uow = scope.ServiceProvider.GetRequiredService<IIdUnitOfWork>();
 
             IIdentityTeamRepo _repo = uow.TeamRepo;
-            var teams = await _repo.ListAllAsync(new TeamsWithMissingLeadersSpec());
+            var teams = await _repo.ListAllTrackedAsync(new TeamsWithMissingLeadersSpec());
             foreach (var team in teams)
             {
                 var highestPositionMember = team.Members

@@ -1,6 +1,6 @@
 ﻿using ID.Application.Jobs.Abstractions;
 using ID.Domain.Repos;
-using ID.Domain.Repos.Specs.NewFolder.OutboxMsgs;
+using ID.Domain.Repos.Specs.OutboxMsgs;
 using ID.GlobalSettings.Errors;
 using LoggingHelpers;
 using Microsoft.Extensions.DependencyInjection;

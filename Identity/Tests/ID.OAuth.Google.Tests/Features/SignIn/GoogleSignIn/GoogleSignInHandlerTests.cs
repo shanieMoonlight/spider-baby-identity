@@ -1,3 +1,5 @@
+using ID.Domain.Claims.AuthMethods;
+
 namespace ID.OAuth.Google.Tests.Features.SignIn.GoogleSignIn;
 
 public class GoogleSignInHandlerTests
@@ -134,7 +136,7 @@ public class GoogleSignInHandlerTests
         
         // Verify the standard JWT package creation was not called
         _mockJwtPackageProvider.Verify(
-            p => p.CreateJwtPackageAsync(It.IsAny<AppUser>(), It.IsAny<Team>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
+            p => p.CreateJwtPackageAsync(It.IsAny<AppUser>(), It.IsAny<Team>(), It.IsAny<IEnumerable<AuthMethodRef>>(), It.IsAny<string>(), It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
@@ -215,6 +217,7 @@ public class GoogleSignInHandlerTests
             .Setup(p => p.CreateJwtPackageAsync(
                 user,
                 team,
+                It.Is<IEnumerable<AuthMethodRef>>(x => x.Contains(AuthMethodRef.oauth)),
                 deviceId,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(jwtPackage);

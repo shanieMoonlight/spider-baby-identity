@@ -15,7 +15,7 @@ public interface IIdIntegrationEvent : INotification { }
 /// indicating when the event occurred.</remarks>
 public abstract record AIdIntegrationEvent : IIdIntegrationEvent
 {
-    public DateTime OccurredAt { get; protected set; } = DateTime.UtcNow;
+    public DateTime OccurredAtUtc { get; protected set; } = DateTime.UtcNow;
     public Guid EventId { get; protected set; } = Guid.NewGuid();
     public string EventVersion { get; protected set; } = "1.0";
     

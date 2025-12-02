@@ -264,7 +264,7 @@ public class OutboxMessageRepoTests : RepoTestBase, IAsyncLifetime
         var spec = new GetProcessedOutboxMessagesSpec();
 
         // Act
-        var results = await _repo.ListAllAsync(spec);
+        var results = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         results.Count.ShouldBe(1);
@@ -280,7 +280,7 @@ public class OutboxMessageRepoTests : RepoTestBase, IAsyncLifetime
         var spec = new GetUnprocessedOutboxMessagesSpec();
 
         // Act
-        var results = await _repo.ListAllAsync(spec);
+        var results = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         results.Count.ShouldBe(1);

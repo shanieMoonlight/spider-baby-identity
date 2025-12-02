@@ -1,7 +1,7 @@
 
 using ID.Domain.Abstractions.Services.Members;
+using ID.Domain.Repos.Specs.Members.WithEverything;
 using ID.Infrastructure.DomainServices.Members;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.Members.WithEverything;
 
 namespace ID.Infrastructure.Tests.DmnSevcs.Members;
 

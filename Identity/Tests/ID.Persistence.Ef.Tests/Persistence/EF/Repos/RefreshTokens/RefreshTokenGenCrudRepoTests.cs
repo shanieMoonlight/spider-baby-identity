@@ -1,10 +1,6 @@
-using ID.Domain.Entities.Refreshing;
 using ID.Domain.Entities.Refreshing.ValueObjects;
-using ID.Infrastructure.Persistance.EF.Repos;
-using ID.Tests.Data.Factories;
-using Shouldly;
 
-namespace ID.Infrastructure.Tests.Persistence.EF.Repos.RefreshTokens;
+namespace ID.Persistence.Ef.Tests.Persistence.EF.Repos.RefreshTokens;
 
 public class RefreshTokenGenCrudRepoTests : RepoTestBase, IAsyncLifetime
 {
@@ -55,7 +51,7 @@ public class RefreshTokenGenCrudRepoTests : RepoTestBase, IAsyncLifetime
         result.ShouldNotBeNull();
         result.Id.ShouldBe(newToken.Id);
         result.UserId.ShouldBe(newToken.UserId);
-        result.Payload.ShouldBe("new_test_payload");
+        result.PayloadHash.ShouldBe("new_test_payload");
     }
 
     //------------------------//  
@@ -70,7 +66,7 @@ public class RefreshTokenGenCrudRepoTests : RepoTestBase, IAsyncLifetime
         result.ShouldNotBeNull();
         result!.Id.ShouldBe(_testToken.Id);
         result.UserId.ShouldBe(_testToken.UserId);
-        result.Payload.ShouldBe(_testToken.Payload);
+        result.PayloadHash.ShouldBe(_testToken.PayloadHash);
         result.ExpiresOnUtc.ShouldBe(_testToken.ExpiresOnUtc);
     }
 
@@ -98,12 +94,12 @@ public class RefreshTokenGenCrudRepoTests : RepoTestBase, IAsyncLifetime
         var token = await _repo.FirstOrDefaultByIdAsync(_testToken.Id);
         token.ShouldNotBeNull();
 
-        var originalPayload = token!.Payload;
+        var originalPayload = token!.PayloadHash;
         var newPayload = "updated_test_payload";
         var newExpiryTimeSpan = TimeSpan.FromDays(14);
 
         token.Update(
-          TokenPayload.Create(newPayload),
+          TokenPayloadHash.Create(newPayload),
        TokenLifetime.Create(newExpiryTimeSpan)
             );
 
@@ -113,11 +109,11 @@ public class RefreshTokenGenCrudRepoTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         result.ShouldNotBeNull();
-        result.Payload.ShouldBe(newPayload);
+        result.PayloadHash.ShouldBe(newPayload);
         result.ExpiresOnUtc.ShouldBeInRange(
             DateTime.UtcNow.AddDays(13.9), 
             DateTime.UtcNow.AddDays(14.1));
-        result.Payload.ShouldNotBe(originalPayload);
+        result.PayloadHash.ShouldNotBe(originalPayload);
     }
 
     //------------------------//  
@@ -201,9 +197,9 @@ public class RefreshTokenGenCrudRepoTests : RepoTestBase, IAsyncLifetime
         // Assert
         retrievedToken.ShouldNotBeNull();
         retrievedToken!.UserId.ShouldBe(userId);
-        retrievedToken.Payload.ShouldBe(payload);
+        retrievedToken.PayloadHash.ShouldBe(payload);
         retrievedToken.ExpiresOnUtc.ShouldBe(expiryDate);
-        var what = retrievedToken.DateCreated.Date;
+        //var what = retrievedToken.DateCreated.Date;
         retrievedToken.DateCreated.Date.ShouldBe(DateTime.UtcNow.Date);
     }
 
@@ -230,7 +226,7 @@ public class RefreshTokenGenCrudRepoTests : RepoTestBase, IAsyncLifetime
         // Assert
         result.ShouldNotBeNull();
         result.ExpiresOnUtc.ShouldBe(expiryDate);
-        result.Payload.ShouldBe($"token_expires_in_{daysToAdd}_days");
+        result.PayloadHash.ShouldBe($"token_expires_in_{daysToAdd}_days");
     }
 
     //------------------------//  
@@ -250,8 +246,8 @@ public class RefreshTokenGenCrudRepoTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         result.ShouldNotBeNull();
-        result.Payload.ShouldBe(longPayload);
-        result.Payload.Length.ShouldBe(1000);    }
+        result.PayloadHash.ShouldBe(longPayload);
+        result.PayloadHash.Length.ShouldBe(1000);    }
 
     #endregion
 
@@ -296,9 +292,9 @@ public class RefreshTokenGenCrudRepoTests : RepoTestBase, IAsyncLifetime
 
         // Assert
         var allTokens = await _repo.ListAllAsync();
-        allTokens.ShouldContain(t => t.Payload == "Batch Token 1");
-        allTokens.ShouldContain(t => t.Payload == "Batch Token 2");
-        allTokens.ShouldContain(t => t.Payload == "Batch Token 3");
+        allTokens.ShouldContain(t => t.PayloadHash == "Batch Token 1");
+        allTokens.ShouldContain(t => t.PayloadHash == "Batch Token 2");
+        allTokens.ShouldContain(t => t.PayloadHash == "Batch Token 3");
     }
 
     //------------------------//  
@@ -344,8 +340,8 @@ public class RefreshTokenGenCrudRepoTests : RepoTestBase, IAsyncLifetime
         // Read
         var retrieved = await _repo.FirstOrDefaultByIdAsync(added.Id);
         retrieved.ShouldNotBeNull();
-        retrieved!.Payload.ShouldBe("WorkflowTest");        // Update
-        var newTokenPayload = TokenPayload.Create("UpdatedWorkflow");
+        retrieved!.PayloadHash.ShouldBe("WorkflowTest");        // Update
+        var newTokenPayload = TokenPayloadHash.Create("UpdatedWorkflow");
         var newTokenLifetime = TokenLifetime.Create(TimeSpan.FromDays(14));
         retrieved.Update(newTokenPayload, newTokenLifetime);
         await _repo.UpdateAsync(retrieved);
@@ -353,7 +349,7 @@ public class RefreshTokenGenCrudRepoTests : RepoTestBase, IAsyncLifetime
 
         // Verify Update
         var updated = await _repo.FirstOrDefaultByIdAsync(retrieved.Id);
-        updated!.Payload.ShouldBe("UpdatedWorkflow");
+        updated!.PayloadHash.ShouldBe("UpdatedWorkflow");
 
         // Delete
         await _repo.DeleteAsync(updated);

@@ -1,5 +1,3 @@
-using Shouldly;
-using ID.Application.Mediatr.Validation;
 using ID.Application.Features.Account.Cmd.ResendEmailConfirmationPrincipal;
 
 namespace ID.Application.Tests.Features.Account.Cmd.ResendEmailConfPrincipal;
@@ -21,7 +19,6 @@ public class ResendEmailConfPrincipalCmdValidatorTests
         _validator.ShouldBeAssignableTo<IsAuthenticatedValidator<ResendEmailConfirmationPrincipalCmd>>();
     }
 
-    //--------------------------//
 
 
 }//Cls

@@ -30,7 +30,7 @@ public class AppUserDto : AuditableEntityDto
 
     public IdentityAddressDto? Address { get; set; }
 
-    //------------------------------------//
+    //----------------------//
 
     #region ModelBindingCtor
     public AppUserDto() { }
@@ -52,7 +52,7 @@ public class AppUserDto : AuditableEntityDto
         Address = mdl.Address.ToDto();
     }
 
-    //------------------------------------//
+    //----------------------//
 
 }
 

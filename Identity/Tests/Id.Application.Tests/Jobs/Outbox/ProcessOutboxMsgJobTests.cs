@@ -1,6 +1,6 @@
 using ID.Application.Jobs.Abstractions;
 using ID.Application.Jobs.OutboxMsgs;
-using ID.Domain.Repos.Specs.NewFolder.OutboxMsgs;
+using ID.Domain.Repos.Specs.OutboxMsgs;
 using ID.Tests.Utility.Logging;
 using ID.Tests.Utility.ServiceProvider;
 
@@ -41,14 +41,14 @@ public class ProcessOutboxMsgJobTests : ServiceProviderTestBase
     {
         // Arrange
         var messages = IdOutboxMessageDataFactory.CreateMany(2);
-        _outboxRepoMock.Setup(r => r.ListAllAsync(It.Is<UnprocessedOutboxMsgsSpec>(spc => spc.Seed == _chunkSize), It.IsAny<CancellationToken>()))
+        _outboxRepoMock.Setup(r => r.ListAllTrackedAsync(It.Is<UnprocessedOutboxMsgsSpec>(spc => spc.Seed == _chunkSize), It.IsAny<CancellationToken>()))
             .ReturnsAsync(messages);
 
         // Act
         await _handler.HandleAsync();
 
         // Assert
-        _outboxRepoMock.Verify(r => r.ListAllAsync(It.Is<UnprocessedOutboxMsgsSpec>(spc => spc.Seed == _chunkSize), It.IsAny<CancellationToken>()),
+        _outboxRepoMock.Verify(r => r.ListAllTrackedAsync(It.Is<UnprocessedOutboxMsgsSpec>(spc => spc.Seed == _chunkSize), It.IsAny<CancellationToken>()),
             Times.Once);
         // We can't directly verify ProcessAsync, but if no exception is thrown, the test passes for this scenario.
         _loggerMock.VerifyErrorLogging(times: () => Times.Never());
@@ -65,14 +65,14 @@ public class ProcessOutboxMsgJobTests : ServiceProviderTestBase
     public async Task HandleAsync_Should_Return_When_NoMessages()
     {
         // Arrange
-        _outboxRepoMock.Setup(r => r.ListAllAsync(It.Is<UnprocessedOutboxMsgsSpec>(spc => spc.Seed == _chunkSize), It.IsAny<CancellationToken>()))
+        _outboxRepoMock.Setup(r => r.ListAllTrackedAsync(It.Is<UnprocessedOutboxMsgsSpec>(spc => spc.Seed == _chunkSize), It.IsAny<CancellationToken>()))
             .ReturnsAsync(IdOutboxMessageDataFactory.CreateMany(0));
 
         // Act
         await _handler.HandleAsync();
 
         // Assert
-        _outboxRepoMock.Verify(r => r.ListAllAsync(It.Is<UnprocessedOutboxMsgsSpec>(spc => spc.Seed == _chunkSize), It.IsAny<CancellationToken>()),
+        _outboxRepoMock.Verify(r => r.ListAllTrackedAsync(It.Is<UnprocessedOutboxMsgsSpec>(spc => spc.Seed == _chunkSize), It.IsAny<CancellationToken>()),
             Times.Once);
 
         _loggerMock.VerifyErrorLogging(times: () => Times.Never());
@@ -85,7 +85,7 @@ public class ProcessOutboxMsgJobTests : ServiceProviderTestBase
     {
         // Arrange
         var ex = new Exception("Test exception");
-        _outboxRepoMock.Setup(r => r.ListAllAsync(It.Is<UnprocessedOutboxMsgsSpec>(spc => spc.Seed == _chunkSize), It.IsAny<CancellationToken>()))
+        _outboxRepoMock.Setup(r => r.ListAllTrackedAsync(It.Is<UnprocessedOutboxMsgsSpec>(spc => spc.Seed == _chunkSize), It.IsAny<CancellationToken>()))
             .ThrowsAsync(ex);
 
         // Act

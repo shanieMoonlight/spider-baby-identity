@@ -71,7 +71,6 @@ public class TeamSetLeaderTests
         var leaderEvent = domainEvents.OfType<TeamLeaderUpdatedDomainEvent>().FirstOrDefault();
         leaderEvent.ShouldNotBeNull();
         leaderEvent.TeamId.ShouldBe(team.Id);
-        leaderEvent.Team.ShouldBe(team);
         leaderEvent.NewLeaderId.ShouldBe(newLeader.Id);
         leaderEvent.OldLeaderId.ShouldBe(oldLeaderId);
     }

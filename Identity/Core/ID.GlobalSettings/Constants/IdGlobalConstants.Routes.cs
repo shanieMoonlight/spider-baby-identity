@@ -1,4 +1,4 @@
-// IdGlobalConstants.EmailRoutes.cs
+
 namespace ID.GlobalSettings.Constants;
 
 internal partial class IdGlobalConstants
@@ -8,6 +8,8 @@ internal partial class IdGlobalConstants
         internal const string ConfirmEmail = "confirm-email";
         internal const string ConfirmEmailWithPassword = "confirm-email-with-password";
         internal const string ResetPassword = "reset-password";
+        internal const string ChangePassword = "change-password";
+        internal const string TrustedDevices = "trusted-devices";
 
         internal static partial class Params
         {

@@ -65,6 +65,11 @@ public class Team : IdDomainEntity
         _subscriptions.ToList().AsReadOnly();
 
 
+    [NotMapped]
+    public bool IsCustomerTeam => TeamType == TeamType.customer;
+
+
+
     //------------------------//   
 
 
@@ -120,7 +125,7 @@ public class Team : IdDomainEntity
             Capacity = capacity.Value
         };
 
-        team.RaiseDomainEvent(new TeamCreatedDomainEvent(team.Id, team));
+        team.RaiseDomainEvent(new TeamCreatedDomainEvent(team.Id));
 
         return team;
     }
@@ -144,7 +149,7 @@ public class Team : IdDomainEntity
             minPosition,
             maxPosition);
 
-        team.RaiseDomainEvent(new TeamCreatedDomainEvent(team.Id, team));
+        team.RaiseDomainEvent(new TeamCreatedDomainEvent(team.Id));
         return team;
     }
 
@@ -169,7 +174,7 @@ public class Team : IdDomainEntity
             minPosition,
             maxPosition);
 
-        team.RaiseDomainEvent(new TeamCreatedDomainEvent(team.Id, team));
+        team.RaiseDomainEvent(new TeamCreatedDomainEvent(team.Id));
         return team;
     }
 
@@ -181,12 +186,12 @@ public class Team : IdDomainEntity
     {
         Description = description.Value;
         Name = name.Value;
-        RaiseDomainEvent(new TeamUpdatedDomainEvent(Id, this));
+        RaiseDomainEvent(new TeamUpdatedDomainEvent(Id));
         return this;
     }
 
     //- - - - - - - - - - - - //    
-    
+
     /// <summary>
     /// Sets a new leader for the team.
     /// </summary>
@@ -209,12 +214,12 @@ public class Team : IdDomainEntity
         Leader = newLeader;
         newLeader.UpdatePosition(this, TeamPosition.Create(MaxPosition));
 
-        RaiseDomainEvent(new TeamLeaderUpdatedDomainEvent(Id, this, newLeader.Id, oldLeaderId));
+        RaiseDomainEvent(new TeamLeaderUpdatedDomainEvent(Id, newLeader.Id, oldLeaderId));
         return GenResult<Team>.Success(this);
     }
 
     //------------------------//
-    
+
     /// <summary>
     /// Updates the team's position range (minimum and maximum positions for team members).
     /// </summary>
@@ -240,7 +245,7 @@ public class Team : IdDomainEntity
     }
 
     //- - - - - - - - - - - - //
-    
+
     /// <summary>
     /// Updates a team member's position within the team hierarchy.
     /// </summary>
@@ -289,7 +294,7 @@ public class Team : IdDomainEntity
     }
 
     //------------------------//
-    
+
     /// <summary>
     /// Adds a new member to the team.
     /// </summary>
@@ -313,7 +318,7 @@ public class Team : IdDomainEntity
         EnsureMemberHasValidTeamPosition(member);
         EnsureTeamHasLeader(member);
 
-        RaiseDomainEvent(new TeamMemberAddedDomainEvent(this, member));
+        RaiseDomainEvent(new TeamMemberAddedDomainEvent(Id, member.Id));
 
         return this;
     }
@@ -339,7 +344,7 @@ public class Team : IdDomainEntity
     }
 
     //- - - - - - - - - - - - 
-    
+
     /// <summary>
     /// Removes a member from the team.
     /// </summary>
@@ -361,14 +366,14 @@ public class Team : IdDomainEntity
 
         var succeeded = _members.Remove(member);
         if (succeeded)
-            RaiseDomainEvent(new TeamMemberRemovedDomainEvent(this, member));
+            RaiseDomainEvent(new TeamMemberRemovedDomainEvent(Id, member.Id));
         //else Already Deleted
 
         return succeeded;
     }
 
     //------------------------//
-    
+
     /// <summary>
     /// Adds a subscription to the team.
     /// </summary>
@@ -392,14 +397,14 @@ public class Team : IdDomainEntity
 
         var succeeded = _subscriptions.Add(sub);
         if (succeeded)
-            RaiseDomainEvent(new TeamSubscriptionAddedEvent(this, sub));
+            RaiseDomainEvent(new TeamSubscriptionAddedEvent(Id, sub.Id));
         //else Already Added
 
         return sub;
     }
 
     //- - - - - - - - - - - - //
-    
+
     /// <summary>
     /// Removes a subscription from the team.
     /// </summary>
@@ -420,7 +425,7 @@ public class Team : IdDomainEntity
         TeamSubscription sub = subRemoveToken.Subscription;
         var succeeded = _subscriptions.Remove(sub);
         if (succeeded)
-            RaiseDomainEvent(new TeamSubscriptionRemovedEvent(this, sub));
+            RaiseDomainEvent(new TeamSubscriptionRemovedEvent(Id, sub.Id));
         //else Already Deleted
 
         return succeeded;

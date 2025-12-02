@@ -3,7 +3,7 @@ using ID.Application.AppAbs.TokenVerificationServices;
 using ID.Application.Features.Account.Cmd.Mfa.TwoFactorVerify;
 using ID.Application.JWT;
 using ID.Application.MFA;
-using ID.Domain.Utility.Messages;
+using ID.Domain.Claims.AuthMethods;
 using ID.GlobalSettings.Setup.Options;
 using ID.Tests.Data.GlobalOptions;
 using Microsoft.Extensions.Options;
@@ -15,8 +15,8 @@ public class Verify2FactorHandlerTests
     private readonly Mock<IJwtPackageProvider> _mockPackageProvider;
     private readonly Mock<ITwoFactorVerificationService<AppUser>> _mock2FactorService;
     private readonly Mock<IFindUserService<AppUser>> _mockFindUserService;
-    private readonly Mock<IJwtRefreshTokenService<AppUser>> _mockRefreshProvider;
     private readonly Mock<ITwofactorUserIdCacheService> _mock2FactorUserIdCache;
+    private readonly Mock<IDeviceTrustService<AppUser>> _deviceTrustServiceMock;
 
 
     private readonly Mock<IOptions<IdGlobalOptions>> _mockGlobalOptions_refreshEnabled;
@@ -36,9 +36,9 @@ public class Verify2FactorHandlerTests
     {
         _mockPackageProvider = new Mock<IJwtPackageProvider>();
         _mock2FactorService = new Mock<ITwoFactorVerificationService<AppUser>>();
-        _mockRefreshProvider = new Mock<IJwtRefreshTokenService<AppUser>>();
         _mockFindUserService = new Mock<IFindUserService<AppUser>>();
         _mock2FactorUserIdCache = new Mock<ITwofactorUserIdCacheService>();
+        _deviceTrustServiceMock = new Mock<IDeviceTrustService<AppUser>>();
 
         _mockGlobalOptions_refreshEnabled = new Mock<IOptions<IdGlobalOptions>>();
         _mockGlobalOptions_refreshEnabled.Setup(x => x.Value).Returns(_globalOptions_RefreshEnabled);
@@ -46,7 +46,9 @@ public class Verify2FactorHandlerTests
             _mockPackageProvider.Object,
             _mockFindUserService.Object,
             _mock2FactorUserIdCache.Object,
-            _mock2FactorService.Object);
+            _mock2FactorService.Object,
+            _deviceTrustServiceMock.Object
+            );
 
 
 
@@ -56,7 +58,8 @@ public class Verify2FactorHandlerTests
             _mockPackageProvider.Object,
             _mockFindUserService.Object,
             _mock2FactorUserIdCache.Object,
-            _mock2FactorService.Object);
+            _mock2FactorService.Object,
+            _deviceTrustServiceMock.Object);
 
     }
 
@@ -118,14 +121,12 @@ public class Verify2FactorHandlerTests
             .Setup(s => s.VerifyTwoFactorTokenAsync(team, user, token))
             .ReturnsAsync(true);
 
-        _mockRefreshProvider
-            .Setup(r => r.GenerateTokenAsync(user, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(refreshToken);
 
         _mockPackageProvider
             .Setup(p => p.CreateJwtPackageAsync(
                 user,
                 user.Team!,
+                It.Is<IEnumerable<AuthMethodRef>>(x => x.Contains(AuthMethodRef.mfa)),
                 deviceId,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(jwtPackage);
@@ -168,6 +169,7 @@ public class Verify2FactorHandlerTests
             .Setup(p => p.CreateJwtPackageAsync(
                 user,
                 user.Team!,
+                It.Is<IEnumerable<AuthMethodRef>>(x => x.Contains(AuthMethodRef.mfa)),
                 deviceId,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(jwtPackage);
@@ -179,9 +181,9 @@ public class Verify2FactorHandlerTests
         result.ShouldNotBeNull();
         result.Succeeded.ShouldBeTrue();
         result.Value.ShouldBe(jwtPackage);
-        _mockRefreshProvider.Verify(
-            r => r.GenerateTokenAsync(It.IsAny<AppUser>(), It.IsAny<CancellationToken>()),
-            Times.Never);
+        //_mockRefreshProvider.Verify(
+        //    r => r.GenerateTokenAsync(It.IsAny<AppUser>(), It.IsAny<CancellationToken>()),
+        //    Times.Never);
 
     }
 
@@ -262,6 +264,83 @@ public class Verify2FactorHandlerTests
         result.Succeeded.ShouldBeFalse();
         result.BadRequest.ShouldBeTrue();
         result.Info.ShouldNotBeNull();
+    }
+
+    //------------------------------//
+
+    [Fact]
+    public async Task Handle_ShouldCallTrustService_WhenTrustDeviceTrue_AndFingerprintProvided()
+    {
+        // Arrange
+        var team = TeamDataFactory.Create();
+        var user = AppUserDataFactory.Create(team: team);
+        var token = "valid-token";
+        var deviceId = "device-123";
+        var deviceFingerprint = "fp-abc";
+
+        var dto = new Verify2FactorDto { Code = token, DeviceId = deviceId, TrustDevice = true, DeviceFingerprint = deviceFingerprint, DeviceName = "My device" };
+        var command = new Verify2FactorCmd(dto) { };
+
+        _mockFindUserService.Setup(s => s.FindUserWithTeamDetailsAsync(It.IsAny<Guid?>())).ReturnsAsync(user);
+        _mock2FactorService.Setup(s => s.VerifyTwoFactorTokenAsync(team, user, token)).ReturnsAsync(true);
+
+        var trustedDevice = TrustedDeviceDataFactory.Create(user: user, deviceFingerprint: deviceFingerprint);
+        _deviceTrustServiceMock
+            .Setup(s => s.TrustAsync(user, deviceFingerprint, It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(GenResult<TrustedDevice>.Success(trustedDevice));
+
+        var jwtPackage = JwtPackageDataFactory.Create(accessToken: "access");
+        _mockPackageProvider
+            .Setup(p => p.CreateJwtPackageAsync(user, user.Team!, It.Is<IEnumerable<AuthMethodRef>>(x => x.Contains(AuthMethodRef.mfa)), deviceId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(jwtPackage);
+
+        // Act
+        var result = await _handler_RefreshEnabled.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Succeeded.ShouldBeTrue();
+        result.Value.ShouldBe(jwtPackage);
+
+        _deviceTrustServiceMock.Verify(s => s.TrustAsync(user, deviceFingerprint, It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    //------------------------------//
+
+    [Fact]
+    public async Task Handle_ShouldContinue_WhenTrustServiceFails()
+    {
+        // Arrange
+        var team = TeamDataFactory.Create();
+        var user = AppUserDataFactory.Create(team: team);
+        var token = "valid-token";
+        var deviceId = "device-123";
+        var deviceFingerprint = "fp-abc";
+
+        var dto = new Verify2FactorDto { Code = token, DeviceId = deviceId, TrustDevice = true, DeviceFingerprint = deviceFingerprint };
+        var command = new Verify2FactorCmd(dto) { };
+
+        _mockFindUserService.Setup(s => s.FindUserWithTeamDetailsAsync(It.IsAny<Guid?>())).ReturnsAsync(user);
+        _mock2FactorService.Setup(s => s.VerifyTwoFactorTokenAsync(team, user, token)).ReturnsAsync(true);
+
+        _deviceTrustServiceMock
+            .Setup(s => s.TrustAsync(user, deviceFingerprint, It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(GenResult<TrustedDevice>.BadRequestResult("fail"));
+
+        var jwtPackage = JwtPackageDataFactory.Create(accessToken: "access");
+        _mockPackageProvider
+            .Setup(p => p.CreateJwtPackageAsync(user, user.Team!, It.Is<IEnumerable<AuthMethodRef>>(x => x.Contains(AuthMethodRef.mfa)), deviceId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(jwtPackage);
+
+        // Act
+        var result = await _handler_RefreshEnabled.Handle(command, CancellationToken.None);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Succeeded.ShouldBeTrue();
+        result.Value.ShouldBe(jwtPackage);
+
+        _deviceTrustServiceMock.Verify(s => s.TrustAsync(user, deviceFingerprint, It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     //------------------------------//

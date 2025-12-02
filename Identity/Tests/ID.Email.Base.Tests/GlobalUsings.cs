@@ -10,3 +10,7 @@ global using Moq;
 global using MyResults;
 global using Shouldly;
 global using System.Reflection;
+global using ID.Email.Base.LocalAbs;
+global using ID.Email.Base.LocalImps;
+global using ID.Email.Base.LocalImps.Specs.Passwords;
+global using ID.Tests.Data.GlobalOptions;

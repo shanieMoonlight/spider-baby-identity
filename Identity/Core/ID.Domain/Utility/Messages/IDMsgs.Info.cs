@@ -1,4 +1,5 @@
 ﻿using ID.Domain.Entities.AppUsers;
+using ID.Domain.Entities.TrustedDevices;
 
 namespace ID.Domain.Utility.Messages;
 
@@ -13,6 +14,15 @@ public partial class IDMsgs
             $"This endpoint will return 404-NotFound from now on.";
         public static string Deleted<T>(object identifier) => $"{typeof(T).Name}, {identifier}, has been deleted";
         public static string USER_UPDATED(string username) => $"User, {username} has been updated";
+
+        //---------------------------//
+
+
+        public static class Account
+        {
+            public static string ACCOUNT_CLOSED(string email) => $"Your account ({email}) has been closed. We're sorry to see you go.";
+        }
+
 
         //---------------------------//
 
@@ -50,6 +60,14 @@ public partial class IDMsgs
         }
 
         //---------------------------//
+
+        public static class TrustedDevices
+        {
+            public static string REVOKED(TrustedDevice device, AppUser user) => $"Device ({device.Name ?? device.Fingerprint}), belonging to {user.Email}, has been revoked";
+            public static string TRUSTED(TrustedDevice device, AppUser user) => $"Device ({device.Name ?? device.Fingerprint}), belonging to {user.Email}, has been trusted";
+        }
+
+        //-----------------------//
 
         public static class TwoFactor
         {

@@ -1,9 +1,6 @@
 ﻿using ID.Application.Mediatr.Behaviours.Common;
-using ID.Application.Mediatr.CqrsAbs;
 using ID.Domain.Abstractions.Services.Teams;
-using ID.Domain.Entities.AppUsers;
 using MediatR;
-using MyResults;
 
 namespace ID.Application.Mediatr.Behaviours;
 

@@ -1,5 +1,6 @@
 using ID.Application.JWT;
 using ID.Application.MFA;
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Refreshing;
 using ID.Domain.Entities.Teams;
@@ -37,10 +38,8 @@ public class JwtPackageProvider(
     /// This package contains a limited JWT token and no refresh token (refresh token will be provided after 2FA verification).
     /// </summary>
     /// <param name="user">User requiring two-factor authentication</param>
-    /// <param name="team">Team context for the user</param>
     /// <param name="provider">Two-factor authentication provider being used</param>
     /// <param name="extraInfo">Optional additional information for the 2FA process</param>
-    /// <param name="currentDeviceId">Optional device identifier for the current session</param>
     /// <param name="cancellationToken">Token to monitor for cancellation requests</param>
     /// <returns>JWT package configured for two-factor authentication flow</returns>
     public Task<JwtPackage> CreateJwtPackageWithTwoFactorRequiredAsync(
@@ -50,9 +49,9 @@ public class JwtPackageProvider(
         CancellationToken cancellationToken = default)
     {
         long expiration = GetTokenExpirationUnixTimestamp();
-        string twoFactorToken = _twofactorUserIdCache.StoreUserId(user.Id); 
+        string twoFactorToken = _twofactorUserIdCache.StoreUserId(user.Id);
 
-        var pkg =  JwtPackage.CreateWithTwoFactoRequired(
+        var pkg = JwtPackage.CreateWithTwoFactoRequired(
             twoFactorToken,
             expiration,
             provider,
@@ -69,21 +68,21 @@ public class JwtPackageProvider(
     /// </summary>
     /// <param name="user">Authenticated user</param>
     /// <param name="team">Team context for the user</param>
-    /// <param name="twoFactorVerified">Whether the user has completed 2FA verification</param>
     /// <param name="currentDeviceId">Optional device identifier for the current session</param>
     /// <param name="cancellationToken">Token to monitor for cancellation requests</param>
     /// <returns>Complete JWT package with access token and optional refresh token</returns>
     public async Task<JwtPackage> CreateJwtPackageAsync(
         AppUser user,
         Team team,
+        IEnumerable<AuthMethodRef> authMethods,
         string? currentDeviceId = null,
         CancellationToken cancellationToken = default)
     {
         // Generate JWT token
-        string encodedToken = await _jwtBuilder.CreateJwtAsync(user, team, currentDeviceId);
+        string encodedToken = await _jwtBuilder.CreateJwtAsync(user, team, authMethods, currentDeviceId);
 
         // Generate refresh token if eligible
-        IdRefreshToken? refreshToken = await GenerateRefreshTokenIfEligibleAsync(user, cancellationToken);
+        var generatedTokenDto = await GenerateRefreshTokenIfEligibleAsync(user, authMethods, cancellationToken);
 
         long expiration = GetTokenExpirationUnixTimestamp();
 
@@ -91,7 +90,7 @@ public class JwtPackageProvider(
             encodedToken,
             expiration,
             user.TwoFactorProvider,
-            refreshToken?.Payload);
+            generatedTokenDto?.ClientToken);
     }
 
     //-----------------------------//
@@ -104,21 +103,23 @@ public class JwtPackageProvider(
     /// <param name="existingToken">The valid refresh token being refreshed</param>
     /// <param name="user">The authenticated user (explicit validation required)</param>
     /// <param name="team">The user's team context (explicit validation required)</param>
-    /// <param name="currentDeviceId">Optional device identifier for audit and security</param>
+    /// <param name="currentDeviceFingerprint">Optional device identifier for audit and security</param>
     /// <returns>A JWT package with new access token and potentially updated refresh token</returns>
     public async Task<JwtPackage> RefreshJwtPackageAsync(
         IdRefreshToken existingToken,
+        string currentClientToken,
         AppUser user,
         Team team,
-        string? currentDeviceId = null)
+        string? currentDeviceFingerprint = null)
     {
 
         string encodedToken = await _jwtBuilder.CreateJwtAsync(
             user: user,
             team: team,
-            currentDeviceId: currentDeviceId);
+            authMethods: existingToken.AuthMethodRefs,
+            currentDeviceFingerprint: currentDeviceFingerprint);
 
-        var refreshToken = await GetRefreshTokenWithSmartUpdateAsync(existingToken);
+        var refreshToken = await GetRefreshTokenWithSmartUpdateAsync(existingToken, currentClientToken);
 
         long expiration = GetTokenExpirationUnixTimestamp();
 
@@ -126,7 +127,7 @@ public class JwtPackageProvider(
                encodedToken,
                expiration,
                user.TwoFactorProvider,
-               refreshToken?.Payload);
+               refreshToken?.ClientToken);
     }
 
     //-----------------------------//
@@ -143,19 +144,23 @@ public class JwtPackageProvider(
     /// <param name="twoFactorVerified">Whether 2FA has been completed</param>
     /// <param name="cancellationToken">Token to monitor for cancellation requests</param>
     /// <returns>Generated refresh token if eligible, null otherwise</returns>
-    private async Task<IdRefreshToken?> GenerateRefreshTokenIfEligibleAsync(
+    private async Task<GeneratedTokenDto?> GenerateRefreshTokenIfEligibleAsync(
         AppUser user,
+        IEnumerable<AuthMethodRef> authMethods,
         CancellationToken cancellationToken)
     {
         // Check if refresh tokens are globally disabled
         if (!_globalOptions.JwtRefreshTokensEnabled)
             return null;
 
+        // If user requires 2FA, only generate refresh token when current auth included MFA/OAuth
         if (user.TwoFactorEnabled)
-            return null;
+        {
+            if (!authMethods.Any(am => am == AuthMethodRef.mfa || am == AuthMethodRef.oauth))
+                return null;
+        }
 
-
-        return await _refreshTokenService.GenerateTokenAsync(user, cancellationToken);
+        return await _refreshTokenService.GenerateAndStoreTokenAsync(user, authMethods, cancellationToken);
 
     }
 
@@ -167,13 +172,13 @@ public class JwtPackageProvider(
     /// </summary>
     /// <param name="existingToken">The current refresh token</param>
     /// <returns>Either the updated token or the existing token based on policy</returns>
-    private async Task<IdRefreshToken> GetRefreshTokenWithSmartUpdateAsync(IdRefreshToken existingToken)
+    private async Task<GeneratedTokenDto> GetRefreshTokenWithSmartUpdateAsync(IdRefreshToken existingToken, string currentClientToken)
     {
         if (ShouldUpdateRefreshToken(existingToken))
             return await _refreshTokenService.UpdateTokenPayloadAsync(existingToken);
 
-        // Reuse existing token (no database hit)
-        return existingToken;
+        // Reuse existing token with currentClientToken (no database hit)
+        return new GeneratedTokenDto(existingToken, currentClientToken);
     }
 
     //- - - - - - - - - - - - - - -//
@@ -225,7 +230,7 @@ public class JwtPackageProvider(
     /// </summary>
     /// <returns>Token expiration timespan</returns>
     private long GetTokenExpirationUnixTimestamp() =>
-        (long)DateTime.UtcNow.Add(_tokenExpiration).ConvertToUnixTimestamp();
+        DateTime.UtcNow.Add(_tokenExpiration).ConvertToUnixTimestamp();
 
 
 

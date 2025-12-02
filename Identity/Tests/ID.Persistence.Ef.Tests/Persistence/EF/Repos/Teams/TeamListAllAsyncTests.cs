@@ -1,3 +1,5 @@
+using ID.Domain.Repos.Specs.Teams;
+
 namespace ID.Infrastructure.Tests.Persistence.EF.Repos.Teams;
 
 public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
@@ -59,7 +61,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var spec = new AllTeamsSpec();
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();
@@ -77,7 +79,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var spec = new AllTeamsSpec();
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();
@@ -95,7 +97,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var spec = new AllTeamsSpec();
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();
@@ -117,7 +119,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var spec = new CustomerTeamsByNameSpec("Alpha");
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();
@@ -133,7 +135,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var spec = new CustomerTeamsByNameSpec("Customer");
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();
@@ -150,7 +152,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var spec = new CustomerTeamsByNameSpec("ALPHA");
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();
@@ -165,7 +167,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var spec = new CustomerTeamsByNameSpec("NonExistent");
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();
@@ -179,7 +181,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var spec = new CustomerTeamsByNameSpec("");
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();
@@ -193,7 +195,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var spec = new CustomerTeamsByNameSpec(null);
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();
@@ -207,7 +209,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var spec = new CustomerTeamsByNameSpec("Team"); // Should match all teams by name
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();
@@ -231,7 +233,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var spec = new TeamsWithExpiredSubscriptionsSpec();
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();
@@ -265,7 +267,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var spec = new TeamsWithExpiredSubscriptionsSpec();
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();
@@ -292,7 +294,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var spec = new TeamsWithExpiredSubscriptionsSpec();
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();
@@ -317,7 +319,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
 
         // Act & Assert
         await Should.ThrowAsync<OperationCanceledException>(async () =>
-            await _repo.ListAllAsync(spec, cts.Token));
+            await _repo.ListAllTrackedAsync(spec, cts.Token));
     }
 
     [Fact]
@@ -328,7 +330,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var cts = new CancellationTokenSource();
 
         // Act
-        var result = await _repo.ListAllAsync(spec, cts.Token);
+        var result = await _repo.ListAllTrackedAsync(spec, cts.Token);
 
         // Assert
         result.ShouldNotBeNull();
@@ -351,8 +353,8 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var customerTeamsSpec = new CustomerTeamsByNameSpec("Team");
 
         // Act
-        var allResults = await _repo.ListAllAsync(allTeamsSpec);
-        var customerResults = await _repo.ListAllAsync(customerTeamsSpec);
+        var allResults = await _repo.ListAllTrackedAsync(allTeamsSpec);
+        var customerResults = await _repo.ListAllTrackedAsync(customerTeamsSpec);
 
         // Assert
         allResults.Count.ShouldBeGreaterThan(customerResults.Count);
@@ -367,7 +369,7 @@ public class TeamListAllAsyncTests : RepoTestBase, IAsyncLifetime
         var spec = new CustomerTeamsByNameSpec("Alpha");
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();

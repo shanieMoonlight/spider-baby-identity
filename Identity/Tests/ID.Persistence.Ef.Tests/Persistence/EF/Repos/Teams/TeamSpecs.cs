@@ -1,7 +1,4 @@
-using ClArch.SimpleSpecification;
-using ID.Domain.Entities.Teams;
-
-namespace ID.Infrastructure.Tests.Persistence.EF.Repos.Teams;
+namespace ID.Persistence.Ef.Tests.Persistence.EF.Repos.Teams;
 
 /// <summary>
 /// Specification for querying teams by team type.

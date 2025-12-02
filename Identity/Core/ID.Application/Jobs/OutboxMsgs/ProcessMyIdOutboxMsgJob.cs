@@ -2,7 +2,7 @@
 using ID.Domain.Abstractions.Events;
 using ID.Domain.Entities.OutboxMessages;
 using ID.Domain.Repos;
-using ID.Domain.Repos.Specs.NewFolder.OutboxMsgs;
+using ID.Domain.Repos.Specs.OutboxMsgs;
 using ID.Domain.Utility.Json;
 using ID.Domain.Utility.Messages;
 using ID.GlobalSettings.Errors;
@@ -37,7 +37,7 @@ internal sealed class ProcessMyIdOutboxMsgJob(IServiceProvider _serviceProvider,
 
 
             var spec = UnprocessedOutboxMsgsSpec.Create(25);
-            var msgs = await repo.ListAllAsync(spec);
+            var msgs = await repo.ListAllTrackedAsync(spec);
             if (!msgs.Any())
                 return;
 

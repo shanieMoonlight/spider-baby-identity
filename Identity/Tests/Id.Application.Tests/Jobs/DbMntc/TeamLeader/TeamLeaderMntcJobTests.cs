@@ -1,5 +1,5 @@
 using ID.Application.Jobs.Abstractions;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
+using ID.Domain.Repos.Specs.Teams;
 using ID.Tests.Utility.ServiceProvider;
 
 namespace ID.Application.Tests.Jobs.DbMntc.TeamLeader;
@@ -52,7 +52,7 @@ public class TeamLeaderMntcJobTests : ServiceProviderTestBase
 
         var teams = new List<Team> { team1, team2 };
 
-        _mockTeamRepo.Setup(repo => repo.ListAllAsync(It.IsAny<TeamsWithMissingLeadersSpec>(), It.IsAny<CancellationToken>()))
+        _mockTeamRepo.Setup(repo => repo.ListAllTrackedAsync(It.IsAny<TeamsWithMissingLeadersSpec>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(teams);
 
 
@@ -75,7 +75,7 @@ public class TeamLeaderMntcJobTests : ServiceProviderTestBase
     public async Task HandleAsync_LogsException_WhenExceptionThrown()
     {
 
-        _mockUnitOfWork.Setup(uow => uow.TeamRepo.ListAllAsync(It.IsAny<TeamsWithMissingLeadersSpec>(), It.IsAny<CancellationToken>()))
+        _mockUnitOfWork.Setup(uow => uow.TeamRepo.ListAllTrackedAsync(It.IsAny<TeamsWithMissingLeadersSpec>(), It.IsAny<CancellationToken>()))
                       .ThrowsAsync(new Exception("Test exception"));
 
         var cancellationToken = CancellationToken.None;
@@ -112,7 +112,7 @@ public class TeamLeaderMntcJobTests : ServiceProviderTestBase
 
         var teams = new List<Team> { team1 };
 
-        _mockTeamRepo.Setup(repo => repo.ListAllAsync(It.IsAny<TeamsWithMissingLeadersSpec>(), It.IsAny<CancellationToken>()))
+        _mockTeamRepo.Setup(repo => repo.ListAllTrackedAsync(It.IsAny<TeamsWithMissingLeadersSpec>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(teams);
 
         // Act

@@ -1,9 +1,3 @@
-using ID.Domain.Entities.AppUsers;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.Members;
-using ID.Tests.Data.Factories;
-using Shouldly;
-using static ID.Domain.Utility.Messages.IDMsgs.Error;
-
 namespace ID.Domain.Repos.Tests.Specs.Members;
 
 public class MemberExistsIdSpecTests

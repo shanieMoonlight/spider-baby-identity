@@ -30,7 +30,7 @@ internal class TeamDataGenerator
            renewalType: plan.RenewalType,
            plan: plan);
 
-        var otherSubscription = SubscriptionDataFactory.Create(null, null, null, null, null, null, 0, null, null);
+        var otherSubscription = SubscriptionDataFactory.Create(deviceLimit: 0);
         var team = TeamDataFactory.Create(teamId, null, null, [subscription, otherSubscription]);
         return new TeamWithSubDvcAndPlan(team, subscription, dvc, plan);
     }

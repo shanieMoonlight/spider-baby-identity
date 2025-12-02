@@ -10,7 +10,7 @@ internal class GetAllSubscriptionPlansQryHandler(IIdentitySubscriptionPlanServic
 
     public async Task<GenResult<IEnumerable<SubscriptionPlanDto>>> Handle(GetAllSubscriptionPlansQry request, CancellationToken cancellationToken)
     {
-        var mdls = await _repo.GetAllAsync();
+        var mdls = await _repo.ListAllAsync();
         var dtos = mdls.Select(mdl => mdl.ToDto());
         return GenResult<IEnumerable<SubscriptionPlanDto>>.Success(dtos);
 

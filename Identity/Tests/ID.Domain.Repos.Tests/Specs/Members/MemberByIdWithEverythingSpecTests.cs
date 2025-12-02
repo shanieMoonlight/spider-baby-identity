@@ -1,4 +1,4 @@
-using ID.Infrastructure.Persistance.EF.Repos.Specs.Members.WithEverything;
+using ID.Domain.Repos.Specs.Members.WithEverything;
 
 namespace ID.Domain.Repos.Tests.Specs.Members;
 

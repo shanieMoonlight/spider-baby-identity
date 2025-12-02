@@ -1,29 +1,24 @@
-using ID.Infrastructure.Persistance.EF.Repos.Specs.RefreshTokens;
+using ID.Domain.Repos.Specs.RefreshTokens;
 using TestingHelpers.RandomData;
+using Microsoft.AspNetCore.Identity;
 
 namespace ID.Infrastructure.Tests.Auth.JWT.Refreshing;
 
 public class IdRefreshTokenService_FINDING_Tests
 {
-    private readonly Mock<IIdUnitOfWork> _uowMock;
-    private readonly Mock<IIdentityRefreshTokenRepo> _refreshTokenRepoMock;
-    //private readonly Mock<IOptions<JwtOptions>> _optionsProviderMock;
-    private readonly JwtRefreshTokenService<AppUser> _sut;
+    private readonly Mock<IIdUnitOfWork> _uowMock = new();
+    private readonly Mock<IIdentityRefreshTokenRepo> _repoMock = new();
+    private readonly Mock<IPasswordHasher<AppUser>> _pwdHasher = new();
+    private JwtRefreshTokenService<AppUser> _sut;
 
     //------------------------------//  
 
     public IdRefreshTokenService_FINDING_Tests()
     {
-        _refreshTokenRepoMock = new Mock<IIdentityRefreshTokenRepo>();
-
-        _uowMock = new Mock<IIdUnitOfWork>();
-        _uowMock.Setup(uow => uow.RefreshTokenRepo).Returns(_refreshTokenRepoMock.Object);
-
-
-        var jwtOptions = CreateJwtOptions();
-        //_optionsProviderMock = new Mock<IOptions<JwtOptions>>();
-        //_optionsProviderMock.Setup(o => o.Value).Returns(jwtOptions);
-        _sut = new JwtRefreshTokenService<AppUser>(_uowMock.Object, jwtOptions);
+        _uowMock.Setup(u => u.RefreshTokenRepo).Returns(_repoMock.Object);
+        _pwdHasher.Setup(h => h.VerifyHashedPassword(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>())).Returns(PasswordVerificationResult.Success);
+        var jwtOptions = Options.Create(new JwtOptions { RefreshTokenTimeSpan = TimeSpan.FromDays(7) });
+        _sut = new JwtRefreshTokenService<AppUser>(_uowMock.Object, _pwdHasher.Object, jwtOptions);
     }
 
     //------------------------------//  
@@ -32,27 +27,30 @@ public class IdRefreshTokenService_FINDING_Tests
     public async Task FindTokenWithUserAndTeamAsync_ShouldReturnToken_WhenTokenExists()
     {
         // Arrange
-        var tokenPayload = "test-token-payload";
+        var selector = "sample-selector";
+        var validator = "sampleValidator";
+        var clientToken = selector + "." + validator;
+
         var user = AppUserDataFactory.Create();
-        var existingToken = CreateRefreshToken(tokenPayload, user);
+        var existingToken = CreateRefreshToken("hashed-value", user);
+        existingToken.Selector = selector;
 
-        var userTeamSpec = RefreshTokenWithUserAndTeamSpec.Create(tokenPayload);
+        var selectorSpec = RefreshTokenBySelectorWithUserAndDeviceAndTeamSpec.Create(selector);
 
-        _refreshTokenRepoMock
-            .Setup(repo => repo.FirstOrDefaultAsync(It.IsAny<RefreshTokenWithUserAndTeamSpec>(), It.IsAny<CancellationToken>()))
+        _repoMock
+            .Setup(repo => repo.FirstOrDefaultAsync(It.IsAny<RefreshTokenBySelectorWithUserAndDeviceAndTeamSpec>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingToken); //Assume FirstOrDefaultAsync works
 
         // Act
-        var result = await _sut.FindTokenWithUserAndTeamAsync(tokenPayload, It.IsAny<CancellationToken>());
+        var result = await _sut.FindTokenWithUserAndDeviceAndTeamAsync(clientToken, It.IsAny<CancellationToken>());
 
         // Assert
         result.ShouldNotBeNull();
         result.ShouldBe(existingToken);
 
-
-        _refreshTokenRepoMock.Verify(
+        _repoMock.Verify(
             repo => repo.FirstOrDefaultAsync(
-                It.Is<RefreshTokenWithUserAndTeamSpec>(spec => spec.TESTING_CompareCriteria(userTeamSpec, existingToken)),
+                It.Is<RefreshTokenBySelectorWithUserAndDeviceAndTeamSpec>(spec => spec.TESTING_CompareCriteria(selectorSpec, existingToken)),
                 It.IsAny<CancellationToken>()),
             Times.Once);
     }
@@ -63,30 +61,32 @@ public class IdRefreshTokenService_FINDING_Tests
     public async Task FindTokenWithUserAndTeamAsync_ShouldReturnNull_WhenTokenDoesNotExist()
     {
         // Arrange
-        var tokenPayload = "non-existent-token";
-        var userTeamSpec = RefreshTokenWithUserAndTeamSpec.Create(tokenPayload);
-        var testToken = RefreshTokenDataFactory.Create(payload: tokenPayload);
+        var selector = "missing-selector";
+        var clientToken = selector + "." + "ignored";
 
-        _refreshTokenRepoMock
-            .Setup(repo => repo.FirstOrDefaultAsync(It.IsAny<RefreshTokenWithUserAndTeamSpec>(), It.IsAny<CancellationToken>()))
+        var userTeamSpec = RefreshTokenBySelectorWithUserAndDeviceAndTeamSpec.Create(selector);
+        var testToken = RefreshTokenDataFactory.Create(payload: "somehash");
+
+        _repoMock
+            .Setup(repo => repo.FirstOrDefaultAsync(It.IsAny<RefreshTokenBySelectorWithUserAndDeviceAndTeamSpec>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((IdRefreshToken?)null);
 
         // Act
-        var result = await _sut.FindTokenWithUserAndTeamAsync(tokenPayload, It.IsAny<CancellationToken>());
+        var result = await _sut.FindTokenWithUserAndDeviceAndTeamAsync(clientToken, It.IsAny<CancellationToken>());
 
         // Assert
         result.ShouldBeNull();
 
-        _refreshTokenRepoMock.Verify(
+        _repoMock.Verify(
             repo => repo.FirstOrDefaultAsync(
-                It.Is<RefreshTokenWithUserAndTeamSpec>(spec =>
+                It.Is<RefreshTokenBySelectorWithUserAndDeviceAndTeamSpec>(spec =>
                     spec.TESTING_GetCriteria().Compile().Invoke(testToken) == userTeamSpec.TESTING_GetCriteria().Compile().Invoke(testToken)),
                 It.IsAny<CancellationToken>()),
             Times.Once);
 
     }
 
-    //------------------------------//   
+    //------------------------------//    
 
     private static IdRefreshToken CreateRefreshToken(string tokenPayloadValue, AppUser user) =>
         RefreshTokenDataFactory.Create(user: user, payload: tokenPayloadValue);

@@ -1,17 +1,8 @@
-using ID.Application.AppAbs.ApplicationServices.TwoFactor;
 using ID.Application.AppAbs.SignIn;
-using ID.Application.AppAbs.TokenVerificationServices;
-using ID.Application.Features.Account.Cmd.Cookies.SignIn;
 using ID.Application.JWT;
-using ID.Application.Mediatr.CqrsAbs;
 using ID.Application.Utility.ExtensionMethods;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Entities.Refreshing;
-using ID.Domain.Entities.Teams;
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Models;
-using ID.GlobalSettings.Setup.Options;
-using Microsoft.Extensions.Options;
-using MyResults;
 
 namespace ID.Application.Features.Account.Cmd.Login;
 
@@ -43,7 +34,7 @@ public class LoginHandler(
         if (signInResult.TwoFactorRequired)
         {
             var pkg = await _jwtPackageProvider.CreateJwtPackageWithTwoFactorRequiredAsync(
-                 signInResult.User!, 
+                 signInResult.User!,
                  signInResult.MfaResultData?.TwoFactorProvider ?? TwoFactorProvider.Email,
                  signInResult.MfaResultData?.ExtraInfo,
                  cancellationToken);
@@ -55,6 +46,7 @@ public class LoginHandler(
             var pkg = await _jwtPackageProvider.CreateJwtPackageAsync(
                 signInResult.User!,
                 signInResult.Team!,
+                [.. signInResult.AuthMethods, AuthMethodRef.pwd],
                 dto.DeviceId,
                 cancellationToken);
             return GenResult<JwtPackage>.Success(pkg);

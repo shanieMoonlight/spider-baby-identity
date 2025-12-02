@@ -2,10 +2,12 @@
 using ID.Domain.Abstractions.Events;
 using ID.Domain.Entities.AppUsers.Events;
 using ID.Domain.Entities.AppUsers.OAuth;
+using ID.Domain.Entities.AppUsers.Validators;
 using ID.Domain.Entities.AppUsers.ValueObjects;
 using ID.Domain.Entities.Avatars;
 using ID.Domain.Entities.Common;
 using ID.Domain.Entities.Teams;
+using ID.Domain.Entities.TrustedDevices;
 using ID.Domain.Models;
 using ID.Domain.Utility.Exceptions;
 using ID.Domain.Utility.Extensions;
@@ -77,6 +79,14 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
 
 
     public OAuthInfo? OAuthInfo { get; set; }
+
+
+    /// <summary>
+    /// Trusted devices for this user
+    /// </summary>
+    private readonly HashSet<TrustedDevice> _trustedDevices = [];
+    public IReadOnlyCollection<TrustedDevice> TrustedDevices =>
+        _trustedDevices.ToList().AsReadOnly();
 
 
     //public IdRefreshToken? IdRefreshToken{ get; set; }
@@ -159,7 +169,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
                 teamPosition);
 
         user.SetCreated();
-        user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id, user));
+        user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id));
 
         return user;
     }
@@ -193,7 +203,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
         };
 
         user.SetCreated();
-        user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id, user));
+        user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id));
 
         return user;
     }
@@ -218,7 +228,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
         if (provider.HasValue)
             Update2FactorProvider(provider.Value);
 
-        RaiseDomainEvent(new UserUpdatedDomainEvent(Id, this));
+        RaiseDomainEvent(new UserUpdatedDomainEvent(Id));
 
         return this;
     }
@@ -242,7 +252,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
     public AppUser UpdateAddress(IdentityAddress? address)
     {
         Address = address;
-        RaiseDomainEvent(new UserAddressUpdatedDomainEvent(this, Address));
+        RaiseDomainEvent(new UserAddressUpdatedDomainEvent(Id, Address));
         return this;
     }
 
@@ -254,7 +264,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
         {
             Email = email.Value.Trim();
             EmailConfirmed = false;
-            RaiseDomainEvent(new UserEmailUpdatedDomainEvent(this));
+            RaiseDomainEvent(new UserEmailUpdatedDomainEvent(Id, TeamId, Email));
         }
 
         return this;
@@ -278,7 +288,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
         {
             PhoneNumber = string.IsNullOrWhiteSpace(phone.Value) ? null : phone.Value?.Trim();
             PhoneNumberConfirmed = false;
-            RaiseDomainEvent(new UserPhoneUpdatedDomainEvent(this, PhoneNumber));
+            RaiseDomainEvent(new UserPhoneUpdatedDomainEvent(Id, TeamId, PhoneNumber));
         }
 
         return this;
@@ -291,7 +301,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
         if (TwoFactorEnabled != enabled)
         {
             TwoFactorEnabled = enabled;
-            RaiseDomainEvent(new User2FactorEnableChangedDomainEvent(this, TwoFactorEnabled));
+            RaiseDomainEvent(new User2FactorEnableChangedDomainEvent(Id, TeamId, TwoFactorEnabled));
         }
 
         return this;
@@ -320,7 +330,7 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
             if (!canChangeResult.Succeeded)
                 throw new InvalidTwoFactorConfigurationException(canChangeResult.Info);
             TwoFactorProvider = newProvider;
-            RaiseDomainEvent(new User2FactorUpdatedDomainEvent(this, newProvider));
+            RaiseDomainEvent(new User2FactorProviderUpdatedDomainEvent(Id, TeamId, newProvider));
         }
 
         return this;
@@ -364,6 +374,81 @@ public class AppUser : IdentityUser<Guid>, IIdDomainEventEntity, IIdAuditableDom
     }
 
     //------------------------//
+
+    /// <summary>
+    /// Trust a device for this user. The validation token guarantees correctness.
+    /// </summary>
+    public TrustedDevice TrustDevice(TrustedDeviceValidators.Addition.Token additionToken)
+    {
+
+        var existingDevice = FindTrustedDevice(additionToken.DeviceFingerprint.Value);
+        if (existingDevice != null)
+        {
+            existingDevice.ExtendTrust(additionToken.TrustDuration.Value);
+            return existingDevice;
+        }
+
+        var device = TrustedDevice.Create(this,
+            additionToken.DeviceFingerprint,
+            additionToken.DeviceName,
+            additionToken.UserAgent,
+            additionToken.IpAddress,
+            additionToken.TrustDuration);
+
+        _trustedDevices.Add(device);
+
+        return device;
+    }
+
+    //- - - - - - - - - - - - // 
+
+    /// <summary>
+    /// Revoke a trusted device. Returns true if device belonged to user and was revoked.
+    /// </summary>
+    public bool RevokeTrustedDevice(TrustedDeviceValidators.Revocation.Token revocationToken)
+    {
+        var device = revocationToken.Device;
+        var found = _trustedDevices.FirstOrDefault(d => d.Id == device.Id);
+        if (found is null)
+            return false;
+
+        found.Revoke();
+        return true;
+    }
+
+    //- - - - - - - - - - - - // 
+
+    /// <summary>
+    /// Removes a trusted device form the user. Returns false if device not found (already removed).
+    /// </summary>
+    public bool DeleteTrustedDevice(TrustedDeviceValidators.Revocation.Token revocationToken)
+    {
+        var device = revocationToken.Device;
+        var found = _trustedDevices.FirstOrDefault(d => d.Id == device.Id);
+        if (found is null)
+            return false;
+
+        _trustedDevices.Remove(found);
+        return true;
+    }
+
+    //- - - - - - - - - - - - // 
+
+    /// <summary>
+    /// Find trusted device by fingerprint.
+    /// </summary>
+    public TrustedDevice? FindTrustedDevice(string deviceFingerprint)
+        => _trustedDevices.FirstOrDefault(d => d.Fingerprint == deviceFingerprint);
+
+    //- - - - - - - - - - - - // 
+
+    /// <summary>
+    /// Find trusted device by deviceId.
+    /// </summary>
+    public TrustedDevice? FindTrustedDevice(Guid deviceId)
+        => _trustedDevices.FirstOrDefault(d => d.Id == deviceId);
+
+    //------------------------// 
 
     #region DomainEvents
     protected readonly List<IIdDomainEvent> _domainEvents = [];

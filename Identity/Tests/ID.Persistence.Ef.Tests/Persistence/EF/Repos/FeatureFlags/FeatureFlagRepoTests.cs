@@ -1,5 +1,7 @@
 
 
+using ID.Persistence.Ef.Repos.Abstractions;
+
 namespace ID.Infrastructure.Tests.Persistence.EF.Repos.FeatureFlags;
 
 public class FeatureFlagRepoTests : RepoTestBase, IAsyncLifetime
@@ -221,7 +223,7 @@ public class FeatureFlagRepoTests : RepoTestBase, IAsyncLifetime
         var spec = new GetFeatureFlagByNameStartsWithSpec("Feature");
 
         // Act
-        var results = await _repo.ListAllAsync(spec);
+        var results = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         results.Count.ShouldBe(2);

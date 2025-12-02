@@ -21,7 +21,7 @@ namespace ID.Presentation.Controllers;
 
 [ApiController]
 [Route($"{IdRoutes.Base}/[controller]/[action]")]
-public class IdSystemController(ISender sender, ILogger<IdSystemController> logger) : Controller
+public class IdSystemController(ISender sender) : Controller
 {
 
     /// <summary>
@@ -32,7 +32,7 @@ public class IdSystemController(ISender sender, ILogger<IdSystemController> logg
     [HttpPost]
     [InitializedAuthenticator.ActionFilter]
     public async Task<ActionResult<MessageResponseDto>> Initialize([FromBody] InitializeDto dto) =>
-        this.ProcessResult(await sender.Send(new InitializeCmd(dto)), logger); //Pass logger for extra loggin in Inititalization
+        this.ProcessResult(await sender.Send(new InitializeCmd(dto))); //Pass logger for extra loggin in Inititalization
 
     //------------------------//
 
@@ -43,7 +43,7 @@ public class IdSystemController(ISender sender, ILogger<IdSystemController> logg
     [HttpPost]
     [SuperMinimumOrDevAuthenticator.ActionFilter]
     public async Task<ActionResult<MessageResponseDto>> Migrate() =>
-        this.ProcessResult(await sender.Send(new MigrateCmd()), logger);//Pass logger for extra loggin in Inititalization
+        this.ProcessResult(await sender.Send(new MigrateCmd()));//Pass logger for extra loggin in Inititalization
 
     //------------------------//
 

@@ -65,7 +65,9 @@ public class AddDeviceToTeamHandlerTests
         var dvc2 = DeviceDataFactory.Create();
         var newDvc = DeviceDataFactory.Create();
         HashSet<TeamDevice> dvcs = [dvc1, dvc2];
-        var subscription = SubscriptionDataFactory.Create(null, null, null, null, null, null, 5, dvcs);
+        var subscription = SubscriptionDataFactory.Create(
+            deviceLimit:5, 
+            devices: dvcs);
         var subDto = subscription.ToDto();
 
         var mockService = new Mock<ITeamDeviceService>();
@@ -98,7 +100,9 @@ public class AddDeviceToTeamHandlerTests
         var dvc2 = DeviceDataFactory.Create();
         var newDvc = DeviceDataFactory.Create();
         HashSet<TeamDevice> dvcs = [dvc1, dvc2];
-        var subscription = SubscriptionDataFactory.Create(null, null, null, null, null, null, 5, dvcs);
+        var subscription = SubscriptionDataFactory.Create(
+            deviceLimit: 5,
+            devices: dvcs);
         var request = new AddDeviceToTeamCmd(dto) { PrincipalTeam = team };
 
         var mockService = new Mock<ITeamDeviceService>();

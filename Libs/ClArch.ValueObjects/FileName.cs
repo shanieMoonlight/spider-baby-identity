@@ -10,7 +10,7 @@ public class FileName : StringInvariantValueObject
 
     public static FileName Create(string value)
     {
-        Ensure.MaxLengthTrimmed(value, MaxLength, nameof(FileNameWithoutExtension));
+        Ensure.MaxLengthTrimmed(value, MaxLength, nameof(FileName));
         return new(value);
     }
 

@@ -104,7 +104,7 @@ public class MyIdSignInResultExtensionsTests
         var team = TeamDataFactory.Create();
         var user = AppUserDataFactory.Create(team: team);
         
-        var signInResult = MyIdSignInResult.Success(user, team);
+        var signInResult = MyIdSignInResult.Success(user, team, []);
         var testValue = "TestValue";
 
         // Act
@@ -295,8 +295,8 @@ public class MyIdSignInResultExtensionsTests
         // Arrange - Use data factories instead of direct instantiation
         var team = TeamDataFactory.Create();
         var user = AppUserDataFactory.Create(team: team);
-        
-        var signInResult = MyIdSignInResult.Success(user, team);
+
+        var signInResult = MyIdSignInResult.Success(user, team, []);
 
         // Act
         var result = signInResult.ToBasicResult();

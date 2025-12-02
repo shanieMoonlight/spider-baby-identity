@@ -46,7 +46,7 @@ public class RemoveTeamSubscriptionCmdHandlerTests
 
         var teamId = Guid.NewGuid();
         var subscriptionId = Guid.NewGuid();
-        var subscription = SubscriptionDataFactory.Create(subscriptionId, null, null, null, null, null, 0);
+        var subscription = SubscriptionDataFactory.Create(deviceLimit: 0);
         var team = TeamDataFactory.Create(teamId, null, null, [subscription]);
 
         var dto = new RemoveTeamSubscriptionDto(teamId, subscription.Id);

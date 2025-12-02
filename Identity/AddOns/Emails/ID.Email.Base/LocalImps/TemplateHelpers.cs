@@ -4,7 +4,6 @@ using ID.Email.Base.Models;
 using ID.Email.Base.Setup;
 using ID.GlobalSettings.Setup.Options;
 using Microsoft.Extensions.Options;
-using System.Reflection;
 
 namespace ID.Email.Base.LocalImps;
 internal class TemplateHelpers(
@@ -30,6 +29,7 @@ internal class TemplateHelpers(
         var placeholders = new Dictionary<string, string>
         {
             { EmailPlaceholders.PLACEHOLDER_USERNAME, toName },
+            { EmailPlaceholders.PLACEHOLDER_USER_EMAIL, toAddress },
             { EmailPlaceholders.PLACEHOLDER_CALLBACK_URL, callbackUrl }
         };
 

@@ -16,7 +16,7 @@ internal class PhoneConfirmationBus(
 
         string safePwdResetTkn = await _phoneConfService.GeneratePhoneChangedConfirmationTokenAsync(team, user, user.PhoneNumber ?? "");
 
-        await bus.Publish(
+        await bus.PublishAsync(
             new PhoneConfirmationIntegrationEvent(user, safePwdResetTkn, team.TeamType),
             cancellationToken
         );

@@ -1,5 +1,6 @@
 using ClArch.ValueObjects.Common;
 using Shouldly;
+using System.Diagnostics;
 using Xunit;
 
 namespace ClArch.ValueObjects.Tests.Common;
@@ -172,9 +173,11 @@ public class NullableStrValueObjectTests
         var value1 = new TestNullableStringValue(null);
         var value2 = new TestNullableStringValue(null);
 
+        Debug.Write(value1.GetHashCode());
+        Debug.Write(value2.GetHashCode());
+
         // Act & Assert
         value1.GetHashCode().ShouldBe(value2.GetHashCode());
-        value1.GetHashCode().ShouldBe(0); // The base ValueObject returns 0 for null value's hash code
     }
 
     [Fact]

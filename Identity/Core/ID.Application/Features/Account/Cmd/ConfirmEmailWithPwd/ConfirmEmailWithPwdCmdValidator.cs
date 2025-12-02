@@ -1,7 +1,3 @@
-
-using FluentValidation;
-using ID.Domain.Utility.Messages;
-
 namespace ID.Application.Features.Account.Cmd.ConfirmEmailWithPwd;
 public class ConfirmEmailWithPwdCmdValidator : AbstractValidator<ConfirmEmailWithPwdCmd>
 {

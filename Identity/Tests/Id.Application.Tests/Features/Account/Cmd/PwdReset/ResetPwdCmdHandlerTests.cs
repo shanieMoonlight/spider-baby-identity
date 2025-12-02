@@ -12,6 +12,7 @@ using ID.Domain.Utility.Messages;
 using ID.Domain.Models;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Entities.AppUsers;
+using ID.IntegrationEvents.Events.Account.TrustedDevices;
 
 namespace ID.Application.Tests.Features.Account.Cmd.PwdReset;
 
@@ -100,7 +101,7 @@ public class ResetPwdCmdHandlerTests
         result.ShouldBeOfType<BasicResult>();
         result.Succeeded.ShouldBeTrue();
         result.Info.ShouldBe(IDMsgs.Info.Passwords.PASSWORD_RESET);
-        _mockEventBus.Verify(x => x.Publish(It.IsAny<ForgotPwdEmailRequestIntegrationEvent>(), It.IsAny<CancellationToken>()), Times.Once);
+        _mockEventBus.Verify(x => x.PublishAsync(It.IsAny<ForgotPwdEmailRequestIntegrationEvent>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     //--------------------------//

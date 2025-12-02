@@ -1,4 +1,5 @@
 using ID.Domain.Entities.AppUsers.Events;
+using ID.Domain.Entities.TrustedDevices.Events;
 using ID.Domain.Models;
 using ID.Tests.Data.Factories;
 using Shouldly;
@@ -21,7 +22,7 @@ public class AppUser_UpdateMfaProvider_Tests
         // Assert
         var domainEvents = appUser.GetDomainEvents();
         appUser.TwoFactorProvider.ShouldBe(newProvider);
-        domainEvents.ShouldContain(e => e is User2FactorUpdatedDomainEvent);
+        domainEvents.ShouldContain(e => e is User2FactorProviderUpdatedDomainEvent);
     }
 
     //------------------------------------//
@@ -39,7 +40,7 @@ public class AppUser_UpdateMfaProvider_Tests
 
         // Assert
         var domainEvents = appUser.GetDomainEvents();
-        domainEvents.ShouldNotContain(e => e is User2FactorUpdatedDomainEvent);
+        domainEvents.ShouldNotContain(e => e is User2FactorProviderUpdatedDomainEvent);
     }
 
     //------------------------------------//

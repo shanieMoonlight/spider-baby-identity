@@ -174,5 +174,8 @@ internal interface IIdentityMemberAuditRepo<TUser> where TUser : AppUser
 
     //- - - - - - - - - - - - - - - - - - //
 
+    //TODO - Move elsewhere or let member repo handle this
+    Task<TUser> UpdateAsync(TUser entity);
+
 }//Int
 

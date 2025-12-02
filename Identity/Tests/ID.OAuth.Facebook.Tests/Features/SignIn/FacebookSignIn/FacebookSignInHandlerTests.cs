@@ -1,17 +1,18 @@
-using System.Threading;
-using System.Threading.Tasks;
-using Moq;
-using Shouldly;
-using Xunit;
-using MyResults;
-using ID.OAuth.Facebook.Features.SignIn.FacebookSignIn;
-using ID.OAuth.Facebook.Services.Abs;
-using ID.Domain.Entities.AppUsers;
-using ID.Tests.Data.Factories;
+using ID.Application.AppAbs.ApplicationServices.TwoFactor;
 using ID.Application.JWT;
+using ID.Domain.Claims.AuthMethods;
+using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Models;
-using ID.Application.AppAbs.ApplicationServices.TwoFactor;
+using ID.OAuth.Facebook.Features.SignIn.FacebookSignIn;
+using ID.OAuth.Facebook.Services.Abs;
+using ID.Tests.Data.Factories;
+using Moq;
+using MyResults;
+using Shouldly;
+using System.Threading;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace ID.OAuth.Facebook.Tests.Features.SignIn.FacebookSignIn;
 
@@ -29,6 +30,7 @@ public class FacebookSignInHandlerTests
         var mockVerifier = new Mock<IFacebookAuthenticationService>();
         var mock2FactorService = new Mock<Application.AppAbs.TokenVerificationServices.ITwoFactorVerificationService<AppUser>>();
         var mockTwoFactorMsg = new Mock<ITwoFactorMsgService>();
+        var authMethods = new List<AuthMethodRef> { AuthMethodRef.oauth };
 
         var user = AppUserDataFactory.AnyUser;
         var team = user.Team!;
@@ -42,7 +44,7 @@ public class FacebookSignInHandlerTests
         mock2FactorService.Setup(x => x.IsTwoFactorEnabledAsync(user)).ReturnsAsync(false);
 
         var expectedJwt = JwtPackage.Create("access", 999999, TwoFactorProvider.Sms, "refresh");
-        mockJwtProvider.Setup(j => j.CreateJwtPackageAsync(user, user.Team!, dto.DeviceId, It.IsAny<CancellationToken>()))
+        mockJwtProvider.Setup(j => j.CreateJwtPackageAsync(user, user.Team!, authMethods, dto.DeviceId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedJwt);
 
         var handler = new FacebookSignInHandler(
@@ -59,7 +61,7 @@ public class FacebookSignInHandlerTests
         result.Succeeded.ShouldBeTrue();
         result.Value.ShouldNotBeNull();
         result.Value.AccessToken.ShouldBe(expectedJwt.AccessToken);
-        mockJwtProvider.Verify(j => j.CreateJwtPackageAsync(user, user.Team!, dto.DeviceId, It.IsAny<CancellationToken>()), Times.Once);
+        mockJwtProvider.Verify(j => j.CreateJwtPackageAsync(user, user.Team!, authMethods, dto.DeviceId, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]

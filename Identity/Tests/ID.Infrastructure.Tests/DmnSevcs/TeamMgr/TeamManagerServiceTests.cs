@@ -1,6 +1,7 @@
 using ID.Domain.Abstractions.Services.Teams.Dvcs;
 using ID.Domain.Abstractions.Services.Teams.Subs;
 using ID.Domain.Entities.Teams;
+using ID.Domain.Repos.Specs.Teams;
 using ID.Infrastructure.DomainServices.Teams;
 using Microsoft.AspNetCore.Identity;
 
@@ -49,7 +50,7 @@ public class TeamManagerServiceTests
            TeamDataFactory.Create(teamType: TeamType.maintenance),
            TeamDataFactory.Create(teamType: TeamType.customer),
         };
-        _teamRepoMock.Setup(repo => repo.ListAllAsync(It.IsAny<AllTeamsSpec>(), CancellationToken.None)).ReturnsAsync(teams);
+        _teamRepoMock.Setup(repo => repo.ListAllTrackedAsync(It.IsAny<AllTeamsSpec>(), CancellationToken.None)).ReturnsAsync(teams);
 
         // Act
         var result = await _teamManagerService.GetAllTeams(true, true);
@@ -70,7 +71,7 @@ public class TeamManagerServiceTests
            TeamDataFactory.Create(teamType: TeamType.maintenance),
            TeamDataFactory.Create(teamType: TeamType.customer),
         };
-        _teamRepoMock.Setup(repo => repo.ListAllAsync(It.IsAny<AllTeamsSpec>(), CancellationToken.None)).ReturnsAsync(teams);
+        _teamRepoMock.Setup(repo => repo.ListAllTrackedAsync(It.IsAny<AllTeamsSpec>(), CancellationToken.None)).ReturnsAsync(teams);
 
         // Act
         var result = await _teamManagerService.GetAllTeams(false, false);
@@ -94,7 +95,7 @@ public class TeamManagerServiceTests
             mntcTeam,
             superTeam,
         };
-        _teamRepoMock.Setup(repo => repo.ListAllAsync(It.IsAny<AllTeamsSpec>(), CancellationToken.None)).ReturnsAsync(teams);
+        _teamRepoMock.Setup(repo => repo.ListAllTrackedAsync(It.IsAny<AllTeamsSpec>(), CancellationToken.None)).ReturnsAsync(teams);
 
         // Act
         var result = await _teamManagerService.GetAllTeams(true, false);
@@ -120,7 +121,7 @@ public class TeamManagerServiceTests
             mntcTeam,
             superTeam,
         };
-        _teamRepoMock.Setup(repo => repo.ListAllAsync(It.IsAny<AllTeamsSpec>(), CancellationToken.None)).ReturnsAsync(teams);
+        _teamRepoMock.Setup(repo => repo.ListAllTrackedAsync(It.IsAny<AllTeamsSpec>(), CancellationToken.None)).ReturnsAsync(teams);
 
         // Act
         var result = await _teamManagerService.GetAllTeams(false, true);

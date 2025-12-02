@@ -1,33 +1,19 @@
-using ID.Application.AppAbs.ApplicationServices.TwoFactor;
-using ID.Application.Features.Account.Cmd.Login;
-using ID.Application.JWT;
-using ID.GlobalSettings.Setup.Options;
-using ID.Tests.Data.GlobalOptions;
-using Microsoft.Extensions.Options;
-
 namespace ID.Application.Tests.Features.Account.Cmd.Login;
 
 public class LoginHandlerTests_2
 {
     private readonly Mock<IPreSignInService<AppUser>> _mockPreSignInService;
     private readonly Mock<IJwtPackageProvider> _mockPackageProvider;
-    private readonly Mock<IJwtRefreshTokenService<AppUser>> _mockRefreshProvider;
-    private readonly Mock<IOptions<IdGlobalOptions>> _mockGlobalOptions;
     private readonly LoginHandler _handler;
 
     public LoginHandlerTests_2()
     {
         _mockPreSignInService = new Mock<IPreSignInService<AppUser>>();
         _mockPackageProvider = new Mock<IJwtPackageProvider>();
-        _mockRefreshProvider = new Mock<IJwtRefreshTokenService<AppUser>>();
-        
-        _mockGlobalOptions = new Mock<IOptions<IdGlobalOptions>>();
-        _mockGlobalOptions.Setup(x => x.Value).Returns(GlobalOptionsUtils.ValidOptions);
 
         _handler = new LoginHandler(
             _mockPreSignInService.Object,
             _mockPackageProvider.Object);
-
     }
 
     //------------------------------//
@@ -105,33 +91,39 @@ public class LoginHandlerTests_2
     //------------------------------//
 
     [Fact]
-    public async Task Handle_TwoFactorRequired_ShouldReturnTwoFactorRequiredResult()
+    public async Task Handle_TwoFactorRequired_ShouldReturnPreconditionRequired_WithTwoFactorJwt()
     {
         // Arrange
         var loginCmd = new LoginCmd(new LoginDto { Username = "username", Password = "password" });
         var team = TeamDataFactory.Create();
-        var user = AppUserDataFactory.Create(teamId: team.Id);
-        var signInResult = MyIdSignInResult.TwoFactorRequiredResult(MfaResultData.Create(TwoFactorProvider.Email), user, team);
+        var user = AppUserDataFactory.Create(team: team);
+        var mfa = MfaResultData.Create(TwoFactorProvider.Email, "extra");
+        var signInResult = MyIdSignInResult.TwoFactorRequiredResult(mfa, user, team);
+
         _mockPreSignInService.Setup(x => x.Authenticate(It.IsAny<LoginDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(signInResult);
+
+        var tfPackage = JwtPackageDataFactory.Create(twoStepVerificationRequired: true, twoFactorProvider: TwoFactorProvider.Email);
         _mockPackageProvider.Setup(x => x.CreateJwtPackageWithTwoFactorRequiredAsync(
-            It.IsAny<AppUser>(), 
-            It.IsAny<TwoFactorProvider>(), 
-            It.IsAny<string>(),
+            It.IsAny<AppUser>(),
+            It.IsAny<TwoFactorProvider>(),
+            It.IsAny<string?>(),
             It.IsAny<CancellationToken>()))
-            .ReturnsAsync(JwtPackageDataFactory.Create(twoStepVerificationRequired: true, twoFactorProvider: TwoFactorProvider.Email));
+            .ReturnsAsync(tfPackage);
 
         // Act
         var result = await _handler.Handle(loginCmd, CancellationToken.None);
 
         // Assert
-        result.Value?.TwoFactorVerificationRequired.ShouldBeTrue();
+        result.ShouldNotBeNull();
+        result.PreconditionRequired.ShouldBeTrue();
+        result.Value.ShouldBe(tfPackage);
+
         _mockPackageProvider.Verify(x => x.CreateJwtPackageWithTwoFactorRequiredAsync(
-                It.IsAny<AppUser>(), 
-                It.IsAny<TwoFactorProvider>(), 
-                It.IsAny<string>(), 
-                It.IsAny<CancellationToken>()),
-            Times.Once);
+            It.IsAny<AppUser>(),
+            It.IsAny<TwoFactorProvider>(),
+            It.IsAny<string?>(),
+            It.IsAny<CancellationToken>()), Times.Once);
     }
 
     //------------------------------//
@@ -144,30 +136,18 @@ public class LoginHandlerTests_2
         var command = new LoginCmd(loginDto);
         var team = TeamDataFactory.Create();
         var user = AppUserDataFactory.Create(team: team);
-        var refreshToken = RefreshTokenDataFactory.Create(user: user);
-        var signInResult = MyIdSignInResult.Success(user, team);
+        var signInResult = MyIdSignInResult.Success(user, team, []);
         var jwtPackage = JwtPackageDataFactory.Create(accessToken: "access-token");
-
-        // Set up the mock to return true for RefreshTokensEnabled
-        var refreshEnabledOptions = GlobalOptionsUtils.InitiallyValidOptions(
-            refreshTokensEnabled: true);
-        _mockGlobalOptions.Setup(x => x.Value).Returns(refreshEnabledOptions);
-
-
-
 
         _mockPreSignInService
             .Setup(s => s.Authenticate(loginDto, It.IsAny<CancellationToken>()))
             .ReturnsAsync(signInResult);
 
-        _mockRefreshProvider
-            .Setup(r => r.GenerateTokenAsync(user, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(refreshToken);
-
         _mockPackageProvider
             .Setup(p => p.CreateJwtPackageAsync(
                 user,
                 team,
+                It.IsAny<IEnumerable<AuthMethodRef>>(),
                 loginDto.DeviceId,
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(jwtPackage);
@@ -179,61 +159,6 @@ public class LoginHandlerTests_2
         result.ShouldNotBeNull();
         result.Succeeded.ShouldBeTrue();
         result.Value.ShouldBe(jwtPackage);
-
-        // Verify that the global settings were checked
-        refreshEnabledOptions.JwtRefreshTokensEnabled.ShouldBeTrue();
-    }
-
-    //------------------------------//
-
-    [Fact]
-    public async Task Handle_ShouldReturnJwtPackageWithoutRefreshToken_WhenRefreshTokensDisabled()
-    {
-        // Arrange
-        var loginDto = new LoginDto { Username = "testuser", Password = "password", DeviceId = "device-123" };
-        var command = new LoginCmd(loginDto);
-        var team = TeamDataFactory.Create();
-        var user = AppUserDataFactory.Create(team: team);
-        var signInResult = MyIdSignInResult.Success(user, team);
-        var jwtPackage = JwtPackageDataFactory.Create(accessToken: "access-token");
-
-        // Set up the mock to return false for RefreshTokensEnabled
-        var refreshDisabledOptions = GlobalOptionsUtils.InitiallyValidOptions(
-            refreshTokensEnabled: false);
-        _mockGlobalOptions.Setup(x => x.Value).Returns(refreshDisabledOptions);
-
-
-        _mockPreSignInService
-            .Setup(s => s.Authenticate(loginDto, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(signInResult);
-
-        _mockPackageProvider
-            .Setup(p => p.CreateJwtPackageAsync(
-                user,
-                team,
-                loginDto.DeviceId,
-                It.IsAny<CancellationToken>()))
-            .ReturnsAsync(jwtPackage);
-
-
-        LoginHandler handler = new(
-            _mockPreSignInService.Object,
-            _mockPackageProvider.Object);
-
-
-        // Act
-        var result = await handler.Handle(command, CancellationToken.None);
-
-        // Assert
-        result.ShouldNotBeNull();
-        result.Succeeded.ShouldBeTrue();
-        result.Value.ShouldBe(jwtPackage);
-        _mockRefreshProvider.Verify(
-            r => r.GenerateTokenAsync(It.IsAny<AppUser>(), It.IsAny<CancellationToken>()),
-            Times.Never);
-
-        // Verify that the global settings were checked;
-        refreshDisabledOptions.JwtRefreshTokensEnabled.ShouldBeFalse();
     }
 
     //------------------------------//

@@ -1,6 +1,6 @@
 ﻿using ID.Application.Authenticators.Abstractions;
 using ID.Application.Utility.ExtensionMethods;
-using ID.Domain.Claims;
+using ID.Domain.Claims.AuthMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +21,7 @@ public static class MfaVerifiedAuthenticator
         /// <param name="context">The HTTP context containing the user information.</param>
         /// <returns>True if the user is authorized; otherwise, false.</returns>
         public bool IsAuthorized(HttpContext context) =>
-            context.HasClaim(TwoFactorClaims.TwoFactorVerified);
+            context.HasClaim(AuthenticationClaims.TwoFactorVerified);
 
     }//Cls
 

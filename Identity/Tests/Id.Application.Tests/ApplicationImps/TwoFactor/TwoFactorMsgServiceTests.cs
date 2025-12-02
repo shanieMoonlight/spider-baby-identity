@@ -82,7 +82,7 @@ public class TwoFactorMsgServiceTests
         _2FactorServiceMock.Setup(x => x.GenerateTwoFactorTokenAsync(It.IsAny<Team>(), user, "Sms")).ReturnsAsync("123456");
         _smsServiceMock.Setup(x => x.SendMsgAsync(user.PhoneNumber!, It.IsAny<string>())).ReturnsAsync(BasicResult.Failure("Sms failed"));
         _2FactorServiceMock.Setup(x => x.GenerateTwoFactorTokenAsync(It.IsAny<Team>(), user, "Email")).ReturnsAsync("654321");
-        _busMock.Setup(x => x.Publish(It.IsAny<TwoFactorEmailRequestIntegrationEvent>(), default)).Returns(Task.CompletedTask);
+        _busMock.Setup(x => x.PublishAsync(It.IsAny<TwoFactorEmailRequestIntegrationEvent>(), default)).Returns(Task.CompletedTask);
 
         // Act
         var result = await _twoFactorMsgService.SendOTPFor2FactorAuth(team, user);
@@ -111,7 +111,7 @@ public class TwoFactorMsgServiceTests
         _2FactorServiceMock.Setup(x => x.GenerateTwoFactorTokenAsync(It.IsAny<Team>(), user, "Sms")).ReturnsAsync("123456");
         _smsServiceMock.Setup(x => x.SendMsgAsync(user.PhoneNumber!, It.IsAny<string>())).ReturnsAsync(BasicResult.Failure("Sms failed"));
         _2FactorServiceMock.Setup(x => x.GenerateTwoFactorTokenAsync(It.IsAny<Team>(), user, "Email")).ReturnsAsync("654321");
-        _busMock.Setup(x => x.Publish(It.IsAny<TwoFactorEmailRequestIntegrationEvent>(), default)).Returns(Task.CompletedTask);
+        _busMock.Setup(x => x.PublishAsync(It.IsAny<TwoFactorEmailRequestIntegrationEvent>(), default)).Returns(Task.CompletedTask);
 
         // Act
         var result = await _twoFactorMsgService.SendOTPFor2FactorAuth(team, user, TwoFactorProvider.AuthenticatorApp);

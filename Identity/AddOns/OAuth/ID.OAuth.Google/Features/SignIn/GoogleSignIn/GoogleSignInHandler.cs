@@ -5,6 +5,7 @@ using ID.Application.AppAbs.TokenVerificationServices;
 using ID.Application.Customers.Abstractions;
 using ID.Application.JWT;
 using ID.Application.Mediatr.CqrsAbs;
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.AppUsers.OAuth;
 using ID.Domain.Entities.AppUsers.ValueObjects;
@@ -71,6 +72,7 @@ public class GoogleSignInHandler(
         JwtPackage jwtPackage = await _jwtPackageProvider.CreateJwtPackageAsync(
            user: user,
            team: team,
+           authMethods: [AuthMethodRef.oauth],
            currentDeviceId: currentDeviceId,
            cancellationToken: cancellationToken);
 

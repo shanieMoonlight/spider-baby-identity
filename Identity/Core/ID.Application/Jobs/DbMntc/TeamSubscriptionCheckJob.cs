@@ -1,6 +1,5 @@
 ﻿using ID.Application.Jobs.Abstractions;
 using ID.Domain.Abstractions.Services.Teams;
-using ID.Domain.Entities.AppUsers;
 using ID.Domain.Repos.Transactions;
 using ID.GlobalSettings.Errors;
 using LoggingHelpers;

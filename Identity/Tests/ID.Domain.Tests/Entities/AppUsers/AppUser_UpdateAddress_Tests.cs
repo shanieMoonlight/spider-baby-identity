@@ -2,6 +2,7 @@ using ClArch.ValueObjects;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.AppUsers.Events;
 using ID.Domain.Entities.AppUsers.ValueObjects;
+using ID.Domain.Entities.TrustedDevices.Events;
 using ID.Domain.Models;
 using ID.Tests.Data.Factories;
 using Shouldly;

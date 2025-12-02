@@ -1,7 +1,7 @@
 using Id.Tests.Utility.Exceptions;
 using ID.Email.Base.EventListeners.Subscriptions;
 using ID.Email.Base.LocalAbs;
-using ID.Email.Base.LocalImps.Specs;
+using ID.Email.Base.LocalImps.Specs.Subscriptions;
 using ID.GlobalSettings.Errors;
 using ID.IntegrationEvents.Events.Account.Subscriptions;
 using Microsoft.Extensions.Logging;

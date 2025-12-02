@@ -43,7 +43,7 @@ public class SubscriptionDto : AuditableEntityDto
 
 
 
-    //------------------------------------//
+    //----------------------//
 
     #region ModelBinding
 #pragma warning disable CS8618
@@ -74,6 +74,6 @@ public class SubscriptionDto : AuditableEntityDto
 
     }
 
-    //------------------------------------//
+    //----------------------//
 }
 

@@ -1,26 +1,24 @@
-using ID.Infrastructure.Persistance.EF.Repos.Specs.RefreshTokens;
+using ID.Domain.Repos.Specs.RefreshTokens;
+using Microsoft.AspNetCore.Identity;
 
 namespace ID.Infrastructure.Tests.Auth.JWT.Refreshing;
 
 public class IdRefreshTokenService_REVOKE_Tests
 {
-    private readonly Mock<IIdUnitOfWork> _uowMock;
-    private readonly Mock<IIdentityRefreshTokenRepo> _refreshTokenRepoMock;
-    private readonly Mock<IOptions<JwtOptions>> _optionsProviderMock;
-    private readonly JwtRefreshTokenService<AppUser> _sut;
+    private readonly Mock<IIdUnitOfWork> _uowMock = new();
+    private readonly Mock<IIdentityRefreshTokenRepo> _repoMock = new();
+    private readonly Mock<IPasswordHasher<AppUser>> _pwdHasher = new();
+    private readonly Mock<IOptions<JwtOptions>> _optionsProviderMock = new();
+    private JwtRefreshTokenService<AppUser> _sut;
 
     //------------------------------//  
 
     public IdRefreshTokenService_REVOKE_Tests()
     {
-        _refreshTokenRepoMock = new Mock<IIdentityRefreshTokenRepo>();
-
-        _uowMock = new Mock<IIdUnitOfWork>();
-        _uowMock.Setup(uow => uow.RefreshTokenRepo).Returns(_refreshTokenRepoMock.Object);
-
-        _optionsProviderMock = new Mock<IOptions<JwtOptions>>();
+        _uowMock.Setup(u => u.RefreshTokenRepo).Returns(_repoMock.Object);
+        _pwdHasher.Setup(h => h.VerifyHashedPassword(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>())).Returns(PasswordVerificationResult.Success);
         _optionsProviderMock.Setup(o => o.Value).Returns(JwtOptionsUtils.ValidOptions);
-        _sut = new JwtRefreshTokenService<AppUser>(_uowMock.Object, _optionsProviderMock.Object);
+        _sut = new JwtRefreshTokenService<AppUser>(_uowMock.Object, _pwdHasher.Object, _optionsProviderMock.Object);
     }
 
     //------------------------------//  
@@ -39,7 +37,7 @@ public class IdRefreshTokenService_REVOKE_Tests
         await _sut.RevokeTokensAsync(user, cancellationToken);
 
         // Assert
-        _refreshTokenRepoMock.Verify(
+        _repoMock.Verify(
             repo => repo.RemoveRangeAsync(It.Is<RefreshTokenByUserIdSpec>(spec =>
                 spec.TESTING_GetCriteria().Compile().Invoke(tkn) == userIdSpec.TESTING_GetCriteria().Compile().Invoke(tkn)
             )),

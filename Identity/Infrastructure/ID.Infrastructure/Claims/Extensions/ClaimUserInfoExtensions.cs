@@ -1,4 +1,4 @@
-﻿using ID.Domain.Claims.Utils;
+﻿using ID.Domain.Claims;
 using ID.Domain.Entities.AppUsers;
 using StringHelpers;
 using System.IdentityModel.Tokens.Jwt;

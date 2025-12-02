@@ -1,7 +1,7 @@
 ﻿using ID.Application.AppAbs.Setup;
+using ID.Domain.Abstractions.Services.TrustedDevices;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Repos;
-using ID.Persistence.Ef;
 using ID.Persistence.Ef.Interceptors;
 using ID.Persistence.Ef.Repos;
 using ID.Persistence.Ef.Services;
@@ -16,7 +16,8 @@ using Microsoft.Extensions.Logging;
 
 namespace ID.Persistence.Ef.Setup;
 public static class PersistenceSetup
-{    public static IServiceCollection AddPersistenceEf(
+{
+    public static IServiceCollection AddPersistenceEf(
         this IServiceCollection services,
         IdentityBuilder builder,
         Func<DbContextOptionsBuilder, IEnumerable<IInterceptor>, DbContextOptionsBuilder> configurationFunction
@@ -27,25 +28,29 @@ public static class PersistenceSetup
         services.AddSingleton<SqlServerExceptionProcessorInterceptor>();
         services.AddSingleton<DomainEventsToOutboxMsgInterceptor>();
         services.AddSingleton<DateTimeNormalizationSaveChangesInterceptor>();
+        //services.AddSingleton<ChildEntitySaveChangesInterceptor>();
+        //services.AddSingleton<TeamSaveChangesInterceptor>();
 
         services.AddDbContext<IdDbContext>((sp, config) =>
         {
             var sqlServerExceptionProcessorInterceptor = sp.GetService<SqlServerExceptionProcessorInterceptor>();
             var domainEventToOutboxMsgInterceptor = sp.GetService<DomainEventsToOutboxMsgInterceptor>();
             var dateTimeNormalizationSaveChangesInterceptor = sp.GetService<DateTimeNormalizationSaveChangesInterceptor>();
+            //var childInterceptor = sp.GetService<ChildEntitySaveChangesInterceptor>();
 
             configurationFunction(
                 config,
                 [
                   sqlServerExceptionProcessorInterceptor!,
                   domainEventToOutboxMsgInterceptor!,
-                  dateTimeNormalizationSaveChangesInterceptor!
+                  dateTimeNormalizationSaveChangesInterceptor!,
+                  //childInterceptor!
                 ]
             );
 
             var env = sp.GetService<IWebHostEnvironment>();
 
-            if (env != null &&  env.IsDevelopment())
+            if (env != null && env.IsDevelopment())
             {
                 config
                     .EnableSensitiveDataLogging(true)
@@ -61,6 +66,9 @@ public static class PersistenceSetup
         services.SetupServices();
         services.AddHealthChecks();
 
+
+        //services.TryAddScoped<ITrustedDeviceService<AppUser>, TrustedDeviceService<AppUser>>();
+
         return services;
     }
 
@@ -74,6 +82,7 @@ public static class PersistenceSetup
         services.TryAddScoped<IIdentityOutboxMessageRepo, OutboxMessageRepo>();
         services.TryAddScoped<IIdentityFeatureFlagRepo, FeatureFlagRepo>();
         services.TryAddScoped<IIdentityRefreshTokenRepo, RefreshTokenRepo>();
+        services.TryAddScoped<IIdentityTrustedDeviceRepo, TrustedDeviceRepo>();
         services.TryAddScoped<IIdUnitOfWork, MyIdUnitOfWork>();
 
 

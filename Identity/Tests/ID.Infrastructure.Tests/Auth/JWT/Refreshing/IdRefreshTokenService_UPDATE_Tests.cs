@@ -1,26 +1,27 @@
 using ID.Domain.Entities.Refreshing.ValueObjects;
+using Microsoft.AspNetCore.Identity;
 
 namespace ID.Infrastructure.Tests.Auth.JWT.Refreshing;
 
 public class IdRefreshTokenService_UPDATE_Tests
 {
-    private readonly Mock<IIdUnitOfWork> _uowMock;
-    private readonly Mock<IIdentityRefreshTokenRepo> _refreshTokenRepoMock;
-    private readonly Mock<IOptions<JwtOptions>> _optionsProviderMock;
+    private readonly Mock<IIdUnitOfWork> _uowMock = new();
+    private readonly Mock<IIdentityRefreshTokenRepo> _repoMock = new();
+    private readonly Mock<IPasswordHasher<AppUser>> _pwdHasher = new();
+    private readonly Mock<IOptions<JwtOptions>> _optionsProviderMock = new();
     private readonly JwtRefreshTokenService<AppUser> _sut;
 
     //------------------------------//  
 
     public IdRefreshTokenService_UPDATE_Tests()
     {
-        _refreshTokenRepoMock = new Mock<IIdentityRefreshTokenRepo>();
+        var jwtOptions = new JwtOptions { RefreshTokenTimeSpan = TimeSpan.FromDays(7) };
 
-        _uowMock = new Mock<IIdUnitOfWork>();
-        _uowMock.Setup(uow => uow.RefreshTokenRepo).Returns(_refreshTokenRepoMock.Object);
-
-        _optionsProviderMock = new Mock<IOptions<JwtOptions>>();
-        _optionsProviderMock.Setup(o => o.Value).Returns(JwtOptionsUtils.ValidOptions);
-        _sut = new JwtRefreshTokenService<AppUser>(_uowMock.Object, _optionsProviderMock.Object);
+        _uowMock.Setup(u => u.RefreshTokenRepo).Returns(_repoMock.Object);
+        _optionsProviderMock.Setup(o => o.Value).Returns(jwtOptions);
+        _pwdHasher.Setup(h => h.HashPassword(It.IsAny<AppUser>(), It.IsAny<string>())).Returns("hashed");
+        _pwdHasher.Setup(h => h.VerifyHashedPassword(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>())).Returns(PasswordVerificationResult.Success);
+        _sut = new JwtRefreshTokenService<AppUser>(_uowMock.Object, _pwdHasher.Object, _optionsProviderMock.Object);
     }
 
     //------------------------------//  
@@ -31,26 +32,28 @@ public class IdRefreshTokenService_UPDATE_Tests
         // Arrange
         var user = AppUserDataFactory.Create();
         var originalToken = CreateRefreshToken("original-token-payload", user);
-        var newTokenPayloadVo = TokenPayload.Create("new-token-payload");
+        var newTokenPayloadVo = TokenPayloadHash.Create("new-token-payload");
         var cancellationToken = new CancellationToken();
 
         // Usage example:
         var originalDate = originalToken.ExpiresOnUtc;
 
-        _refreshTokenRepoMock
+        _repoMock
             .Setup(repo => repo.UpdateAsync(It.IsAny<IdRefreshToken>()))
             .ReturnsAsync((IdRefreshToken)null!); // Mock UpdateAsync behavior
 
         // Act
-        var updatedToken = await _sut.UpdateTokenPayloadAsync(originalToken, cancellationToken);
+        var updatedDto = await _sut.UpdateTokenPayloadAsync(originalToken, cancellationToken);
 
         // Assert
-        updatedToken.ShouldNotBeNull();
-        updatedToken.ShouldBe(originalToken);
-        //updatedToken.Payload.ShouldNotBe(newTokenPayloadVo.Value);
-        updatedToken.ExpiresOnUtc.ShouldNotBe(originalDate);
+        updatedDto.ShouldNotBeNull();
+        updatedDto.RefreshToken.ShouldBe(originalToken);
+        updatedDto.ClientToken.ShouldNotBeNullOrEmpty();
+        // Payload was renamed to PayloadHash
+        updatedDto.RefreshToken.PayloadHash.ShouldNotBeNullOrEmpty();
+        updatedDto.RefreshToken.ExpiresOnUtc.ShouldNotBe(originalDate);
 
-        _refreshTokenRepoMock.Verify(repo => repo.UpdateAsync(originalToken), Times.Once);
+        _repoMock.Verify(repo => repo.UpdateAsync(originalToken), Times.Once);
         _uowMock.Verify(uow => uow.SaveChangesAsync(cancellationToken), Times.Once);
     }
 

@@ -1,5 +1,6 @@
 using ClArch.ValueObjects;
 using FluentAssertions;
+using ID.Persistence.Ef.Repos.Abstractions;
 
 namespace ID.Infrastructure.Tests.Persistence.EF.Repos.FeatureFlags;
 

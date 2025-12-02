@@ -9,7 +9,7 @@ public static class AppUserMappings
     public static AppUserDto ToDto(this AppUser mdl) => new(mdl);
 
 
-    //------------------------------------//
+    //----------------------//
 
 
     public static IEnumerable<AppUserDto> ToDtos(this IEnumerable<AppUser> teams) =>

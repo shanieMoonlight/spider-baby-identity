@@ -1,8 +1,3 @@
-using ID.Domain.Entities.Teams;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
-using ID.Tests.Data.Factories;
-using Shouldly;
-
 namespace ID.Domain.Repos.Tests.Specs.Teams;
 
 public class CustomerTeamsByNameSpecTests

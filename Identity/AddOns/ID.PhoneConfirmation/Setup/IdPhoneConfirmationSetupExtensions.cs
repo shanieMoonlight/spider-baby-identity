@@ -1,7 +1,6 @@
 ﻿using ID.IntegrationEvents.Setup;
 using ID.PhoneConfirmation.Events.Integration.Bus;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Reflection;

@@ -1,4 +1,4 @@
-﻿using ID.Domain.Claims;
+﻿using ID.Domain.Claims.Teams;
 
 namespace ID.TeamRoles.UserToAdmin.Claims;
 public class IdTeamRoleClaims

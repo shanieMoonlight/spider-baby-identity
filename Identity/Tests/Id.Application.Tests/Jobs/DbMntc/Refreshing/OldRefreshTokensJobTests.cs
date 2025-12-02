@@ -1,4 +1,5 @@
 using ID.Application.Jobs.Abstractions;
+using ID.Domain.Repos.Specs.RefreshTokens;
 using ID.Tests.Utility.ServiceProvider;
 
 namespace ID.Application.Tests.Jobs.DbMntc.Refreshing;

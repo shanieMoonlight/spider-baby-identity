@@ -1,15 +1,6 @@
-using ID.Domain.Entities.Teams;
-using ID.Domain.Utility.Messages;
-using ID.Infrastructure.Persistance.EF.Repos;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
-using ID.Tests.Data.Factories;
-using MyResults;
-using Pagination;
-using Shouldly;
-using System.Reflection;
-using ClArch.ValueObjects;
+using ID.Domain.Repos.Specs.Teams;
 
-namespace ID.Infrastructure.Tests.Persistence.EF.Repos.Teams;
+namespace ID.Persistence.Ef.Tests.Persistence.EF.Repos.Teams;
 
 public class TeamRepoTests : RepoTestBase, IAsyncLifetime
 {
@@ -267,7 +258,7 @@ public class TeamRepoTests : RepoTestBase, IAsyncLifetime
         var spec = new CustomerTeamsByNameSpec("Customer");
 
         // Act
-        var result = await _repo.ListAllAsync(spec);
+        var result = await _repo.ListAllTrackedAsync(spec);
 
         // Assert
         result.ShouldNotBeNull();

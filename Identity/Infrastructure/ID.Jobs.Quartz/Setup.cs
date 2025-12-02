@@ -55,19 +55,22 @@ public static class Setup
 
     //------------------------------//
 
-    public static IApplicationBuilder UseMyIdQuartzJobs(this IApplicationBuilder app, TeamType minTeamTypeDashboardAccess = TeamType.super)
+    public static IApplicationBuilder UseMyIdQuartzJobs(
+        this IApplicationBuilder app, 
+        TeamType minTeamTypeDashboardAccess,
+        bool allowAnonymousAccessInDevMode = true)
     {
 
         switch (minTeamTypeDashboardAccess)
         {
             case TeamType.super:
-                app.UseExternalPagesAuth_SuperTeam(IdGlobalConstants.Jobs.DashboardPath);
+                app.UseExternalPagesAuth_SuperTeam(IdGlobalConstants.Jobs.DashboardPath, allowAnonymousAccessInDevMode);
                 break;
             case TeamType.maintenance:
-                app.UseExternalPagesAuth_MntcMinimum(IdGlobalConstants.Jobs.DashboardPath);
+                app.UseExternalPagesAuth_MntcMinimum(IdGlobalConstants.Jobs.DashboardPath, allowAnonymousAccessInDevMode);
                 break;
             case TeamType.customer:
-                app.UseExternalPagesAuth_CustomerMinimum(IdGlobalConstants.Jobs.DashboardPath);
+                app.UseExternalPagesAuth_CustomerMinimum(IdGlobalConstants.Jobs.DashboardPath, allowAnonymousAccessInDevMode);
                 break;
         }
 

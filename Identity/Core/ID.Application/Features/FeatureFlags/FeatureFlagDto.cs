@@ -11,7 +11,7 @@ public class FeatureFlagDto
     public string? AdministratorId { get; set; } = string.Empty;
     public DateTime? DateCreated { get; set; }
 
-    //------------------------------------//
+    //----------------------//
 
     #region ModelBindingCtor
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
@@ -29,7 +29,7 @@ public class FeatureFlagDto
         DateCreated = mdl.DateCreated;
     }
 
-    //------------------------------------//
+    //----------------------//
 
 }//Cls
 

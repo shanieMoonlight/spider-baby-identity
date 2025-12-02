@@ -1,10 +1,4 @@
-using ID.Domain.Entities.Teams;
-using ID.Infrastructure.Persistance.EF.Repos;
-using ID.Tests.Data.Factories;
-using Pagination;
-using Shouldly;
-
-namespace ID.Infrastructure.Tests.Persistence.EF.Repos.Teams;
+namespace ID.Persistence.Ef.Tests.Persistence.EF.Repos.Teams;
 
 public class TeamPageAsyncTests : RepoTestBase, IAsyncLifetime
 {
@@ -21,26 +15,23 @@ public class TeamPageAsyncTests : RepoTestBase, IAsyncLifetime
     public TeamPageAsyncTests()
     {
         // Create multiple teams of each type for pagination testing
-        _customerTeams = Enumerable.Range(1, 5)
+        _customerTeams = [.. Enumerable.Range(1, 5)
             .Select(i => TeamDataFactory.Create(
                 name: $"Customer Team {i:D2}",
                 description: $"Customer team description {i}",
-                teamType: TeamType.customer))
-            .ToList();
+                teamType: TeamType.customer))];
 
-        _maintenanceTeams = Enumerable.Range(1, 3)
+        _maintenanceTeams = [.. Enumerable.Range(1, 3)
             .Select(i => TeamDataFactory.Create(
                 name: $"Maintenance Team {i:D2}",
                 description: $"Maintenance team description {i}",
-                teamType: TeamType.maintenance))
-            .ToList();
+                teamType: TeamType.maintenance))];
 
-        _superTeams = Enumerable.Range(1, 2)
+        _superTeams = [.. Enumerable.Range(1, 2)
             .Select(i => TeamDataFactory.Create(
                 name: $"Super Team {i:D2}",
                 description: $"Super team description {i}",
-                teamType: TeamType.super))
-            .ToList();
+                teamType: TeamType.super))];
 
         _allTeams = [.. _customerTeams, .. _maintenanceTeams, .. _superTeams];
     }

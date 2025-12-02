@@ -24,7 +24,7 @@ public class AccountController(ISender sender) : ControllerBase
 
     /// <summary>
     /// Closes the account for the specified customer team. Requires maintenance or higher team member authorization.
-    /// Use when yoiu are deleing a customer account, such as when they are no longer a customer or have requested account closure.
+    /// Use when you are deleting a customer account, such as when they are no longer a customer or have requested account closure.
     /// </summary>
     /// <param name="teamId">The ID of the team whose account will be closed.</param>
     /// <returns>A message indicating the result of the account closure.</returns>

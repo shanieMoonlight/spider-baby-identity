@@ -25,7 +25,7 @@ public class GetAllSubscriptionPlansQryHandlerTests
     {
         // Arrange
         var mdls = SubscriptionPlanDataFactory.CreateMany();
-        _repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync((IReadOnlyList<SubscriptionPlan>)mdls);
+        _repoMock.Setup(r => r.ListAllAsync()).ReturnsAsync((IReadOnlyList<SubscriptionPlan>)mdls);
 
         var handler = new GetAllSubscriptionPlansQryHandler(_repoMock.Object);
         var request = new GetAllSubscriptionPlansQry();
@@ -37,7 +37,7 @@ public class GetAllSubscriptionPlansQryHandlerTests
         // Assert
         result.ShouldBeOfType<GenResult<IEnumerable<SubscriptionPlanDto>>>();
         result.Value?.Count().ShouldBe(mdls.Count);
-        _repoMock.Verify(r => r.GetAllAsync(), Times.Once);
+        _repoMock.Verify(r => r.ListAllAsync(), Times.Once);
     }
 
     //--------------------------//
@@ -46,7 +46,7 @@ public class GetAllSubscriptionPlansQryHandlerTests
     public async Task Handle_ShouldReturnEmptyList_WhenNoSubscriptionPlansExist()
     {
         // Arrange
-        _repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync((IReadOnlyList<SubscriptionPlan>)[]);
+        _repoMock.Setup(r => r.ListAllAsync()).ReturnsAsync((IReadOnlyList<SubscriptionPlan>)[]);
 
         var handler = new GetAllSubscriptionPlansQryHandler(_repoMock.Object);
         var request = new GetAllSubscriptionPlansQry();
@@ -58,7 +58,7 @@ public class GetAllSubscriptionPlansQryHandlerTests
         // Assert
         result.ShouldBeOfType<GenResult<IEnumerable<SubscriptionPlanDto>>>();
         result.Value.ShouldBeEmpty();
-        _repoMock.Verify(r => r.GetAllAsync(), Times.Once);
+        _repoMock.Verify(r => r.ListAllAsync(), Times.Once);
     }
 
     //--------------------------//

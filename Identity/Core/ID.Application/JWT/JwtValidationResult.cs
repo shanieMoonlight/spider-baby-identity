@@ -20,7 +20,7 @@ public class JwtValidationResult
             Exception = exception
         };
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Create failed validation object
@@ -33,7 +33,7 @@ public class JwtValidationResult
             Succeeded = true
         };
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Whether the Validation succeeded or failed.

@@ -208,7 +208,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.AppUsers.OAuth.OAuthInfo", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -265,7 +264,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.Avatars.Avatar", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -346,7 +344,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.Refreshing.IdRefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -359,6 +356,11 @@ namespace ID.Persistence.Ef.Postgres.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("administrator_username");
+
+                    b.Property<string>("AuthMethodRefs")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("auth_method_refs");
 
                     b.Property<DateTime>("CreatedUtc")
                         .HasColumnType("timestamp with time zone")
@@ -376,11 +378,20 @@ namespace ID.Persistence.Ef.Postgres.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("last_modified_date");
 
-                    b.Property<string>("Payload")
+                    b.Property<string>("PayloadHash")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)")
-                        .HasColumnName("payload");
+                        .HasColumnName("payload_hash");
+
+                    b.Property<string>("Selector")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("selector");
+
+                    b.Property<Guid?>("TrustedDeviceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("trusted_device_id");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
@@ -388,6 +399,9 @@ namespace ID.Persistence.Ef.Postgres.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_refresh_tokens");
+
+                    b.HasIndex("TrustedDeviceId")
+                        .HasDatabaseName("ix_refresh_tokens_trusted_device_id");
 
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_refresh_tokens_user_id");
@@ -398,7 +412,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.SubscriptionPlans.FeatureFlags.FeatureFlag", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -445,7 +458,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.SubscriptionPlans.SubscriptionPlan", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -525,7 +537,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.Teams.Team", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -590,7 +601,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.Teams.TeamDevice", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -637,8 +647,9 @@ namespace ID.Persistence.Ef.Postgres.Migrations
                     b.HasKey("Id")
                         .HasName("pk_team_device");
 
-                    b.HasIndex("SubscriptionId")
-                        .HasDatabaseName("ix_team_device_subscription_id");
+                    b.HasIndex("SubscriptionId", "UniqueId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_team_device_subscription_id_unique_id");
 
                     b.ToTable("team_device", "MyId");
                 });
@@ -646,7 +657,6 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.Teams.TeamSubscription", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
@@ -729,6 +739,76 @@ namespace ID.Persistence.Ef.Postgres.Migrations
                         .HasDatabaseName("ix_team_subscription_team_id_subscription_plan_id");
 
                     b.ToTable("team_subscription", "MyId");
+                });
+
+            modelBuilder.Entity("ID.Domain.Entities.TrustedDevices.TrustedDevice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("AdministratorId")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("administrator_id");
+
+                    b.Property<string>("AdministratorUsername")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("administrator_username");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date_created");
+
+                    b.Property<string>("Fingerprint")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)")
+                        .HasColumnName("fingerprint");
+
+                    b.Property<string>("IpAddress")
+                        .IsRequired()
+                        .HasMaxLength(75)
+                        .HasColumnType("character varying(75)")
+                        .HasColumnName("ip_address");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified_date");
+
+                    b.Property<DateTime>("LastUsedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_used_date");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.Property<DateTime>("TrustedUntil")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("trusted_until");
+
+                    b.Property<string>("UserAgent")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("user_agent");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_trusted_device");
+
+                    b.HasIndex("UserId", "Fingerprint")
+                        .IsUnique()
+                        .HasDatabaseName("ix_trusted_device_user_id_fingerprint");
+
+                    b.ToTable("trusted_device", "MyId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -950,12 +1030,19 @@ namespace ID.Persistence.Ef.Postgres.Migrations
 
             modelBuilder.Entity("ID.Domain.Entities.Refreshing.IdRefreshToken", b =>
                 {
+                    b.HasOne("ID.Domain.Entities.TrustedDevices.TrustedDevice", "TrustedDevice")
+                        .WithMany("IdRefreshTokens")
+                        .HasForeignKey("TrustedDeviceId")
+                        .HasConstraintName("fk_refresh_tokens_trusted_device_trusted_device_id");
+
                     b.HasOne("ID.Domain.Entities.AppUsers.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_refresh_tokens_users_user_id");
+
+                    b.Navigation("TrustedDevice");
 
                     b.Navigation("User");
                 });
@@ -1024,6 +1111,18 @@ namespace ID.Persistence.Ef.Postgres.Migrations
                     b.Navigation("Team");
                 });
 
+            modelBuilder.Entity("ID.Domain.Entities.TrustedDevices.TrustedDevice", b =>
+                {
+                    b.HasOne("ID.Domain.Entities.AppUsers.AppUser", "User")
+                        .WithMany("TrustedDevices")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_trusted_device_users_user_id");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("ID.Domain.Entities.AppUsers.AppRole", null)
@@ -1084,6 +1183,8 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.AppUsers.AppUser", b =>
                 {
                     b.Navigation("OAuthInfo");
+
+                    b.Navigation("TrustedDevices");
                 });
 
             modelBuilder.Entity("ID.Domain.Entities.SubscriptionPlans.FeatureFlags.FeatureFlag", b =>
@@ -1108,6 +1209,11 @@ namespace ID.Persistence.Ef.Postgres.Migrations
             modelBuilder.Entity("ID.Domain.Entities.Teams.TeamSubscription", b =>
                 {
                     b.Navigation("Devices");
+                });
+
+            modelBuilder.Entity("ID.Domain.Entities.TrustedDevices.TrustedDevice", b =>
+                {
+                    b.Navigation("IdRefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

@@ -19,5 +19,8 @@ public class InfrastructureDefaultValues
     /// </summary>
     public const string SWAGGER_URL = "/swagger";
 
-
+    /// <summary>
+    /// 15
+    /// </summary>
+    internal static readonly int MAX_TRUSTED_DEVICES_PER_USER = 15;
 }//Cls

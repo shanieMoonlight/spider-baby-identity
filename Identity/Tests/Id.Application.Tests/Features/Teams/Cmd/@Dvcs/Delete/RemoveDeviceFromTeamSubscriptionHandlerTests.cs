@@ -28,11 +28,13 @@ public class RemoveDeviceFromTeamSubscriptionHandlerTests
     {
         // Arrange
         var teamId = Guid.NewGuid();
-        var subscriptionId = Guid.NewGuid();
+        //var subscriptionId = Guid.NewGuid();
         var dvcCount = 2;
         var dvcs = DeviceDataFactory.CreateMany(dvcCount).ToHashSet();
         var dvcToRemove = dvcs.First();
-        var subscription = SubscriptionDataFactory.Create(subscriptionId, null, null, null, null, null, 0, dvcs);
+        var subscription = SubscriptionDataFactory.Create(
+            deviceLimit: 0,
+            devices: dvcs);
         var dto = new RemoveDeviceFromTeamSubscriptionDto(subscription.Id, default);
         var team = TeamDataFactory.Create(teamId, null, null, [subscription]);
 
@@ -56,7 +58,7 @@ public class RemoveDeviceFromTeamSubscriptionHandlerTests
         // Assert
         result.Succeeded.ShouldBeTrue();
         result.Value.ShouldNotBeNull();
-        result.Value.Id.ShouldBe(subscriptionId);
+        result.Value.Id.ShouldBe(subscription.Id);
         _deviceServiceMock.Verify(m => m.RemoveDeviceAsync(It.IsAny<Guid>()), Times.Once);
     }
 
@@ -71,7 +73,9 @@ public class RemoveDeviceFromTeamSubscriptionHandlerTests
         var dvcCount = 2;
         var dvcs = DeviceDataFactory.CreateMany(dvcCount).ToHashSet();
         var dvcToRemove = dvcs.First();
-        var subscription = SubscriptionDataFactory.Create(subscriptionId, null, null, null, null, null, 0, dvcs);
+        var subscription = SubscriptionDataFactory.Create(
+            deviceLimit: 0,
+            devices: dvcs);
         var dto = new RemoveDeviceFromTeamSubscriptionDto(subscription.Id, default);
         var team = TeamDataFactory.Create(teamId, null, null, [subscription]);
 
@@ -99,7 +103,9 @@ public class RemoveDeviceFromTeamSubscriptionHandlerTests
         var dvcCount = 2;
         var dvcs = DeviceDataFactory.CreateMany(dvcCount).ToHashSet();
         var dvcToRemove = dvcs.First();
-        var subscription = SubscriptionDataFactory.Create(subscriptionId, null, null, null, null, null, 0, dvcs);
+        var subscription = SubscriptionDataFactory.Create(
+            deviceLimit: 0,
+            devices: dvcs);
         var dto = new RemoveDeviceFromTeamSubscriptionDto(subscription.Id, default);
         var team = TeamDataFactory.Create(teamId, null, null, [subscription]);
 

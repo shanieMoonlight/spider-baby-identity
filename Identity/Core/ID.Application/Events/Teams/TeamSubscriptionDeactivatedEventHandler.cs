@@ -1,8 +1,6 @@
 ﻿using ID.Domain.Abstractions.Services.Teams;
-using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Entities.Teams.Events;
-using ID.Domain.Utility.Messages;
 using ID.GlobalSettings.Errors;
 using ID.IntegrationEvents.Abstractions;
 using ID.IntegrationEvents.Events.Account.Subscriptions;
@@ -25,18 +23,18 @@ internal class TeamSubscriptionDeactivatedEventHandler(
         try
         {
 
-            var team = await teamMgr.GetByIdWithEverythingAsync(notification.Subscription.TeamId);
+            var team = await teamMgr.GetByIdWithEverythingAsync(notification.TeamId);
 
             if (team is null)
             {
-                logger.LogError(new EventId(IdErrorEvents.Listeners.TeamSubscriptionDeactivated), "{msg}", IDMsgs.Error.NotFound<Team>(notification.Subscription.TeamId));
+                logger.LogError(new EventId(IdErrorEvents.Listeners.TeamSubscriptionDeactivated), "{msg}", IDMsgs.Error.NotFound<Team>(notification.TeamId));
                 return;
             }
 
-            var sub = team.Subscriptions.FirstOrDefault(s => s.Id == notification.Subscription.Id);
+            var sub = team.Subscriptions.FirstOrDefault(s => s.Id == notification.SubscriptionId);
             if (sub is null)
             {
-                logger.LogError(new EventId(IdErrorEvents.Listeners.TeamSubscriptionDeactivated), "{msg}", IDMsgs.Error.NotFound<AppUser>(notification.Subscription.Id));
+                logger.LogError(new EventId(IdErrorEvents.Listeners.TeamSubscriptionDeactivated), "{msg}", IDMsgs.Error.NotFound<AppUser>(notification.SubscriptionId));
                 return;
             }
 
@@ -48,7 +46,7 @@ internal class TeamSubscriptionDeactivatedEventHandler(
             }
 
             // ! is ok because GetByIdWithEverythingAsync makes sure everything is attached
-            await bus.Publish(
+            await bus.PublishAsync(
                 new SubscriptionsPausedIntegrationEvent(
                     leader.Id,
                     sub.Id,

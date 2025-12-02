@@ -1,14 +1,10 @@
-﻿using MyResults;
+﻿using ID.Domain.Entities.Teams;
 using Microsoft.AspNetCore.Identity;
-using ID.Domain.Entities.Teams;
-using ID.Domain.Entities.AppUsers;
 
 namespace ID.Application.AppAbs.TokenVerificationServices;
 
 public interface IEmailConfirmationService<TUser> where TUser : AppUser
 {
-    //------------------------------------//
-
     /// <summary>
     /// Validates that an email confirmation token matches the specified <paramref name="user"/>.
     /// </summary>
@@ -34,7 +30,7 @@ public interface IEmailConfirmationService<TUser> where TUser : AppUser
     /// </returns>
     Task<BasicResult> ConfirmEmailWithPasswordAsync(Team team, TUser user, string confirmationToken, string password);
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Generates a email confirmation token for the specified user. Not UrlEncoded
@@ -45,7 +41,7 @@ public interface IEmailConfirmationService<TUser> where TUser : AppUser
     /// </returns>
     Task<string> GenerateEmailConfirmationTokenAsync(Team team, TUser user);
 
-    //------------------------------------//
+    //----------------------//
 
     /// <summary>
     /// Generates an UrlEncoded email confirmation token for the specified user.
@@ -55,7 +51,5 @@ public interface IEmailConfirmationService<TUser> where TUser : AppUser
     /// The <see cref="Task"/> that represents the asynchronous operation, an UrlEncodedd  email confirmation token.
     /// </returns>
     Task<string> GenerateSafeEmailConfirmationTokenAsync(Team team, TUser user);
-
-    //------------------------------------//
 
 }//Cls

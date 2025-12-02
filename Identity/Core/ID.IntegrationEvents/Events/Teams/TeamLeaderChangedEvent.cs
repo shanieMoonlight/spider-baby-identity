@@ -15,7 +15,7 @@ public record TeamLeaderChangedEvent : AIdIntegrationEvent
     public TeamLeaderChangedEvent() { }
     #endregion
 
-    //- - - - - - - - - - - - - - - - - - //
+    //- - - - - - - - - - - - //
 
     public TeamLeaderChangedEvent(Guid teamId) => 
         TeamId = teamId;

@@ -22,7 +22,7 @@ public record TwoFactorAuthySetupRequestIntegrationEvent : AIdIntegrationEvent
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
     #endregion
 
-    //- - - - - - - - - - - - - - - - - - //
+    //- - - - - - - - - - - - -//
 
     public TwoFactorAuthySetupRequestIntegrationEvent(AppUser user, string qrSrc, string manualQrCode)
     {
@@ -32,7 +32,5 @@ public record TwoFactorAuthySetupRequestIntegrationEvent : AIdIntegrationEvent
         QrSrc = qrSrc;
         ManualQrCode = manualQrCode;
     }
-
-    //------------------------//
 
 };

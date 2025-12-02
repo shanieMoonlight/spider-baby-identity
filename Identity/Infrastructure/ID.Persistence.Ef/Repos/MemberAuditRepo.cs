@@ -2,7 +2,6 @@
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Repos;
-using ID.Persistence.Ef;
 using Microsoft.EntityFrameworkCore;
 using Pagination;
 using Pagination.Extensions;
@@ -13,7 +12,20 @@ namespace ID.Persistence.Ef.Repos;
 /// Repository for viewing Team Members/AppUsers.
 /// </summary>
 internal class MemberAuditRepo(IdDbContext Db) : IIdentityMemberAuditRepo<AppUser>
-{
+{   
+    
+    /// <summary>
+     /// Updates the specified entity.
+     /// </summary>
+     /// <param name="entity">The entity to update.</param>
+     /// <returns>The updated entity.</returns>
+    public virtual Task<AppUser> UpdateAsync(AppUser entity)
+    {
+        Db.Entry(entity).State = EntityState.Modified;
+        return Task.FromResult(entity);
+    }
+
+
     public async Task<bool> ExistsAsync(ASimpleSpecification<AppUser> spec, CancellationToken cancellationToken = default)
     {
         if (spec.ShouldShortCircuit())

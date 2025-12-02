@@ -9,7 +9,7 @@ public class TeamByIdWithMemberSpecTests
         var team = TeamDataFactory.Create();
 
         // Act
-        var spec = new TeamByIdWithMemberSpec(team.Id, Guid.NewGuid());
+        var spec = new TeamByIdWithMemberAndTrustedDevicesSpec(team.Id, Guid.NewGuid());
         var criteria = spec.TESTING_GetCriteria().Compile();
 
         // Assert
@@ -24,7 +24,7 @@ public class TeamByIdWithMemberSpecTests
         var differentId = Guid.NewGuid();
 
         // Act
-        var spec = new TeamByIdWithMemberSpec(differentId, Guid.NewGuid());
+        var spec = new TeamByIdWithMemberAndTrustedDevicesSpec(differentId, Guid.NewGuid());
         var criteria = spec.TESTING_GetCriteria().Compile();
 
         // Assert
@@ -38,7 +38,7 @@ public class TeamByIdWithMemberSpecTests
         Guid? id = null;
 
         // Act
-        var spec = new TeamByIdWithMemberSpec(id, Guid.NewGuid());
+        var spec = new TeamByIdWithMemberAndTrustedDevicesSpec(id, Guid.NewGuid());
 
         // Assert
         spec.ShouldShortCircuit().ShouldBeTrue();

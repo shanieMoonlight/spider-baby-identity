@@ -1,6 +1,7 @@
 ﻿using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.OutboxMessages;
 using ID.Domain.Entities.Teams;
+using ID.Domain.Entities.TrustedDevices;
 using ID.Domain.Models;
 using StringHelpers;
 
@@ -18,7 +19,7 @@ public partial class IDMsgs
         public static string IsRequired(string propertyName) => $"{propertyName} is required.";
 
 
-       
+
         public const string MISSING_APP_DATA = "Missing App Data";
         public const string MISSING_CUSTOMER_DATA = "Missing Customer Data";
         public const string MISSING_DEVICE_DATA = "Missing Device Data";
@@ -27,8 +28,8 @@ public partial class IDMsgs
         public static readonly string MISSING_HOST_USER_DATA = $"Missing Host Data.{NL}You must supply a host identifier when registering a guest.";
         public const string MISSING_USER_DATA = "Missing user data";
 
-        
-        
+
+
         public const string NO_APPS_FOUND = "User has no apps connected to the account.";
         public const string NO_DATA_SUPPLIED = "No data supplied";
         public const string NO_ID_SUPPLIED = "No id supplied";
@@ -167,9 +168,10 @@ public partial class IDMsgs
             public static string CANT_DEMOTE_SAME_POSITION => $"Can only demote users with TeamPositions already lower than yours";
             public static string EMPTY_TEAM(string teamName) => $"Team {teamName} has no members.";
             public static string NotACustomerTeam(Guid teamId) => $"Team {teamId} is not  a Customer Team";
+            public static string NOT_TEAM_MEMBER(Guid userId, Guid teamIdentifier) => NOT_TEAM_MEMBER(userId.ToString(), teamIdentifier.ToString());
             public static string NOT_TEAM_MEMBER(AppUser user, Guid teamIdentifier) => NOT_TEAM_MEMBER(user, teamIdentifier.ToString());
-            public static string NOT_TEAM_MEMBER(AppUser user, string teamIdentifier) => $"User with email, {user.Email} is not a member of the Team, {teamIdentifier}";
             public static string NOT_TEAM_MEMBER(AppUser user, Team team) => NOT_TEAM_MEMBER(user, team.Name);
+            public static string NOT_TEAM_MEMBER(AppUser user, string teamIdentifier) => $"User with email, {user.Email} is not a member of the Team, {teamIdentifier}";
 
             public static string NOT_TEAM_MEMBER(Guid userIdentifier, string teamIdentifier) => NOT_TEAM_MEMBER(userIdentifier.ToString(), teamIdentifier);
             public static string NOT_TEAM_MEMBER(string userIdentifier, string teamIdentifier) => $"User, {userIdentifier} is not a member of the Team, {teamIdentifier}";
@@ -181,6 +183,22 @@ public partial class IDMsgs
 
 
 
+        }
+
+        //-----------------------//
+
+        public static class TrustedDevices
+        {
+            public static string NOT_OWNED(TrustedDevice trustedDevice, AppUser user) => $"User with email, {user.Email} has ALREADY trusted the device with fingerprint, {trustedDevice.Fingerprint}";
+            public static string NOT_FOUND(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.Fingerprint} was not found for user, {user.Email}";
+            public static string ALREADY_TRUSTED(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.Fingerprint} has already been trusted by user, {user.Email}";
+            public static string ALREADY_REVOKED(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.Fingerprint} has already been revoked by user, {user.Email}";
+            public static string USER_NOT_OWNER(TrustedDevice trustedDevice, AppUser user) => $"User with email, {user.Email} is not the owner of the device with fingerprint, {trustedDevice.Fingerprint}";
+            public static string USER_NOT_OWNER(TrustedDevice trustedDevice, Guid userId) => $"User with ID, {userId} is not the owner of the device with fingerprint, {trustedDevice.Fingerprint}";
+            public static string USER_NOT_FOUND(TrustedDevice trustedDevice) => $"User not found for device {trustedDevice.Fingerprint}/{trustedDevice.Id}";
+            public static string TEAM_NOT_FOUND(TrustedDevice trustedDevice, AppUser user) => $"Team for {user.FriendlyName} not found for device {trustedDevice.Fingerprint}/{trustedDevice.Id}";
+            public static string REVOKED(TrustedDevice trustedDevice, AppUser user) => $"The device with fingerprint, {trustedDevice.Fingerprint} has already been revoked by user, {user.Email}";
+            public static string MAX_EXCEEDED(AppUser user, int max) => $"User with email, {user.Email} has reached the maximum number of trusted devices, {max}.";
         }
 
         //-----------------------//

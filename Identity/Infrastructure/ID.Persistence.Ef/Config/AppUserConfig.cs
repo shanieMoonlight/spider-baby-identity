@@ -56,6 +56,15 @@ internal class AppUserConfig : IEntityTypeConfiguration<AppUser>
             .WithOne(t => t.AppUser)
             .OnDelete(DeleteBehavior.Cascade);
 
+        // Trusted devices navigation (backing field)
+        builder.HasMany(b => b.TrustedDevices)
+            .WithOne(d => d.User)
+            .HasForeignKey(d => d.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        var tdNavigation = builder.Metadata.FindNavigation(nameof(AppUser.TrustedDevices));
+        tdNavigation?.SetPropertyAccessMode(PropertyAccessMode.Field);
+
 
         //builder.HasMany(b => b.IdRefreshTokens)
         //    .WithOne(e => e.User)

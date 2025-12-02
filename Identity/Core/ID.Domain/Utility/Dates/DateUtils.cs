@@ -17,18 +17,18 @@ public static class DateUtilExtensions
 
     //-------------------------------//
 
-    public static double ConvertToUnixTimestamp(this DateTime date)
+    public static long ConvertToUnixTimestamp(this DateTime date)
     {
 
         DateTime origin = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
         TimeSpan diff = date.ToUniversalTime() - origin;
-        return Math.Floor(diff.TotalSeconds);
+        return (long)Math.Floor(diff.TotalSeconds);
 
     }
 
     //- - - - - - - - - - - - - - - -//
 
-    public static double ConvertToUnixTimestamp(this DateTime? date)
+    public static long ConvertToUnixTimestamp(this DateTime? date)
     {
         if (!date.HasValue)
             return 0;
@@ -37,7 +37,7 @@ public static class DateUtilExtensions
 
         var origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
         TimeSpan diff = dateValue.ToUniversalTime() - origin;
-        return Math.Floor(diff.TotalSeconds);
+        return (long)Math.Floor(diff.TotalSeconds);
 
     }
 

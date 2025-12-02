@@ -1,12 +1,6 @@
-using ClArch.ValueObjects;
-using FluentAssertions;
 using ID.Domain.Entities.OutboxMessages;
-using ID.Infrastructure.Persistance.EF.Repos;
-using ID.Infrastructure.Tests.Persistence.EF.TestHelpers;
-using ID.Tests.Data.Factories;
-using Microsoft.EntityFrameworkCore;
 
-namespace ID.Infrastructure.Tests.Persistence.EF.Repos.OutboxMessages;
+namespace ID.Persistence.Ef.Tests.Persistence.EF.Repos.OutboxMessages;
 
 /// <summary>
 /// Tests for AGenCrudRepo functionality using OutboxMessageRepo as concrete implementation.

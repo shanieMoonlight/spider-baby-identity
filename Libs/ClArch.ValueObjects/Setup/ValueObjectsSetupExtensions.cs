@@ -4,9 +4,6 @@ namespace ClArch.ValueObjects.Setup;
 
 public static class ValueObjectsSetupExtensions
 {
-
-    //------------------------------------//
-
     /// <summary>
     /// Setup IdDomain
     /// </summary>
@@ -35,8 +32,6 @@ public static class ValueObjectsSetupExtensions
         return services.AddValueObjects(setupOptions);
 
     }
-
-    //------------------------------------//
 
 }//Cls
 

@@ -2,6 +2,7 @@ using ID.Application.AppAbs.ApplicationServices.TwoFactor;
 using ID.Application.AppAbs.TokenVerificationServices;
 using ID.Application.JWT;
 using ID.Application.Mediatr.CqrsAbs;
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using ID.Domain.Models;
@@ -44,7 +45,12 @@ public class AmazonSignInHandler(
 
     private async Task<GenResult<JwtPackage>> ReturnStandardJwtPackageAsync(AppUser user, Team team, string? currentDeviceId, CancellationToken cancellationToken)
     {
-        var jwt = await _jwtPackageProvider.CreateJwtPackageAsync(user: user, team: team, currentDeviceId: currentDeviceId, cancellationToken: cancellationToken);
+        var jwt = await _jwtPackageProvider.CreateJwtPackageAsync(
+            user: user, 
+            team: team, 
+            authMethods: [AuthMethodRef.oauth],
+            currentDeviceId: currentDeviceId, 
+            cancellationToken: cancellationToken);
         return GenResult<JwtPackage>.Success(jwt);
     }
 

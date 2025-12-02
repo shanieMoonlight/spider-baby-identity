@@ -4,7 +4,7 @@ namespace ID.Application.Features.OutboxMessages;
 
 public static class OutboxMessageMappings
 {
-    //------------------------------------//
+    //----------------------//
 
     public static IdOutboxMessageDto ToDto(this IdOutboxMessage msg) => new()
     {
@@ -16,7 +16,7 @@ public static class OutboxMessageMappings
         Error = msg.Error,
     };
 
-    //------------------------------------//
+    //----------------------//
 
 }//Cls
 

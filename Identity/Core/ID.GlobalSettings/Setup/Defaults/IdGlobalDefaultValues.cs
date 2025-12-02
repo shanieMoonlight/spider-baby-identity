@@ -35,14 +35,19 @@ public partial class IdGlobalDefaultValues
     internal const bool REFRESH_TOKENS_ENABLED = false;
 
     /// <summary>
-    /// TimeSpan.FromDays(7) - 1 week
+    /// TimeSpan.FromDays(14) - 2 weeks
     /// </summary>
-    internal static readonly TimeSpan REFRESH_TOKEN_EXPIRE_TIME_SPAN = TimeSpan.FromDays(7);
+    internal static readonly TimeSpan REFRESH_TOKEN_EXPIRE_TIME_SPAN = TimeSpan.FromDays(14);
 
     /// <summary>
     /// TimeSpan.FromHours(6)
     /// </summary>
     internal static readonly TimeSpan PHONE_TOKEN_EXPIRE_TIME_SPAN = TimeSpan.FromHours(6);
+
+    /// <summary>
+    /// TimeSpan.FromDays(30);
+    /// </summary>
+    internal static readonly TimeSpan TRUSTED_DEVICE_EXPIRE_TIME_SPAN = TimeSpan.FromDays(30);
 
     //How long the cookie is valid for.
     /// <summary>
@@ -75,6 +80,14 @@ public partial class IdGlobalDefaultValues
     /// 50
     /// </summary>
     public const int MIN_SYMMETRIC_SIGNING_KEY_LENGTH = 50;
+
+
+
+    // Key for verifying token signature. SYMMETRIC
+    /// <summary>
+    /// 50
+    /// </summary>
+    public const int MAX_TRUSTED_DEVICES_PER_USER = 20;
 
 
 }//Cls

@@ -1,4 +1,5 @@
 using ID.Application.JWT;
+using ID.Domain.Claims.AuthMethods;
 using ID.OAuth.Amazon.Features.SignIn;
 using ID.OAuth.Amazon.Features.SignIn.AmazonSignIn;
 
@@ -18,6 +19,7 @@ public class AmazonSignInHandlerTests
         var mockVerifier = new Mock<IAmazonAuthenticationService>();
         var mock2FactorService = new Mock<Application.AppAbs.TokenVerificationServices.ITwoFactorVerificationService<AppUser>>();
         var mockTwoFactorMsg = new Mock<ITwoFactorMsgService>();
+        var authMethods = new List<AuthMethodRef> { AuthMethodRef.oauth };
 
         var user = AppUserDataFactory.AnyUser;
         var team = user.Team!;
@@ -31,7 +33,7 @@ public class AmazonSignInHandlerTests
         mock2FactorService.Setup(x => x.IsTwoFactorEnabledAsync(user)).ReturnsAsync(false);
 
         var expectedJwt = JwtPackage.Create("access", 999999, TwoFactorProvider.Sms, "refresh");
-        mockJwtProvider.Setup(j => j.CreateJwtPackageAsync(user, user.Team!, dto.DeviceId, It.IsAny<CancellationToken>()))
+        mockJwtProvider.Setup(j => j.CreateJwtPackageAsync(user, user.Team!, authMethods, dto.DeviceId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedJwt);
 
         var handler = new AmazonSignInHandler(
@@ -48,7 +50,7 @@ public class AmazonSignInHandlerTests
         result.Succeeded.ShouldBeTrue();
         result.Value.ShouldNotBeNull();
         result.Value.AccessToken.ShouldBe(expectedJwt.AccessToken);
-        mockJwtProvider.Verify(j => j.CreateJwtPackageAsync(user, user.Team!, dto.DeviceId, It.IsAny<CancellationToken>()), Times.Once);
+        mockJwtProvider.Verify(j => j.CreateJwtPackageAsync(user, user.Team!, authMethods,  dto.DeviceId, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]

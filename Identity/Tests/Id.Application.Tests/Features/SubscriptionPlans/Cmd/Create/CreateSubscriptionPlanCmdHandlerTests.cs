@@ -7,6 +7,7 @@ using ID.Application.Features.FeatureFlags;
 using ID.Application.Features.SubscriptionPlans.Cmd.Create;
 using ID.Domain.Entities.SubscriptionPlans;
 using ID.Domain.Abstractions.Services.SubPlans;
+using ID.Application.Features.DevMode.SeedSubscriptionPlans;
 
 namespace ID.Application.Tests.Features.SubscriptionPlans.Cmd.Create;
 
@@ -87,7 +88,8 @@ public class CreateSubscriptionPlanCmdHandlerTests
         var request = new CreateSubscriptionPlanCmd(dto);
         var cancellationToken = CancellationToken.None;
         var expectedPlan = SubscriptionPlanDataFactory.Create();
-        _serviceMock.Setup(s => s.AddAsync(It.IsAny<SubscriptionPlan>(), It.IsAny<IEnumerable<Guid>>(), cancellationToken))
+        // Use the new overload that accepts only the plan and cancellation token when there are no feature ids
+        _serviceMock.Setup(s => s.AddAsync(It.IsAny<SubscriptionPlan>(), It.IsAny<IEnumerable<Guid>?>(), cancellationToken))
                     .ReturnsAsync(expectedPlan);
 
         // Act
@@ -100,5 +102,30 @@ public class CreateSubscriptionPlanCmdHandlerTests
     }
 
     //--------------------------//
+
+    [Fact]
+    public async Task Handle_Should_Call_AddAsync_PlanOnly_When_NoFeatureFlagsOrIds()
+    {
+        // Arrange
+        var dto = SubscriptionPlanDtoDataFactory.Create(
+            featureFlags: [],
+            featureFlagIds: []
+        );
+
+        var request = new CreateSubscriptionPlanCmd(dto);
+        var cancellationToken = CancellationToken.None;
+        var expectedPlan = SubscriptionPlanDataFactory.Create();
+
+        _serviceMock.Setup(s => s.AddAsync(It.IsAny<SubscriptionPlan>(), It.IsAny<IEnumerable<Guid>?>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(expectedPlan);
+
+        // Act
+        var result = await _handler.Handle(request, cancellationToken);
+
+        // Assert
+        result.Succeeded.ShouldBeTrue();
+        _serviceMock.Verify(s => s.AddAsync(It.IsAny<SubscriptionPlan>(), It.IsAny<IEnumerable<Guid>?>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+
 
 }//Cls

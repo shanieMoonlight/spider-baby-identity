@@ -3,7 +3,7 @@ using ID.Domain.Abstractions.Services.SubPlans;
 using ID.Domain.Entities.SubscriptionPlans;
 using ID.Domain.Entities.SubscriptionPlans.FeatureFlags;
 using ID.Domain.Repos;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.SubPlans;
+using ID.Domain.Repos.Specs.SubPlans;
 using Pagination;
 
 namespace ID.Infrastructure.DomainServices.SubPlans;
@@ -15,6 +15,21 @@ internal class IdentitySubscriptionPlanService(IIdUnitOfWork _uow)
     private readonly IIdentityFeatureFlagRepo _featuresRepo = _uow.FeatureFlagRepo;
 
     //-----------------------//
+
+    /// <summary>
+    /// Adds a new SubscriptionPlan along with NO associated FeatureFlags.
+    /// </summary>
+    /// <param name="plan">The SubscriptionPlan to add.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>The added SubscriptionPlan with associated FeatureFlags.</returns>
+    public async Task<SubscriptionPlan> AddAsync(SubscriptionPlan plan, CancellationToken cancellationToken = default)
+    {
+        var dbPlan = await _repo.AddAsync(plan, cancellationToken);
+        await _uow.SaveChangesAsync(cancellationToken);
+        return dbPlan;
+    }
+
+    //- - - - - - - - - - - - - - - - - - //
 
     /// <summary>
     /// Adds a new SubscriptionPlan along with associated FeatureFlags by their IDs.
@@ -106,6 +121,14 @@ internal class IdentitySubscriptionPlanService(IIdUnitOfWork _uow)
         await _uow.SaveChangesAsync(cancellationToken);
     }
 
+    //- - - - - - - - - - - -//
+
+    public async Task DeleteAsync(SubscriptionPlan plan , CancellationToken cancellationToken)
+    {
+        await _repo.DeleteAsync(plan);
+        await _uow.SaveChangesAsync(cancellationToken);
+    }
+
     //-----------------------//
 
     public Task<SubscriptionPlan?> FirstByNameAsync(string? name) =>
@@ -113,13 +136,13 @@ internal class IdentitySubscriptionPlanService(IIdUnitOfWork _uow)
 
     //-----------------------//
 
-    public Task<IReadOnlyList<SubscriptionPlan>> GetAllAsync() =>
+    public Task<IReadOnlyList<SubscriptionPlan>> ListAllAsync() =>
         _repo.ListAllAsync();
 
     //- - - - - - - - - - - - - - - - - - //
 
     public Task<IReadOnlyList<SubscriptionPlan>> GetAllByNameAsync(string? name)
-        => _repo.ListAllAsync(new SubPlanByNameSpec(name));
+        => _repo.ListAllTrackedAsync(new SubPlanByNameSpec(name));
 
     //- - - - - - - - - - - - - - - - - - //
 

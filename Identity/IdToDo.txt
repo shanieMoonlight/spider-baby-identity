@@ -51,6 +51,8 @@ CookieSignInService Testing (Integration)
  PKCE
 
 
+ GoogleVerifiedPayload -> Just use the google class directly
+
 
 UpdateTeamLeader_MNTC_CmdHandler Make sure it works
 
@@ -58,8 +60,17 @@ UpdateTeamLeader_MNTC_CmdHandler Make sure it works
 Stop using : InvariantStringDictionary
 
 
+Let API control Persistence/Jobs setup directly.
+ IdInfrastructureSetupOptions:   Remove 
+    public required string ConnectionString { get; set; } = string.Empty;??
+     public required string? SwaggerUrl { get; set; } ??
+ DO IdInfrastructureSetupOptions belong in Application layer????
+ IdInfrastructureSetupOptions - user validateOnstart
 
-Replace FromAppService with DeviceAuthService
+ All DomeinEvents should only have Ids not full entities
+
+
+Replace FromAppService with TrustedDeviceAuthService 
 remove FromAppMiddleware
 IIsFromMobileApp _fromAppService
  - Maybe remove this and and send 2 factor anyway???
@@ -75,8 +86,95 @@ make IssuerNullable use OathProvider enum instead of string
 
 
 
+Should IIdentitySubscriptionRepo implement the full IGenCrudRepo<TeamSubscription> ????
+
+
+Document mediiatr pipeline behaviors
+
+Make controllerHelpers a service! That can be injected into controllers
+make IdMsgs methods pascal case
+DuplicateUserName return badrequest
+Don't include subscriptionsin JWT
+TeamSubscriptionPersistenceIssue.md
+
+Simplify TeamSubscription management Service/factory etc.
+
+Update TeamByIdWithMemberSpec tests
+Set MaxTrustedDevicesPerUser somewhere central
 
 
 
 
 
+remove Teamrepo.AddNewDevicesToDbAsync
+
+IdGlobalOptions needs __deviceManagementUrl__  (Also ValidateOnStart)
+    
+    Make IdGlobalConstants.EmailRoutes an Ioptions??
+
+repos.ListAllTrackedAsync
+
+
+MemberAuditRepo
+
+More ValidateOnstart
+
+
+Make Generic:
+
+    private static IServiceCollection SetupRepos<TUser>(this IServiceCollection services) where TUser : AppUser
+    {
+        services.TryAddScoped<IIdentityTeamRepo, TeamRepo>();
+        services.TryAddScoped<IIdentityMemberAuditRepo<AppUser>, MemberAuditRepo>();
+        services.TryAddScoped<IIdentitySubscriptionPlanRepo, SubscriptionPlanRepo>();
+        services.TryAddScoped<IIdentityOutboxMessageRepo, OutboxMessageRepo>();
+        services.TryAddScoped<IIdentityFeatureFlagRepo, FeatureFlagRepo>();
+        services.TryAddScoped<IIdentityRefreshTokenRepo, RefreshTokenRepo>();
+        services.TryAddScoped<IIdentityTrustedDeviceRepo, TrustedDeviceRepo>();
+        services.TryAddScoped<IIdUnitOfWork, MyIdUnitOfWork>();
+
+
+        return services;
+    }
+
+
+    Add integration tests for Specs
+
+    veritfy that TwoFactorUpdatedEventHandler works correctly  (internal handler)
+
+
+
+
+    Add Support emailaddress to html templates
+    Update trusteDevice emailtemplates
+
+
+    Update MemerwithEverything Specs and Tests
+
+
+    cache FindbyUser results ????
+
+Short answer — yes, this is a common tension in DDD + EF: domain wants IDs available when raising events, while DB-generated keys aren’t available until after SaveChanges.
+Why it happens
+•	If you let the DB generate child IDs, your aggregate can create a domain event immediately but the entity.Id is still default until the transaction commits. That makes including the persisted ID in the event payload impossible at the moment the domain event is raised.
+Common solutions (trade-offs)
+1.	Keep client-generated IDs (domain GUIDs)
+•	Pros: IDs are available immediately for domain events; aggregate-created-children model remains natural.
+•	Cons: you must align EF/DB (ValueGeneratedNever, no DB default) and be careful with change-tracking (your earlier issues). Works well if your domain really needs the id pre-persist.
+2.	Publish events only after persistence (recommended in many systems)
+•	Pattern: collect domain events in entities, persist aggregate and outbox in same DB transaction, then publish events after SaveChanges/transaction commit.
+•	Pros: events include real DB-assigned ids; reliable; transactional (outbox).
+•	Cons: more plumbing (outbox table / dispatcher or SaveChanges interceptor).
+3.	Generate a separate event id / correlation id in the domain
+•	Let domain create an event id (GUID) or use a business key; publish the event immediately with the event id and later include the persisted entity id in downstream processing if needed.
+•	Pros: lightweight; events can flow immediately.
+•	Cons: consumers need to handle missing entity id or perform follow-up lookup.
+4.	Use SaveChanges interceptor to populate events after SaveChanges
+•	Collect domain events on SaveChanges, but defer publishing until SavedChanges (or after SaveChanges completes) so entities have their final ids. Can be combined with outbox for durability.
+•	Pros: central, safe, and keeps domain code simple.
+•	Cons: needs careful ordering (transaction vs dispatch), and still typically pairs with outbox for reliability.
+What I’d recommend for your codebase
+•	If you need entity Ids in domain events: implement an outbox or publish events after SaveChanges (SavedChanges interceptor) so events include the persisted ids. This avoids changing domain constructors and preserves consistency.
+•	If you really need immediate ids inside domain logic (not just events): keep domain-generated GUIDs but align EF/DB (ValueGeneratedNever) and keep the interceptor you added as a defensive layer.
+Next step I can take
+•	Implement the “publish-after-save” flow: a SaveChanges interceptor that transfers domain events into an Outbox table (in the same transaction) and a background dispatcher that publishes outbox messages after commit. I can scaffold that or implement the SavedChanges publishing step that attaches real IDs into events. Which would you prefer?

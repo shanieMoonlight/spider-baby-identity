@@ -2,7 +2,7 @@ using Id.Tests.Utility.Exceptions;
 using ID.Email.Base.EventListeners.EmailConfirmation;
 using ID.Email.Base.LocalAbs;
 using ID.Email.Base.LocalImps;
-using ID.Email.Base.LocalImps.Specs;
+using ID.Email.Base.LocalImps.Specs.EmailConfirmation;
 using ID.GlobalSettings.Constants;
 using ID.GlobalSettings.Errors;
 using ID.GlobalSettings.Setup.Options;
@@ -10,8 +10,6 @@ using ID.GlobalSettings.Utility;
 using ID.IntegrationEvents.Events.Account.EmailConfirmation;
 using ID.Tests.Data.GlobalOptions;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using MyResults;
 
 namespace ID.Email.Base.Tests.EventListeners.EmailConfirmation;
 

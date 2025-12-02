@@ -80,8 +80,8 @@ public class Team_AddSubscription_Tests
         
         var subscriptionEvent = domainEvents.OfType<TeamSubscriptionAddedEvent>().FirstOrDefault();
         subscriptionEvent.ShouldNotBeNull();
-        subscriptionEvent.Team.ShouldBe(team);
-        subscriptionEvent.Subscription.ShouldBe(result);
+        subscriptionEvent.TeamId.ShouldBe(team.Id);
+        subscriptionEvent.SubscriptionId.ShouldBe(result.Id );
     }
 
     //------------------------------------//
@@ -148,7 +148,7 @@ public class Team_AddSubscription_Tests
     {
         // Arrange
         var team = TeamDataFactory.Create();
-        var subId = Guid.NewGuid();
+        //var subId = Guid.NewGuid();
         var subscriptionPlan = SubscriptionPlanDataFactory.Create();
         var discount = Discount.Create(10);
         

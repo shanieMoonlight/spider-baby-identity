@@ -13,7 +13,7 @@ public class DeviceDto
 
     public Guid SubscriptionId { get; set; }
 
-    //------------------------------------//
+    //----------------------//
 
     #region ModelBinding CTOR
     public DeviceDto() { }
@@ -30,7 +30,7 @@ public class DeviceDto
         SubscriptionId = mdl.SubscriptionId;
     }
 
-    //------------------------------------//
+    //----------------------//
 
 }//Cls
 

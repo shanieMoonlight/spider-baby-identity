@@ -1,3 +1,5 @@
+using ID.Domain.Claims;
+
 namespace ID.Infrastructure.Tests.Auth.Implementations;
 
 #pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).

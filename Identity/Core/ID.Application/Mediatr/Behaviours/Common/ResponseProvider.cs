@@ -21,7 +21,7 @@ internal class ResponseProvider
               .Invoke(null, [msg])!;
     }
 
-    //------------------------------------//
+    //----------------------//
 
     internal static TResponse GenerateNotFoundResponse<TResponse, TNotFound>(string? notFoundItemIdentifier = null) where TResponse : BasicResult
     {
@@ -38,7 +38,7 @@ internal class ResponseProvider
               .Invoke(null, [msg])!;
     }
 
-    //------------------------------------//
+    //----------------------//
 
     internal static TResponse GenerateNotFoundResponse<TResponse>(string? msg = null) where TResponse : BasicResult
     {
@@ -55,6 +55,6 @@ internal class ResponseProvider
               .Invoke(null, [msg])!;
     }
 
-    //------------------------------------//
+    //----------------------//
 
 }//Cls

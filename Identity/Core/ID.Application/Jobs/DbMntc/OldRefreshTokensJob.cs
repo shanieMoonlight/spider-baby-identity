@@ -1,7 +1,7 @@
 ﻿using ID.Application.Jobs.Abstractions;
 using ID.Domain.Repos;
+using ID.Domain.Repos.Specs.RefreshTokens;
 using ID.GlobalSettings.Errors;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.RefreshTokens;
 using LoggingHelpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

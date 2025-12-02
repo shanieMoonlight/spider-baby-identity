@@ -21,7 +21,12 @@ public class CloseMyAccountCmdHandler(IIdentityTeamManager<AppUser> teamMgr)
         if (!request.IsLeader)
             return GenResult<AppUserDto>.UnauthorizedResult();
 
-        return await teamMgr.DeleteTeamAsync(team);
+        var deleteResult =  await teamMgr.DeleteTeamAsync(team);
+        if(!deleteResult.Succeeded)
+            return deleteResult;
+
+        // Friendly goodbye message for account closure
+        return BasicResult.Success(IDMsgs.Info.Account.ACCOUNT_CLOSED(request.UserIdentifier ?? ""));
 
     }
 

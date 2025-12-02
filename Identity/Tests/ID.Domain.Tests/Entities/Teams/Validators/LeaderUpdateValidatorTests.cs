@@ -194,7 +194,7 @@ public class LeaderUpdateValidatorTests
         var tokenType = typeof(TeamValidators.LeaderUpdate.Token);
 
         // Assert
-        tokenType.GetInterfaces().ShouldContain(typeof(IValidationToken));
+        tokenType.GetInterfaces().ShouldContain(typeof(ITeamValidationToken));
     }
 
     //------------------------------------//
@@ -238,7 +238,7 @@ public class LeaderUpdateValidatorTests
         var token = result.Value!;
 
         // Verify property naming is consistent with LeaderUpdate context
-        token.ShouldBeAssignableTo<IValidationToken>();
+        token.ShouldBeAssignableTo<ITeamValidationToken>();
         //token.Should().HaveProperty("Team");
         token.NewLeader.ShouldBe(newLeader);
     }

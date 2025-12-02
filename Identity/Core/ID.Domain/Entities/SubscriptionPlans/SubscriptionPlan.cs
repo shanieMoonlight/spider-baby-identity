@@ -117,7 +117,7 @@ public class SubscriptionPlan : IdDomainEntity
     {
         var succeeded = _featureFlags.Add(flag);
         if (succeeded)
-            RaiseDomainEvent(new SubscriptionPlanFeatureAddedDomainEvent(Id, this, flag));
+            RaiseDomainEvent(new SubscriptionPlanFeatureAddedDomainEvent(Id, flag.Id));
         //else Already Added
     }
 
@@ -135,10 +135,9 @@ public class SubscriptionPlan : IdDomainEntity
     {
         var succeeded = _featureFlags.Remove(flag);
         if (succeeded)
-            RaiseDomainEvent(new SubscriptionPlanFeatureRemovedDomainEvent(Id, this, flag));
+            RaiseDomainEvent(new SubscriptionPlanFeatureRemovedDomainEvent(Id, flag.Id));
         //else Already Deleted
     }
 
-    //------------------------//
 
 }//Cls

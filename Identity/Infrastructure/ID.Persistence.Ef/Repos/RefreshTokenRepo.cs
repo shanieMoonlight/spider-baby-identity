@@ -1,6 +1,5 @@
 ﻿using ID.Domain.Entities.Refreshing;
 using ID.Domain.Repos;
-using ID.Persistence.Ef;
 using ID.Persistence.Ef.Repos.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +19,7 @@ internal class RefreshTokenRepo(IdDbContext db)
             WHEN NOT MATCHED THEN
                 INSERT (Id, UserId, Payload, ExpiresOnUtc, DateCreated)
                 VALUES (Source.Id, Source.UserId, Source.Payload, Source.ExpiresOnUtc, Source.DateCreated);",
-        entity.Id, entity.UserId, entity.Payload, entity.ExpiresOnUtc, entity.DateCreated);
+        entity.Id, entity.UserId, entity.PayloadHash, entity.ExpiresOnUtc, entity.DateCreated);
     }
 
 }

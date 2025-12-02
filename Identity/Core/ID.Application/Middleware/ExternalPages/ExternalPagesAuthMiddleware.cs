@@ -1,6 +1,8 @@
 ﻿using ID.Application.Utility.ExtensionMethods;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System.Net;
 
@@ -12,12 +14,18 @@ namespace ID.Application.Middleware.ExternalPages;
 //#############################//
 
 
-public record ExternalPagesAuthMiddlewareOptions(Predicate<HttpContext> ExternalPagesAuthPredicate, string ExternalPagesStartPath);
+public record ExternalPagesAuthMiddlewareOptions(
+    Predicate<HttpContext> ExternalPagesAuthPredicate,
+    string ExternalPagesStartPath,
+    bool AllowAnonymousInDevMode = false);
 
 
 //#############################//
 
-public class ExternalPagesAuthMiddleware(RequestDelegate next, IOptions<ExternalPagesAuthMiddlewareOptions> iOptsProvider)
+public class ExternalPagesAuthMiddleware(
+    RequestDelegate next,
+    IOptions<ExternalPagesAuthMiddlewareOptions> iOptsProvider,
+    IWebHostEnvironment env)
 {
     internal const string _wwwAuthenticateHeader = "Bearer";
     internal const string _responseContentType = "application/json";
@@ -30,11 +38,19 @@ public class ExternalPagesAuthMiddleware(RequestDelegate next, IOptions<External
     {
         var options = iOptsProvider.Value;
         Predicate<HttpContext> authPredicate = options.ExternalPagesAuthPredicate ?? _defaultAuthPredicate;
-        var ExternalPagesStartPathString = GetExternalPagesStartSegment(options.ExternalPagesStartPath);
+        var _externalPagesStartPathString = GetExternalPagesStartSegment(options.ExternalPagesStartPath);
+        var _allowAnonymousInDevMode = options.AllowAnonymousInDevMode;
 
 
         //Don't block non-ExternalPages
-        if (!context.Request.Path.StartsWithSegments(ExternalPagesStartPathString))
+        if (!context.Request.Path.StartsWithSegments(_externalPagesStartPathString))
+        {
+            await next.Invoke(context).ConfigureAwait(false);
+            return;
+        }
+
+        //Don't block non-ExternalPages
+        if (_allowAnonymousInDevMode && env.IsDevelopment())
         {
             await next.Invoke(context).ConfigureAwait(false);
             return;
@@ -82,34 +98,39 @@ public static class ExternalPagesAuthMiddlewareExtensions
     /// <param name="externalPagesAuthPredicate">Predicate to determine if ExternalPages authentication is required</param>
     /// <param name="externalPagesPathStart">Path segment to identify ExternalPages Request. Default = "/ExternalPages"</param>
     public static IApplicationBuilder UseExternalPagesAuth_Custom(
-        this IApplicationBuilder builder, string externalPagesPathStart, Predicate<HttpContext> externalPagesAuthPredicate)
+        this IApplicationBuilder builder, string externalPagesPathStart, Predicate<HttpContext> externalPagesAuthPredicate, bool allowAnonymousInDevMode = false)
     {
-        var authOptions = new ExternalPagesAuthMiddlewareOptions(externalPagesAuthPredicate, externalPagesPathStart);
+        var authOptions = new ExternalPagesAuthMiddlewareOptions(externalPagesAuthPredicate, externalPagesPathStart, allowAnonymousInDevMode);
         builder.UseMiddleware<ExternalPagesAuthMiddleware>(Options.Create(authOptions));
         return builder;
     }
 
     public static IApplicationBuilder UseExternalPagesAuth_SuperTeam(
-        this IApplicationBuilder builder, string externalPagesPathStart) =>
-        builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInSuperTeam());
+        this IApplicationBuilder builder, string externalPagesPathStart, bool allowAnonymousInDevMode = false) =>
+        builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInSuperTeam(), allowAnonymousInDevMode);
+
+
 
     public static IApplicationBuilder UseExternalPagesAuth_MntcTeam(
-        this IApplicationBuilder builder, string externalPagesPathStart) =>
+        this IApplicationBuilder builder, string externalPagesPathStart, bool allowAnonymousInDevMode = false) =>
         builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInMntcTeam());
 
 
+
     public static IApplicationBuilder UseExternalPagesAuth_MntcMinimum(
-        this IApplicationBuilder builder, string externalPagesPathStart) =>
-        builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInMntcTeamMinimum());
+        this IApplicationBuilder builder, string externalPagesPathStart, bool allowAnonymousInDevMode = false) =>
+        builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInMntcTeamMinimum(), allowAnonymousInDevMode);
+
 
 
     public static IApplicationBuilder UseExternalPagesAuth_CustomerTeam(
-        this IApplicationBuilder builder, string externalPagesPathStart) =>
-        builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInCustomerTeam());
+        this IApplicationBuilder builder, string externalPagesPathStart, bool allowAnonymousInDevMode = false) =>
+        builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInCustomerTeam(), allowAnonymousInDevMode);
 
     public static IApplicationBuilder UseExternalPagesAuth_CustomerMinimum(
-        this IApplicationBuilder builder, string externalPagesPathStart) =>
-        builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInCustomerTeamMinimum());
+        this IApplicationBuilder builder, string externalPagesPathStart, bool allowAnonymousInDevMode = false) =>
+        builder.UseExternalPagesAuth_Custom(externalPagesPathStart, ctx => ctx.IsInCustomerTeamMinimum(), allowAnonymousInDevMode);
+
 
 
 

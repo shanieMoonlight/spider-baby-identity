@@ -1,7 +1,7 @@
 ﻿using CollectionHelpers;
 using ID.Application.JWT.Subscriptions;
 using ID.Domain.Claims;
-using ID.Domain.Claims.Utils;
+using ID.Domain.Claims.Teams;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using System.Security.Claims;

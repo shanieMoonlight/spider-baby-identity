@@ -58,7 +58,7 @@ public class TemplateLoaderCacheKeyTests
     // Simple test double for IMemoryCache that stores entries in a dictionary when disposed
     private class TestMemoryCache : IMemoryCache
     {
-        public readonly Dictionary<object, object?> Entries = new();
+        public readonly Dictionary<object, object?> Entries = [];
 
         public ICacheEntry CreateEntry(object key) => new TestCacheEntry(this, key);
 
@@ -78,8 +78,8 @@ public class TemplateLoaderCacheKeyTests
             public DateTimeOffset? AbsoluteExpiration { get; set; }
             public TimeSpan? AbsoluteExpirationRelativeToNow { get; set; }
             public TimeSpan? SlidingExpiration { get; set; }
-            public IList<Microsoft.Extensions.Primitives.IChangeToken> ExpirationTokens { get; } = new List<Microsoft.Extensions.Primitives.IChangeToken>();
-            public IList<PostEvictionCallbackRegistration> PostEvictionCallbacks { get; } = new List<PostEvictionCallbackRegistration>();
+            public IList<Microsoft.Extensions.Primitives.IChangeToken> ExpirationTokens { get; } = [];
+            public IList<PostEvictionCallbackRegistration> PostEvictionCallbacks { get; } = [];
             public CacheItemPriority Priority { get; set; } = CacheItemPriority.Normal;
             public long? Size { get; set; }
 

@@ -13,7 +13,8 @@ public class GlobalOptionsUtils
         SuperTeamMaxPosition = 10,
         ClaimTypePrefix = "test_claim",
         JwtRefreshTokensEnabled = true,
-        PhoneTokenTimeSpan = TimeSpan.FromMinutes(15)
+        PhoneTokenTimeSpan = TimeSpan.FromMinutes(15),
+        TrustedDeviceExpireTimeSpan = TimeSpan.FromDays(30)
     };
 
     //------------------------------//
@@ -38,7 +39,8 @@ public class GlobalOptionsUtils
             SuperTeamMaxPosition = superTeamMaxPosition ?? 10,
             ClaimTypePrefix = claimTypePrefix ?? "test_claim",
             JwtRefreshTokensEnabled = refreshTokensEnabled ?? true,
-            PhoneTokenTimeSpan = phoneTokenTimeSpan ?? TimeSpan.FromMinutes(15)
+            PhoneTokenTimeSpan = phoneTokenTimeSpan ?? TimeSpan.FromMinutes(15),
+            TrustedDeviceExpireTimeSpan = TimeSpan.FromDays(30)
         };
     }
 

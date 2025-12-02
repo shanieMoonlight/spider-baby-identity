@@ -19,7 +19,7 @@ public record UserCreatedEvent : AIdIntegrationEvent
     public UserCreatedEvent() { }
     #endregion
 
-    //- - - - - - - - - - - - - - - - - - //
+    //- - - - - - - - - - - - //
 
     public UserCreatedEvent(Guid userId, Guid teamId, int position, TeamType teamType)
     {

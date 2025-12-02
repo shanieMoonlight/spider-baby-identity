@@ -1,3 +1,4 @@
+using ID.Domain.Claims.AuthMethods;
 using ID.Domain.Entities.AppUsers;
 using ID.Domain.Entities.Teams;
 using ID.GlobalSettings.Setup.Options;
@@ -40,14 +41,19 @@ public class JwtBuilder(
     /// <param name="user">User for whom the token is being created</param>
     /// <param name="team">Team context for the user</param>
     /// <param name="twoFactorVerified">Whether the user has completed 2FA verification</param>
-    /// <param name="currentDeviceId">Optional device identifier for the current session</param>
+    /// <param name="currentDeviceFingerprint">Optional device identifier for the current session</param>
     /// <returns>Encoded JWT token string ready for transmission</returns>
     public async Task<string> CreateJwtAsync(
         AppUser user,
         Team team,
-        string? currentDeviceId = null)
+        IEnumerable<AuthMethodRef> authMethods,
+        string? currentDeviceFingerprint = null)
     {
-        var regularClaims = await _claimsBuilder.BuildClaimsAsync(user, team, currentDeviceId);
+        var regularClaims = await _claimsBuilder.BuildClaimsAsync(
+            user, 
+            team,
+            authMethods,
+            currentDeviceFingerprint);
         List<Claim> claims = _jwtClaims.AddRegisteredClaims(regularClaims, user);
         return GenerateAndSerializeToken(claims);
     }

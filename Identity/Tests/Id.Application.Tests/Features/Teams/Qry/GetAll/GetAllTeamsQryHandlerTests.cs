@@ -1,10 +1,4 @@
 using ID.Application.Features.Teams.Qry.GetAll;
-using ID.Domain.Abstractions.Services.Teams;
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Entities.Teams;
-using ID.Tests.Data.Factories;
-using Moq;
-using Shouldly;
 
 namespace ID.Application.Tests.Features.Teams.Qry.GetAll;
 
@@ -52,7 +46,7 @@ public class GetAllTeamsQryHandlerTests
     //--------------------------//
 
     [Fact]
-    public async Task Handle_ShouldReturnAllTeams_IsSuper_INcludesIsMntc()
+    public async Task Handle_ShouldReturnAllTeams_IsSuper_IncludesIsMntc()
     {
         // Arrange
         var cusTeam = TeamDataFactory.Create(teamType: TeamType.customer);

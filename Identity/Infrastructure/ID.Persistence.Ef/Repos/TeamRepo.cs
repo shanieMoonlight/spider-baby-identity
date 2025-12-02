@@ -1,21 +1,56 @@
-﻿using ID.Domain.Entities.Teams;
-using ID.Domain.Utility.Messages;
+﻿using ClArch.SimpleSpecification;
+using ID.Domain.Entities.Teams;
 using ID.Domain.Repos;
+using ID.Domain.Utility.Messages;
+using ID.Persistence.Ef.Repos.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using MyResults;
 using Pagination;
 using Pagination.Extensions;
-using ID.Persistence.Ef;
-using ID.Persistence.Ef.Repos.Abstractions;
+using System.Diagnostics;
 
 namespace ID.Persistence.Ef.Repos;
 internal class TeamRepo(IdDbContext db) : AGenCrudRepo<Team>(db), IIdentityTeamRepo
 {
 
+    ///// <summary>
+    ///// Retrieves the first entity that matches the specification.
+    ///// </summary>
+    ///// <param name="spec">The specification to match.</param>
+    ///// <param name="cancellationToken">Cancellation token.</param>
+    ///// <returns>The entity if it exists.</returns>
+    //public override async Task<Team?> FirstOrDefaultAsync(ASimpleSpecification<Team> spec, CancellationToken cancellationToken = default)
+    //{
+    //    if (spec.ShouldShortCircuit())
+    //        return null;
+
+    //    var team = await Db.Set<Team>()
+    //        .BuildQuery(spec)
+    //        .FirstOrDefaultAsync(cancellationToken);
+
+    //    var state =   db.Entry(team).State; // should be EntityState.Unchanged or Modified etc.
+
+    //    var count = 1;
+    //    foreach (var m in team.Members) { 
+    //        Console.WriteLine($"{count}:{db.Entry(m).State}");
+    //        Debug.WriteLine($"{count}:{db.Entry(m).State}");
+    //        count++;
+    //    }
+
+    //    return team;
+    //}
+
+
+
+
     public override async Task<Team> UpdateAsync(Team entity)
     {
-        //Ef Change tracker is having problems finding new Devices and throwing an error on SaveChanges
+        //Ef Change tracker is having problems finding new Devices and Subscriptions and throwing an error on SaveChanges
         //If we make sure to add them first the problem goes away.
+        //Our entities create their own PRIMARY KEYS so we can identify new vs existing this way.
+        //So EF can't tell if a Subscription or Device is new or existing when we attach the Team entity for update.
+        // IT judges-based on whether thePK is default(Guid) or not, but our entities always generate a new Guid on creation.
+        //await AddNewSubscriptionsToDbAsync(entity);
         await AddNewDevicesToDbAsync(entity);
 
         Db.Entry(entity).State = EntityState.Modified;
@@ -23,7 +58,7 @@ internal class TeamRepo(IdDbContext db) : AGenCrudRepo<Team>(db), IIdentityTeamR
         return entity;
     }
 
-    //- - - - - - - - - - - - - -//
+    //- - - - - - - - - - - - - - - - - - - //
 
     private async Task AddNewDevicesToDbAsync(Team entity)
     {

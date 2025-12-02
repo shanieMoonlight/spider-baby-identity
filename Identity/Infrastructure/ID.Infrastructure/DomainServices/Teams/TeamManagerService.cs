@@ -9,7 +9,7 @@ using ID.Domain.Repos;
 using ID.Domain.Repos.Specs;
 using ID.Domain.Utility.Messages;
 using ID.GlobalSettings.Constants;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
+using ID.Domain.Repos.Specs.Teams;
 using ID.Infrastructure.Utility.ExtensionMethods;
 using Microsoft.AspNetCore.Identity;
 using MyResults;
@@ -34,7 +34,7 @@ internal class TeamManagerService<TUser>(
 
     public async Task<IEnumerable<Team>> GetAllTeams(bool includeMntc, bool includeSuper, CancellationToken cancellationToken = default)
     {
-        var allTeams = await _teamRepo.ListAllAsync(new AllTeamsSpec(), cancellationToken);
+        var allTeams = await _teamRepo.ListAllTrackedAsync(new AllTeamsSpec(), cancellationToken);
 
         if (!includeMntc)
             allTeams = [.. allTeams.Where(t => t.TeamType != TeamType.maintenance)];
@@ -47,12 +47,12 @@ internal class TeamManagerService<TUser>(
     //- - - - - - - - - - - - - - - - - - //
 
     public async Task<IReadOnlyList<Team>> GetAllTeamsWithExpiredSubscriptions(CancellationToken cancellationToken = default) =>
-        await _teamRepo.ListAllAsync(new TeamsWithExpiredSubscriptionsSpec(), cancellationToken);
+        await _teamRepo.ListAllTrackedAsync(new TeamsWithExpiredSubscriptionsSpec(), cancellationToken);
 
     //- - - - - - - - - - - - - - - - - - //
 
     public async Task<IEnumerable<Team>> GetCustomerTeamsByNameAsync(string? name) =>
-        await _teamRepo.ListAllAsync(new CustomerTeamsByNameSpec(name));
+        await _teamRepo.ListAllTrackedAsync(new CustomerTeamsByNameSpec(name));
 
     //- - - - - - - - - - - - - - - - - - //
 
@@ -85,7 +85,7 @@ internal class TeamManagerService<TUser>(
     //- - - - - - - - - - - - - - - - - - //
 
     public async Task<Team?> GetByIdWithMemberAsync(Guid? teamId, Guid? userId) =>
-        await _teamRepo.FirstOrDefaultAsync(new TeamByIdWithMemberSpec(teamId, userId));
+        await _teamRepo.FirstOrDefaultAsync(new TeamByIdWithMemberAndTrustedDevicesSpec(teamId, userId));
 
     //- - - - - - - - - - - - - - - - - - //
 
@@ -314,7 +314,7 @@ internal class TeamManagerService<TUser>(
         if (teamId is null || userId is null)
             return null;
 
-        var team = await _teamRepo.FirstOrDefaultAsync(new TeamByIdWithMemberSpec(teamId, userId));
+        var team = await _teamRepo.FirstOrDefaultAsync(new TeamByIdWithMemberAndTrustedDevicesSpec(teamId, userId));
         return team?.Members.FirstOrDefault(u => u.Id == userId) as TUser;
     }
 

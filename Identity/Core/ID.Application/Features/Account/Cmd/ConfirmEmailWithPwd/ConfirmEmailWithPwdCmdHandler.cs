@@ -1,9 +1,5 @@
-using MyResults;
-using ID.Application.AppAbs.TokenVerificationServices;
 using ID.Application.AppAbs.ApplicationServices.User;
-using ID.Application.Mediatr.CqrsAbs;
-using ID.Domain.Utility.Messages;
-using ID.Domain.Entities.AppUsers;
+using ID.Application.AppAbs.TokenVerificationServices;
 
 namespace ID.Application.Features.Account.Cmd.ConfirmEmailWithPwd;
 public class ConfirmEmailWithPwdCmdHandler(IFindUserService<AppUser> findUserService, IEmailConfirmationService<AppUser> _emailConfService)

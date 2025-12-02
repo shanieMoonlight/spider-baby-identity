@@ -1,9 +1,4 @@
-using ID.Infrastructure.Auth.JWT.AppServiceImps;
 using ID.Infrastructure.Auth.JWT.LocalServices.Abs;
-using ID.Infrastructure.Auth.JWT.Setup;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Moq;
 using System.Security.Cryptography;
 
 namespace ID.Infrastructure.Tests.Auth.JWT.AppServiceImps;
@@ -51,7 +46,7 @@ public class JsonWebKeyProviderTests
         // Arrange
         var keyProvider = new Mock<IKeyProvider>();
         keyProvider.Setup(x => x.GetAsymmetricValidationSigningKeys())
-            .Returns(new List<RsaSecurityKey>());
+            .Returns([]);
         var jwtOptions = new JwtOptions { AsymmetricAlgorithm = "RS256" };
         var options = Options.Create(jwtOptions);
         var provider = new JsonWebKeyProvider(keyProvider.Object, options);
@@ -72,7 +67,7 @@ public class JsonWebKeyProviderTests
         var rsaKey2 = CreateRsaSecurityKey("kid-2");
         var keyProvider = new Mock<IKeyProvider>();
         keyProvider.Setup(x => x.GetAsymmetricValidationSigningKeys())
-            .Returns(new List<RsaSecurityKey> { rsaKey1, rsaKey2 });
+            .Returns([rsaKey1, rsaKey2]);
         var jwtOptions = new JwtOptions { AsymmetricAlgorithm = "RS384" };
         var options = Options.Create(jwtOptions);
         var provider = new JsonWebKeyProvider(keyProvider.Object, options);

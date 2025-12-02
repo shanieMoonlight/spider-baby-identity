@@ -1,8 +1,8 @@
 ﻿using ID.Domain.Abstractions.Services.Teams.Subs;
 using ID.Domain.Entities.Teams;
-using ID.Domain.Utility.Messages;
 using ID.Domain.Repos;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
+using ID.Domain.Repos.Specs.Teams;
+using ID.Domain.Utility.Messages;
 using MyResults;
 
 namespace ID.Infrastructure.DomainServices.Teams.Subs;

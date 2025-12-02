@@ -9,7 +9,6 @@ global using ID.Domain.Entities.Teams;
 global using ID.Domain.Repos.Specs;
 global using ID.Domain.Utility.Exceptions;
 global using ID.Domain.Utility.Messages;
-global using ID.Infrastructure.Persistance.EF.Repos.Specs.Teams;
 global using ID.Infrastructure.Tests.Persistence.EF.TestHelpers;
 global using ID.Persistence.Ef;
 global using ID.Persistence.Ef.Repos;

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trusted Device Expired - __appName__</title>
+    <style>
+        body {
+            font-family: Arial, Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 16px;
+            color: #516775;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .color-primary {
+            color: __colorPrimary__;
+        }
+
+
+        .anchor-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: #ecf0f1;
+            background-color: __colorPrimary__;
+            border-radius: 4px;
+            padding: 10px 20px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            margin-top: 16px;
+            margin-bottom: 16px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            text-rendering: optimizeLegibility;
+            text-shadow: 1px 1px 1px rgba(255,255,255,0.5);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+            .anchor-btn:hover {
+                background-color: darken(__colorPrimary__, 10%);
+            }
+
+        .header {
+            text-align: center;
+            padding: 10px 0;
+            max-height: 250px;
+        }
+
+            .header #logo {
+                max-width: 50%;
+                display: inline;
+                display: __logoImageDisplay__;
+            }
+
+            .header #logo-text {
+                max-width: 50%;
+                display: none;
+                display: __logoTextDisplay_;
+                color: #70AE6E;
+                color: __colorPrimary__;
+            }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: __colorPrimary__;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        /* Buttons and advanced effects are simplified for email compatibility.
+           Complex properties like text-shadow, box-shadow and darken() are removed. */
+
+        #qr-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                font-size: 18px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hidden preheader for inbox preview -->
+    <span style="display:none; font-size:1px; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden;">A trusted device was removed from your __appName__ account. If this wasn't you, review your activity and secure your account.</span>
+    <div class="container">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+                <td align="center">
+                    <div class="header">
+                        <!-- Logo image or text: rendering engine should set display via inline style placeholders -->
+                        <h1 id="logo-text" style="margin:0; font-size:24px; display: __logoTextDisplay__">__appName__</h1>
+                        <img id="logo" src="__logo__" alt="__appName__ logo" style="display: __logoImageDisplay__; max-width:140px; height:auto;">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td align="center" class="color-primary">
+                    <h2 style="color: __colorPrimary__; margin: 0; padding-top: 8px;">Trusted Device Expired — __appName__</h2>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p><strong>Hi __toName__,</strong></p>
+                    <p>A trusted device on your account has expired on <strong>__dateTime__</strong>. To refresh this device, Login in with Multifactor Authentication and register the device again.</p>
+
+                    <p><strong>Device details</strong></p>
+                    <ul>
+                        <li><strong>Device:</strong> __deviceName__</li>
+                        <li><strong>Expired:</strong> __dateTime__</li>
+                        <li><strong>Location/IP:</strong> __ipAddress__</li>
+                        <li><strong>Browser/OS:</strong> __userAgentShort__</li>
+                    </ul>
+
+                    <!-- Primary CTA: Review activity -->
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center">
+                        <tr>
+                            <td align="center" style="border-radius:4px;">
+                                <a href="__deviceManagementUrl__" target="_blank" rel="noreferrer"
+                                   class="anchor-btn"
+                                   style="
+                                         display:inline-block;
+                                         padding:12px 22px;
+                                         color:#ffffff;
+                                         background-color:__colorPrimary__;
+                                         text-decoration:none;
+                                         margin: 16px 0;
+                                         font-weight:bold;
+                                         font-size:14px;">
+                                    Review devices
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p style="margin-top:14px;">&nbsp;</p>
+
+
+                    <p>We take account security seriously — we'll notify you about other important changes.</p>
+
+                    <p>Regards,<br>The __appName__ Security Team</p>
+
+                    <div style="color: #526875d1; font-size: 14px;">
+                        <small>This email was sent to <strong>__toEmail__</strong> because you have an __appName__ account.</small>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

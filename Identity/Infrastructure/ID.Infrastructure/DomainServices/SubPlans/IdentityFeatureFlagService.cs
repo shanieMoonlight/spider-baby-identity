@@ -2,7 +2,7 @@ using ID.Domain.Abstractions.Services.SubPlans;
 using ID.Domain.Entities.SubscriptionPlans.FeatureFlags;
 using ID.Domain.Repos;
 using ID.Domain.Repos.Specs;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.FeatureFlags;
+using ID.Domain.Repos.Specs.FeatureFlags;
 using Pagination;
 
 namespace ID.Infrastructure.DomainServices.SubPlans;
@@ -60,7 +60,7 @@ internal class IdentityFeatureFlagService(IIdentityFeatureFlagRepo _repo) : IIde
     //- - - - - - - - - - - - - - - - - - //
 
     public async Task<IReadOnlyList<FeatureFlag>> GetAllByNameAsync(string? name, CancellationToken cancellationToken) =>
-        await _repo.ListAllAsync(new FlagByNameSpec(name), cancellationToken);
+        await _repo.ListAllTrackedAsync(new FlagByNameSpec(name), cancellationToken);
 
     //- - - - - - - - - - - - - - - - - - //
 

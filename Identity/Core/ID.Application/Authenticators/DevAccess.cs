@@ -2,12 +2,10 @@
 using ID.Application.Authenticators.Utils;
 using ID.Application.Utility.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace ID.Application.Authenticators;
 public static class DevAccessAuthenticator

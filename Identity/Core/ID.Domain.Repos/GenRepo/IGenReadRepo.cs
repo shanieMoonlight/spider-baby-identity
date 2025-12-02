@@ -69,7 +69,7 @@ internal interface IGenReadRepo<T> where T : class, IIdBaseDomainEntity
     /// <param name="specification">The specification to match.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>List of all entities that match the specification</returns>
-    Task<IReadOnlyList<T>> ListAllAsync(ASimpleSpecification<T> specification, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<T>> ListAllTrackedAsync(ASimpleSpecification<T> specification, CancellationToken cancellationToken = default);
 
     //- - - - - - - - - - - - - - - - - - //
 

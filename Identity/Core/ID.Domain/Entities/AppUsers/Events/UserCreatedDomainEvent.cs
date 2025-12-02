@@ -1,8 +1,4 @@
 ﻿using ID.Domain.Abstractions.Events;
-using ID.Domain.Entities.AppUsers;
 
 namespace ID.Domain.Entities.AppUsers.Events;
-public sealed record UserCreatedDomainEvent(Guid UserId, AppUser User) : IIdDomainEvent //? because user might have removed a phone number
-{
-    
-}
+public sealed record UserCreatedDomainEvent(Guid UserId) : IIdDomainEvent;

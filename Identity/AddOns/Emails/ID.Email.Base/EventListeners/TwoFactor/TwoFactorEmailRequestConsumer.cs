@@ -1,14 +1,12 @@
-﻿using ID.GlobalSettings.Setup;
-using ID.Email.Base.Setup;
+﻿using ID.Email.Base.AppAbs;
+using ID.Email.Base.LocalAbs;
+using ID.Email.Base.LocalImps.Specs.TwoFactor;
+using ID.GlobalSettings.Errors;
 using ID.IntegrationEvents.Abstractions;
 using ID.IntegrationEvents.Events.Account.TwoFactor;
 using LoggingHelpers;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using ID.GlobalSettings.Errors;
-using ID.Email.Base.LocalAbs;
-using ID.Email.Base.AppAbs;
-using ID.Email.Base.LocalImps.Specs;
 
 namespace ID.Email.Base.EventListeners.TwoFactor;
 public class TwoFactorEmailRequestConsumer(

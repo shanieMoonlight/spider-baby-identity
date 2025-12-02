@@ -1,7 +1,7 @@
 ﻿using ID.Domain.Abstractions.Services.Outbox;
 using ID.Domain.Entities.OutboxMessages;
 using ID.Domain.Repos;
-using ID.Infrastructure.Persistance.EF.Repos.Specs.OutboxMsgs;
+using ID.Domain.Repos.Specs.OutboxMsgs;
 using Pagination;
 
 namespace ID.Infrastructure.DomainServices.Outbox;
@@ -20,7 +20,7 @@ internal class IdentityOutboxMsgsService(IIdentityOutboxMessageRepo repo) : IIde
     //- - - - - - - - - - - - - - - - - - //
 
     public Task<IReadOnlyList<IdOutboxMessage>> GetAllByTypeAsync(string? name) 
-        => repo.ListAllAsync(new OutboxMsgsByTypeSpec(name));
+        => repo.ListAllTrackedAsync(new OutboxMsgsByTypeSpec(name));
 
     //- - - - - - - - - - - - - - - - - - //
     public Task<Page<IdOutboxMessage>> GetPageAsync(PagedRequest request) 

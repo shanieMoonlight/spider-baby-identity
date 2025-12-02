@@ -7,7 +7,7 @@ public static partial class TeamValidators
 {
     public static class PositionRangeUpdate
     {
-        public sealed class Token : IValidationToken
+        public sealed class Token : ITeamValidationToken
         {
             internal Token(Team team, TeamPositionRange newPositionRange)
             {

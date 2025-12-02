@@ -30,7 +30,7 @@ public class SubscriptionPlanDto : AuditableEntityDto
     public IEnumerable<FeatureFlagDto> FeatureFlags { get; set; } = [];
     public IEnumerable<Guid> FeatureFlagIds { get; set; } = [];
 
-    //------------------------------------//
+    //----------------------//
 
     #region ModelBinding
     public SubscriptionPlanDto() { }
@@ -47,11 +47,11 @@ public class SubscriptionPlanDto : AuditableEntityDto
         Price = mdl.Price;
         TrialMonths = mdl.TrialMonths;
 
-        FeatureFlagIds = mdl.FeatureFlags.Select(f => f.Id).ToList();
-        FeatureFlags = mdl.FeatureFlags.Select(f => f.ToDto()).ToList();
+        FeatureFlagIds = [.. mdl.FeatureFlags.Select(f => f.Id)];
+        FeatureFlags = [.. mdl.FeatureFlags.Select(f => f.ToDto())];
     }
 
-    //------------------------------------//
+    //----------------------//
 
 }
 

@@ -1,11 +1,5 @@
-using ID.Domain.Entities.AppUsers;
-using ID.Domain.Entities.Refreshing;
-using ID.Domain.Repos;
-using ID.Infrastructure.Auth.JWT.AppServiceImps;
-using ID.Infrastructure.Auth.JWT.Setup;
-using ID.Infrastructure.Tests.Auth.JWT.Utils;
-using Microsoft.Extensions.Options;
-using Moq;
+using ID.Domain.Claims.AuthMethods;
+using Microsoft.AspNetCore.Identity;
 
 namespace ID.Infrastructure.Tests.Auth.JWT.Refreshing;
 
@@ -14,6 +8,7 @@ public class IdRefreshTokenService_GENERATE_Tests
     private readonly Mock<IIdUnitOfWork> _uowMock;
     private readonly Mock<IIdentityRefreshTokenRepo> _refreshTokenRepoMock;
     private readonly Mock<IOptions<JwtOptions>> _optionsProviderMock;
+    private readonly Mock<IPasswordHasher<AppUser>> _pwdHasherMock;
     private readonly JwtRefreshTokenService<AppUser> _sut;
 
     //------------------------------//  
@@ -27,7 +22,11 @@ public class IdRefreshTokenService_GENERATE_Tests
 
         _optionsProviderMock = new Mock<IOptions<JwtOptions>>();
         _optionsProviderMock.Setup(o => o.Value).Returns(JwtOptionsUtils.ValidOptions);
-        _sut = new JwtRefreshTokenService<AppUser>(_uowMock.Object, _optionsProviderMock.Object);
+
+        _pwdHasherMock = new Mock<IPasswordHasher<AppUser>>();
+        _pwdHasherMock.Setup(h => h.HashPassword(It.IsAny<AppUser>(), It.IsAny<string>())).Returns("hashed");
+
+        _sut = new JwtRefreshTokenService<AppUser>(_uowMock.Object, _pwdHasherMock.Object, _optionsProviderMock.Object);
     }
 
     //------------------------------//  
@@ -39,26 +38,27 @@ public class IdRefreshTokenService_GENERATE_Tests
         var user = AppUserDataFactory.Create();
         var cancellationToken = new CancellationToken();
         IdRefreshToken capturedToken = null!;
+        var authMethods = new List<AuthMethodRef> { AuthMethodRef.pwd, AuthMethodRef.mfa };
 
         _refreshTokenRepoMock
             .Setup(repo => repo.AddAsync(It.IsAny<IdRefreshToken>(), cancellationToken))
             .Callback<IdRefreshToken, CancellationToken>((token, _) => capturedToken = token)
-            .ReturnsAsync(capturedToken);
+            .ReturnsAsync((IdRefreshToken t, CancellationToken ct) => t);
 
         // Act
-        var result = await _sut.GenerateTokenAsync(user, cancellationToken);
+        var result = await _sut.GenerateAndStoreTokenAsync(user, authMethods, cancellationToken);
 
         // Assert
         result.ShouldNotBeNull();
-        result.User.ShouldBe(user);
-        result.Payload.ShouldNotBeEmpty();
+        result.RefreshToken.ShouldNotBeNull();
+        result.RefreshToken.User.ShouldBe(user);
+        result.ClientToken.ShouldNotBeNullOrEmpty();
 
         capturedToken.ShouldNotBeNull();
-        capturedToken.ShouldBe(result);
+        capturedToken.ShouldBe(result.RefreshToken);
 
-        _refreshTokenRepoMock.Verify(repo => repo.AddAsync(result, cancellationToken), Times.Once);
+        _refreshTokenRepoMock.Verify(repo => repo.AddAsync(It.IsAny<IdRefreshToken>(), cancellationToken), Times.Once);
         _uowMock.Verify(uow => uow.SaveChangesAsync(cancellationToken), Times.Once);
     }
 
-    //------------------------------//  
 }//Cls
